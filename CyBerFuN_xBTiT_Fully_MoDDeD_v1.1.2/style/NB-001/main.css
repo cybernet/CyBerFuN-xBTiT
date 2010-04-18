@@ -1,0 +1,673 @@
+/* ######### Start Main Tracker Body ######### */
+A:link, A:visited, A:active		{
+	text-decoration: none;
+	color: #FF5500;
+	font-size:8pt;
+}
+A:hover			{
+	text-decoration: underline;
+	color: #FF2200;
+	font-size:8pt;
+}
+#nav ul {
+	list-style-type: square;
+	color: #990000;
+	list-style-position: outside;
+}
+body {
+	font-family: tahoma, arial, helvetica, sans-serif;
+	font-size: 8pt;
+	padding: 0;
+	text-align: center;
+	background-color: #000;
+	background-image: url(images/NB-bkg.jpg);
+	background-repeat: repeat-x;
+	background-position: top;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 20px;
+	margin-left: 0px;
+	color: #999999;
+}
+
+.highlight {
+  background: #F8F81A;
+  color: #FF0000;
+}
+#chatbarText {
+	filter: Alpha(Opacity=50);
+	opacity:.50;
+	-moz-opacity:.50;
+	width: 75%;
+	font-size: 12px;
+	background-color: #140A00;
+	border: 1px solid #801401;
+	height: 18px;
+	color: #FF9900;
+	background-image: none;
+	line-height: 18px;
+	margin: 0px;
+	padding: 0px;
+}
+#submit {
+	filter: Alpha(Opacity=50);
+	opacity:.50;
+	-moz-opacity:.50;
+	font-size: 12px;
+	background-color: #000000;
+	border: 1px solid #801401;
+	font-weight: bold;
+	color: #FF6600;
+	background-image: url(images/NB-nav-m.png);
+	background-repeat: repeat-x;
+	background-position: center -6px;
+	height: 18px;
+	padding-top: 0px;
+	padding-right: 5px;
+	padding-bottom: 0px;
+	padding-left: 5px;
+	line-height: 18px;
+	margin: 0px;
+}
+.btn{
+  background: #595959;
+  border: 1px solid #000;
+  color: #F5FFFC;
+  font-family: Verdana, Helvetica, Sans-Serif;
+  font-size: 11px;
+  padding: 2px;
+  vertical-align: middle;
+  cursor: pointer;
+
+}
+
+/* Input boxes - just a bit smaller than normal so they align well. */
+textarea { font-size: 9pt; color: #A5BADC; font-family: verdana, arial, helvetica, sans-serif; background-color: #3d3d3d; }
+
+/* Checkboxes shouldn't have a background color. */
+input.check { background-color: transparent; }
+
+/* Selects are a bit smaller, because it makes them look even better 8). */
+input, select, button {font-size:8pt;   font-weight: normal; color: #000;   font-family: verdana, arial, helvetica, sans-serif;}
+
+/* Standard horizontal rule.. */
+hr {    color: #808080; background-color: transparent; }
+/* BLOCK STYLE */
+.NB-btl{
+	width: 17px;
+	background-image: url(images/NB-btl.jpg);
+	background-repeat: no-repeat;
+}
+.NB-btm{
+	background-repeat: repeat-x;
+	font-size: 11px;
+	color: #FF6600;
+	font-family: verdana, tahoma, arial, sans-serif;
+	background-image: url(images/NB-btm.jpg);
+	text-align: left;
+	font-weight: bold;
+	line-height: 22px;
+	white-space: nowrap;
+	display: block;
+}
+.NB-btr{
+	width: 4px;
+	background-image: url(images/NB-btr.jpg);
+}
+.NB-bmm{
+	width: 100%;
+	padding: 5px;
+	font-size: 10px;
+	color: #BBBBBB;
+	font-family: verdana, tahoma, arial, sans-serif;
+	text-align: justify;
+	background-color: #000000;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #9C2701;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 10px;
+	margin-left: 0px;
+}
+.NB-bbr{ width: 10px; background-image: url(images/NB_bbr.png); }
+/* A quote, perhaps from another post. */
+.quote {    color: #DF9042; background-color: #000; font-family: verdana, arial, helvetica, sans-serif; border: 1px solid #817cae; margin: 1px; padding: 1px;   font-size: x-small; line-height: 1.4em;}
+
+/* A code block - maybe even PHP ;). */
+.code { color: #eee; background-color: #000; font-family: courier new, times new roman, monospace;  font-size: x-small; line-height: 1.3em;
+/* Put a nice border around it. */
+border: 1px solid #565962; margin: 1px auto 1px auto;   padding: 1px;   width: 99%;
+    /* If IE wrap its contents, Else show scrollbars. */
+white-space: wrap; overflow: auto;
+/* Stop after about 24 lines, and just show a scrollbar. */
+max-height: 24em;}
+
+.post{
+  border:1px solid #000;
+  padding:0px;
+  margin:0px;
+  color:#F5FFFC;
+  line-height: 1.4em;
+  text-align:left;
+  white-space:wrap;
+    overflow: auto;
+}
+
+img {
+  border:0px;
+}
+
+textarea {
+    display:block;
+    overflow: auto;
+    line-height: 1.4em;
+}
+
+select.drop_pager {
+  background-color: #595959;
+  font-size: 11px;
+
+}
+
+.pager {
+  background-color: #595959;
+  padding: 1px 3px 1px 3px;
+}
+
+.pagercurrent {
+  background-color: #595959;
+  border: 1px solid #000000;
+  padding: 1px 3px 1px 3px;
+}
+
+.pager a:link,
+.pager a:visited,
+.pagercurrent a:link,
+.pagercurrent a:visited {
+    text-decoration:none;
+}
+
+.pager a:hover,
+.pagercurrent a:hover {
+    text-decoration:none;
+}
+
+#main {
+	display:block;
+	color:#999999;
+	width:958px;
+	margin-top:0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	background-color: #000000;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 10px;
+	padding-left: 0px;
+	height: 100%;
+}
+#logo {
+	height:152px;
+	width:100%;
+	background-image: url(images/NB-logo.jpg);
+	background-repeat: no-repeat;
+	background-position: top;
+	text-align: left;
+}
+.tracker_logo {
+	align:center;
+}
+#slideIt {
+	align:left;
+	background-color: #000000;
+	text-align: left;
+}
+.error { color:black; font-weight: bold; font-size: 14pt; background:url(images/chr.gif); background-repeat: repeat-x;}
+.information { color:black; font-weight: bold; font-size: 14pt; background:url(images/chb.gif); background-repeat: repeat-x;}
+.success { color:black; font-weight: bold; font-size: 14pt; background:url(images/chg.gif); background-repeat: repeat-x;}
+td.deleted {
+    background-color:#FF95AC;
+    color:#000000;
+}
+
+td.added {
+    background-color:#C1FF83;
+    color:#000000;
+}
+
+td.modified {
+    background-color:#DEDEDE;
+    color:#000000;
+}
+  
+.clear {
+    clear:both;
+}
+#header{
+	width:100%;
+	background-color: #000000;
+}
+
+#nocolumns { width:100%; align:center; }
+
+#footer{
+	border-top-width: 2px;
+	border-bottom-width: 10px;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-top-color: #9C2701;
+	border-bottom-color: #1D1D1D;
+	margin-top: 6px;
+	margin-right: 10px;
+	margin-bottom: 20px;
+	margin-left: 10px;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #444444;
+	line-height: 18px;
+	padding: 5px;
+}
+
+div.chat {
+/* Wrap its contents, and show scrollbars. */
+    white-space: nowrap;
+    overflow: auto; 
+    max-height: 30em;
+  width: 100%;
+  padding: 0px;
+}
+
+
+a:link,a:active,a:visited { color: #FFC000; text-decoration:none; }
+a:hover { text-decoration:none; color: #FF8000; }
+
+h1 {
+    font-size: 12pt;
+}
+
+p {
+    font-size: 10pt;
+}
+
+table {
+    border:0px;
+}
+#header .lista {
+	background-color: #000000;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-top-style: none;
+	border-right-style: solid;
+	border-bottom-style: none;
+	border-left-style: solid;
+	border-right-color: #410B01;
+	border-left-color: #410B01;
+}
+#header .tool {
+	background-color: #280600;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: none;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-color: #410B01;
+	border-bottom-color: #410B01;
+	border-left-color: #410B01;
+}
+table.lista {
+	border: 1px #410B01 solid;
+}
+
+td.block {
+	color: #ffffff;
+	height:25px;
+	padding-left: 3px;
+	padding-right: 3px;
+	border-bottom: solid 1px #000;
+	background-image: url(images/block_back.gif);
+}
+.user {background:#151920;}
+td.blocklist {
+	color:#F5FFFC;
+	padding:2px;
+	margin:0px;
+	font-size: 8pt;
+	font-weight: bold;
+	background-color: #000000;
+}
+
+td.lista {
+	color:#FFC000;
+	border:1px solid #410B01;
+	padding:2px;
+	margin:0px;
+	text-align:left;
+	font-size: 8pt;
+}
+
+td {
+font-size: 8pt;
+}
+input, select {
+	filter: Alpha(Opacity=50);
+	opacity:.50;
+	-moz-opacity:.50;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #FF9900;
+	background-color: #000000;
+	background-image: url(images/NB-nav-m.png);
+	background-repeat: repeat-x;
+	background-position: left -7px;
+	border: 1px solid #FB4F05;
+}
+textarea {
+	filter: Alpha(Opacity=50);
+	opacity:.50;
+	-moz-opacity:.50;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #FF9900;
+	background-color: #000000;
+	border: 1px solid #FB4F05;
+	margin: 0px;
+	padding: 7px;
+}
+
+td.header {
+    color: #FFC000;
+    height:27px;
+    font-style: normal;
+    background: url(images/catbg.jpg) #000000 repeat-x;
+    border-collapse: collapse;
+	border:1px solid #410B01;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+td.title {
+    font-size: 8pt;
+}
+
+td.navigation {
+    background-color: #000;
+    font-weight: bold;
+    font-size: 8pt;
+}
+
+form {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.sublink {
+    font-style: italic;
+    font-size: 7pt;
+    font-weight: normal;
+}
+
+a.index {
+    font-weight: bold;
+}
+
+a.biglink {
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+.important {
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+td.red {
+    background-color:#3D3D3D;
+	border:1px solid #410B01;
+    color: red;
+}
+
+
+td.yellow {
+    background-color:#3D3D3D;
+	border:1px solid #410B01;
+    color: #BEC635;
+}
+
+
+td.green {
+    background-color:#3D3D3D;
+	border:1px solid #410B01;
+    color: green;
+}
+
+td.progress {
+    padding: 0px;
+    background-image: url(images/backprogress.gif);
+    background-repeat: repeat-x;
+    height: 10px;
+}
+
+td.red a:link {
+    color: red;
+}
+td.red a:visited {
+    color: red;
+}
+
+td.yellow a:link {
+    color: #BEC635;
+}
+td.yellow a:visited {
+    color: #BEC635;
+}
+
+td.green a:link {
+    color: green;
+}
+
+td.green a:visited {
+    color: green;
+}
+li{
+list-style-position:inside;
+} 
+
+.error { color:black; font-weight: bold; font-size: 14pt; background:url(images/chr.gif); background-repeat: repeat-x;}
+.information { color:black; font-weight: bold; font-size: 14pt; background:url(images/chb.gif); background-repeat: repeat-x;}
+.success { color:black; font-weight: bold; font-size: 14pt; background:url(images/chg.gif); background-repeat: repeat-x;}
+
+/* ######### End Main Tracker Body ######### Start Ajax Poll System ######### */
+
+td.deleted {
+    background-color:#FF95AC;
+    color:#000000;
+}
+
+td.added {
+    background-color:#C1FF83;
+    color:#000000;
+}
+
+td.modified {
+    background-color:#DEDEDE;
+    color:#000000;
+}
+
+#mainContainer {
+    width:100%;
+        overflow:auto;
+    margin:0;
+    text-align:left;
+  /*  background-color:#e5e5e8;*/
+    
+}
+
+#mainContent {
+    padding:0px;
+        
+}
+  
+.clear {
+    clear:both;
+}
+
+.poller {  /* The poller box */
+  
+        width:100%;
+        color:#999; font-weight:bold;
+        overflow:hidden;
+}
+
+.pollerTitle {  /* Poller title above radio buttons */
+    margin-top:0px;
+    margin-bottom:5px;
+    font-weight:bold;
+    font-size:1em;
+}
+
+.pollerOption {  /* Label for each radio button */
+    margin:0px;
+}
+
+.result_pollerOption {  /* Label for each option above graph - i.e. results */
+    margin:0px;
+    font-size:0.8em;
+}
+
+.result_pollerTitle {  /* Title of poller - when ajax shows the results */
+    margin-top:0px;
+    margin-bottom:5px;
+    font-weight:bold;
+    font-size:1em;
+}
+
+.result_pollGraph img {  /* Don't change this one, it is used to get the left and right image(the corner) positioned correctly */
+    float:left;
+}
+
+.result_pollGraph div {  /* The <div> tag where the percentage result is shown */
+    float:left;
+    height:12px;
+    background-repeat:repeat-x;
+    color:#999;
+    font-size:0.9em;
+    line-height:16px;
+}
+
+.result_pollGraph {  /* Graph div - parent of both the corner images and the div displaying percentage votes */  
+    height:12px;
+}
+  
+.poller_waitMessage {  /* Message when Ajax is working getting restults fromt the server */
+    display:none;  
+}  
+
+.result_totalVotes{
+    clear:left;
+    font-size:0.8em;
+    margin-top:10px;
+    font-style:italic;
+    background:transparent;
+}
+
+th {
+    text-align:left;
+}
+.formButton {
+    width:75px;
+}
+/* ######### End Ajax Poll System ######### Start Ajax Chat ######### */
+#chat {
+overflow: auto;
+width: 100%;
+height: 220px;
+padding: 0px;
+}
+
+#chatoutput ul {
+    list-style: none;
+    margin:0px;
+    padding:0px;
+    padding:5px 4px 6px 5px;
+}
+
+div.chatoutput {
+    color:#FFC000; 
+    background:#140A00;
+    padding:5px 0px 3px 10px;
+    margin:0px;
+    line-height: 150%;
+    margin-bottom:2px;
+}
+
+div.loader {
+background-image: url('images/ajaxchat/loading.gif'); 
+background-repeat: no-repeat; 
+background-position:center center; 
+width:32px; 
+height:32px;
+}
+
+#chatoutput ul li {
+}
+
+#chatoutput ul li span.name {
+    display: block;
+    background:url(images/ajaxchat/bubble.png) no-repeat left;
+    padding-left:19px;
+      margin-bottom:1px;
+    font-weight: normal;
+    color:#999999;
+}
+
+#chatoutput ul li:hover span.name {
+    background:url(images/ajaxchat/bubblehover.png) no-repeat left;
+}
+
+#chat #chatoutput #outputList .name A:link,
+#chat #chatoutput #outputList .name A:active,
+#chat #chatoutput #outputList .name A:visited {
+	color: #9C2701;
+	font-size: 11px;
+	font-weight: bold;
+}
+#chat #chatoutput #outputList .name A:hover{
+	color: #FF3300;
+	text-decoration: underline;
+}
+form {
+    padding:0px;
+    margin:6px;
+}
+
+#chatoutput {
+    text-align: left;
+    margin-right: 0px;
+}
+
+/* swaps edit and delete images on mouse over */
+img.EditSwap {
+background:url(images/ajaxchat/shout_edit_gray.gif) no-repeat bottom;
+}
+img.EditSwap:hover {
+background:url(images/ajaxchat/shout_edit.png) no-repeat bottom; 
+}
+img.DeleteSwap {
+background:url(images/ajaxchat/shout_delete_gray.gif) no-repeat bottom;
+}
+img.DeleteSwap:hover {
+background:url(images/ajaxchat/shout_delete.png) no-repeat bottom; 
+}
+/* end of swaping */
+
+img.form {
+background:url(images/ajaxchat/frame.png) no-repeat;
+}
+img.form:hover {
+background:url(images/ajaxchat/frame_hover.png) no-repeat;
+}
+/* ######### End Ajax Chat ######### */

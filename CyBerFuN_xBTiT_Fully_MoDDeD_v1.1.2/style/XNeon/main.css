@@ -1,0 +1,507 @@
+FONT {
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 10px;
+}
+
+TD {
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 10px;
+}
+
+BODY {
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 10px;
+}
+
+P {
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 10px;
+}
+
+DIV {
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 10px;
+}
+
+
+
+body {
+  background: #121212;
+  color: #9fb7c3;
+  font: 12px Arial;
+  
+}
+
+A:link {
+  border: none;
+  color: #2e8ffa;
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 10px;
+  text-decoration: none;
+}
+
+A:active {
+  border: none;
+  color: #2e8ffa;
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 10px;
+  text-decoration: none;
+}
+
+A:visited {
+  border: none;
+  color: #2e8ffa;
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 10px;
+  text-decoration: none;
+}
+
+A:hover {
+  border: none;
+  color: #1e4e84;
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 10px;
+  text-decoration: none;
+}
+
+.title {
+  BACKGROUND: none;
+  COLOR: #2e8ffa;
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 12px;
+  FONT-WEIGHT: bold;
+  TEXT-DECORATION: none;
+}
+
+.content {
+  BACKGROUND: none;
+  COLOR: #9fb7c3;
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 10px;
+}
+
+.block-title {
+  BACKGROUND: none;
+  COLOR: #2e8ffa;
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 10px;
+}
+
+.storytitle {
+  BACKGROUND: none;
+  COLOR: #2e8ffa;
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 12px;
+  FONT-WEIGHT: bold;
+  TEXT-DECORATION: none;
+}
+
+.storycat {
+  BACKGROUND: none;
+  COLOR: #2e8ffa;
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 12px;
+  FONT-WEIGHT: bold;
+  TEXT-DECORATION: none;
+}
+
+.boxtitle {
+  BACKGROUND: none;
+  COLOR: #2e8ffa;
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 12px;
+  FONT-WEIGHT: bold;
+  TEXT-DECORATION: none;
+}
+
+.boxcontent {
+  BACKGROUND: none;
+  COLOR: #9fb7c3;
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 10px;
+}
+
+.option {
+  BACKGROUND: none;
+  COLOR: #9fb7c3;
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 10px;
+  FONT-WEIGHT: bold;
+  TEXT-DECORATION: none;
+}
+
+.tiny {
+  BACKGROUND: none;
+  COLOR: #9fb7c3;
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 10px;
+  FONT-WEIGHT: normal;
+  TEXT-DECORATION: none;
+}
+
+.small {
+  BACKGROUND: none;
+  COLOR: #9fb7c3;
+  FONT-FAMILY: Verdana, Helvetica;
+  FONT-SIZE: 9px;
+  FONT-WEIGHT: normal;
+  TEXT-DECORATION: none;
+}
+/* Form elements */
+
+input, textarea, input.button, input.post, input.mainoption, input.liteoption, textarea.post, select, td.row1, td.row2, td.row3, th.row1{
+  background-color: #000000;
+  background-image: url(/images/gradient.jpg);
+  background-repeat: repeat-x;
+  BORDER-BOTTOM: #9fb7c3 1px solid;
+  BORDER-LEFT: #2e8ffa 1px solid;
+  BORDER-RIGHT: #2e8ffa 1px solid;
+  BORDER-TOP: #2e8ffa 1px solid;
+  color: #2e8ffa;
+  font: 11px Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.code{
+  background: #363435;
+  border: 1px solid #d1d7dc;
+  font: 11px Courier, 'Courier New', sans-serif;
+}
+
+.quote{
+  background: #363435;
+  border: 1px solid #d1d7dc;
+  font: 11px/125% Verdana, Arial, Helvetica, sans-serif;
+}
+
+.heading{
+  color: #2e8ffa;
+}
+
+hr {
+  border: solid #2e8ffa 0px;
+  border-top-width: 1px;
+  height: 0px;
+}
+
+table.main, table.mainouter {
+  font-family: Verdana, Helvetica, sans-serif;
+  font-size: 12px;
+  margin: 0 auto;
+}
+
+td.collhead {
+  color: #000000;
+  font-family: Verdana, Helvetica, sans-serif;
+  margin: 0 auto;
+}
+
+td.rowhead{
+  font-family: Verdana, Helvetica, sans-serif;
+  font-size: 12px;
+  margin: 0 auto;
+}
+
+table.collhead, table.rowhead {
+  font-family: Verdana, Helvetica, sans-serif;
+  font-size: 12px;
+  margin: 0 auto;
+}
+/* BLOCK STYLE */
+
+.NB-btl{
+  background-image: url(././images/blocks_01.jpg);
+  background-repeat: no-repeat;
+  height: 50px;
+  width: 53px;
+}
+
+.NB-btm{
+  background-image: url(images/blocks_00.jpg);
+  background-repeat: repeat-x;
+  color: #FF6600;
+  display: block;
+  font-family: verdana, tahoma, arial, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  height: 50px;
+  line-height: 22px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.NB-btr{
+  background-image: url(images/blocks_03.jpg);
+  height: 50px;
+  width: 27px;
+}
+
+.NB-bmm{
+  background-color: #000000;
+  background-image: url(images/blocks_06.jpg);
+  background-repeat: repeat-y;
+}
+
+.NB-bmm1{
+  background-color: #000000;
+  background-image: url(images/blocks_07.jpg);
+  background-repeat: repeat-y;
+}
+/* blockfooter*/
+
+.NB-btl2{
+  background-image: url(images/blocks_09.jpg);
+  background-repeat: no-repeat;
+  height: 53px;
+  width: 53px;
+}
+
+.NB-btm2{
+  background-image: url(images/blocks_10.jpg);
+  background-repeat: repeat-x;
+  color: #FF6600;
+  display: block;
+  font-family: verdana, tahoma, arial, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  height: 43px;
+  line-height: 22px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.NB-btr2{
+  background-image: url(images/blocks_11.jpg);
+  background-repeat: no-repeat;
+  height: 27px;
+  width: 53px;
+}
+
+.NB-bmm2{
+  background-color: #000000;
+  background-image: url(images/blocks_08.jpg);
+  background-position: right;
+  background-repeat: repeat-y;
+  padding-left: 5px;
+  width: 27px;
+}
+
+#main {
+  background-color: transparent;
+  color: #999999;
+  display: block;
+  height: 100%;
+  margin-bottom: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+  padding-bottom: 10px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 0px;
+  width: 100%;
+}
+
+#logo {
+  background-image: url(./images/header1.png);
+  background-position: top;
+  background-repeat: no-repeat;
+  height: 162px;
+  text-align: left;
+  width: 100%;
+}
+/* ######### End Main Tracker Body ######### Start Ajax Poll System ######### */
+
+td.deleted {
+  background-color: #FF95AC;
+  color: #000000;
+}
+
+td.added {
+  background-color: #C1FF83;
+  color: #000000;
+}
+
+td.modified {
+  background-color: #DEDEDE;
+  color: #000000;
+}
+
+#mainContainer {
+  margin: 0;
+  overflow: auto;
+  text-align: left;
+/*  background-color:#e5e5e8;*/
+  width: 100%;
+}
+
+#mainContent {
+  padding: 0px;
+}
+
+.clear {
+  clear: both;
+}
+
+.poller {/* The poller box */
+  color: #999;
+  font-weight: bold;
+  overflow: hidden;
+  width: 100%;
+}
+
+.pollerTitle {/* Poller title above radio buttons */
+  font-size: 1em;
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-top: 0px;
+}
+
+.pollerOption {/* Label for each radio button */
+  margin: 0px;
+}
+
+.result_pollerOption {/* Label for each option above graph - i.e. results */
+  font-size: 0.8em;
+  margin: 0px;
+}
+
+.result_pollerTitle {/* Title of poller - when ajax shows the results */
+  font-size: 1em;
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-top: 0px;
+}
+
+.result_pollGraph img {/* Don't change this one, it is used to get the left and right image(the corner) positioned correctly */
+  float: left;
+}
+
+.result_pollGraph div {/* The <div> tag where the percentage result is shown */
+  background-repeat: repeat-x;
+  color: #999;
+  float: left;
+  font-size: 0.9em;
+  height: 12px;
+  line-height: 16px;
+}
+
+.result_pollGraph {/* Graph div - parent of both the corner images and the div displaying percentage votes */
+  height: 12px;
+}
+
+.poller_waitMessage {/* Message when Ajax is working getting restults fromt the server */
+  display: none;
+}
+
+.result_totalVotes{
+  background: transparent;
+  clear: left;
+  font-size: 0.8em;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+th {
+  text-align: left;
+}
+
+.formButton {
+  width: 75px;
+}
+/* ######### End Ajax Poll System ######### Start Ajax Chat ######### */
+
+#chat {
+  height: 400px;
+  overflow: auto;
+  padding: 0px;
+  width: 100%;
+}
+
+#chatoutput ul {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+  padding: 5px 4px 6px 5px;
+}
+
+div.chatoutput {
+  background: #140A00;
+  color: #FFC000;
+  line-height: 150%;
+  margin: 0px;
+  margin-bottom: 2px;
+  padding: 5px 0px 3px 10px;
+}
+
+div.loader {
+  background-image: url('images/ajaxchat/loading.gif');
+  background-position: center center;
+  background-repeat: no-repeat;
+  height: 32px;
+  width: 32px;
+}
+
+#chatoutput ul li {}
+
+#chatoutput ul li span.name {
+  background: url(images/ajaxchat/bubble.png) no-repeat left;
+  color: #999999;
+  display: block;
+  font-weight: normal;
+  margin-bottom: 1px;
+  padding-left: 19px;
+}
+
+#chatoutput ul li:hover span.name {
+  background: url(images/ajaxchat/bubblehover.png) no-repeat left;
+}
+
+#chat #chatoutput #outputList .name A:link, #chat #chatoutput #outputList .name A:active, #chat #chatoutput #outputList .name A:visited {
+  color: #9C2701;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+#chat #chatoutput #outputList .name A:hover{
+  color: #FF3300;
+  text-decoration: underline;
+}
+
+form {
+  margin: 6px;
+  padding: 0px;
+}
+
+#chatoutput {
+  margin-right: 0px;
+  text-align: left;
+}
+/* swaps edit and delete images on mouse over */
+
+img.EditSwap {
+  background: url(images/ajaxchat/shout_edit_gray.gif) no-repeat bottom;
+}
+
+img.EditSwap:hover {
+  background: url(images/ajaxchat/shout_edit.png) no-repeat bottom;
+}
+
+img.DeleteSwap {
+  background: url(images/ajaxchat/shout_delete_gray.gif) no-repeat bottom;
+}
+
+img.DeleteSwap:hover {
+  background: url(images/ajaxchat/shout_delete.png) no-repeat bottom;
+}
+/* end of swaping */
+
+img.form {
+  background: url(images/ajaxchat/frame.png) no-repeat;
+}
+
+img.form:hover {
+  background: url(images/ajaxchat/frame_hover.png) no-repeat;
+}
+/* ######### End Ajax Chat ######### */
