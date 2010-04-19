@@ -4,7 +4,7 @@
 // CyBerFuN .::. Functions
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
-// http://xlist.ro/
+// http://xList.ro/
 // Modified By cybernet2u
 
 error_reporting(E_ALL ^ E_NOTICE);
@@ -367,7 +367,7 @@ function userlogin() {
 
   $ip = getip(); //$_SERVER["REMOTE_ADDR"];
   $nip = ip2long($ip);
-  $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}bannedip WHERE $nip >= first AND $nip <= last LIMIT 1;") or sqlerr(__FILE__, __LINE__);
+  $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}bannedip WHERE INET_ATON('".$ip."') >= first AND INET_ATON('".$ip."') <= last LIMIT 1;") or sqlerr(__FILE__, __LINE__);
   if (mysql_num_rows($res) > 0) {
     header('HTTP/1.0 403 Forbidden');
 ?>
@@ -424,6 +424,10 @@ function dbconn($do_clean = false) {
         die('['.mysql_errno().'] dbconn: mysql_connect: '.mysql_error());
     }
   }
+
+if($GLOBALS["charset"] == "UTF-8")
+      do_sqlquery("SET NAMES utf8");
+
   mysql_select_db($database) or die($language['ERR_CANT_OPEN_DB'].' '.$database.' - '.mysql_error());
 
   userlogin();
@@ -498,13 +502,13 @@ function updatedata() {
     $combinedinfohash[] = $rhash[0];
 
   //scrape($row["announce_url"],$row["info_hash"]);
-  scrape($row[0],implode("','",$combinedinfohash));
+  scrape($row[0], implode("','", $combinedinfohash));
 }
 
 function pager($rpp, $count, $href, $opts = array()) {
   global $language;
 
-  $pages = ($rpp == 0)?1:ceil($count / $rpp);
+  $pages = ($rpp == 0) ? 1:ceil($count / $rpp);
 
   if (!isset($opts['lastpagedefault']))
     $pagedefault = 1;
@@ -601,14 +605,14 @@ function categories($val = '') {
     // lets see if it has sub-categories.
     if (empty($c['sid'])) {
       $b_sub = 0;
-      $return .= "\n<option".(($cid == $val)?' selected="selected"':'').' value="'.$cid.'">'.$name.'</option>';
+      $return .= "\n<option".(($cid == $val) ? ' selected="selected"':'').' value="'.$cid.'">'.$name.'</option>';
     } else {
       if ($b_sub != $cid) {
         $return .= "\n<optgroup label='$name'>";
         $b_sub = $cid;
       }
       $sub = $c['sid'];
-      $return .= "\n<option".(($sub == $val)?' selected="selected"':'').' value="'.$sub.'">'.unesc($c['sname']).'</option>';
+      $return .= "\n<option".(($sub == $val) ? ' selected="selected"':'').' value="'.$sub.'">'.unesc($c['sname']).'</option>';
     }
   }
 
@@ -826,7 +830,7 @@ function set_block($block_title, $alignement, $block_content, $width100 = true) 
   global $STYLEPATH, $TABLE_PREFIX, $language;
 
   $blocktpl = new bTemplate();
-  $blocktpl->set('block_width', ($width100?'width="100%"':''));
+  $blocktpl->set('block_width', ($width100 ? 'width="100%"':''));
   $blocktpl->set('block_title', $block_title);
   $blocktpl->set('block_align', $alignement);
   $blocktpl->set('block_content', $block_content);
@@ -868,7 +872,7 @@ function get_block($block_title, $alignement, $block, $use_cache = true, $width1
   return $blocktpl->fetch(load_template('block.tpl'));
 }
 
-function block_begin($title='-', $colspan = 1, $calign = 'justify') {
+function block_begin($title = '-', $colspan = 1, $calign = 'justify') {
 }
 
 function block_end($colspan = 1) {
@@ -915,7 +919,7 @@ function textbbcode($form, $name, $content = '') {
   $tpl_bbcode->set('form_name', $form);
   $tpl_bbcode->set('object_name', $name);
   $tpl_bbcode->set('content', $content);
-  $tbbcode='<table width="100%" cellpadding="1" cellspacing="1">';
+  $tbbcode = '<table width="100%" cellpadding="1" cellspacing="1">';
 
   global $smilies, $STYLEPATH, $language;
   $count = 0;
@@ -1025,32 +1029,32 @@ function DateFormat($seconds) {
     $seconds -= 2419200;
     }
 
-  while ($seconds>604800) {
+  while ($seconds > 604800) {
     $weeks++;
     $seconds -= 604800;
     }
 
-  while ($seconds>86400) {
+  while ($seconds > 86400) {
     $days++; 
     $seconds -= 86400;
     }
 
-  while ($seconds>3600) {
+  while ($seconds > 3600) {
     $hours++; 
     $seconds -= 3600;
     }
 
-  while ($seconds>60) {
+  while ($seconds > 60) {
     $minutes++; 
     $seconds -= 60;
     }
 
-  $years = ($years == 0)?'':($years.' '.(($years == 1)?YEAR:YEARS).', ');
-    $months = ($months == 0)?'':($months.' '.(($months == 1)?MONTH:MONTHS).', ');
-    $weeks = ($weeks == 0)?'':($weeks.' '.(($weeks == 1)?WEEK:WEEKS).', ');
-    $days = ($days == 0)?'':($days.' '.(($days == 1)?DAY:DAYS).', ');
-    $hours = ($hours == 0)?'':($hours.' '.(($hours == 1)?HOUR:HOURS).', ');
-    $minutes = ($minutes == 0)?'':($minutes.' '.(($minutes == 1)?MINUTE:MINUTES).' '.WORD_AND.' ');
+  $years = ($years == 0) ? '':($years.' '.(($years == 1)?YEAR:YEARS).', ');
+    $months = ($months == 0) ? '':($months.' '.(($months == 1)?MONTH:MONTHS).', ');
+    $weeks = ($weeks == 0) ? '':($weeks.' '.(($weeks == 1)?WEEK:WEEKS).', ');
+    $days = ($days == 0) ? '':($days.' '.(($days == 1)?DAY:DAYS).', ');
+    $hours = ($hours == 0) ? '':($hours.' '.(($hours == 1)?HOUR:HOURS).', ');
+    $minutes = ($minutes == 0) ? '':($minutes.' '.(($minutes == 1)?MINUTE:MINUTES).' '.WORD_AND.' ');
     $seconds = ($seconds.' '.(($seconds == 1)?SECOND:SECONDS));
     return $years.$months.$weeks.$days.$hours.$minutes.$seconds;
 }

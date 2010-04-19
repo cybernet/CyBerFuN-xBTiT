@@ -9,7 +9,7 @@ $language['ACCOUNT_DELETE'] = 'Delete account';
 $language['ACCOUNT_DETAILS'] = 'account details';
 $language['ACCOUNT_EDIT'] = 'Edit account';
 $language['ACCOUNT_MGMT'] = 'Account Managment';
-$language['ACCOUNT_MSG'] = 'Hello,'."\n\n".'This email has been sent because someone has requested an account on our site with this email address.'."\n".'If you aren&rsquo;t the requester ignore this email, otherwise please confirm the account.'."\n\n".'Best regards from the staff.';
+$language['ACCOUNT_MSG']='Hello,'."\n\n".'This email has been sent because someone has requested an account on our site with this email address.'."\n".'If you aren\'t the requester ignore this email, otherwise please confirm the account.'."\n\n".'Best regards from the staff.';
 $language['ACTION'] = 'Action';
 $language['ACTIVATED'] = 'Active';
 $language['ACTIVE'] = 'Status';
@@ -483,7 +483,7 @@ $language['RESENT_VALIDATION'] = 'resent their validation email';
 $language['VALIDATION_SENT_TO_1'] = 'A validation email has been sent to:';
 $language['VALIDATION_SENT_TO_2'] = 'You will need to click on the link contained within the email in order to validate your account. The email should arrive within 10 minutes (usually instantly) although some email providers may mark it as SPAM so be sure to check your SPAM folder if you can\'t find it.<br /><br />If you still don\'t receive the email after this point then you should change your email address on your profile by clicking ';
 // Sticky
-$language["STICKY_TORRENT"] = "<b>Sticky</b>";
-$language["STICKY_TORRENT_EXPLAIN"] = "(Always on top of the torrent list)";
+$language['STICKY_TORRENT'] = '<b>Sticky</b>';
+$language['STICKY_TORRENT_EXPLAIN'] = '( Always on top of the torrent list )';
 
 ?>
