@@ -812,7 +812,7 @@ function information_msg($heading = 'Error!', $string, $close = false) {
 }
 
 function sqlesc($x) {
-  return '\''.mysql_escape_string($x).'\'';
+  return '\''.mysql_real_escape_string($x).'\'';
 }
 
 function get_content($file) {
