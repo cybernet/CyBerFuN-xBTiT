@@ -1,16 +1,16 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.5-rc2
+-- version 3.3.2
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 10, 2010 at 12:36 PM
+-- Generation Time: Apr 19, 2010 at 03:42 PM
 -- Server version: 5.1.37
--- PHP Version: 5.2.10-2ubuntu6.3
+-- PHP Version: 5.2.10-2ubuntu6.4
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- Database: `xxxxxx`
+-- Database: `xbtitfm`
 --
 
 -- --------------------------------------------------------
@@ -170,7 +170,6 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}categories` (
 --
 
 INSERT INTO `{$db_prefix}categories` (`id`, `name`, `sub`, `sort_index`, `image`) VALUES
-(19, 'The.Amazing.Race', 18, 201, 'episodes.png'),
 (6, 'Books', 0, 110, 'books.png'),
 (5, 'Anime', 0, 90, 'other.png'),
 (4, 'Other', 0, 1000, 'utilities2.png'),
@@ -185,28 +184,7 @@ INSERT INTO `{$db_prefix}categories` (`id`, `name`, `sub`, `sort_index`, `image`
 (15, 'Windows', 14, 2223, 'win.png'),
 (16, 'Linux', 14, 2224, 'linux.png'),
 (17, 'Mac', 14, 2225, 'mac.png'),
-(20, 'House M.D', 18, 202, 'episodes.png'),
-(21, 'Eureka', 18, 203, 'episodes.png'),
-(22, 'True Blood', 18, 204, 'episodes.png'),
-(23, 'Entourage', 18, 205, 'episodes.png'),
 (24, 'Videos', 1, 12, 'mov1es.png'),
-(25, 'Gossip Girl', 18, 206, 'episodes.png'),
-(26, 'Crash', 18, 207, 'episodes.png'),
-(27, 'Drop Dead', 18, 208, 'episodes.png'),
-(28, 'Supernatural', 18, 209, 'episodes.png'),
-(29, 'One Tree Hill', 18, 210, 'episodes.png'),
-(30, 'Defying Gravity', 18, 211, 'episodes.png'),
-(31, 'Psych', 18, 212, 'episodes.png'),
-(32, 'Idol', 18, 213, 'episodes.png'),
-(33, 'Bones', 18, 214, 'episodes.png'),
-(34, 'Scrubs', 18, 215, 'episodes.png'),
-(35, 'CSI:NY', 18, 216, 'episodes.png'),
-(36, 'The.X.Factor', 18, 217, 'episodes.png'),
-(37, 'Prison Break', 18, 218, 'episodes.png'),
-(38, 'American Dad', 18, 219, 'episodes.png'),
-(39, 'Crimininal Minds', 18, 220, 'episodes.png'),
-(40, 'The.Good.Wife', 18, 221, 'episodes.png'),
-(41, 'Smallville', 18, 222, 'episodes.png'),
 (42, 'Other', 18, 999, 'episodes.png');
 
 -- --------------------------------------------------------
@@ -1117,9 +1095,9 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}settings` (
 
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('name', 'CyBerFuN'),
-('url', 'http://tracker.cyberfun.ro'),
-('announce', 'a:1:{i:0;s:39:"http://tracker.cyberfun.ro/announce.php";}'),
-('email', 'tracker@cyberfun.ro'),
+('url', 'http://localhost/'),
+('announce', 'a:1:{i:0;s:29:"http://localhost/announce.php";}'),
+('email', 'xbtitfm@xdns.ro'),
 ('torrentdir', 'cyberfun_shit'),
 ('external', 'false'),
 ('gzip', 'true'),
