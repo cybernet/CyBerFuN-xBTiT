@@ -1,13 +1,4 @@
 <?php
-
-// CyBerFuN.ro & xList.ro
-
-// CyBerFuN .::. common
-// http://tracker.cyberfun.ro/
-// http://www.cyberfun.ro/
-// http://xList.ro/
-// Modified By cybernet2u
-
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -43,43 +34,43 @@ require_once(dirname(__FILE__).'/config.php');
 
 if (!function_exists('bcsub')) {
     function bcsub($first_num, $second_num) {
-        return ((int)$first_num) - ((int)$second_num);
+        return ((int)$first_num)-((int)$second_num);
     }
 }
 
-function send_pm($sender, $recepient, $subject, $msg) {
+function send_pm($sender,$recepient,$subject,$msg) {
     global $FORUMLINK, $TABLE_PREFIX, $db_prefix, $CACHE_DURATION;
 
-    if ($FORUMLINK == 'smf') {
+    if ($FORUMLINK=='smf') {
         # smf forum
         # get smf_fid of recepient
-        $recepient = get_result('SELECT smf_fid FROM '.$TABLE_PREFIX.'users WHERE id='.$recepient.' LIMIT 1;', true, $CACHE_DURATION);
+        $recepient=get_result('SELECT smf_fid FROM '.$TABLE_PREFIX.'users WHERE id='.$recepient.' LIMIT 1;', true, $CACHE_DURATION);
         if (!isset($recepient[0]))
             return false;
         # valid user
-        $recepient = $recepient[0]['smf_fid'];
-        if ($recepient == 0)
+        $recepient=$recepient[0]['smf_fid'];
+        if ($recepient==0)
             return false;
         # valid smf_fid
         # get smf_fid of sender
         # if sender id is invalid or 0, use System
-        $sender = ($sender == 0)?0:get_result('SELECT smf_fid, username FROM '.$TABLE_PREFIX.'users WHERE id='.$sender.' LIMIT 1;', true, $CACHE_DURATION);
+        $sender=($sender==0)?0:get_result('SELECT smf_fid, username FROM '.$TABLE_PREFIX.'users WHERE id='.$sender.' LIMIT 1;', true, $CACHE_DURATION);
         if (!isset($sender[0])) {
-            $sender = array();
-            $sender['smf_fid'] = 0;
-            $sender['username'] = 'System';
-        } else $sender = $sender[0];
+            $sender=array();
+            $sender['smf_fid']=0;
+            $sender['username']='System';
+        } else $sender=$sender[0];
         # insert message
         quickQuery('INSERT INTO '.$db_prefix.'personal_messages (ID_MEMBER_FROM, fromName, msgtime, subject, body) VALUES ('.$sender['smf_fid'].', '.sqlesc($sender['username']).', UNIX_TIMESTAMP(), '.$subject.', '.$msg.');');
         # get id of message
-        $pm_id = mysql_insert_id();
+        $pm_id=mysql_insert_id();
         # insert recepient for message
         quickQuery('INSERT INTO '.$db_prefix.'pm_recipients (ID_PM, ID_MEMBER) VALUES ('.$pm_id.', '.$recepient.');');
         # notify recepient
         quickQuery('UPDATE '.$db_prefix.'members SET instantMessages=instantMessages+1, unreadMessages=unreadMessages+1 WHERE ID_MEMBER='.$recepient.' LIMIT 1;');
         return true;
-        } else {
-        # internal forum
+    } else {
+        # internal PM system
         # insert pm
         quickQuery('INSERT INTO '.$TABLE_PREFIX.'messages (sender, receiver, added, subject, msg) VALUES ('.$sender.', '.$recepient.', UNIX_TIMESTAMP(), '.$subject.', '.$msg.')');
         return true;
@@ -88,22 +79,22 @@ function send_pm($sender, $recepient, $subject, $msg) {
 }
 
 function write_file($file, $content) {
-    if ($fp = @fopen($file, 'w')) {
-        @fputs($fp, $content);
+    if ($fp=@fopen($file,'w')) {
+        @fputs($fp,$content);
         @fclose($fp);
         return true;
     }
     return false;
 }
 
-function send_mail($rec_email, $subject, $message, $IsHtml = false, $cc = array(), $bcc = array()) {
+function send_mail($rec_email,$subject,$message, $IsHtml=false, $cc=array(), $bcc=array()) {
     global $THIS_BASEPATH, $btit_settings;
 
     if (!method_exists('PHPMailer','IsMail'))
         include($THIS_BASEPATH.'/phpmailer/class.phpmailer.php');
-    $mail = new PHPMailer();
+    $mail=new PHPMailer();
 
-    if ($btit_settings['mail_type'] == 'php') {
+    if ($btit_settings['mail_type']=='php') {
         $mail->IsMail();                                   # send via mail
         if (!empty($cc))
             $mail->AddCustomHeader('Cc: '.implode(',',$cc));
@@ -118,11 +109,11 @@ function send_mail($rec_email, $subject, $message, $IsHtml = false, $cc = array(
         $mail->Password = $btit_settings['smtp_password']; # SMTP password
         if (!empty($cc))
             foreach($cc as $carbon_copy)
-                $mail->AddCC($carbon_copy[0], $carbon_copy[0]);
+                $mail->AddCC($carbon_copy[0],$carbon_copy[0]);
 
         if (!empty($bcc))
             foreach($bcc as $blind_carbon_copy)
-                $mail->AddBCC($blind_carbon_copy[0], $blind_carbon_copy[0]);
+                $mail->AddBCC($blind_carbon_copy[0],$blind_carbon_copy[0]);
     }
 
     $mail->From     = $btit_settings['email'];
@@ -130,51 +121,51 @@ function send_mail($rec_email, $subject, $message, $IsHtml = false, $cc = array(
     $mail->CharSet  = $btit_settings['default_charset'];
     $mail->IsHTML($IsHtml);
     $mail->AddAddress($rec_email);
-    $mail->AddReplyTo($btit_settings['email'], $btit_settings['name']);
+    $mail->AddReplyTo($btit_settings['email'],$btit_settings['name']);
     $mail->Subject  =  $subject;
     $mail->Body     =  $message;
 
     return ($mail->Send())?true:$mail->ErrorInfo;
 }
 
-function get_remote_file($http_url, $mode = 'r') {
+function get_remote_file($http_url,$mode='r') {
     # for first thing we will try with cURL
     if (function_exists('curl_init')) {
-        $fp = curl_init();
+        $fp=curl_init();
         curl_setopt($fp, CURLOPT_URL, $http_url);
         curl_setopt($fp, CURLOPT_RETURNTRANSFER, true);
-        $stream = curl_exec($fp);
+        $stream=curl_exec($fp);
         curl_close($fp);
-        if (substr($stream, 9, 3) != '404')
+        if (substr($stream,9,3)!='404')
             return $stream;
     }
 
     # then with fsockopen
-    $purl = parse_url($http_url);
-    $port = isset($purl['port'])?$purl['port']:'80';
-    $path = isset($purl['path'])?$purl['path']:'/scrape.php';
-    $an = ($purl['scheme'] != 'http'?$purl['scheme'].'://':'').$purl['host'];
-    $query = isset($purl['query'])?'?'.$purl['query']:'';
-    $fp = @fsockopen($an, $port, $errno, $errstr, 60);
+    $purl=parse_url($http_url);
+    $port=isset($purl['port'])?$purl['port']:'80';
+    $path=isset($purl['path'])?$purl['path']:'/scrape.php';
+    $an=($purl['scheme']!='http'?$purl['scheme'].'://':'').$purl['host'];
+    $query=isset($purl['query'])?'?'.$purl['query']:'';
+    $fp=@fsockopen($an,$port,$errno,$errstr, 60);
 
     if ($fp) {
-        fputs($fp, "GET $path"."$query HTTP/1.0\r\nHost: www.google.ro\r\nConnection: close\r\n\r\n");
-        $stream = '';
+        fputs($fp,"GET $path"."$query HTTP/1.0\r\nHost: www.google.com\r\nConnection: close\r\n\r\n");
+        $stream='';
         while (!feof($fp))
-            $stream .= fgets($fp, 4096);
+            $stream.=fgets($fp, 4096);
         @fclose($fp);
 
-        if (substr($stream, 9, 3) == '404') {
-            $stream = '';
+        if (substr($stream,9,3)=='404') {
+            $stream='';
             # last chance we try slowest fopen
-            $fp = @fopen($http_url, $mode);
+            $fp=@fopen($http_url,$mode);
             if (!$fp)
                 return false;
 
             while (!feof($fp))
-                $stream .= fread($fp, 4096);
+                $stream.=fread($fp,4096);
             @fclose($fp);
-            #if (substr($stream, 9, 3) == "404")
+            #if (substr($stream,9,3)=="404")
                 #return false;
         }
         return $stream;
@@ -183,18 +174,18 @@ function get_remote_file($http_url, $mode = 'r') {
 }
 
 function get_fresh_config($qrystr) {
-    $cache_file = realpath(dirname(__FILE__).'/..').'/cache/'.md5($qrystr).'.txt';
+    $cache_file=realpath(dirname(__FILE__).'/..').'/cache/'.md5($qrystr).'.txt';
 
-    $mr = do_sqlquery($qrystr, true);
-    while ($mz = mysql_fetch_assoc($mr)) {
-        if ($mz['value'] == 'true')
-            $return[$mz['key']] = true;
-        elseif ($mz['value'] == 'false')
-            $return[$mz['key']] = false;
+    $mr=do_sqlquery($qrystr,true);
+    while ($mz=mysql_fetch_assoc($mr)) {
+        if ($mz['value']=='true')
+            $return[$mz['key']]= true;
+        elseif ($mz['value']=='false')
+            $return[$mz['key']]= false;
         elseif (is_numeric($mz['value']))
-            $return[$mz['key']] = max(0, $mz['value']);
+            $return[$mz['key']]= max(0,$mz['value']);
         else
-            $return[$mz['key']] = StripSlashes($mz['value']);
+            $return[$mz['key']]= StripSlashes($mz['value']);
     }
     unset($mz);
     mysql_free_result($mr);
@@ -205,11 +196,11 @@ function get_fresh_config($qrystr) {
 }
 
 
-function do_sqlquery($qrystr, $display_error = false) {
+function do_sqlquery($qrystr,$display_error=false) {
     global $num_queries;
     $num_queries++;
-    $ret = mysql_query($qrystr);
-    if ($display_error && mysql_errno() != 0)
+    $ret=mysql_query($qrystr);
+    if ($display_error && mysql_errno()!=0)
         stderr('MySQL query error!',"<br />\nError: ".mysql_error()."<br />\nQuery: $qrystr<br />\n");
     return $ret;
 }
@@ -217,12 +208,12 @@ function do_sqlquery($qrystr, $display_error = false) {
 function write_cached_version($page, $content='') {
     global $CACHE_DURATION;
 
-    if ($CACHE_DURATION == 0)
+    if ($CACHE_DURATION==0)
         return false;
 
-    $cache_file = realpath(dirname(__FILE__).'/..').'/cache/'.md5($page).'.txt';
-    if ($content == '')
-        $content = ob_get_contents();
+    $cache_file=realpath(dirname(__FILE__).'/..').'/cache/'.md5($page).'.txt';
+    if ($content=='')
+        $content=ob_get_contents();
 
     # write cache file
     write_file($cache_file, $content);
@@ -232,10 +223,10 @@ function write_cached_version($page, $content='') {
 function get_cached_version($page) {
     global $CACHE_DURATION;
 
-    if ($CACHE_DURATION == 0)
+    if ($CACHE_DURATION==0)
         return false;
 
-    $cache_file = realpath(dirname(__FILE__).'/..').'/cache/'.md5($page).'.txt';
+    $cache_file=realpath(dirname(__FILE__).'/..').'/cache/'.md5($page).'.txt';
 
     if (file_exists($cache_file) && (time()-$CACHE_DURATION) < filemtime($cache_file))
         return file_get_contents($cache_file);
@@ -245,27 +236,27 @@ function get_cached_version($page) {
 }
 
 
-function get_result($qrystr, $display_error = false, $cachetime = 0) { 
+function get_result($qrystr,$display_error=false,$cachetime=0) { 
     global $num_queries, $cached_querys;
 
-    $cache_file = realpath(dirname(__FILE__).'/..').'/cache/'.md5($qrystr).'.txt';
+    $cache_file=realpath(dirname(__FILE__).'/..').'/cache/'.md5($qrystr).'.txt';
 
-    if ($cachetime > 0)
+    if ($cachetime>0)
         if (file_exists($cache_file) && (time()-$cachetime) < filemtime($cache_file)) {
             $num_queries++;
             $cached_querys++;
             return unserialize(file_get_contents($cache_file));
                 }
 
-    $return = array();
-    $mr = do_sqlquery($qrystr,$display_error);
-    while ($mz = mysql_fetch_assoc($mr))
-        $return[] = $mz;
+    $return=array();
+    $mr=do_sqlquery($qrystr,$display_error);
+    while ($mz=mysql_fetch_assoc($mr))
+        $return[]=$mz;
 
     unset($mz);
     mysql_free_result($mr);
 
-    if ($cachetime > 0)
+    if ($cachetime>0)
         write_file($cache_file, serialize($return));
 
     return $return;
@@ -273,7 +264,7 @@ function get_result($qrystr, $display_error = false, $cachetime = 0) {
 
 # Reports an error to the client in $message.
 # Any other output will confuse the client, so please don't do that.
-function show_error($message, $log = false) {
+function show_error($message, $log=false) {
     if ($log)
         error_log("BtiTracker: ERROR ($message)");
 
@@ -283,7 +274,7 @@ function show_error($message, $log = false) {
 
 
 function verifyHash($input) {
-    if (strlen($input) == 40 && preg_match('/^[0-9a-f]+$/', $input))
+    if (strlen($input)==40&&preg_match('/^[0-9a-f]+$/', $input))
         return true;
     return false;
 }
@@ -291,7 +282,7 @@ function verifyHash($input) {
 # validip/getip courtesy of manolete <manolete@myway.com>
 # IP Validation
 function validip($ip) {
-    if (!empty($ip) && $ip == long2ip(ip2long($ip))) {
+    if (!empty($ip) && $ip==long2ip(ip2long($ip))) {
         # reserved IANA IPv4 addresses
         # http://www.iana.org/assignments/ipv4-address-space
         $reserved_ips = array (
@@ -333,7 +324,7 @@ function getip() {
     return long2ip(ip2long($_SERVER['REMOTE_ADDR']));
 }
 
-function hex2bin ($input, $assume_safe = true) {
+function hex2bin ($input, $assume_safe=true) {
     if ($assume_safe !== true && ! ((strlen($input)%2) == 0 || preg_match ('/^[0-9a-f]+$/i', $input)))
         return '';
     return pack('H*', $input);
@@ -353,58 +344,58 @@ function quickQuery($query) {
 # getAgent function by deliopoulos
 #========================================
 function StdDecodePeerId($id_data, $id_name) {
-    $version_str = '';
-    for ($i = 0; $i <= strlen($id_data); $i++){
+    $version_str='';
+    for ($i=0; $i<=strlen($id_data); $i++){
         $c = $id_data[$i];
-        if ($id_name =='BitTornado' || $id_name =='ABC') {
-            if ($c != '-' && ctype_digit($c))
-                $version_str .= $c.'.';
-            elseif ($c != '-' && ctype_alpha($c))
-                $version_str .= (ord($c)-55).'.';
+        if ($id_name=='BitTornado' || $id_name=='ABC') {
+            if ($c!='-' && ctype_digit($c))
+                $version_str.=$c.'.';
+            elseif ($c!='-' && ctype_alpha($c))
+                $version_str.=(ord($c)-55).'.';
             else
                 break;
-        } elseif($id_name == 'BitComet'|| $id_name == 'BitBuddy'|| $id_name == 'Lphant'|| $id_name == 'BitPump'|| $id_name == 'BitTorrent Plus! v2') {
-            if ($c != '-' && ctype_alnum($c)) {
+        } elseif($id_name=='BitComet'||$id_name=='BitBuddy'||$id_name=='Lphant'||$id_name=='BitPump'||$id_name=='BitTorrent Plus! v2') {
+            if ($c!='-' && ctype_alnum($c)) {
                 $version_str .= $c;
-                if($i == 0)
+                if($i==0)
                     $version_str = (int)$version_str.'.'; 
             } else{
                 $version_str .= '.';
                 break;
             }
         } else {
-            if ($c != '-' && ctype_alnum($c))
+            if ($c!='-' && ctype_alnum($c))
                 $version_str .= $c.'.';
             else
                 break;
         }
     }
-    $version_str = substr($version_str, 0, strlen($version_str) - 1);
+    $version_str=substr($version_str,0,strlen($version_str)-1);
     return $id_name.' '.$version_str;
 }
 
 function MainlineDecodePeerId($id_data, $id_name) {
-    $version_str = '';
-    for ($i = 0, $len = strlen($id_data); $i <= $len; $i++) {
+    $version_str='';
+    for ($i=0,$len=strlen($id_data); $i<=$len; $i++) {
         $c=$id_data[$i];
-        if ($c != '-' && ctype_alnum($c))
-            $version_str .= $c.'.';
+        if ($c!='-' && ctype_alnum($c))
+            $version_str.=$c.'.';
     }
-    $version_str = substr($version_str, 0, strlen($version_str) - 1);
+    $version_str=substr($version_str,0,strlen($version_str)-1);
     return $id_name.' '.$version_str;
 }
 
 function DecodeVersionString ($ver_data, $id_name) {
-    $version_str = '';
-    $version_str .= intval(ord($ver_data[0]) + 0).'.';
-    $version_str .= intval(ord($ver_data[1]) / 10 + 0);
-    $version_str .= intval(ord($ver_data[1]) % 10 + 0);
+    $version_str='';
+    $version_str.=intval(ord($ver_data[0]) + 0).'.';
+    $version_str.=intval(ord($ver_data[1])/10 + 0);
+    $version_str.=intval(ord($ver_data[1])%10 + 0);
     return $id_name.' '.$version_str;
 }
 
-function getagent($httpagent, $peer_id = '') {
-    if($peer_id != '')
-        $peer_id = hex2bin($peer_id);
+function getagent($httpagent, $peer_id='') {
+    if($peer_id!='')
+        $peer_id=hex2bin($peer_id);
     if(substr($peer_id,0,3)=='-AX')
         return StdDecodePeerId(substr($peer_id,4,4),'BitPump'); # AnalogX BitPump
     if(substr($peer_id,0,3)=='-BB')
@@ -536,7 +527,11 @@ function getagent($httpagent, $peer_id = '') {
     if(substr($peer_id,1,2)=='ML')
         return MainlineDecodePeerId(substr($peer_id,3,5),'MLDonkey'); # MLDonkey
     if($peer_id[0]=='A')
+    {
+        if(substr($peer_id,0,8)=="AZ2500BT")
+            return "BitTyrant";
         return StdDecodePeerId(substr($peer_id,1,9),'ABC'); # ABC
+    }
     if($peer_id[0]=='R')
         return StdDecodePeerId(substr($peer_id,1,5),'Tribler'); # Tribler
     if($peer_id[0]=='M') {
@@ -566,7 +561,7 @@ function getagent($httpagent, $peer_id = '') {
             return 'Spoofing BT Client'; # Spoofing BT Client
         if(preg_match('/^Python/', $httpagent, $matches))
             return 'Spoofing BT Client'; # Spoofing BT Client
-        return StdDecodePeerId(substr($peer_id,3,7),'Azureus');
+        return StdDecodePeerId(substr($peer_id,3,7),((substr($peer_id, 3, 2)>=31)?'Vuze':'Azureus'));
     }
     if(preg_match('/^Azureus/', $peer_id))
         return 'Azureus 2.0.3.2';
@@ -611,6 +606,9 @@ function getagent($httpagent, $peer_id = '') {
             return 'BitSpirit v2';
         return 'BitSpirit';
     }
+    if(substr($peer_id,1,2)=="SP")
+        return StdDecodePeerId(substr($peer_id,3,4),"BitSpirit");
+
     # eXeem beta
     if(substr($peer_id,0,3)=='-eX') {
         $version_str = '';
@@ -625,9 +623,60 @@ function getagent($httpagent, $peer_id = '') {
     if(substr($peer_id,0,12)==(chr(0)*12) && $peer_id[12]==chr(0) && $peer_id[13]==chr(0))
         return 'Experimental 3.1'; # Experimental 3.1
 
-    #if(substr($peer_id,0,12)==(chr(0)*12)) return 'Mainline (obsolete)'; # Mainline BitTorrent (obsolete)
-    #return '$httpagent [$peer_id]';
-    return $httpagent; # 'Unknown client';
+    if(substr($peer_id,1,2)=="UM")
+        return StdDecodePeerId(substr($peer_id,3,4),"uTorrent for Mac");
+    if(substr($peer_id,1,2)=="SD")
+        return "Thunder";
+    if(substr($peer_id,1,2)=="XL")
+        return "XunLei";
+    if(substr($peer_id,1,2)=="CD")
+        return "Enhanced CTorrent " . substr($peer_id,4,1) . "." . substr($peer_id,6,1);
+    if(substr($peer_id,1,2)=="qB")
+        return StdDecodePeerId(substr($peer_id,3,4),"qBittorrent");
+    if(substr($peer_id,1,2)=="AG")
+        return StdDecodePeerId(substr($peer_id,3,4),"Ares");
+    if(substr($peer_id, 1, 2) == "BF")
+    {
+        if(substr($peer_id, 3, 4) == "6110")
+            $ver="0.10";
+        elseif(substr($peer_id, 3, 4) == "6C05")
+            $ver="0.20";
+        elseif(substr($peer_id, 3, 4) == "6C0F")
+            $ver="0.21";
+        elseif(substr($peer_id, 3, 4) == "7114")
+            $ver="0.22";
+        elseif(substr($peer_id, 3, 4) == "7127")
+            $ver="0.30";
+        elseif(substr($peer_id, 3, 4) == "7128")
+            $ver="0.31";
+        elseif(substr($peer_id, 3, 4) == "7224")
+            $ver="0.32";
+        else $ver="";
+
+    return "BitFlu ".$ver;
+}
+    if(substr($peer_id,1,2)=="DE")
+        return StdDecodePeerId(substr($peer_id,3,3),"Deluge");
+    if(substr($peer_id,1,2)=="HL")
+        return StdDecodePeerId(substr($peer_id,3,4),"Halite");
+    if(substr($peer_id,1,2)=="TT")
+        return StdDecodePeerId(substr($peer_id,3,3),"TuoTu");
+    if(substr($peer_id,1,2)=="BE")
+        return StdDecodePeerId(substr($peer_id,3,2),"BitTorrent SDK");
+    if(substr($peer_id,1,2)=="LH")
+        return StdDecodePeerId(substr($peer_id,3,4),"LH-ABC");
+    if(substr($peer_id,1,2)=="FC")
+        return StdDecodePeerId(substr($peer_id,3,2),"File Croc");
+    if(substr($peer_id,1,2)=="OS")
+        return StdDecodePeerId(substr($peer_id,3,3),"OneSwarm");
+
+    // Unknown Client - If HTTP Agent is empty
+    // (mainly for the benefit of the customised version of the XBT backend so that it displays useful information to update missing clients)
+    if($httpagent=="")
+        return "Unknown Client (".substr($peer_id,0,8).")";
+
+    // Unknown Client - If HTTP Agent is NOT empty
+    return $httpagent;
 }
 #========================================
 #getAgent function by deliopoulos
