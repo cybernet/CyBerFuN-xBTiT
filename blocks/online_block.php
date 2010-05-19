@@ -8,7 +8,7 @@
 // http://xlist.ro/
 // Modified By CyBerNe7
 
-global $CURUSER;
+global $CURUSER, $btit_settings;;
 if (!$CURUSER || $CURUSER["view_users"] == "no")
    {
     // do nothing
@@ -21,7 +21,7 @@ else
 
      $u_online = array();
      $group = array();
-     $u_online = get_result("SELECT * FROM {$TABLE_PREFIX}online ol",true);
+     $u_online = get_result("SELECT * FROM {$TABLE_PREFIX}online ol",true,$btit_settings['cache_duration']);
 
      $total_online = count($u_online);
      $uo = array();

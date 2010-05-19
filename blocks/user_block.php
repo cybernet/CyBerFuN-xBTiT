@@ -8,7 +8,7 @@
 // http://xlist.ro/
 // Modified By cybernet2u
 
-global $CURUSER, $user, $USERLANG, $FORUMLINK, $db_prefix;
+global $CURUSER, $user, $USERLANG, $FORUMLINK, $db_prefix, $btit_settings;
 
 require_once(load_language("lang_account.php"));
 
@@ -66,14 +66,14 @@ print("</td></tr>");
 			 
 			 print("\n<tr align=\"center\"><td class=\"yellow\" align=\"center\"><center><img src=\"images/arany.png\"> ".($rowuser['downloaded'] > 0 ? number_format($rowuser['uploaded'] / $rowuser['downloaded'], 2):"---")."</center></td><tr>\n");
              if($FORUMLINK == "smf")
-                 $resmail = do_sqlquery("SELECT unreadMessages FROM {$db_prefix}members WHERE ID_MEMBER=".$CURUSER["smf_fid"]);
+                 $resmail = get_result("SELECT COUNT(*) as ur FROM {$TABLE_PREFIX}messages WHERE readed='no' AND receiver=$CURUSER[uid]",true,$btit_settings['cache_duration']);
              else
                  $resmail = do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}messages WHERE readed='no' AND receiver=$CURUSER[uid]");
-             if ($resmail && mysql_num_rows($resmail) > 0)
+             if ($resmail && count($resmail) > 0)
                 {
-                 $mail = mysql_fetch_row($resmail);
-                 if ($mail[0] > 0)
-                    print("<tr><td align=\"center\"><a href=\"index.php?page=usercp&amp;uid=".$CURUSER["uid"]."&amp;do=pm&amp;action=list\">".$language["MAILBOX"]."</a> (<font color=\"#FF0000\"><b>$mail[0]</b></font>)</td></tr>\n");
+                 $mail = $resmail[0];
+                 if ($mail['ur'] > 0)
+                    print("<tr><td align=\"center\"><a href=\"index.php?page=usercp&amp;uid=".$CURUSER["uid"]."&amp;do=pm&amp;action=list\">".$language["MAILBOX"]."</a> (<font color=\"#FF0000\"><b>".$mail['ur']."</b></font>)</td></tr>\n");
                  else
                      print("<tr><td align=\"center\"><a href=\"index.php?page=usercp&amp;uid=".$CURUSER["uid"]."&amp;do=pm&amp;action=list\">".$language["MAILBOX"]."</a></td></tr>\n");
                 }

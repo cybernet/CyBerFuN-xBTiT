@@ -38,7 +38,7 @@
 // http://xlist.ro/
 // Modified By CyBerNe7
 
-global $CURUSER;
+global $CURUSER, $btit_settings;
 if (!$CURUSER || $CURUSER["view_users"] == "no")
    {
     // do nothing
@@ -48,9 +48,9 @@ else
     //lastest member
 
      block_begin ("Latest Member");
-     $a = @mysql_fetch_assoc(do_sqlquery("SELECT id,username FROM {$TABLE_PREFIX}users WHERE
-     id_level<>1 AND id_level<>2 ORDER BY id DESC LIMIT 1"));
+     $a = get_result("SELECT id,username FROM {$TABLE_PREFIX}users WHERE id_level<>1 AND id_level<>2 ORDER BY id DESC LIMIT 1",true,$btit_settings['cache_duration']);
      if($a){
+     $a = $a[0];
       if ($CURUSER["view_users"] == "yes")
       $latestuser = "<a href=\"index.php?page=userdetails&amp;id=" . $a["id"] . "\">" . $a["username"] . "</a>";
      else
