@@ -81,8 +81,8 @@ else
    if ($XBTT_USE)
       $res = get_result("select sum(u.downloaded+x.downloaded) as dled, sum(u.uploaded+x.uploaded) as upld FROM {$TABLE_PREFIX}users u LEFT JOIN xbt_users x ON x.uid=u.id",true,$btit_settings['cache_duration']);
    else
-      $res = get_result("select sum(downloaded) as dled, sum(uploaded) as upld FROM {$TABLE_PREFIX}users",true,$btit_settings['cache_duration']);
-   $row = mysql_fetch_assoc($res);
+   $res = get_result("select sum(downloaded) as dled, sum(uploaded) as upld FROM {$TABLE_PREFIX}users",true,$btit_settings['cache_duration']);
+   $row = $res[0];
    $dled = 0 + $row["dled"];
    $upld = 0+ $row["upld"];
    $traffic = makesize($dled+$upld);
