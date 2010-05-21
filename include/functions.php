@@ -251,7 +251,7 @@ function print_designer() {
      $CyBerFuN_xBTiT_version = '' . $CyBerFuN_xBTiT_version . '';
      $design_copyright = '' . $design_copyright . '';
   } else
-     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 479 )';
+     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 484 )';
      $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT ' . $CyBerFuN_xBTiT_version . ' By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By <a href="http://www.btiteam.org/" target="_blank">BTiTeam.org</a></u>&nbsp;]<br />';
   return $design_copyright;
 }
@@ -503,18 +503,18 @@ function updatedata() {
     return;
 
   $res = get_result("SELECT announce_url FROM {$TABLE_PREFIX}files WHERE external='yes' ORDER BY lastupdate ASC LIMIT 1", true, $btit_settings['cache_duration']);
-  if (!$res || count($res)==0)
+  if (!$res || count($res) == 0)
     return;
 
   // get the url to scrape, take 5 torrent at a time (try to getting multiscrape)
   $row = $res[0];
   $resurl = get_result("SELECT info_hash FROM {$TABLE_PREFIX}files WHERE external='yes' AND announce_url='".$row['announce_url']."' ORDER BY lastupdate ASC LIMIT 5", true, $btit_settings['cache_duration']);
-  if (!$resurl || count($resurl)==0)
+  if (!$resurl || count($resurl) == 0)
     return
 
   $combinedinfohash = array();
   foreach ($resurl as $id=> $rhash)
-    $combinedinfohash[]=$rhash['info_hash'];
+    $combinedinfohash[] = $rhash['info_hash'];
 
   //scrape($row["announce_url"],$row["info_hash"]);
   scrape($row[0], implode("','", $combinedinfohash));
