@@ -1,7 +1,4 @@
 <?php
-
-// CyBerFuN.ro & xList.ro
-
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -33,36 +30,53 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-require_once("include/functions.php");
-require_once("include/config.php");
+require_once(dirname(__FILE__)."/include/functions.php");
+//require_once(dirname(__FILE__)."/include/config.php");
+include(dirname(__FILE__)."/btemplate/bTemplate.php");
 
 if (isset($_GET["style"]))
-    $style = intval($_GET["style"]);
+    $style=intval($_GET["style"]);
 else
-    $style = 1;
+    $style=1;
 if (isset($_GET["returnto"]))
-   $url = urldecode($_GET["returnto"]);
+   $url=urldecode($_GET["returnto"]);
 else
-   $url = "index.php";
+   $url="index.php";
 if (isset($_GET["langue"]))
-   $langue = intval($_GET["langue"]);
+   $langue=intval($_GET["langue"]);
 else
-   $langue = 1;
+   $langue=1;
 
 dbconn();
 
 // guest don't need to change language!
-if (!$CURUSER || $CURUSER["uid"] == 1)
+if (!$CURUSER || $CURUSER["uid"]==1)
   {
   redirect($url);
   exit;
  }
 
-if (isset($_GET["style"]))
-   do_sqlquery("UPDATE {$TABLE_PREFIX}users SET style=$style WHERE id=".$CURUSER["uid"]);
+if ($style!=0)
+   do_sqlquery("UPDATE {$TABLE_PREFIX}users SET style=$style WHERE id=".(int)$CURUSER["uid"],true);
 
-if (isset($_GET["langue"]))
-   do_sqlquery("UPDATE {$TABLE_PREFIX}users SET language=$langue WHERE id=".$CURUSER["uid"]);
+if ($langue!=0)
+   do_sqlquery("UPDATE {$TABLE_PREFIX}users SET language=$langue WHERE id=".(int)$CURUSER["uid"],true);
+
+
+// force user's data
+if ($btit_settings['xbtt_use'])
+{
+  $udownloaded="u.downloaded+IFNULL(x.downloaded,0)";
+  $uuploaded="u.uploaded+IFNULL(x.uploaded,0)";
+  $utables="{$TABLE_PREFIX}users u LEFT JOIN xbt_users x ON x.uid=u.id";
+}
+else
+{
+  $udownloaded="u.downloaded";
+  $uuploaded="u.uploaded";
+  $utables="{$TABLE_PREFIX}users u";
+}
+get_result("SELECT u.lip, u.cip, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = ".(int)$CURUSER['uid']." LIMIT 1;",false,1) or die(mysql_error());
 
 redirect($url);
 ?>

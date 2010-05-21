@@ -1,13 +1,4 @@
 <?php
-
-// CyBerFuN.ro & xList.ro
-
-// CyBerFuN .::. rss
-// http://tracker.cyberfun.ro/
-// http://www.cyberfun.ro/
-// http://xList.ro/
-// Modified By cybernet2u
-
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -37,6 +28,9 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
+//
+// **Edited by mcangeli on 1/24/2008 to correct torrent detail link
+//
 ////////////////////////////////////////////////////////////////////////////////////
 
 require_once("include/functions.php");
@@ -44,20 +38,20 @@ require_once("include/config.php");
 
 if ($XBTT_USE)
    {
-    $tseeds = "f.seeds+ifnull(x.seeders,0)";
-    $tleechs = "f.leechers+ifnull(x.leechers,0)";
-    $ttables = "{$TABLE_PREFIX}files f INNER JOIN xbt_files x ON x.info_hash=f.bin_hash";
+    $tseeds="f.seeds+ifnull(x.seeders,0)";
+    $tleechs="f.leechers+ifnull(x.leechers,0)";
+    $ttables="{$TABLE_PREFIX}files f INNER JOIN xbt_files x ON x.info_hash=f.bin_hash";
    }
 else
     {
-    $tseeds = "f.seeds";
-    $tleechs = "f.leechers";
-    $ttables = "{$TABLE_PREFIX}files f";
+    $tseeds="f.seeds";
+    $tleechs="f.leechers";
+    $ttables="{$TABLE_PREFIX}files f";
     }
 
 dbconn(true);
 
-if ($CURUSER["view_torrents"] != "yes")
+if ($CURUSER["view_torrents"]!="yes")
    {
    header(ERR_500);
    die;
@@ -79,18 +73,18 @@ print("<?xml version=\"1.0\" encoding=\"".$GLOBALS["charset"]."\"?>");
 <?php
 
   $getItems = "SELECT f.info_hash as id, f.comment as description, f.filename, $tseeds AS seeders, $tleechs as leechers, UNIX_TIMESTAMP( f.data ) as added, c.name as cname, f.size FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category ORDER BY data DESC LIMIT 20";
-  $doGet = do_sqlquery($getItems) or die(mysql_error());;
+  $doGet=get_result($getItems,true,$btit_settings['cache_duration']);
 
-  while($item = mysql_fetch_array($doGet))
+  foreach($doGet as $id=>$item)
    {
-    $id = $item['id'];
-    $filename = ($item['filename']);
-    $added = strip_tags(date("D, d M Y H:i:s O",$item['added']));
-    $cat = strip_tags($item['cname']);
-    $seeders = strip_tags($item['seeders']);
-    $leechers = strip_tags($item['leechers']);
-    $desc = format_comment($item['description']);
-    $f = rawurlencode($item['filename']);
+    $id=$item['id'];
+    $filename=($item['filename']);
+    $added=strip_tags(date("D, d M Y H:i:s O",$item['added']));
+    $cat=strip_tags($item['cname']);
+    $seeders=strip_tags($item['seeders']);
+    $leechers=strip_tags($item['leechers']);
+    $desc=format_comment($item['description']);
+    $f=rawurlencode($item['filename']);
     // output to browser
 
 ?>

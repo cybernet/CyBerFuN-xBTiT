@@ -131,8 +131,8 @@ if (strpos($pid, "?"))
 {
   $tmp = substr($pid , strpos($pid , "?"));
   $pid  = substr($pid , 0,strpos($pid , "?"));
-  $tmpname = substr($tmp, 1, strpos($tmp, "=")-1);
-  $tmpvalue = substr($tmp, strpos($tmp, "=")+1);
+  $tmpname = substr($tmp, 1, strpos($tmp, "=") - 1);
+  $tmpvalue = substr($tmp, strpos($tmp, "=") + 1);
   $_GET[$tmpname] = $tmpvalue;
 }
 

@@ -19,6 +19,7 @@ $language['WEEK']='Weak';
 $language['MEDIUM']='Medium';
 $language['SAFE']='Safe';
 $language['STRONG']='Strong';
+$language["ERR_GENERIC"]='Generic Error: '.mysql_error();
 $language['PROFILE_PM_MAIL_NOTIFY']='PM e-mail notification';
 $language['ALLOW_PM_MAIL_NOTIFY']='Enable/disable	the e-mail notification for every new personal message.';
 $language['PROFILE_COMMENT_MAIL_NOTIFY']='Comment e-mail notification';

@@ -47,7 +47,7 @@ switch ($action)
            // Password confirmation required to update user record
            (isset($_POST["passconf"])) ? $password=md5($_POST["passconf"]) : $password="";
                       
-           $res=mysql_query("SELECT password FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"]);
+           $res=do_sqlquery("SELECT password FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"],true);
            if(mysql_num_rows($res)>0)
                $user=mysql_fetch_assoc($res);           
 
@@ -88,7 +88,7 @@ switch ($action)
                        $random = rand($floor, $ceiling);
 
                        // Update the members record with the random number and store the email they want to change to
-                       do_sqlquery("UPDATE {$TABLE_PREFIX}users SET random='".$random."', temp_email='".$email."' WHERE id='".$id."'");
+                       do_sqlquery("UPDATE {$TABLE_PREFIX}users SET random='".$random."', temp_email='".$email."' WHERE id='".$id."'",true);
 
                        // Send the verification email
                        @ini_set("sendmail_from","");
@@ -115,8 +115,6 @@ switch ($action)
                $set[]="topicsperpage=".intval(0+$_POST["topicsperpage"]);
                $set[]="postsperpage=".intval(0+$_POST["postsperpage"]);
                $set[]="torrentsperpage=".intval(0+$_POST["torrentsperpage"]);
-          $set[]="pm_mail_notify=".sqlesc($_POST["pm_mail_notification"]);
-	  $set[]="status_comment_notify=".sqlesc($_POST["status_comment_notify"]);
 
                $updateset=implode(",",$set);
 
@@ -131,7 +129,7 @@ switch ($action)
                elseif ($updateset!="")
                // <--- Reverify Mail Hack by Petr1fied - End
                   {
-                  do_sqlquery("UPDATE {$TABLE_PREFIX}users SET $updateset WHERE id='".$uid."'") or die(mysql_error());
+                  do_sqlquery("UPDATE {$TABLE_PREFIX}users SET $updateset WHERE id='".$uid."'",true);
 
                   success_msg($language["SUCCESS"], $language["INF_CHANGED"]."<br /><a href=\"index.php?page=usercp&amp;uid=".$uid."\">".$language["BCK_USERCP"]."</a>");
                   stdfoot(true,false);
@@ -156,33 +154,6 @@ switch ($action)
           $usercptpl->set("AVATAR",true,true);
           $profiletpl["avatar"]="<img border=\"0\" onload=\"resize_avatar(this);\" src=\"".htmlspecialchars(unesc($CURUSER["avatar"]))."\" alt=\"\" />";
         }
-      // email_notification
-	  // pm notify
-	  $pm_mail_notify = mysql_query("SELECT pm_mail_notify FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"]);
-	  $pmnotify = mysql_result($pm_mail_notify, 0);
-      if ($pmnotify == "true")
-        {
-          $profiletpl["PM_MAIL_NOTIFY_TRUE"]= "checked=\"checked\"";
-          $profiletpl["PM_MAIL_NOTIFY_FALSE"]= "";
-        }
-		else
-		{
-			$profiletpl["PM_MAIL_NOTIFY_TRUE"]= "";
-			$profiletpl["PM_MAIL_NOTIFY_FALSE"]= "checked=\"checked\"";
-		}
-	  // comment notify
-	  $status_comment_notify = mysql_query("SELECT status_comment_notify FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"]);
-	  $status_comment = mysql_result($status_comment_notify, 0);
-      if ($status_comment == "true")
-        {
-          $profiletpl["COMMENT_NOTIFY_TRUE"]= "checked=\"checked\"";
-          $profiletpl["COMMENT_NOTIFY_FALSE"]= "";
-        }
-		else
-		{
-			$profiletpl["COMMENT_NOTIFY_TRUE"]= "";
-			$profiletpl["COMMENT_NOTIFY_FALSE"]= "checked=\"checked\"";
-		}
 
       $profiletpl["avatar_field"]=unesc($CURUSER["avatar"]);
       $profiletpl["email"]=unesc($CURUSER["email"]);

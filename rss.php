@@ -1,13 +1,4 @@
 <?php
-
-// CyBerFuN.ro & xList.ro
-
-// CyBerFuN .::. rss
-// http://tracker.cyberfun.ro/
-// http://www.cyberfun.ro/
-// http://xList.ro/
-// Modified By cybernet2u
-
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -46,21 +37,21 @@ require_once("include/config.php");
 
 if ($XBTT_USE)
    {
-    $tseeds = "f.seeds+ifnull(x.seeders,0)";
-    $tleechs = "f.leechers+ifnull(x.leechers,0)";
-    $ttables = "{$TABLE_PREFIX}files f INNER JOIN xbt_files x ON x.info_hash=f.bin_hash";
+    $tseeds="f.seeds+ifnull(x.seeders,0)";
+    $tleechs="f.leechers+ifnull(x.leechers,0)";
+    $ttables="{$TABLE_PREFIX}files f INNER JOIN xbt_files x ON x.info_hash=f.bin_hash";
    }
 else
     {
-    $tseeds = "f.seeds";
-    $tleechs = "f.leechers";
-    $ttables = "{$TABLE_PREFIX}files f";
+    $tseeds="f.seeds";
+    $tleechs="f.leechers";
+    $ttables="{$TABLE_PREFIX}files f";
     }
 
 
 dbconn(true);
 
-if ($CURUSER["view_torrents"] != "yes" && $CURUSER["view_forum"] != "yes")
+if ($CURUSER["view_torrents"]!="yes" && $CURUSER["view_forum"]!="yes")
    {
    header(ERR_500);
    die;
@@ -71,7 +62,7 @@ print("<?xml version=\"1.0\" encoding=\"".$GLOBALS["charset"]."\"?>");
 
 function safehtml($string)
 {
-$validcharset = array(
+$validcharset=array(
 "ISO-8859-1",
 "ISO-8859-15",
 "UTF-8",
@@ -85,8 +76,8 @@ $validcharset = array(
 "Shift_JIS",
 "EUC-JP");
 
-   if (in_array($GLOBALS["charset"], $validcharset))
-      return htmlentities($string, ENT_COMPAT,$GLOBALS["charset"]);
+   if (in_array($GLOBALS["charset"],$validcharset))
+      return htmlentities($string,ENT_COMPAT,$GLOBALS["charset"]);
    else
        return htmlentities($string);
 }
@@ -103,19 +94,19 @@ $validcharset = array(
 
 <?php
 
-if ($CURUSER["view_torrents"] == "yes")
+if ($CURUSER["view_torrents"]=="yes")
 {
-  $getItems = "SELECT f.info_hash as id, f.comment as description, f.filename, $tseeds AS seeders, $tleechs as leechers, UNIX_TIMESTAMP( f.data ) as added, c.name as cname, f.size FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where ORDER BY data DESC LIMIT 20";
-  $doGet = do_sqlquery($getItems, true) or die(mysql_error());;
+  $getItems = "SELECT f.info_hash as id, f.comment as description, f.filename, $tseeds AS seeders, $tleechs as leechers, UNIX_TIMESTAMP( f.data ) as added, c.name as cname, f.size FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category ORDER BY data DESC LIMIT 20";
+  $doGet=get_result($getItems,true,$btit_settings['cache_duration']);
 
-  while($item = mysql_fetch_array($doGet))
+  foreach($doGet as $id=>$item)
    {
-    $id = $item['id'];
-    $filename = strip_tags($item['filename']);
-    $added = strip_tags(date("d/m/Y H:i:s", $item['added']));
-    $descr = format_comment($item['description']."\n");
-    $seeders = strip_tags($item['seeders']);
-    $leechers = strip_tags($item['leechers']);
+    $id=$item['id'];
+    $filename=strip_tags($item['filename']);
+    $added=strip_tags(date("d/m/Y H:i:s",$item['added']));
+    $descr=format_comment($item['description']."\n");
+    $seeders=strip_tags($item['seeders']);
+    $leechers=strip_tags($item['leechers']);
     // output to browser
 
 ?>
@@ -131,21 +122,21 @@ if ($CURUSER["view_torrents"] == "yes")
   }
 }
 // forums
-if ($CURUSER["view_forum"] == "yes")
+if ($CURUSER["view_forum"]=="yes")
 {
   $getItems = "select t.id as topicid, p.id as postid, f.name, u.username,t.subject,p.added, p.body from {$TABLE_PREFIX}topics t inner join {$TABLE_PREFIX}posts p on p.topicid=t.id inner join {$TABLE_PREFIX}forums f on t.forumid=f.id inner join {$TABLE_PREFIX}users u on u.id=p.userid ORDER BY added DESC LIMIT 50";
-  $doGet = do_sqlquery($getItems,true) or die(mysql_error());
+  $doGet=get_result($getItems,true,$btit_settings['cache_duration']);
 
-  while($item = mysql_fetch_array($doGet))
+  foreach($doGet as $id=>$item)
    {
-    $topicid = $item['topicid'];
-    $postid = $item['postid'];
-    $forum = (htmlspecialchars($item['name']));
-    $subject = (htmlspecialchars($item['subject']));
-    $added = strip_tags(date("d/m/Y H:i:s",$item['added']));
-    $body = format_comment("[b]Author: ".$item['username']."[/b]\n\n".$item['body']."\n");
+    $topicid=$item['topicid'];
+    $postid=$item['postid'];
+    $forum=(htmlspecialchars($item['name']));
+    $subject=(htmlspecialchars($item['subject']));
+    $added=strip_tags(date("d/m/Y H:i:s",$item['added']));
+    $body=format_comment("[b]Author: ".$item['username']."[/b]\n\n".$item['body']."\n");
     // output to browser
-    $link = htmlspecialchars($BASEURL."/index.php?page=forum&action=viewtopic&topicid=$topicid&page=p$postid#$postid");
+    $link=htmlspecialchars($BASEURL."/index.php?page=forum&action=viewtopic&topicid=$topicid&page=p$postid#$postid");
 ?>
 
   <item>

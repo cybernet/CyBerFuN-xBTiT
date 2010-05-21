@@ -149,7 +149,7 @@ if (isset($_GET["search"])) {
 
 // torrents count...
 
-$res = get_result("SELECT COUNT(*) as torrents FROM $ttables $where", true);
+$res = get_result("SELECT COUNT(*) as torrents FROM $ttables $where", true, $btit_settings['cache_duration']);
 
 $count = $res[0]["torrents"];
 if (!isset($search)) $search = "";
@@ -240,7 +240,7 @@ Operation #4*/
     else
         $query = "SELECT f.sticky as sticky, tag, f.image as img, f.info_hash as hash, f.visible as visible, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where GROUP BY f.sticky,$qry_order $by ORDER BY f.sticky $by $limit";
     // End the queries
-       $results = get_result($query, true);
+       $results = get_result($query, true, $btit_settings['cache_duration']);
 }
 
 /*Mod by losmi - sticky mod
@@ -291,7 +291,7 @@ $torrents = array();
 $i = 0;
 
 if ($count > 0) {
-  foreach ($results as $id => $data) {
+  foreach ($results as $tid=>$data) {
 
     /*Mod by losmi - visible mod*/
     $ok_level = $data['visible'];
@@ -511,12 +511,12 @@ $torrents[$i]["rating"] = $language["NA"];
   else {
        $id = $data['hash'];
        if ($XBTT_USE)
-          $subres = do_sqlquery("SELECT sum(IFNULL(xfu.left,0)) as to_go, count(xfu.uid) as numpeers FROM xbt_files_users xfu INNER JOIN xbt_files xf ON xf.fid=xfu.fid WHERE xf.info_hash=UNHEX('$id') AND xfu.active=1", true) or mysql_error();
+       $subres = do_sqlquery("SELECT sum(IFNULL(xfu.left,0)) as to_go, count(xfu.uid) as numpeers FROM xbt_files_users xfu INNER JOIN xbt_files xf ON xf.fid=xfu.fid WHERE xf.info_hash=UNHEX('$id') AND xfu.active=1", true, $btit_settings['cache_duration']);
        else
-           $subres = do_sqlquery("SELECT sum(IFNULL(bytes,0)) as to_go, count(*) as numpeers FROM {$TABLE_PREFIX}peers where infohash='$id'" ) or mysql_error();
-       $subres2 = do_sqlquery("SELECT size FROM {$TABLE_PREFIX}files WHERE info_hash ='$id'") or mysql_error();
-       $torrent = mysql_fetch_array($subres2);
-       $subrow = mysql_fetch_array($subres);
+       $subres = do_sqlquery("SELECT sum(IFNULL(bytes,0)) as to_go, count(*) as numpeers FROM {$TABLE_PREFIX}peers where infohash='$id'", true, $btit_settings['cache_duration']);
+       $subres2 = do_sqlquery("SELECT size FROM {$TABLE_PREFIX}files WHERE info_hash ='$id'", true, $btit_settings['cache_duration']);
+       $torrent = $subres2[0];
+       $subrow = $subres[0];
        $tmp = 0 + $subrow["numpeers"];
        if ($tmp > 0) {
           $tsize = (0 + $torrent["size"]) * $tmp;
