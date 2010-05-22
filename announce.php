@@ -8,6 +8,8 @@
 // http://xList.ro/
 // Modified By cybernet2u
 
+// CyBerFuN xBTiT Fully MoDDeD v1.2
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -149,7 +151,7 @@ else
     $peer_id = bin2hex($_GET["peer_id"]);
 }
 
-$iscompact = (isset($_GET["compact"])?$_GET["compact"] == '1':false);
+$iscompact = (isset($_GET["compact"]) ? $_GET["compact"] == '1' : false);
 
 // controll if client can handle gzip
 if ($GZIP_ENABLED)
