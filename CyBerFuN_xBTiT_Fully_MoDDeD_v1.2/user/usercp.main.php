@@ -115,8 +115,8 @@ if (!defined("IN_BTIT"))
       }
 
   $resuploaded = get_result("SELECT count(*) as tf FROM {$TABLE_PREFIX}files WHERE uploader=$uid ORDER BY data DESC",true,$btit_settings['cache_duration']);
-  $numtorrent=$resuploaded[0]['tf'];
-  unset($ruploaded);
+  $numtorrent = $resuploaded[0]['tf'];
+  unset($resuploaded);
 
   $utorrents = intval($CURUSER["torrentsperpage"]);
 
@@ -124,14 +124,14 @@ if (!defined("IN_BTIT"))
      {
      list($pagertop, $pagerbottom, $limit) = pager(($utorrents==0?15:$utorrents), $numtorrent, "index.php?page=usercp&amp;uid=$uid&amp;",array("pagename" => "ucp_uploaded"));
 
-     $usercptpl->set("pagertop",$pagertop);
+     $usercptpl->set("pagertop", $pagertop);
 
-     $resuploaded = get_result("SELECT f.filename, UNIX_TIMESTAMP(f.data) as added, f.size, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished, f.info_hash as hash FROM $ttables WHERE uploader=$uid ORDER BY data DESC $limit",true,$btit_settings['cache_duration']);
+     $resuploaded = get_result("SELECT f.filename, UNIX_TIMESTAMP(f.data) as added, f.size, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished, f.info_hash as hash FROM $ttables WHERE uploader=$uid ORDER BY data DESC $limit", true, $btit_settings['cache_duration']);
   }
-  if ($resuploaded && count($resuploaded)>0)
+  if ($resuploaded && count($resuploaded) > 0)
      {
          include("include/offset.php");
-         $usercptpl->set("RESULTS",true,true);
+         $usercptpl->set("RESULTS", true, true);
          $uptortpl=array();
          $i=0;
          foreach ($resuploaded as $id=>$rest)
