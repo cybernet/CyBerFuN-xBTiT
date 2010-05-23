@@ -72,7 +72,7 @@ if (!is_file($filepath) || !is_readable($filepath))
 $f = urldecode($_GET["f"]);
 
 // pid code begin
-$result = get_result("SELECT pid FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER['uid'], true, $btit_settings['cache_duration']);
+$row = get_result("SELECT pid FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER['uid'], true, $btit_settings['cache_duration']);
 $pid = $row[0]["pid"];
 
 if (!$pid)
