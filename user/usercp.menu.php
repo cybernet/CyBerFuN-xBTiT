@@ -66,5 +66,11 @@ $usercp_menu=array(
                 "url"=>"index.php?page=usercp&amp;do=pid_c&amp;action=change&amp;uid=".$uid."" ,
                 "description"=>$language["CHANGE_PID"]), 
                              )),
+3=>array(
+        "title"=>$language["MNU_UCP_TOOLS"],
+        "menu"=>array(0=>array(
+                "url"=>"index.php?page=usercp&amp;do=invite&amp;action=read&amp;uid=".$uid."" ,
+                "description"=>$language["MNU_UCP_INVITATIONS"]), 
+                             )),
 );
 ?>
