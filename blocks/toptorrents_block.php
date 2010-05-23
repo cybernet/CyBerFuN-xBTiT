@@ -25,7 +25,7 @@ else
   else
      $sql = "SELECT info_hash as hash, seeds, leechers, dlbytes AS dwned, format(finished,0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE leechers + seeds > 0 ORDER BY CAST(finished AS UNSIGNED) DESC LIMIT " .  $GLOBALS["block_mostpoplimit"];
 
-     $row = get_result($sql,true,$btit_settings['cache_duration']);
+     $row = get_result($sql, true, $btit_settings['cache_duration']);
   ?>
   <table cellpadding="4" cellspacing="1" width="100%">
   <tr>
@@ -129,7 +129,7 @@ if (max(0,$CURUSER["WT"])>0)
   }
   else
   {
-    echo "<tr><td class=\"lista\" colspan=\"9\" align=\"center\" style=\"text-align: center;\">" . NO_TORRENTS . "</td></tr>";
+    echo "<tr><td class=\"lista\" colspan=\"9\" align=\"center\" style=\"text-align: center;\">" . $language["NO_TORRENTS"] . "</td></tr>";
   }
 
   print("</table>");
