@@ -1,0 +1,557 @@
+a:link, a:visited, a:active {
+	color: #0099FF;
+}
+body {
+	font-family: tahoma, arial, helvetica, sans-serif;
+	font-size: 8pt;
+	/* background: #242424;*/
+    margin: 10px 12px 20px 10px;
+	padding: 0;
+	color:#CCCCCC;
+	background-image: url(images/NB-bkg.jpg);
+	background-repeat: repeat-x;
+	background-position: top;
+	background-color: #7e8aa8;
+}
+.header {
+	background-image: url(images/catbg.jpg);
+	background-repeat: repeat-x;
+	background-position: top;
+	border:1px solid #000000;
+	margin: 0px;
+	padding: 6px;
+}
+#subnav {
+	height:30px;
+	white-space: nowrap;
+}
+#nav {
+	display: block;
+	position: relative;
+	height: 30px;
+	font-size: 11px;
+	font-weight: bold;
+	float: left;
+	font-family: "Segoe UI", "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+}
+
+#nav ul {
+      margin: 0px;
+      padding: 0;
+      list-style-type: none;
+      width: auto;
+      float: left;
+}
+
+#nav ul li {
+	display: block;
+	float: left;
+	padding-right: 2px;
+}
+
+#nav ul li a {
+	display: block;
+	float: left;
+	color: #CCCCCC;
+	text-decoration: none;
+	padding: 0 0 0 12px;
+	height: 30px;
+	line-height: 30px;
+}
+
+#nav ul li a:hover {
+	color: #000000;
+	background-image: url(images/NB-navhl.jpg);
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+
+#nav ul li a:hover span {
+	display: block;
+	width: auto;
+	vertical-align: text-bottom;
+	background-image: url(images/NB-navhr.jpg);
+	background-repeat: no-repeat;
+	background-position: 100% 0;
+}
+
+#nav ul li a {
+	color: #CCCCCC;
+	background-image: url(images/NB-navl.jpg);
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+
+#nav ul li a span {
+	padding-right: 12px;
+	vertical-align: text-bottom;
+	display: block;
+	width: auto;
+	padding-left: 1px;
+	background-image: url(images/NB-navr.jpg);
+	background-repeat: no-repeat;
+	background-position: 100% 0;
+}
+
+
+td {
+font-size: 8pt;
+}
+
+
+td.red {
+    background-color:#111111;
+	border:1px solid #272b34;
+    color: red;
+}
+
+
+td.yellow {
+    background-color:#111111;
+	border:1px solid #272b34;
+    color: #BEC635;
+}
+
+
+td.green {
+    background-color:#111111;
+	border:1px solid #272b34;
+    color: green;
+}
+.NB-ftl { width: 10px; background-image: url(images/NB-ftl.jpg); }
+.NB-ftm { width: 100%; background-image: url(images/NB-ftm.jpg); }
+.NB-fcl {
+	background-image: url(images/NB-fcl.jpg);
+	width: 6px;
+}
+.NB-fcap{
+	background-repeat: no-repeat;
+	padding-right:14px;
+	font-size: 11px;
+	color: #FFFFFF;
+	font-family: verdana, tahoma, arial, sans-serif;
+	background-image: url(images/NB-fcr.jpg);
+	padding-left: 10px;
+	text-align: left;
+	font-weight: bold;
+	background-position: right;
+	padding-top: 0px;
+	white-space: nowrap;
+	padding-bottom: 0px;
+	line-height: 30px;
+	height: 30px;
+}
+#mcol .NB-fcap{
+	background-repeat: no-repeat;
+	padding-right:50px;
+	font-size: 11px;
+	color: #FFFFFF;
+	font-family: verdana, tahoma, arial, sans-serif;
+	background-image: url(images/NB-fcr.jpg);
+	padding-left: 10px;
+	text-align: left;
+	font-weight: bold;
+	background-position: right;
+	padding-top: 0px;
+	white-space: nowrap;
+	padding-bottom: 0px;
+	line-height: 30px;
+	height: 30px;
+}
+.NB-ftr{ width: 17px; background-image: url(images/NB-ftr.jpg); }
+.NB-fml{ width: 6px; background-repeat: repeat-y; background-image: url(images/NB-fml.jpg); }
+.NB-fmm{
+	width: 100%;
+	padding: 4px 5px 5px 4px;
+	font-size: 10px;
+	color: #999999;
+	font-family: verdana, tahoma, arial, sans-serif;
+	vertical-align:top;
+	background-color: #000;
+}
+.NB-fmr{width: 6px; background-repeat: repeat-y; background-image: url(images/NB-fmr.jpg); }
+.NB-fbl{ width: 10px; background-image: url(images/NB-fbl.jpg); }
+.NB-fbm{ width: 100%; background-repeat: repeat-x; background-image: url(images/NB-fbm.jpg);}
+.NB-fbr{ width: 10px; background-image: url(images/NB-fbr.jpg); }
+#extra .block-title {
+	display: none;
+	visibility: hidden;
+}
+.error { color:black; font-weight: bold; font-size: 14pt; background:url(images/chr.gif); background-repeat: repeat-x;}
+.information { color:black; font-weight: bold; font-size: 14pt; background:url(images/chb.gif); background-repeat: repeat-x;}
+.success { color:black; font-weight: bold; font-size: 14pt; background:url(images/chg.gif); background-repeat: repeat-x;}
+td.deleted {
+    background-color:#FF95AC;
+    color:#000000;
+}
+
+td.added {
+    background-color:#C1FF83;
+    color:#000000;
+}
+
+td.modified {
+    background-color:#DEDEDE;
+    color:#000000;
+}
+  
+.clear {
+    clear:both;
+}
+.post {
+	border:1px solid #272B34;
+	padding:0px;
+	margin:1px;
+	color:#CCCCCC;
+	line-height: 1.4em;
+	text-align:left;
+	white-space:wrap;
+	overflow: auto;
+	background-color: #000000;
+}
+
+.post table {
+	border:1px solid #272B34;
+	background-color: #080808;
+	margin: 1px;
+}
+
+.pager {
+	border: 1px solid #3b414e;
+	background-image: url(images/NB-ftm.jpg);
+	background-repeat: repeat-x;
+	background-position: center -8px;
+	padding-top: 2px;
+	padding-right: 3px;
+	padding-bottom: 3px;
+	padding-left: 3px;
+}
+
+.pagercurrent {
+	border: 1px solid #3b414e;
+	background-image: url(images/NB-ftm.jpg);
+	background-repeat: repeat-x;
+	background-position: center -8px;
+	padding-top: 2px;
+	padding-right: 3px;
+	padding-bottom: 3px;
+	padding-left: 3px;
+}
+
+.pager a:link,
+.pager a:visited,
+.pagercurrent a:link,
+.pagercurrent a:visited {
+    text-decoration:none;
+}
+
+.pager a:hover,
+.pagercurrent a:hover {
+    text-decoration:none;
+}
+input {
+	background-image: url(images/NB-input.jpg);
+	background-repeat: no-repeat;
+	background-position: -1px -1px;
+	border: 1px solid #333333;
+	font-size: 10px;
+	color: #CCCCCC;
+	background-color: #5e657f;
+	margin: 0px;
+	padding: 1px;
+}
+select {
+	font-size: 10px;
+	color: #000000;
+	background-color: #5e657f;
+	border: 1px solid #999999;
+	margin: 0px;
+}
+textarea {
+	font-size: 12px;
+	color: #FFFFFF;
+	background-color: #5e657f;
+	border: 1px solid #999999;
+	padding: 7px;
+}
+#main #time {
+	font-size: 11px;
+	color: #CCCCCC;
+	white-space: nowrap;
+	padding-right: 8px;
+	padding-left: 8px;
+	margin: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	line-height: 24px;
+	height: 24px;
+}
+.blocklist {
+	border-collapse: collapse;
+	margin: 0px;
+	padding-top: 2px;
+	padding-right: 2px;
+	padding-bottom: 4px;
+	padding-left: 2px;
+	border: 1px solid #272B34;
+}
+.tool {
+	border-collapse: collapse;
+	padding-top: 2px;
+	padding-right: 2px;
+	padding-bottom: 4px;
+	padding-left: 2px;
+	background-color: #1c1e24;
+	margin-top: 0px;
+	margin-right: 1px;
+	margin-bottom: 0px;
+	margin-left: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: none;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-color: #272B34;
+	border-bottom-color: #272B34;
+	border-left-color: #272B34;
+}
+.tool .lista {
+	border-collapse: collapse;
+	background-color: #000000;
+	margin: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: none;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-color: #272B34;
+	border-bottom-color: #272B34;
+	border-left-color: #272B34;
+}
+td.lista {
+	border-collapse: collapse;
+	margin: 0px;
+	padding-top: 2px;
+	padding-right: 2px;
+	padding-bottom: 4px;
+	padding-left: 2px;
+	border: 1px solid #272B34;
+}
+#mcol .lista a {
+	text-decoration: none;
+	font-weight: bold;
+}
+.lista .col1 {
+	border: 1px solid #111;
+	text-align: center;
+}
+.lista .col2 {
+	border: 1px solid #111;
+	background-color: #21242B;
+}
+.lista .post {
+	border: 1px solid #111;
+}
+.poller {  /* The poller box */
+	color:#999;
+	font-weight:bold;
+	overflow:hidden;
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+}
+
+.pollerTitle {  /* Poller title above radio buttons */
+    margin-top:0px;
+    margin-bottom:5px;
+    font-weight:bold;
+    font-size:1em;
+}
+
+.pollerOption {  /* Label for each radio button */
+	margin:0px;
+	text-align: justify;
+}
+
+.result_pollerOption {  /* Label for each option above graph - i.e. results */
+	margin:0px;
+	font-size:0.9em;
+	text-align: left;
+	line-height: 16px;
+	vertical-align: middle;
+	white-space: nowrap;
+	color: #5a617b;
+}
+
+.result_pollerTitle {  /* Title of poller - when ajax shows the results */
+	margin-top:0px;
+	margin-bottom:5px;
+	font-size:11px;
+	color: #0099FF;
+	font-weight: normal;
+}
+
+.result_pollGraph img {  /* Don't change this one, it is used to get the left and right image(the corner) positioned correctly */
+	float:left;
+}
+
+.result_pollGraph div {  /* The <div> tag where the percentage result is shown */
+	float:left;
+	height:12px;
+	background-repeat:repeat-x;
+	color:#848ca1;
+	font-size:1em;
+	line-height:16px;
+	display: inline;
+	text-align: left;
+}
+
+.result_pollGraph {  /* Graph div - parent of both the corner images and the div displaying percentage votes */  
+    height:12px;
+}
+  
+.poller_waitMessage {  /* Message when Ajax is working getting restults fromt the server */
+    display:none;  
+}  
+
+.result_totalVotes{
+	clear:left;
+	font-size:0.9em;
+	margin-top:10px;
+	font-style:italic;
+	background:transparent;
+	color: #FF0000;
+	font-family: Arial, Helvetica, sans-serif;
+}
+/* ######### End Ajax Poll System ######### Start Ajax Chat ######### */
+#chat {
+overflow: auto;
+width: 100%;
+height: 220px;
+padding: 0px;
+}
+
+#chatoutput ul {
+    list-style: none;
+    margin:0px;
+    padding:0px;
+    padding:5px 4px 6px 5px;
+}
+
+#shoutheader #chatForm #chatbarText {
+	width: 70%;
+	padding: 0px;
+	font-size: 12px;
+	color: #FFFFFF;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	line-height: 18px;
+	height: 18px;
+}
+#shoutheader #chatForm #submit {
+	width: 65px;
+	height: 20px;
+	margin: 0px;
+	padding: 0px;
+	background-image: url(images/NB-input-btn.jpg);
+	background-repeat: repeat-x;
+	background-position: center center;
+	line-height: 20px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #66FFFF;
+}
+
+div.chatoutput {
+	color:#0066CC;
+	line-height: 150%;
+	margin-bottom:8px;
+	background-color: #080808;
+	border: 1px solid #111111;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-left: 0px;
+	padding-top: 4px;
+	padding-right: 4px;
+	padding-bottom: 4px;
+	padding-left: 10px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+div.loader {
+background-image: url('images/ajaxchat/loading.gif'); 
+background-repeat: no-repeat; 
+background-position:center center; 
+width:32px; 
+height:32px;
+}
+
+#chatoutput ul li {
+}
+
+#chatoutput ul li span.name {
+	display: block;
+	background:url(images/ajaxchat/bubble.png) no-repeat left;
+	padding-left:21px;
+	margin-bottom:1px;
+	font-weight: normal;
+	color: #999999;
+	padding-top: 2px;
+}
+
+#chatoutput ul li:hover span.name {
+    background:url(images/ajaxchat/bubblehover.png) no-repeat left;
+}
+
+#chat #chatoutput #outputList .name A:link,
+#chat #chatoutput #outputList .name A:active,
+#chat #chatoutput #outputList .name A:visited {
+	color: #5f677e;
+	font-size: 11px;
+	font-weight: bold;
+}
+#chat #chatoutput #outputList .name A:hover{
+	color: #FF6600;
+	text-decoration: underline;
+}
+
+form {
+    padding:0px;
+    margin:6px;
+}
+
+#chatoutput {
+    text-align: left;
+    margin-right: 0px;
+}
+
+/* swaps edit and delete images on mouse over */
+img.EditSwap {
+background:url(images/ajaxchat/shout_edit_gray.gif) no-repeat bottom;
+}
+img.EditSwap:hover {
+background:url(images/ajaxchat/shout_edit.png) no-repeat bottom; 
+}
+img.DeleteSwap {
+background:url(images/ajaxchat/shout_delete_gray.gif) no-repeat bottom;
+}
+img.DeleteSwap:hover {
+background:url(images/ajaxchat/shout_delete.png) no-repeat bottom; 
+}
+/* end of swaping */
+
+img.form {
+background:url(images/ajaxchat/frame.png) no-repeat;
+}
+img.form:hover {
+background:url(images/ajaxchat/frame_hover.png) no-repeat;
+}
+/* ######### End Ajax Chat ######### */

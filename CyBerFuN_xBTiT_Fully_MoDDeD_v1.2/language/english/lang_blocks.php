@@ -1,0 +1,31 @@
+<?php
+$language["BLOCK_USER"] = "User Info";
+$language["BLOCK_INFO"] = "Tracker Info";
+$language["BLOCK_MENU"] = "Main Menu";
+$language["BLOCK_CLOCK"] = "Clock";
+$language["BLOCK_FORUM"] = "Forum";
+$language["BLOCK_LASTMEMBER"] = "Latest Member";
+$language["BLOCK_ONLINE"] = "Online";
+$language["BLOCK_ONTODAY"] = "On Today";
+$language["BLOCK_SHOUTBOX"] = "Shout Box";
+$language["BLOCK_TOPTORRENTS"] = "Top Torrents";
+$language["BLOCK_LASTTORRENTS"] = "Last Upload";
+$language["BLOCK_NEWS"] = "Last News";
+$language["BLOCK_SERVERLOAD"] = "Server Load";
+$language["BLOCK_POLL"] = "Poll";
+$language["BLOCK_SEEDWANTED"] = "Seed Wanted Torrents";
+$language["BLOCK_PAYPAL"] = "Support US";
+$language["BLOCK_MAINTRACKERTOOLBAR"] = "Main Tracker Toolbar";
+$language["BLOCK_MAINUSERTOOLBAR"] = "Main User Toolbar";
+$language["WELCOME_LASTUSER"] = " Welcome to our Tracker ";
+$language["BLOCK_MINCLASSVIEW"] = "Minimum rank that can view";
+$language["BLOCK_MAXCLASSVIEW"] = "Maximum rank that can view";
+$language["BLOCK_FEATURED"] = "Featured Torrent";
+$language["BLOCK_LASTTORRENT"] = "Latest Uploaded Torrent";
+$language["BLOCK_LASTTORRENT_MARQ"] = "Latest Uploaded Torrents";
+$language["TORRENT_DETAILS"] = "View details";
+$language["TWITTER"] = "Twitter Updates";
+$language["BLOCK_CAT"] = "Categories";
+$language["BLOCK_CLOUD"] = "Search Cloud";
+$language["BLOCK_UNVALIDATED"] = "Account not yet validated";
+?>
