@@ -115,6 +115,8 @@ switch ($action)
                $set[]="topicsperpage=".intval(0+$_POST["topicsperpage"]);
                $set[]="postsperpage=".intval(0+$_POST["postsperpage"]);
                $set[]="torrentsperpage=".intval(0+$_POST["torrentsperpage"]);
+	       $set[]="pm_mail_notify=".sqlesc($_POST["pm_mail_notification"]);
+	       $set[]="status_comment_notify=".sqlesc($_POST["status_comment_notify"]);
 
                $updateset=implode(",",$set);
 
@@ -151,12 +153,39 @@ switch ($action)
       //avatar
       if ($CURUSER["avatar"] && $CURUSER["avatar"]!="")
         {
-          $usercptpl->set("AVATAR",true,true);
-          $profiletpl["avatar"]="<img border=\"0\" onload=\"resize_avatar(this);\" src=\"".htmlspecialchars(unesc($CURUSER["avatar"]))."\" alt=\"\" />";
+          $usercptpl->set("AVATAR", true, true);
+          $profiletpl["avatar"] = "<img border=\"0\" onload=\"resize_avatar(this);\" src=\"".htmlspecialchars(unesc($CURUSER["avatar"]))."\" alt=\"\" />";
         }
+      // email_notification
+	  // pm notify
+	  $pm_mail_notify = mysql_query("SELECT pm_mail_notify FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"]);
+	  $pmnotify = mysql_result($pm_mail_notify, 0);
+      if ($pmnotify == "true")
+        {
+          $profiletpl["PM_MAIL_NOTIFY_TRUE"] = "checked=\"checked\"";
+          $profiletpl["PM_MAIL_NOTIFY_FALSE"] = "";
+        }
+		else
+		{
+			$profiletpl["PM_MAIL_NOTIFY_TRUE"] = "";
+			$profiletpl["PM_MAIL_NOTIFY_FALSE"] = "checked=\"checked\"";
+		}
+	  // comment notify
+	  $status_comment_notify = mysql_query("SELECT status_comment_notify FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"]);
+	  $status_comment = mysql_result($status_comment_notify, 0);
+      if ($status_comment == "true")
+        {
+          $profiletpl["COMMENT_NOTIFY_TRUE"] = "checked=\"checked\"";
+          $profiletpl["COMMENT_NOTIFY_FALSE"] = "";
+        }
+		else
+		{
+			$profiletpl["COMMENT_NOTIFY_TRUE"] = "";
+			$profiletpl["COMMENT_NOTIFY_FALSE"] = "checked=\"checked\"";
+		}
 
-      $profiletpl["avatar_field"]=unesc($CURUSER["avatar"]);
-      $profiletpl["email"]=unesc($CURUSER["email"]);
+      $profiletpl["avatar_field"] = unesc($CURUSER["avatar"]);
+      $profiletpl["email"] = unesc($CURUSER["email"]);
 
       //Reverify Mail Hack by Petr1fied - Start
       if ($VALIDATION=="user")
