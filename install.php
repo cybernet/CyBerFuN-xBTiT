@@ -30,7 +30,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-$dbfile="database.sql";
+$dbfile = "database.sql";
 // declaration of variables
 $INSTALLPATH = dirname(__FILE__);
 $action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : 'welcome');
@@ -41,8 +41,8 @@ define("BTIT_INSTALL", TRUE);
 
 // getting globals
 $GLOBALS["btit-tracker"]         = "xbtit";
-$GLOBALS["current_btit_version"] = "v2.0.0";
-$GLOBALS["btit_installer"]       = "xbtit Installer ::";
+$GLOBALS["current_btit_version"] = "v2.1.0";
+$GLOBALS["btit_installer"]       = "CyBerFuN xBTiT Installer ::";
 
 // getting needed files
 load_lang_file();

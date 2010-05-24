@@ -55,8 +55,8 @@ $cur_script = $_SERVER['PHP_SELF'];
 
 // getting globals
 $GLOBALS["btit-tracker"]         = "xbtit";
-$GLOBALS["current_btit_version"] = "v2.0 (Private Beta)";
-$GLOBALS["btit_installer"]       = "xbtit Upgrade ::";
+$GLOBALS["current_btit_version"] = "v2.1.0";
+$GLOBALS["btit_installer"]       = "CyBerFuN xBTiT Upgrade ::";
 
 // getting needed files
 load_lang_file();
