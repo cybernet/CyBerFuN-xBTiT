@@ -113,56 +113,14 @@ switch ($action)
              */
 
              // replaced by send_pm function
-global $BASEURL, $SITENAME, $SITEEMAIL, $language;
-
-$res = mysql_fetch_assoc(mysql_query("SELECT email, pm_mail_notify FROM {$TABLE_PREFIX}users WHERE id = $rec")) or sqlerr();
-$email = $res["email"];
-$pm_mail_notification = $res["pm_mail_notify"];
-$sender = $CURUSER['username'];
-$txt = $_POST["msg"];
-$npmn = $language["MNU_UCP_NEWPM"];
-$npmn2 = $language["BY"];
-$npmn3 = $language["SUBJECT"];
-$npmn4 = $language["BODY"];
-
-nl2br(htmlentities($txt));
-
-$body = <<<EOD
-$npmn $npmn2 $sender.
-
-$npmn3:
-$subject
-
-$npmn4:
-$txt
-
-$BASEURL/index.php?page=login
-
-------------------------------------------------
-$SITENAME
-EOD;
-	if($pm_mail_notification == "true")
-	{ini_set("sendmail_from","");
-   if (mysql_errno()==0)
-     {
-      send_mail($email,$npmn,$body);
-      }
-   else
-       die(mysql_error());
-	}
-	}
+             send_pm($CURUSER['uid'], $rec, $subject, $msg);
+// beta
+             send_mail($CURUSER['email'], $subject, $msg);
+// beta
              redirect("index.php?page=usercp&uid=".$uid."&do=pm&action=list");
              exit();
            }
          }
-}
-    break;
-             send_pm($CURUSER['uid'],$rec,$subject, $msg);
-             redirect("index.php?page=usercp&uid=".$uid."&do=pm&action=list");
-             exit();
-           }
-         }
-}
     break;
 
     case 'deleteall':
@@ -183,9 +141,9 @@ EOD;
     break;
 
     case 'delete':
-            if($FORUMLINK == "smf")
+            if($FORUMLINK=="smf")
                 redirect("index.php?page=forum&action=pm".(($_GET["type"]=="out")?";f=outbox":""));
-            $id = intval($_GET["id"]);
+            $id=intval($_GET["id"]);
             do_sqlquery("DELETE FROM {$TABLE_PREFIX}messages WHERE receiver=".$uid." AND id=".$id." AND readed='yes'",true);
             redirect("index.php?page=usercp&uid=".$uid."&do=pm&action=list&what=inbox");
             exit();
