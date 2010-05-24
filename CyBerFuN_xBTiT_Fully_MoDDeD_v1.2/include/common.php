@@ -39,8 +39,7 @@ if (!function_exists('bcsub')) {
 }
 
 function send_pm($sender,$recepient,$subject,$msg) {
-    global $FORUMLINK, $TABLE_PREFIX, $db_prefix, $CACHE_DURATION, $BASEURL, $SITENAME, $SITEEMAIL, $language;
-
+    global $FORUMLINK, $TABLE_PREFIX, $db_prefix, $CACHE_DURATION;
 
     if ($FORUMLINK=='smf') {
         # smf forum
