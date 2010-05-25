@@ -238,7 +238,7 @@ if ($PRIVATE_ANNOUNCE) {
       $rowpid = mysql_fetch_assoc($respid);
       if ($rowpid["can_download"] != "yes" && $PRIVATE_ANNOUNCE)
          show_error("Sorry your level ($rowpid[level]) is not allowed to download from $BASEURL");
-      //waittime
+      // wait time
       elseif ($rowpid["WT"] > 0) {
         $wait = 0;
         if (intval($rowpid['downloaded']) > 0)
@@ -249,16 +249,16 @@ if ($PRIVATE_ANNOUNCE) {
         $added = mysql_fetch_assoc($res_tor);
         $vz = $added["data"];
         $timer = floor((time() - $vz) / 3600);
-        if($ratio < 1.0 && $rowpid['id'] != $added["uploader"]){
+        if($ratio < 1.0 && $rowpid['id'] != $added["uploader"]) {
             $wait = $rowpid["WT"];
         }
         $wait -= $timer;
-        if ($wait <= 0)$wait = 0;
-        elseif($wait != 0 && $left != 0){
+        if ($wait <= 0) $wait = 0;
+        elseif($wait != 0 && $left != 0) {
                show_error($rowpid["username"]." your Waiting Time = ".$wait." h");
                                         }
       }
-      //end
+      // end
   }
 } else {
 // PID turned off
@@ -276,7 +276,7 @@ if ($PRIVATE_ANNOUNCE) {
       $rowpid = mysql_fetch_assoc($respid);
       if ($rowpid["can_download"] != "yes")
          show_error("Sorry your level ($rowpid[level]) is not allowed to download from $BASEURL.");
-      //waittime
+      // wait time
       elseif ($rowpid["WT"] > 0) {
         $wait = 0;
         if (intval($rowpid['downloaded']) > 0)
@@ -287,7 +287,7 @@ if ($PRIVATE_ANNOUNCE) {
         $added = mysql_fetch_assoc($res_tor);
         $vz = $added["data"];
         $timer = floor((time() - $vz) / 3600);
-        if($ratio < 1.0 && $rowpid['id'] != $added["uploader"]){
+        if($ratio < 1.0 && $rowpid['id'] != $added["uploader"]) {
             $wait = $rowpid["WT"];
         }
         $wait -= $timer;
@@ -296,7 +296,7 @@ if ($PRIVATE_ANNOUNCE) {
         elseif($wait != 0 && $left != 0)
             {show_error($rowpid["username"]." your Waiting Time = ".$wait." h");}
       }
-      //end
+      // end
     }
 }
 
@@ -591,8 +591,8 @@ function collectBytes($peer, $hash, $left, $downloaded = 0, $uploaded = 0, $pid 
     $row = mysql_fetch_assoc(mysql_query("SELECT lastupdate, uploaded, downloaded FROM {$TABLE_PREFIX}peers WHERE infohash=\"$hash\" AND " . (isset($GLOBALS["trackerid"]) ? "sequence=\"${GLOBALS["trackerid"]}\"" : "peer_id=\"$peerid\"")));    
  
         $annint = time() - $row["lastupdate"];
-        $updiff = $uploaded-$row["uploaded"];
-        $dldiff = $downloaded-$row["downloaded"];
+        $updiff = $uploaded - $row["uploaded"];
+        $dldiff = $downloaded - $row["downloaded"];
         
     # End       
     ################################################################################################
@@ -695,12 +695,12 @@ if ($LIVESTATS)
          $livestat = mysql_fetch_assoc($resstat);
          // only if uploaded/downloaded are >= stored data in peer list
          //if ($uploaded >= $livestat["uploaded"])
-               $newup = max(0, ($uploaded-$livestat["uploaded"]));
+               $newup = max(0, ($uploaded - $livestat["uploaded"]));
          //else
          //      $newup=$uploaded;
 
          //if ($downloaded>=$livestat["downloaded"])
-               $newdown = max(0, ($downloaded-$livestat["downloaded"]));
+               $newdown = max(0, ($downloaded - $livestat["downloaded"]));
          //else
          //      $newdown=$downloaded;
          // rev 485
