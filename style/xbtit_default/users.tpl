@@ -22,7 +22,7 @@
 <!-- Search by ip, email, pid ################################################################# -->
 
 <?php
- if (!$CURUSER || $CURUSER["admin_access"]=="yes") {
+ if (!$CURUSER || $CURUSER["admin_access"] == "yes") {
 ?>
 <a href='#advanced' onclick=javascript:collapse2.slideit()>
 .:. <u> ADVANCED</u> .:.<br /></a>
