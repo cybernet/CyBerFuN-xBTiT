@@ -262,7 +262,7 @@ window.open('http://digg.com/submit?url='+encodeURIComponent(ShareURL)+'&title=x
         <if:INSERT_COMMENT>
         <tr>
           <td align="center" colspan="3">
-             <a href="index.php?page=comment&amp;id=<tag:torrent.info_hash />&amp;usern=<tag:current_username />"><tag:language.NEW_COMMENT /></a>
+             <a href="index.php?page=comment&amp;id=<tag:torrent.info_hash />&amp;usern=<tag:current_username />"onClick="javascript:pageTracker._trackPageview('/comment/<tag:current_username />/<tag:torrent.info_hash />');"><tag:language.NEW_COMMENT /></a>
           </td>
         </tr>
         </if:INSERT_COMMENT>
