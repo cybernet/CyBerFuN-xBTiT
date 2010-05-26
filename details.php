@@ -133,12 +133,7 @@ $plus++;
 }
 $torrenttpl->set("snatchers", $snatchers);
 // Snatchers hack end
-$torrenttpl->set("language", $language);
-$torrenttpl->set("IMAGEIS", !empty($row["image"]), TRUE);
-$torrenttpl->set("SCREENIS1", !empty($row["screen1"]), TRUE);
-$torrenttpl->set("SCREENIS2", !empty($row["screen2"]), TRUE);
-$torrenttpl->set("SCREENIS3", !empty($row["screen3"]), TRUE);
-$torrenttpl->set("uploaddir", $upload_dir);
+
 if (!empty($row["image"]))
 {
 $image1 = "".$row["image"]."";
@@ -157,6 +152,12 @@ $new_width = $width; // Keep original size from array because smaller than max
 }
 $torrenttpl->set("width", $new_width);
 }
+$torrenttpl->set("language", $language);
+$torrenttpl->set("IMAGEIS", !empty($row["image"]), TRUE);
+$torrenttpl->set("SCREENIS1", !empty($row["screen1"]), TRUE);
+$torrenttpl->set("SCREENIS2", !empty($row["screen2"]), TRUE);
+$torrenttpl->set("SCREENIS3", !empty($row["screen3"]), TRUE);
+$torrenttpl->set("uploaddir", $upload_dir);
 if ($CURUSER["uid"] > 1 && ($CURUSER["uid"] == $row["uploader"] || $CURUSER["edit_torrents"] == "yes" || $CURUSER["delete_torrents"] == "yes"))
    {
     $torrenttpl->set("MOD", TRUE, TRUE);
