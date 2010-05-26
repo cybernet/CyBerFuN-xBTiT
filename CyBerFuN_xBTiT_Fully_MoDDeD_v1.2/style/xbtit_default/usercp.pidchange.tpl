@@ -13,7 +13,7 @@
       <td class="header" align="center" colspan="2">
     <table align="center" width="100%" cellspacing="0" cellpadding="0">
       <tr>
-        <td align="center"><input type="submit" class="btn" name="confirm" <tag:pid_c.reset_disabled /> value="Reset PID" /></td>
+        <td align="center"><input type="submit" class="btn" name="confirm" <tag:pid_c.reset_disabled /> value="<tag:language.RESET_PID />" /></td>
         <td align="center"><input type="button" class="btn" name="confirm" onclick="javascript:window.open('<tag:pid_c.frm_cancel />','_self');" value="<tag:language.FRM_CANCEL />" /></td>
       </tr>
     </table>

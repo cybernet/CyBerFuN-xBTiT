@@ -13,8 +13,16 @@ error_reporting(E_ALL ^ E_NOTICE);
 // Emulate register_globals off
 #
 
+
+// Check for safe mode
+if (ini_get('safe_mode')) {
+// Do it the safe mode way
+}
+else
+{
 ini_set("memory_limit", "-1");
 set_time_limit(0);
+}
 
 if (ini_get('register_globals')) {
   $superglobals = array($_SERVER, $_ENV, $_FILES, $_COOKIE, $_POST, $_GET);
@@ -251,7 +259,7 @@ function print_designer() {
      $CyBerFuN_xBTiT_version = '' . $CyBerFuN_xBTiT_version . '';
      $design_copyright = '' . $design_copyright . '';
   } else
-     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 493 )';
+     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 503 )';
      $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT ' . $CyBerFuN_xBTiT_version . ' By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By <a href="http://www.btiteam.org/" target="_blank">BTiTeam.org</a></u>&nbsp;]<br />';
   return $design_copyright;
 }
