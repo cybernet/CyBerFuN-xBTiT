@@ -2,7 +2,7 @@
 
 // CyBerFuN.ro & xList.ro
 
-// CyBerFuN .::. Admin - DButil
+// CyBerFuN .::. Admin - Main
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xlist.ro/
@@ -146,6 +146,18 @@ $current_version = explode(" ", strtolower($tracker_version)); // array('2.0.0',
 $last_version = explode("/", strtolower($btit_last));  // array('2.0.0','beta','2')
 
 $your_version = "";
+
+// make further control only if differents
+if ((implode(" ",$current_version) != implode(" ", $last_version)))
+  {
+  $your_version .= "<table width=\"100%\"><tr><td align=\"right\">Installed version:</td><td align=\"left\">".implode(" ", $current_version)."</td></tr>\n";
+  $your_version .= "<tr><td align=\"right\">Current version:</td><td align=\"left\">".implode(" ", $last_version)."</td></tr>\n";
+  $your_version .= "<tr><td colspan=\"2\" align=\"center\">Get Last Version <a href=\"http://www.btiteam.org\" target=\"_blank\">here</a>!</td></tr>\n</table>";
+}
+else
+  {
+  $your_version .= "You have the latest xBTiT version installed.";
+}
 $hack_email_notification_url_last = "http://xbtitnotify.sourceforge.net/last_version/last_email_notification_version.txt";
 
 // check last version on xbtitnotify.sourceforge.net
@@ -160,23 +172,13 @@ if (!$hack_email_notification_last)
 }
 $title_email_notification = "email_notification";
 $res_email_notification_version = get_result("SELECT title, version FROM {$TABLE_PREFIX}hacks WHERE title LIKE '" . $title_email_notification . "'", true);
+
 $row0_email_notification = $res_email_notification_version[0];
 $row_email_notification = substr($row0_email_notification["version"], 0, 5);
 $last_email_notification_version = explode("/", strtolower($hack_email_notification_last));
 
 $your_email_notification_version = "admin@localhost";
 
-// make further control only if differents
-if ((implode(" ",$current_version) != implode(" ",$last_version)))
-  {
-  $your_version .= "<table width=\"100%\"><tr><td align=\"right\">Installed version:</td><td align=\"left\">".implode(" ",$current_version)."</td></tr>\n";
-  $your_version .= "<tr><td align=\"right\">Current version:</td><td align=\"left\">".implode(" ",$last_version)."</td></tr>\n";
-  $your_version .= "<tr><td colspan=\"2\" align=\"center\">Get Last Version <a href=\"http://www.btiteam.org\" target=\"_blank\">here</a>!</td></tr>\n</table>";
-}
-else
-  {
-  $your_version .= "You have the latest xBTiT version installed.";
-}
 if (($row_email_notification != implode(" ", $last_email_notification_version)))
   {
   $your_email_notification_version .= "<table width=\"100%\"><tr><td align=\"left\">".$language["PM_NOTIFY_INSTALLED"]."</td><td align=\"left\">".$row_email_notification."</td></tr>\n";

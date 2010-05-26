@@ -1,3 +1,11 @@
+ALTER TABLE `{$db_prefix}settings` CHANGE `key` `key` VARCHAR( 41 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL
+INSERT INTO `{$db_prefix}settings` (
+`key` ,
+`value`
+)
+VALUES (
+'CyBerFuN_xBTiT_installed_version', '1.2 revision 504'
+);
 UPDATE `{$db_prefix}hacks` SET `version` = '3.1.1' WHERE `{$db_prefix}hacks`.`id` =1;
 ALTER TABLE `{$db_prefix}users` ADD INDEX ( `smf_fid` );
 UPDATE `{$db_prefix}users_level` SET `prefixcolor` = '<span style=''color:#000000''>' WHERE `{$db_prefix}users_level`.`id` =3;
