@@ -181,7 +181,7 @@ if (($row_email_notification != implode(" ", $last_email_notification_version)))
   {
   $your_email_notification_version .= "<table width=\"100%\"><tr><td align=\"left\">".$language["PM_NOTIFY_INSTALLED"]."</td><td align=\"left\">".$row_email_notification."</td></tr>\n";
   $your_email_notification_version .= "<tr><td align=\"left\">".$language["PM_NOTIFY_CURRENT"]."</td><td align=\"left\">".implode(" ", $last_email_notification_version)."</td></tr>\n";
-  $your_email_notification_version .= "<tr><td align=\"left\"><b>".$language["PM_NOTIFY_GET"]."<a href=\"http://www.btiteam.org/smf/index.php?topic=10456\" target=\"_blank\">".$language["PM_NOTIFY_OFFICIAL_RELEASE"]."</b></a></td></tr>\n</table>";
+  $your_email_notification_version .= "<tr><td align=\"left\"><b>".$language["PM_NOTIFY_GET"]."<a href=\"http://www.btiteam.org/smf/index.php?topic=12205.0\" target=\"_blank\">".$language["PM_NOTIFY_OFFICIAL_RELEASE"]."</b></a></td></tr>\n</table>";
 }
 else
   {
@@ -193,17 +193,26 @@ if (!empty($your_version))
 if (!empty($your_email_notification_version))
    $admin["email_notification_version"] = $your_email_notification_version."<br />\n";
 
+// Check for safe mode
+if (ini_get('safe_mode')) {
+$server_os = "not available";
+}
+else
+{
+$server_os = php_uname();
+}
+
 $admin["infos"] .= ("<br />\n<table border=\"0\">\n");
-$admin["infos"] .= ("<tr><td class=\"header\" align=\"center\">Server's OS</td></tr><tr><td align=\"left\">".php_uname()."</td></tr>");
-$admin["infos"] .= ("<tr><td class=\"header\" align=\"center\">PHP version</td></tr><tr><td align=\"left\">".phpversion()."</td></tr>");
+$admin["infos"] .= ("<tr><td class=\"header\" align=\"center\">Server's OS</td></tr><tr><td align=\"center\">$server_os</td></tr>");
+$admin["infos"] .= ("<tr><td class=\"header\" align=\"center\">PHP version</td></tr><tr><td align=\"center\">".phpversion()."</td></tr>");
 
 $sqlver = mysql_fetch_row(do_sqlquery("SELECT VERSION()"));
-$admin["infos"] .= ("\n<tr><td class=\"header\" align=\"center\">MYSQL version</td></tr><tr><td align=\"left\">$sqlver[0]</td></tr>");
+$admin["infos"] .= ("\n<tr><td class=\"header\" align=\"center\">MYSQL version</td></tr><tr><td align=\"center\">$sqlver[0]</td></tr>");
 $sqlver = mysql_stat();
 $sqlver = explode('  ',$sqlver);
 $admin["infos"] .= ("\n<tr><td valign=\"top\" class=\"header\" align=\"center\">MYSQL stats</td></tr>\n");
 for ($i = 0; $i < count($sqlver); $i++)
-      $admin["infos"] .= ("<tr><td align=\"left\">$sqlver[$i]</td></tr>\n");
+      $admin["infos"] .= ("<tr><td align=\"center\">$sqlver[$i]</td></tr>\n");
 $admin["infos"] .= ("\n</table><br />\n");
 
 unset($sqlver);
