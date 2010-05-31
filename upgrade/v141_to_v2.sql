@@ -1,4 +1,3 @@
-
 --- drop blocks table and import new
 
 DROP TABLE IF EXISTS `btit_blocks`;
@@ -126,7 +125,7 @@ INSERT INTO `btit_language` (`id`, `language`, `language_url`) VALUES
 (7, 'Russian','language/russian'),
 (8, 'German','language/german'),
 (9, 'Hungarian','language/hungarian'),
-(10, 'Français', 'language/french'),
+(10, 'Franï¿½ais', 'language/french'),
 (11, 'Finnish','language/finnish'),
 (12, 'Vietnamese','language/vietnamese'),
 (13, 'Greek','language/greek'),
@@ -280,7 +279,10 @@ INSERT INTO `btit_style` (`id`, `style`, `style_url`) VALUES
 
 ALTER TABLE `btit_users`
 CHANGE `avatar` `avatar` VARCHAR( 200 ) default NULL,
-ADD `smf_fid` int(10) NOT NULL default '0';
+ADD `smf_fid` int(10) NOT NULL default '0',
+ADD INDEX ( `smf_fid` );
+
+ALTER TABLE `btit_users` ADD INDEX (`smf_fid`);
 
 # update guest PID ;)
 UPDATE btit_users SET pid='00000000000000000000000000000000' WHERE id=1;
@@ -288,4 +290,3 @@ UPDATE btit_users SET pid='00000000000000000000000000000000' WHERE id=1;
 ALTER TABLE `btit_users_level`
 CHANGE `prefixcolor` `prefixcolor` VARCHAR( 200 ) NOT NULL,
 CHANGE `suffixcolor` `suffixcolor` VARCHAR( 200 ) NOT NULL;
-
