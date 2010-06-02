@@ -49,7 +49,7 @@ require(load_language("lang_upload.php"));
 
 require_once ("include/BDecode.php");
 require_once ("include/BEncode.php");
-//// Configuration//
+// Configuration //
 function_exists("sha1") or die("<font color=\"red\">".$language["NOT_SHA"]."</font></body></html>");
 
 if (!$CURUSER || $CURUSER["can_upload"] == "no")
@@ -132,12 +132,13 @@ else $url = 0;
 
 if (isset($_POST["info"]) && $_POST["info"] != "")
    $comment = mysql_real_escape_string($_POST["info"]);
-else { // description is now required (same as for edit.php)
+else { 
+// description is now required (same as for edit.php)
 //    $comment = "";
         err_msg($language["ERROR"], $language["EMPTY_DESCRIPTION"]);
         stdfoot();
         exit();
-  }
+     }
 
 // filename not writen by user, we get info directly from torrent.
 if (strlen($filename) == 0 && isset($array["info"]["name"]))
@@ -174,7 +175,7 @@ if (!isset($array["announce"]))
      err_msg($language["ERROR"], $language["EMPTY_ANNOUNCE"]);
      stdfoot();
      exit();
-}
+     }
 
       $categoria = intval(0+$_POST["category"]);
       $anonyme = sqlesc($_POST["anonymous"]);
@@ -223,7 +224,7 @@ if (!isset($array["announce"]))
 								"image/jpeg",
 								"image/pjpeg",
 								"image/gif",
-								"image/x-png");
+								"image/png");
         switch($_FILES["userfile"]["type"]) {
 	        case 'image/bmp':
 		    $file_name = $hash.".bmp";
@@ -237,7 +238,7 @@ if (!isset($array["announce"]))
 	        case 'image/gif':
     		$file_name = $hash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
     		$file_name = $hash.".png";
             break;
         }
@@ -254,7 +255,7 @@ if (!isset($array["announce"]))
 	        case 'image/gif':
     		$file_name_s1 = "s1".$hash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
     		$file_name_s1 = "s1".$hash.".png";
             break;
         }
@@ -271,7 +272,7 @@ if (!isset($array["announce"]))
 	        case 'image/gif':
     		$file_name_s2 = "s2".$hash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
     		$file_name_s2 = "s2".$hash.".png";
             break;
         }
@@ -288,7 +289,7 @@ if (!isset($array["announce"]))
 	        case 'image/gif':
     		$file_name_s3 = "s3".$hash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
     		$file_name_s3 = "s3".$hash.".png";
             break;
         }
