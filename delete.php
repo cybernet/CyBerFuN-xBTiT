@@ -71,7 +71,7 @@ $link = urldecode($_GET["returnto"]);
 $hash = AddSlashes($_GET["info_hash"]);
 
 if ($link == "")
-   $link="index.php?page=torrents";
+   $link = "index.php?page=torrents";
 
 if (isset($_POST["action"])) {
 
@@ -135,7 +135,7 @@ $torrent["description"] = format_comment($row["comment"]);
 $torrent["catname"] = $row["cat_name"];
 $torrent["size"] = makesize($row["size"]);
 include(dirname(__FILE__)."/include/offset.php");
-$torrent["date"] = date("d/m/Y", $row["data"]-$offset);
+$torrent["date"] = date("d/m/Y", $row["data"] - $offset);
 if (!$XBT_USE)
 {
    if ($row["speed"] < 0) {
