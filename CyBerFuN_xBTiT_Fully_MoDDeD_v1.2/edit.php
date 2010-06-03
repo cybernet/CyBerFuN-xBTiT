@@ -90,7 +90,7 @@ $userfile = $_FILES["userfile"];
 								"image/jpeg",
 								"image/pjpeg",
 								"image/gif",
-								"image/x-png");
+								"image/png");
         switch($_FILES["userfile"]["type"]) {
 	        case 'image/bmp':
 		    $file_name = $torhash.".bmp";
@@ -104,7 +104,7 @@ $userfile = $_FILES["userfile"];
 	        case 'image/gif':
     		$file_name = $torhash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
     		$file_name = $torhash.".png";
             break;
         }
@@ -121,7 +121,7 @@ $userfile = $_FILES["userfile"];
 	        case 'image/gif':
     		$file_name_s1 = "s1".$torhash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
     		$file_name_s1 = "s1".$torhash.".png";
             break;
         }
@@ -138,7 +138,7 @@ $userfile = $_FILES["userfile"];
 	        case 'image/gif':
     		$file_name_s2 = "s2".$torhash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
     		$file_name_s2 = "s2".$torhash.".png";
             break;
         }
@@ -155,7 +155,7 @@ $userfile = $_FILES["userfile"];
 	        case 'image/gif':
     		$file_name_s3 = "s3".$torhash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
     		$file_name_s3 = "s3".$torhash.".png";
             break;
         }
