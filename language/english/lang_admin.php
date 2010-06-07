@@ -26,11 +26,9 @@ $language['ACP_USERS_TOOLS'] = 'User&rsquo;s Tools';
 $language['ACP_TORRENTS_TOOLS'] = 'Torrent&rsquo;s Tools';
 $language['ACP_OTHER_TOOLS'] = 'Others Tools';
 $language['ACP_MYSQL_STATS'] = 'MySql Statistics';
-// Featured Torrent
+// Featured Torrent start
 $language["ACP_FEATURED"] = "Featured Torrent";
-// CyBerFuN No`NaMe
-$language["ACP_CYBERFUN_TORRENTS"] = "CyBerFuN`Torrents";
-//
+// Featured Torrent end
 $language['XBTT_BACKEND'] = 'xbtt Option';
 $language['XBTT_USE'] = 'Use <a href="http://xbtt.sourceforge.net/tracker/" target="_blank">xbtt</a> as backend?';
 $language['XBTT_URL'] = 'xbtt base url e.g. http://localhost:2710';
@@ -344,8 +342,14 @@ $language["STICKY_SETTINGS"] = "Sticky settings";
 $language["COLOR"] = "Color";
 $language["LEVEL_STICKY"] = "Who can add sticky torrents? (default: Uploader)";
 // sticky end
-//FAQ
+// FAQ start
 $language["ACP_FAQ_GROUP"] = "Faq groups";
 $language["ACP_FAQ"] = "Faq";
 $language["ACP_FAQ_QUESTION"] = "Faq questions";
+// FAQ end
+// Invalid Login System Language Start by cybernet2u
+$language["CyBerFuN_invalid_login_system_check"] = "Invalid Login System Check";
+$language["CyBerFuN_allowed_login_attempts"] = "Allowed login attempts";
+$language["CyBerFuN_enable_invalid_login_check"] = "Enable invalid login check";
+// Invalid Login System Language End by cybernet2u
 ?>
