@@ -3,14 +3,14 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 23, 2010 at 11:46 PM
+-- Generation Time: Jun 08, 2010 at 02:05 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.2
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- Database: `xbtitfm`
+-- Database: `xbtit`
 --
 
 -- --------------------------------------------------------
@@ -697,6 +697,27 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}history` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `{$db_prefix}invalid_logins`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}invalid_logins` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ip` bigint(11) DEFAULT '0',
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(40) NOT NULL DEFAULT '',
+  `failed` int(3) unsigned NOT NULL DEFAULT '0',
+  `remaining` int(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}invalid_logins`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `{$db_prefix}invitations`
 --
 
@@ -709,7 +730,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}invitations` (
   `confirmed` enum('true','false') NOT NULL DEFAULT 'false',
   PRIMARY KEY (`id`),
   KEY `inviter` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}invitations`
@@ -843,7 +864,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}news` (
 --
 
 INSERT INTO `{$db_prefix}news` (`id`, `news`, `user_id`, `date`, `title`) VALUES
-(1, 0x496620796f752063616e20726561642074686973207468656e20796f75722073657420757020776173206120737563636573732e0d0a596f752077696c6c2077616e7420746f2064656c657465207468697320706f73742e200d0a546563686e6963616c20737570706f72742063616e20626520666f756e64206f6e2074686520786274697420666f72756d73205b75726c5d687474703a2f2f7777772e6274697465616d2e6f72672f736d662f5b2f75726c5d, 2, NOW(), 'Welcome ;)');
+(1, 0x496620796f752063616e20726561642074686973207468656e20796f75722073657420757020776173206120737563636573732e0d0a596f752077696c6c2077616e7420746f2064656c657465207468697320706f73742e200d0a546563686e6963616c20737570706f72742063616e20626520666f756e64206f6e2074686520786274697420666f72756d73205b75726c5d687474703a2f2f7777772e6274697465616d2e6f72672f736d662f5b2f75726c5d, 2, '2010-06-08 01:42:38', 'Welcome ;)');
 
 -- --------------------------------------------------------
 
@@ -923,14 +944,14 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}poller` (
   `starterID` mediumint(8) NOT NULL DEFAULT '0',
   `active` enum('yes','no') NOT NULL DEFAULT 'no',
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `{$db_prefix}poller`
 --
 
 INSERT INTO `{$db_prefix}poller` (`ID`, `startDate`, `endDate`, `pollerTitle`, `starterID`, `active`) VALUES
-(1, UNIX_TIMESTAMP(), 0, 'How would you rate this script?', 2, 'yes');
+(1, 1275950558, 0, 'How would you rate this script?', 2, 'yes');
 
 -- --------------------------------------------------------
 
@@ -1163,7 +1184,9 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('price_name', '999999'),
 ('irc_server', 'irc.freenode.net'),
 ('irc_port', '6667'),
-('irc_channel', 'test_only');
+('irc_channel', 'test_only'),
+('inv_login', 'false'),
+('att_login', '99');
 
 -- --------------------------------------------------------
 
@@ -1231,8 +1254,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}tasks` (
 --
 
 INSERT INTO `{$db_prefix}tasks` (`task`, `last_time`) VALUES
-('sanity', UNIX_TIMESTAMP()),
-('update', UNIX_TIMESTAMP());
+('sanity', 1275950559),
+('update', 1275950559);
 
 -- --------------------------------------------------------
 
@@ -1383,7 +1406,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
 --
 
 INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `pm_mail_notify`, `status_comment_notify`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`, `custom_title`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `seedbonus`) VALUES
-(1, 'Guest', '', 1, 0, 'none', 'true', 'true', 1, 1, 'NOW()', 'NOW()', 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 'no', '', '0000-00-00 00:00:00', 0, '', NULL, 0, 0, 0, '0000-00-00 00:00:00', '0.000000');
+(1, 'Guest', '', 1, 0, 'none', 'true', 'true', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 'no', '', '0000-00-00 00:00:00', 0, '', NULL, 0, 0, 0, '0000-00-00 00:00:00', '0.000000');
 
 -- --------------------------------------------------------
 

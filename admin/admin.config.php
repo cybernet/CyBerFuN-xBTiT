@@ -96,6 +96,8 @@ switch ($action)
         $btit_settings["clocktype"] = $_POST["clocktype"];
         $btit_settings["forumblocktype"] = $_POST["forumblocktype"];
         $btit_settings["newslimit"] = $_POST["newslimit"];
+		$btit_settings["inv_login"] = $_POST["inv_login"];
+        $btit_settings["att_login"] = $_POST["att_login"];
         $btit_settings["forumlimit"] = $_POST["forumlimit"];
         $btit_settings["last10limit"] = $_POST["last10limit"];
         $btit_settings["mostpoplimit"] = $_POST["mostpoplimit"];
@@ -252,6 +254,8 @@ switch ($action)
         $btit_settings["forumblockposts"] = ($btit_settings["forumblocktype"]?"checked=\"checked\"":"");
         $btit_settings["forumblocktopics"] = (!$btit_settings["forumblocktype"]?"checked=\"checked\"":"");
         $btit_settings["xbtt_use"] = ($btit_settings["xbtt_use"]=="true"?"checked=\"checked\"":"");
+		$btit_settings["inv_loginyes"] = ($btit_settings["inv_login"]?"checked=\"checked\"":"");
+        $btit_settings["inv_loginno"] = (!$btit_settings["inv_login"]?"checked=\"checked\"":"");
         $btit_settings["imageonyes"] = ($btit_settings["imageon"]?"checked=\"checked\"":"");
         $btit_settings["imageonno"] = (!$btit_settings["imageon"]?"checked=\"checked\"":"");
         $btit_settings["screenonyes"] = ($btit_settings["screenon"]?"checked=\"checked\"":"");

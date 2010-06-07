@@ -62,7 +62,11 @@ if ($XBTT_USE) {
        $x = $arr['pid'];
        quickQuery("UPDATE {$TABLE_PREFIX}users SET seedbonus = seedbonus+".$GLOBALS["bonus"]."*".$clean_interval."/3600 WHERE pid = '$x'");
        }
-   } }
+   } 
+   }
+//Invalid Login System Hack Start
+mysql_query("DELETE FROM {$TABLE_PREFIX}bannedip WHERE comment='max_number_of_invalid_logins_reached'");
+//invalid Login System Hack Stop
          // SANITY FOR TORRENTS
          $results = do_sqlquery("SELECT info_hash, seeds, leechers, dlbytes, filename FROM {$TABLE_PREFIX}files WHERE external='no'");
          $i = 0;
