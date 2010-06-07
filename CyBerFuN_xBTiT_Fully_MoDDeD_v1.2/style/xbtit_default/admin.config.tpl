@@ -219,12 +219,12 @@
       <td class="lista"><input type="text" name="limit_im" value="<tag:config.limit_im />" size="40" /></td>
     </tr>
 	<tr>
-      <td class="header" align="center" colspan="4">Invalid Login System Check</td>
+      <td class="header" align="center" colspan="4"><tag:language.CyBerFuN_invalid_login_system_check /></td>
     </tr>
     <tr>
-      <td class="header">Allowed login attempts</td>
+      <td class="header"><tag:language.CyBerFuN_allowed_login_attempts /></td>
       <td class="lista"><input type="text" name="att_login" value="<tag:config.att_login />" size="4" /></td>
-          <td class="header">Enable invalid login check</td>
+      <td class="header"><tag:language.CyBerFuN_enable_invalid_login_check /></td>
      <td class="lista">&nbsp;&nbsp;enable&nbsp;<input type="radio" name="inv_login" value="true"<tag:config.inv_loginyes /> />&nbsp;&nbsp;disabled&nbsp;<input type="radio" name="inv_login" value="false"<tag:config.inv_loginno /> /></td>
     </tr>
     <tr>
