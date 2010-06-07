@@ -54,6 +54,6 @@ function form_control()
 </tr>
     </table>
     </form>
-<?
+<?php
 block_end();
 ?>
