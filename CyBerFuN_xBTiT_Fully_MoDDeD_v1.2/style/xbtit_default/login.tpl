@@ -23,6 +23,8 @@ function form_control()
   }
 </script>
 <form method="post" onsubmit="return form_control()" action="<tag:login.action />">
+  <tag:count />
+  <tag:last />
   <table align="center" class="lista" border="0" cellpadding="10">
     <if:FALSE_USER>
     <tr>
