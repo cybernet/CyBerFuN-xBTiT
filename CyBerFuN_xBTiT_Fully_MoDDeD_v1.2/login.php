@@ -166,7 +166,7 @@ if (isset($_POST["uid"]) && isset($_POST["pwd"]))
 			mysql_query("DELETE FROM {$TABLE_PREFIX}invalid_logins WHERE ip='".sprintf("%u", ip2long($ip))."' LIMIT 1") or sqlerr();
 			}
          // Invalid Login System Hack Stop
-          $logintpl->set("login_username_incorrent", $language["ERR_USERNAME_INCORRECT"]);
+          $logintpl->set("login_username_incorrect", $language["ERR_USERNAME_INCORRECT"]);
           login();
         }
     elseif (md5($row["random"].$row["password"].$row["random"]) != md5($row["random"].md5($pwd).$row["random"]))
@@ -191,7 +191,7 @@ if (isset($_POST["uid"]) && isset($_POST["pwd"]))
 			mysql_query("DELETE FROM {$TABLE_PREFIX}invalid_logins WHERE ip='".sprintf("%u", ip2long($ip))."' LIMIT 1") or sqlerr();
 			}
            // Invalid Login System Hack Stop
-          $logintpl->set("login_password_incorrent", $language["ERR_PASSWORD_INCORRECT"]);
+          $logintpl->set("login_password_incorrect", $language["ERR_PASSWORD_INCORRECT"]);
           login();
         }
     else
