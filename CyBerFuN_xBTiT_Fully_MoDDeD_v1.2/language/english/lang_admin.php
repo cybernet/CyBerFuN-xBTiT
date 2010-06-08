@@ -352,4 +352,6 @@ $language["CyBerFuN_invalid_login_system_check"] = "Invalid Login System Check";
 $language["CyBerFuN_allowed_login_attempts"] = "Allowed login attempts";
 $language["CyBerFuN_enable_invalid_login_check"] = "Enable invalid login check";
 // Invalid Login System Language End by cybernet2u
+// GOLD
+$language["ACP_GOLD"] = "Gold torrents settings";
 ?>

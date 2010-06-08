@@ -100,7 +100,10 @@ else
                     "description"=>$language["ACP_VISIBLE_TORRENTS"]),
                           2=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=sticky" ,
-                    "description"=>$language["ACP_STICKY_TORRENTS"])
+                    "description"=>$language["ACP_STICKY_TORRENTS"]),
+                          3=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=gold" ,
+                    "description"=>$language["ACP_GOLD"])
 )
             ),
 

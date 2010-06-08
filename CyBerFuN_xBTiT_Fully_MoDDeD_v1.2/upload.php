@@ -112,6 +112,14 @@ else
 if (isset($hash) && $hash) $url = $TORRENTSDIR . "/" . $hash . ".btf";
 else $url = 0;
 
+// mod gold
+$gold = mysql_real_escape_string(0);
+// setting gold post var
+if (isset($_POST["gold"]) && $_POST["gold"] != '')
+{
+   $gold = mysql_real_escape_string($_POST["gold"]);
+}
+// end gold mod
 
     /*Mod by losmi - sticky mod
     Operation #1*/
@@ -514,6 +522,8 @@ Mod by losmi -visible torrent
          }
          // try to chmod new moved file, on some server chmod without this could result 600, seems to be php bug
          @chmod($TORRENTSDIR . "/" . $hash . ".btf",0766);
+		 // gold/silver torrent
+             do_sqlquery("UPDATE {$TABLE_PREFIX}files SET gold='$gold' WHERE info_hash=\"$hash\"");
 //         if ($announce!=$BASEURL."/announce.php")
         if (!in_array($announce, $TRACKER_ANNOUNCEURLS))
             {
@@ -642,8 +652,25 @@ case 0:
           $category = 0;
 
       $combo_categories = categories( $category[0] );
-
-      $bbc = textbbcode("upload", "info");
+	  $gold_level = '';
+       $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+            foreach ($res as $key=>$value)
+            {
+                $gold_level = $value["level"];
+                
+            } 
+            
+            if($gold_level>$CURUSER['id_level'])
+            {
+                 $uploadtpl->set("upload_gold_level",false,true);
+            }
+            else 
+            {
+                 $uploadtpl->set("upload_gold_level",true,true);
+            }
+      $gold_select_box = createGoldCategories();
+      $uploadtpl->set("upload_gold_combo",$gold_select_box);
+	  $bbc = textbbcode("upload", "info");
       $uploadtpl->set("upload.announces", $announcs);
       $uploadtpl->set("upload_categories_combo", $combo_categories);
       $uploadtpl->set("textbbcode",  $bbc);

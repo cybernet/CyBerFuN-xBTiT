@@ -576,6 +576,29 @@ function killPeer($userid, $hash, $left, $assumepeer = false)
     }
 }
 
+/*mod gold - Gold method checks is torrent set to gold silver or classic*/
+function checkGold($info_hash,$downloaded)
+{
+    global $TABLE_PREFIX;
+     $re = mysql_query("SELECT gold FROM {$TABLE_PREFIX}files 
+                           WHERE info_hash=\"$info_hash\"");
+     $gold = mysql_fetch_assoc($re);
+
+    if ($gold['gold'] == 1) // silver torrent go go leach
+     {
+        $downloaded = (int)$downloaded/2;
+     }
+     else if($gold['gold'] == 2) // gold torrent go go leach
+     {
+        $downloaded = 0;
+     }
+     else 
+     {
+        // classic torrent
+     }
+     return $downloaded;
+}
+//end mod gold
 
 // Transfers bytes from "left" to "dlbytes" when a peer reports in.
 function collectBytes($peer, $hash, $left, $downloaded = 0, $uploaded = 0, $pid = "")
@@ -584,6 +607,9 @@ function collectBytes($peer, $hash, $left, $downloaded = 0, $uploaded = 0, $pid 
   global $TABLE_PREFIX;
 
     $peerid = $peer["peer_id"];
+	// gold mod
+     $downloaded = checkGold($info_hash,$downloaded);
+    // end gold mod
 
     ################################################################################################
     # Speed stats in peers with filename
@@ -704,7 +730,9 @@ if ($LIVESTATS)
          //else
          //      $newdown=$downloaded;
          // rev 485
-
+	 // gold mod
+     $newdown = checkGold($info_hash,$newdown);
+     // end gold mod
          quickquery("UPDATE {$TABLE_PREFIX}users SET downloaded=IFNULL(downloaded,0)+$newdown, uploaded=IFNULL(uploaded,0)+$newup WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")."");
          }
        mysql_free_result($resstat);
@@ -759,11 +787,15 @@ switch ($event)
        killPeer($peer_id, $info_hash, $left);
 
        sendRandomPeers($info_hash);
-// cyberfun
+	   
        // update user uploaded/downloaded
        if (!$LIVESTATS)
+	   {
+        //gold mod
+        $downloaded = checkGold($info_hash,$downloaded);
             @mysql_query("UPDATE {$TABLE_PREFIX}users SET uploaded=IFNULL(uploaded,0)+$uploaded, downloaded=IFNULL(downloaded,0)+$downloaded WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")." AND id>1 LIMIT 1");
-
+	   }
+       // end gold mod
        // begin history - if LIVESTAT, only the active/agent part
        if ($LOG_HISTORY)
          {
@@ -788,6 +820,9 @@ switch ($event)
             start($info_hash, $ip, $port, $peer_id, $left, $downloaded, $uploaded, $pid);
         else
         {
+		    // gold mod
+            $downloaded = checkGold($info_hash,$downloaded);
+            // end gold mod
             quickQuery("UPDATE {$TABLE_PREFIX}peers SET bytes=0, status=\"seeder\", lastupdate=UNIX_TIMESTAMP(), downloaded=$downloaded, uploaded=$uploaded, pid=\"$pid\" WHERE sequence=\"".$GLOBALS["trackerid"]."\" AND infohash=\"$info_hash\"");
 
             // Race check

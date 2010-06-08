@@ -475,7 +475,6 @@ $language["FAQ_QUESTION"] = "Faq question";
 $language["FAQ_ANSWER"] = "Answer";
 $language["FAQ_QUESTION_ADD"] = "Insert Faq guestion/answer";
 $language["FAQ_QUESTION_SEARCH_ALL"] = "Search all...";
-
 // Revalidation Block
 $language['ERR_NOT_VALIDATED_1'] = 'Your account is not yet validated and most of the features of this tracker are disabled for this rank. If you wish to resend the validation email to the account listed on your record';
 $language['ERR_NOT_VALIDATED_2'] = 'please click the button below.<br /><br />If you have already attempted this and are still having problems then you can change the email to another one by clicking ';
@@ -487,5 +486,12 @@ $language['VALIDATION_SENT_TO_2'] = 'You will need to click on the link containe
 // Sticky
 $language['STICKY_TORRENT'] = '<b>Sticky</b>';
 $language['STICKY_TORRENT_EXPLAIN'] = '( Always on top of the torrent list )';
-
+// GOLD
+$language["GOLD_TYPE"]="Torrent type";
+$language["GOLD_PICTURE"]="Gold picture";
+$language["SILVER_PICTURE"]="Silver picture";
+$language["GOLD_DESCRIPTION"]="Gold description";
+$language["SILVER_DESCRIPTION"]="Silver description";
+$language["CLASSIC_DESCRIPTION"]="Classic description";
+$language["GOLD_LEVEL"]="Who can add gold/silver torrents";
 ?>

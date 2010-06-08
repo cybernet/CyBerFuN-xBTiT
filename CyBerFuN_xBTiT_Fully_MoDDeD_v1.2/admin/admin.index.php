@@ -110,6 +110,11 @@ switch ($do)
       include("$ADMIN_PATH/admin.duplicates.php");
       $tpl->set("main_content",set_block($language["DUPLICATES"],"center",$admintpl->fetch(load_template("admin.duplicates.tpl"))));
       break;
+	  
+	case 'gold':
+          include("$ADMIN_PATH/admin.gold.php");
+          $tpl->set("main_content",set_block($language["ACP_GOLD"],"center",$admintpl->fetch(load_template("admin.gold.tpl"))));
+          break;
 
     case 'visible':
       include("$ADMIN_PATH/admin.visible.php");

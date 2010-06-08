@@ -593,6 +593,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
   `visible` int(11) NOT NULL DEFAULT '1',
   `sticky` enum('0','1') NOT NULL DEFAULT '0',
   `tag` text,
+  `gold` enum('0','1','2') NOT NULL DEFAULT '0',
   PRIMARY KEY (`info_hash`),
   KEY `filename` (`filename`),
   KEY `category` (`category`),
@@ -652,6 +653,32 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}forums` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `{$db_prefix}gold`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `level` int(11) NOT NULL DEFAULT '4',
+  `gold_picture` varchar(255) NOT NULL DEFAULT 'gold.gif',
+  `silver_picture` varchar(255) NOT NULL DEFAULT 'silver.gif',
+  `active` enum('-1','0','1') NOT NULL DEFAULT '1',
+  `date` date NOT NULL DEFAULT '0000-00-00',
+  `gold_description` text NOT NULL,
+  `silver_description` text NOT NULL,
+  `classic_description` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `{$db_prefix}gold`
+--
+
+INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`, `active`, `date`, `gold_description`, `silver_description`, `classic_description`) VALUES
+(1, 3, 'gold.gif', 'silver.gif', '1', '0000-00-00', 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `{$db_prefix}hacks`
 --
 
@@ -670,7 +697,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}hacks` (
 --
 
 INSERT INTO `{$db_prefix}hacks` (`id`, `title`, `version`, `author`, `added`, `folder`) VALUES
-(1, 'email_notification', '3.1.0', 'Original author: signo | based on smacked1''s hack', 0, 'email_notification');
+(1, 'email_notification', '3.1.1', 'Original author: signo | based on smacked1''s hack', 0, 'email_notification');
+
 
 -- --------------------------------------------------------
 
