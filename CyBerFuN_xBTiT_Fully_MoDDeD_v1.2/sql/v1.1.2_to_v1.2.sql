@@ -12,7 +12,7 @@ UPDATE `{$db_prefix}users_level` SET `prefixcolor` = '<span style=''color:#00000
 UPDATE `{$db_prefix}users_level` SET `prefixcolor` = '<span style=''color:#428D67''>' WHERE `{$db_prefix}users_level`.`id` =6;
 UPDATE `{$db_prefix}users_level` SET `prefixcolor` = '<span style=''color:#FF8000''>' WHERE `{$db_prefix}users_level`.`id` =7;
 INSERT INTO `{$db_prefix}settings` SET `key`='inv_login', `value`='false';
-INSERT INTO `{$db_prefix}settings` SET `key`='att_login', `value`='99';
+INSERT INTO `{$db_prefix}settings` SET `key`='att_login', `value`='5';
 CREATE TABLE `{$db_prefix}invalid_logins` (
 `id` int( 10 ) unsigned NOT NULL AUTO_INCREMENT ,
 `ip` bigint( 11 ) default '0',

@@ -64,9 +64,9 @@ if ($XBTT_USE) {
        }
    } 
    }
-//Invalid Login System Hack Start
+// Invalid Login System Hack Start
 mysql_query("DELETE FROM {$TABLE_PREFIX}bannedip WHERE comment='max_number_of_invalid_logins_reached'");
-//invalid Login System Hack Stop
+// Invalid Login System Hack Stop
          // SANITY FOR TORRENTS
          $results = do_sqlquery("SELECT info_hash, seeds, leechers, dlbytes, filename FROM {$TABLE_PREFIX}files WHERE external='no'");
          $i = 0;
