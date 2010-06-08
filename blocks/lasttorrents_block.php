@@ -23,9 +23,9 @@ else
   <?php
 
   if ($XBTT_USE)
-     $sql = "SELECT f.image as img, f.info_hash as hash, f.seeds+ifnull(x.seeders,0) as seeds , f.leechers + ifnull(x.leechers,0) as leechers, dlbytes AS dwned, format(f.finished+ifnull(x.completed,0),0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN xbt_files x ON f.bin_hash=x.info_hash LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE f.leechers + ifnull(x.leechers,0) + f.seeds+ifnull(x.seeders,0) > 0 ORDER BY data DESC LIMIT " . $GLOBALS["block_last10limit"];
+     $sql = "SELECT f.gold as gold, f.image as img, f.info_hash as hash, f.seeds+ifnull(x.seeders,0) as seeds , f.leechers + ifnull(x.leechers,0) as leechers, dlbytes AS dwned, format(f.finished+ifnull(x.completed,0),0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN xbt_files x ON f.bin_hash=x.info_hash LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE f.leechers + ifnull(x.leechers,0) + f.seeds+ifnull(x.seeders,0) > 0 ORDER BY data DESC LIMIT " . $GLOBALS["block_last10limit"];
   else
-     $sql = "SELECT f.image as img, info_hash as hash, seeds, leechers, dlbytes AS dwned, format(finished,0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE leechers + seeds > 0 ORDER BY data DESC LIMIT " . $GLOBALS["block_last10limit"];
+     $sql = "SELECT f.gold as gold, f.image as img, info_hash as hash, seeds, leechers, dlbytes AS dwned, format(finished,0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE leechers + seeds > 0 ORDER BY data DESC LIMIT " . $GLOBALS["block_last10limit"];
 
      $row = get_result($sql,true,$btit_settings['cache_duration']);
   ?>
@@ -56,8 +56,27 @@ if (max(0,$CURUSER["WT"]) > 0)
       echo "<a href=\"download.php?id=".$data["hash"]."&amp;f=" . rawurlencode($data["filename"]) . ".torrent\"><img src='images/torrent.gif' border='0' alt='".$language["DOWNLOAD_TORRENT"]."' title='".$language["DOWNLOAD_TORRENT"]."' /></a>";
       echo "</td>";
 
-       $data["filename"]=unesc($data["filename"]);
-       $filename=cut_string($data["filename"],intval($btit_settings["cut_name"]));
+       $data["filename"] = unesc($data["filename"]);
+       $filename = cut_string($data["filename"],intval($btit_settings["cut_name"]));
+	   // gold mod
+     $silver_picture = '';
+     $gold_picture = '';
+     $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+            foreach ($res as $key=>$value)
+            {
+                $silver_picture = $value["silver_picture"];
+                $gold_picture = $value["gold_picture"];
+            }
+        $gold = '';
+        if($data['gold'] == 1)
+        {
+        $gold = '<img src="gold/'.$silver_picture.'" alt="silver"/>';
+        }
+        if($data['gold'] == 2)
+        {
+        $gold = '<img src="gold/'.$gold_picture.'" alt="gold"/>';
+        }
+        // end gold mod
 // Start baloon hack DT
 $hover=($data["img"]);
 if ($hover=="")
@@ -67,9 +86,9 @@ if ($hover=="")
 // End baloon hack DT
 
        if ($GLOBALS["usepopup"])
-           echo "\n\t<td width=\"45%\" class=\"lista\" style=\"padding-left:10px;\"><a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id="  . $data['hash'] . "');\" onmouseover=\" return overlib('<img src=".$GLOBALS["uploaddir"]."/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">" . $filename . "</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">Multi.</span>)")."</td>";
+           echo "\n\t<td width=\"45%\" class=\"lista\" style=\"padding-left:10px;\"><a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id="  . $data['hash'] . "');\" onmouseover=\" return overlib('<img src=".$GLOBALS["uploaddir"]."/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">" . $filename . "</a>".$gold.($data["external"]=="no"?"":" (<span style=\"color:red\">Multi.</span>)")."</td>";
        else
-     echo "\n\t<td width=\"45%\" class=\"lista\" style=\"padding-left:10px;\"><a href=\"index.php?page=torrent-details&amp;id=" . $data['hash'] . "\" onmouseover=\" return overlib('<img src=".$GLOBALS["uploaddir"]."/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">" . $filename . "</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">Multi.</span>)")."</td>";
+     echo "\n\t<td width=\"45%\" class=\"lista\" style=\"padding-left:10px;\"><a href=\"index.php?page=torrent-details&amp;id=" . $data['hash'] . "\" onmouseover=\" return overlib('<img src=".$GLOBALS["uploaddir"]."/" . $balon . " width=200 border=0>', CENTER);\" onmouseout=\"return nd();\">" . $filename . "</a>".$gold.($data["external"]=="no"?"":" (<span style=\"color:red\">Multi.</span>)")."</td>";
        echo "\n\t<td align=\"center\" class=\"lista\" width=\"45\" style=\"text-align: center;\"><a href=\"index.php?page=torrents&amp;category=$data[catid]\">" . image_or_link( ($data["image"] == "" ? "" : "$STYLEPATH/images/categories/" . $data["image"]), "", $data["cname"]) . "</a></td>";
 
     //waitingtime
