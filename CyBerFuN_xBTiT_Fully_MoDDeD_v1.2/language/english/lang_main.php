@@ -502,4 +502,6 @@ $language['IGNORE2']='Unable to send';
 $language['IGNORE_USERS']='Ignore user';
 $language['SINCE_IGNORE']='Since when ignore';
 $language['DELETE_IGNORE']='Cancel ignore';
+// friend list
+$language["FRIENDLIST"] = "Friendlist";
 ?>

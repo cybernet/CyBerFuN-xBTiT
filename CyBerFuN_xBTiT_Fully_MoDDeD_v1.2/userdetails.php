@@ -132,6 +132,7 @@ else
 $utorrents = intval($CURUSER["torrentsperpage"]);
 
 $userdetailtpl = new bTemplate();
+$userdetailtpl-> set("friend","<a href=index.php?page=friendlist&do=add&friend_id=".$id."><font color=green>add to friendlist</font></a>");
 $hmm = mysql_query("SELECT * FROM {$TABLE_PREFIX}ignore WHERE ignore_id = ".$id." AND user_id = ".$CURUSER['uid']);
 
 if (mysql_num_rows($hmm)){
