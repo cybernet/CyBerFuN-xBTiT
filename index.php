@@ -216,6 +216,14 @@ switch ($pageID) {
         $tpl->set("main_title",$btit_settings["name"]." .::. "."Torrent Delete");
         break;
 
+// friendlist
+    case 'friendlist':
+        require("$THIS_BASEPATH/friendlist.php");
+        $tpl->set("main_content",set_block($language["FRIENDLIST"],"center",$friendtpl->fetch(load_template("friendlist.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. """.$language["FRIENDLIST"]."");
+        break;
+// end friendlist
+
     case 'edit':
         require("$THIS_BASEPATH/edit.php");
         $tpl->set("main_content",set_block($language["EDIT_TORRENT"],"center",$torrenttpl->fetch(load_template("torrent.edit.tpl"))));

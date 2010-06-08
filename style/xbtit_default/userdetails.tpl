@@ -15,7 +15,11 @@
     </if:userdetail_has_avatar>
 
   </tr>
-
+  </tr>
+      <tr>
+      <td class="header">Friendlist</td>
+      <td class="lista"><tag:friend /></td>
+  </tr>
   <tr>
 
     <td class="header"><tag:language.LIST_IGNORE /></td>

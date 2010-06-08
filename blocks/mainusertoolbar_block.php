@@ -30,6 +30,9 @@ if ($CURUSER["admin_access"] == "yes")
    print("\n<td align=\"center\" style=\"text-align:center;\"><a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."\">".$language["MNU_ADMINCP"]."</a></td>\n");
 
 print("<td style=\"text-align:center;\" align=\"center\"><a href=\"index.php?page=usercp&amp;uid=".$CURUSER["uid"]."\">".$language["USER_CP"]."</a></td>\n");
+// friendlist
+print("<td style=\"text-align:center;\" align=\"center\"><a href=\"index.php?page=friendlist&amp;uid=".$CURUSER["uid"]."\">Friendlist</a></td>\n");
+// end friendlist
 
 if($INVITATIONSON)
 {
@@ -44,7 +47,7 @@ if($FORUMLINK == "smf")
     $resmail = get_result("SELECT unreadMessages as ur FROM {$db_prefix}members WHERE ID_MEMBER=".$CURUSER["smf_fid"],true,$btit_settings['cache_duration']);
 else
     $resmail = get_result("SELECT COUNT(*) as ur FROM {$TABLE_PREFIX}messages WHERE readed='no' AND receiver=$CURUSER[uid]",true,$btit_settings['cache_duration']);
-if ($resmail && count($resmail)>0)
+if ($resmail && count($resmail) > 0)
    {
     $mail = $resmail[0];
     if ($mail['ur'] > 0)
