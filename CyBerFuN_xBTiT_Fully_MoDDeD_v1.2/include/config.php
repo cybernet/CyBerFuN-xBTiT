@@ -135,6 +135,8 @@ function apply_default_settings() {
     if (!array_key_exists('invitation_only',$btit_settings)) $btit_settings['invitation_only'] = false;
     if (!array_key_exists('invitation_reqvalid',$btit_settings)) $btit_settings['invitation_reqvalid'] = false;
     if (!array_key_exists('uploaddir',$btit_settings)) $btit_settings['uploaddir'] = 'cyberfun_img/';
+	if (!array_key_exists('inv_login',$btit_settings)) $btit_settings['inv_login'] = false;
+	if (!array_key_exists('att_login',$btit_settings)) $btit_settings['att_login'] = '5';
 }
 
 $btit_settings = get_cached_config('SELECT `key`,`value` FROM '.$TABLE_PREFIX.'settings',$reload_cfg_interval);
