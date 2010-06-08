@@ -216,7 +216,7 @@ if ($CURUSER["edit_users"] == "yes")
 if ($CURUSER["delete_users"] == "yes")
   $userstpl->set("users_delete", $language["DELETE"]);
           
-$query = "select prefixcolor, suffixcolor, u.id, $udownloaded as downloaded, $uuploaded as uploaded, IF($udownloaded>0,$uuploaded/$udownloaded,0) as ratio, username, level, UNIX_TIMESTAMP(joined) AS joined,UNIX_TIMESTAMP(lastconnect) AS lastconnect, flag, flagpic, c.name as name, u.warn, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id>1 $where ORDER BY $order $by $limit";
+$query = "select ul.id_level, prefixcolor, suffixcolor, u.id, $udownloaded as downloaded, $uuploaded as uploaded, IF($udownloaded>0,$uuploaded/$udownloaded,0) as ratio, username, level, UNIX_TIMESTAMP(joined) AS joined,UNIX_TIMESTAMP(lastconnect) AS lastconnect, flag, flagpic, c.name as name, u.warn, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id>1 $where ORDER BY $order $by $limit";
 
 $rusers = get_result($query, true, $btit_settings['cache_duration']);
 $userstpl->set("no_users", ($count == 0), TRUE);
@@ -233,8 +233,16 @@ foreach ($rusers as $id=>$row_user)
   $users[$i]["joined"] = $row_user["joined"] == 0 ? $language["NOT_AVAILABLE"] : date("d/m/Y H:i:s", $row_user["joined"] - $offset);
   $users[$i]["lastconnect"] = $row_user["lastconnect"] == 0 ? $language["NOT_AVAILABLE"] : date("d/m/Y H:i:s", $row_user["lastconnect"] - $offset);
   $users[$i]["flag"] = $row_user["flag"] == 0 ? "<img src='images/flag/unknown.gif' alt='".$language["UNKNOWN"]."' title='".$language["UNKNOWN"]."' />" : "<img src='images/flag/" . $row_user['flagpic'] . "' alt='" . $row_user['name'] . "' title='" . $row_user['name'] . "' />";
+$hmm = mysql_query("SELECT * FROM {$TABLE_PREFIX}ignore WHERE ignore_id = ".$row_user['id']." AND user_id = ".$CURUSER['uid']);
+if (mysql_num_rows($hmm)){
+if ($row_user["id_level"] < 6)
+$users[$i]["ignore"] ="<font color=red>Ignored</font>";
+} 
+else
+if ($row_user["id_level"] < 6)
+  $users[$i]["ignore"] ="<a href=index.php?page=usercp&uid=".$CURUSER["uid"]."&do=ignore&action=add&ignore_id=".$row_user["id"]."><font color=orange>Ignore him!</font></a>";
                        
-//user ratio
+// user ratio
 if (intval($row_user["downloaded"]) > 0)
   $ratio = number_format($row_user["uploaded"] / $row_user["downloaded"], 2);
 else

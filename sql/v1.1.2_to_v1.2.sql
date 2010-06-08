@@ -37,3 +37,12 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
 ) TYPE=MyISAM;
 INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`, `active`, `date`, `gold_description`, `silver_description`, `classic_description`) VALUES
 (1, 3, 'gold.gif', 'silver.gif', '1', '0000-00-00', 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
+CREATE TABLE IF NOT EXISTS `{$db_prefix}ignore` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `user_id` int(10) unsigned NOT NULL default '0',
+  `ignore_id` int(10) unsigned NOT NULL default '0',
+  `ignore_name` varchar(250) NOT NULL default '',
+  `added` datetime NOT NULL default '0000-00-00 00:00:00',
+  PRIMARY KEY  (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;

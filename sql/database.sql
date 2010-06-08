@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 08, 2010 at 02:05 AM
+-- Generation Time: Jun 08, 2010 at 03:44 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.2
 
@@ -719,6 +719,27 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}history` (
 
 --
 -- Dumping data for table `{$db_prefix}history`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}ignore`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}ignore` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `ignore_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `ignore_name` varchar(250) NOT NULL DEFAULT '',
+  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}ignore`
 --
 
 

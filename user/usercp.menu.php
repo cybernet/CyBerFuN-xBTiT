@@ -72,5 +72,11 @@ $usercp_menu=array(
                 "url"=>"index.php?page=usercp&amp;do=invite&amp;action=read&amp;uid=".$uid."" ,
                 "description"=>$language["MNU_UCP_INVITATIONS"]), 
                              )),
+4=>array(
+        "title"=>$language["IGN_OTHER"],
+        "menu"=>array(1=>array(
+                "url"=>"index.php?page=usercp&amp;uid=".$uid."&amp;do=ignore&amp;uid=".$uid."" ,
+                "description"=>$language["IGNORE1"]), 
+                )),
 );
 ?>

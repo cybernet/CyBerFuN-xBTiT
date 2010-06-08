@@ -494,4 +494,12 @@ $language["GOLD_DESCRIPTION"]="Gold description";
 $language["SILVER_DESCRIPTION"]="Silver description";
 $language["CLASSIC_DESCRIPTION"]="Classic description";
 $language["GOLD_LEVEL"]="Who can add gold/silver torrents";
+// ign
+$language['IGN_OTHER']='Other';
+$language['LIST_IGNORE']='Ignore';
+$language['IGNORE1']='Ignore users';
+$language['IGNORE2']='Unable to send';
+$language['IGNORE_USERS']='Ignore user';
+$language['SINCE_IGNORE']='Since when ignore';
+$language['DELETE_IGNORE']='Cancel ignore';
 ?>

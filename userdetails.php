@@ -87,7 +87,7 @@ else
 
 
 if ($id > 1) {
-   $res = get_result("SELECT u.seedbonus, u.invited_by, u.invitations, u.custom_title, u.warn, u.warnreason, u.warns, u.warnadded, u.warnaddedby, u.avatar, u.email, u.cip, u.username, $udownloaded as downloaded,$uuploaded as uploaded, UNIX_TIMESTAMP(u.joined) as joined, UNIX_TIMESTAMP(u.lastconnect) as lastconnect, ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id", true, $btit_settings['cache_duration']);
+   $res = get_result("SELECT ul.id_level, u.seedbonus, u.invited_by, u.invitations, u.custom_title, u.warn, u.warnreason, u.warns, u.warnadded, u.warnaddedby, u.avatar, u.email, u.cip, u.username, $udownloaded as downloaded,$uuploaded as uploaded, UNIX_TIMESTAMP(u.joined) as joined, UNIX_TIMESTAMP(u.lastconnect) as lastconnect, ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id", true, $btit_settings['cache_duration']);
    $num = count($res);
    if ($num == 0)
       {
@@ -132,6 +132,17 @@ else
 $utorrents = intval($CURUSER["torrentsperpage"]);
 
 $userdetailtpl = new bTemplate();
+$hmm = mysql_query("SELECT * FROM {$TABLE_PREFIX}ignore WHERE ignore_id = ".$id." AND user_id = ".$CURUSER['uid']);
+
+if (mysql_num_rows($hmm)){
+if ($row["id_level"] < 6)
+$userdetailtpl-> set("ign","<font color=orange>User is already ignored</font>");  
+} 
+else
+if ($row["id_level"] < 6)
+$userdetailtpl-> set("ign","<a href=index.php?page=usercp&uid=".$CURUSER["uid"]."&do=ignore&action=add&ignore_id=".$id."><font color=orange>Ignore user</font></a>");       
+if ($row["id_level"] > 5)
+$userdetailtpl-> set("ign","<font color=orange>Staff can not Ignore</font>");
 $userdetailtpl-> set("language",$language);
 $userdetailtpl-> set("userdetail_username", unesc($row["username"]). warn($row, true));
 //$userdetailtpl-> set("userdetail_no_guest", $CURUSER["uid"] > 1, TRUE);

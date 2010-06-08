@@ -111,7 +111,11 @@ switch ($action)
              else
                  do_sqlquery("INSERT INTO {$TABLE_PREFIX}messages (sender, receiver, added, subject, msg) VALUES ($send,$rec,UNIX_TIMESTAMP(),$subject,$msg)") or die(mysql_error());
              */
-
+$hmm = mysql_query("SELECT * FROM {$TABLE_PREFIX}ignore WHERE ignore_id = '$uid' AND user_id = '$rec' ");
+if (mysql_num_rows($hmm)){
+redirect("index.php?page=usercp&uid=".$uid."&do=ign");
+}
+else
              // replaced by send_pm function
              send_pm($CURUSER['uid'], $rec, $subject, $msg);
 // beta
