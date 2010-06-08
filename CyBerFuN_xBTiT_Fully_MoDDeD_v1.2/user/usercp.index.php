@@ -97,6 +97,16 @@ switch ($do)
     $tpl->set("main_content", set_block($language["CHANGE_PID"], "center", $usercptpl->fetch(load_template("usercp.pidchange.tpl"))));
     break;
 
+    case 'ignore':
+    include("$USER_PATH/usercp.ignore.php");
+    $tpl->set("main_content",set_block($language["IGNORE1"],"center",$usercptpl->fetch(load_template("usercp.ignore.tpl"))));
+    break;
+
+    case 'ign':
+    include("$USER_PATH/usercp.ignchyba.php");
+    $tpl->set("main_content",set_block($language["IGNORE2"],"center",$usercptpl->fetch(load_template("usercp.ignchyba.tpl"))));
+    break;
+
     case 'invite':
     include("$USER_PATH/usercp.invitations.php");
     $tpl->set("main_content", set_block($language["MNU_UCP_INVITATIONS"], "center", $usercptpl->fetch(load_template("usercp.invitations.tpl"))));

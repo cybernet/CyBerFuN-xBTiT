@@ -66,6 +66,7 @@
         <td class="header" align="center"><tag:users_pm /></td>
         <td class="header" align="center"><tag:users_edit /></td>
         <td class="header" align="center"><tag:users_delete /></td>
+	<td class="header" align="center"><tag:language.LIST_IGNORE /></td>
       </tr>
       <if:no_users>
         <tr>
@@ -83,6 +84,7 @@
             <td class="lista" align="center" style="text-align: center;"><tag:users[].pm /></td>
             <td class="lista" align="center" style="text-align: center;"><tag:users[].edit /></td>
             <td class="lista" align="center" style="text-align: center;"><tag:users[].delete /></td>
+	    <td class="lista" align="center" style="text-align: center;"><tag:users[].ignore /></td>
           </tr>
         </loop:users>
       </if:no_users>

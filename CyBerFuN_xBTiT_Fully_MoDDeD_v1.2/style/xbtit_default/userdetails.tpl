@@ -16,6 +16,14 @@
 
   </tr>
 
+  <tr>
+
+    <td class="header"><tag:language.LIST_IGNORE /></td>
+
+    <td class="lista" ><tag:ign /></td>
+
+  </tr>
+
   <if:userdetail_edit_admin>
 
   <tr>
