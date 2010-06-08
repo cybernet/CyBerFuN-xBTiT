@@ -23,8 +23,6 @@ function form_control()
   }
 </script>
 <form method="post" onsubmit="return form_control()" action="<tag:login.action />">
-  <tag:count />
-  <tag:last />
   <table align="center" class="lista" border="0" cellpadding="10">
     <if:FALSE_USER>
     <tr>
@@ -34,6 +32,8 @@ function form_control()
     <if:FALSE_PASSWORD>
     <tr>
       <td align="center" class="lista" colspan="2"><span style="color:#FF0000;"><tag:login_password_incorrent /></span></td>
+	  <tag:count />
+	  <tag:last />
     </tr>
     </if:FALSE_PASSWORD>
     <tr>

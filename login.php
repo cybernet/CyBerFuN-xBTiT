@@ -47,7 +47,7 @@ require_once(load_language("lang_login.php"));
 dbconn();
 function login() {
  
-   global $TABLE_PREFIX, $language, $logintpl;
+   global $TABLE_PREFIX, $language, $logintpl, $btit_settings;
 // Invalid Login System Hack Start
 if ($btit_settings["inv_login"] == "true")
  {
@@ -86,7 +86,7 @@ if ($btit_settings["inv_login"] == "true")
 	  elseif ("$ban" == "1")
 	    $s = "";
 
-$count=("<tr><td colspan=\"2\"  class=\"header\" align=\"center\">This is your last remaining login attempt.<br>If you fail to login now you'll be banned for <span style=\"color:#FF6666\">".$ban." minute".$s."</td></tr>");
+$count = ("<tr><td colspan=\"2\"  class=\"header\" align=\"center\">This is your last remaining login attempt.<br>If you fail to login now you'll be banned for <span style=\"color:#FF6666\">".$ban." minute".$s."</td></tr>");
 $logintpl->set("count", $count);
       }
  }
@@ -106,7 +106,7 @@ if ($btit_settings["inv_login"] == "true")
   elseif ("$logins_left" == "1")
     $ss = "";
 
-$last=("<tr><td colspan=\"2\"  class=\"header\" align=\"center\">You have <span style=\"color:#FF6666\">".$logins_left."</span> remaining login attempt".$ss.".</td></tr>");
+$last = ("<tr><td colspan=\"2\"  class=\"header\" align=\"center\">You have <span style=\"color:#FF6666\">".$logins_left."</span> remaining login attempt".$ss.".</td></tr>");
 $logintpl->set("last",$last);
 }
 // Invalid Login System Hack stop
@@ -150,7 +150,7 @@ if (isset($_POST["uid"]) && isset($_POST["pwd"]))
           $logintpl->set("FALSE_PASSWORD", false, true);
 		  // Invalid Login System Hack
 		if (!$results)
-			mysql_query("INSERT INTO {$TABLE_PREFIX}invalid_logins SET ip='".sprintf("%u", ip2long($ip))."', userid='".$row['id']."', username='".$row['username']."', failed=failed+1, remaining=$attempts-1") or die(mysql_error());
+			mysql_query("INSERT INTO {$TABLE_PREFIX}invalid_logins SET ip='".sprintf("%u", ip2long($ip))."', userid='".$row['id']."', username='".AddSlashes($user)."', failed=failed+1, remaining=$attempts-1") or die(mysql_error());
 		elseif ($results["failed"] < "$attempts")
 			mysql_query("UPDATE {$TABLE_PREFIX}invalid_logins SET ip='".sprintf("%u", ip2long($ip))."', failed=failed+1, remaining=$attempts-failed WHERE ip='".sprintf("%u", ip2long($ip))."'") or die(mysql_error());
 		elseif ($results["failed"] == "$attempts" && $results["remaining"] == "0")
@@ -175,7 +175,7 @@ if (isset($_POST["uid"]) && isset($_POST["pwd"]))
           $logintpl->set("FALSE_PASSWORD", true, true);
 		  // Invalid Login System Hack Start
 		if (!$results)
-			mysql_query("INSERT INTO {$TABLE_PREFIX}invalid_logins SET ip='".sprintf("%u", ip2long($ip))."', userid='".$row['id']."', username='".$row['username']."', failed=failed+1, remaining=$attempts-1") or die(mysql_error());
+			mysql_query("INSERT INTO {$TABLE_PREFIX}invalid_logins SET ip='".sprintf("%u", ip2long($ip))."', userid='".$row['id']."', username='".AddSlashes($user)."', failed=failed+1, remaining=$attempts-1") or die(mysql_error());
 		elseif ($results["failed"] < "$attempts" && $results["remaining"] != "0")
 			mysql_query("UPDATE {$TABLE_PREFIX}invalid_logins SET ip='".sprintf("%u", ip2long($ip))."', failed=failed+1, remaining=$attempts-failed WHERE ip='".sprintf("%u", ip2long($ip))."'") or die(mysql_error());
 		elseif ($results["failed"] == "$attempts" && $results["remaining"] == "0")
@@ -224,12 +224,6 @@ else
     $logintpl->set("FALSE_PASSWORD", false, true);
     login();
   }
-
-
-
-
-
-
 }
 else {
 
