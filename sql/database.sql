@@ -720,6 +720,29 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}hacks` (
 INSERT INTO `{$db_prefix}hacks` (`id`, `title`, `version`, `author`, `added`, `folder`) VALUES
 (1, 'email_notification', '3.1.1', 'Original author: signo | based on smacked1''s hack', 0, 'email_notification');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}helpdesk`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}helpdesk` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(60) NOT NULL DEFAULT '',
+  `msg_problem` text,
+  `added` int(11) NOT NULL DEFAULT '0',
+  `solved_date` int(11) NOT NULL DEFAULT '0',
+  `solved` enum('no','yes','ignored') NOT NULL DEFAULT 'no',
+  `added_by` int(10) NOT NULL DEFAULT '0',
+  `solved_by` int(10) NOT NULL DEFAULT '0',
+  `msg_answer` text,
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}helpdesk`
+--
+
 
 -- --------------------------------------------------------
 
@@ -903,16 +926,17 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}modules` (
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `{$db_prefix}modules`
 --
 
 INSERT INTO `{$db_prefix}modules` (`id`, `name`, `activated`, `type`, `changed`, `created`) VALUES
-(1, 'ulguide', 'yes', 'misc', '2009-08-19 00:25:35', '2009-08-19 00:25:35'),
-(2, 'seedbonus', 'yes', 'misc', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'irc', 'yes', 'misc', '2009-10-04 21:44:36', '2009-10-04 21:44:36');
+(1, 'ulguide', 'yes', 'misc', NOW(), NOW()),
+(2, 'seedbonus', 'yes', 'misc', NOW(), NOW()),
+(3, 'irc', 'yes', 'misc', NOW(), NOW()),
+(4, 'helpdesk', 'yes', 'misc', NOW(), NOW());
 
 -- --------------------------------------------------------
 

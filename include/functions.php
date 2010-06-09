@@ -356,7 +356,7 @@ function print_designer() {
      $CyBerFuN_xBTiT_version = '' . $CyBerFuN_xBTiT_version . '';
      $design_copyright = '' . $design_copyright . '';
   } else
-     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 516 )';
+     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 520 )';
      $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT ' . $CyBerFuN_xBTiT_version . ' By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By <a href="http://www.btiteam.org/" target="_blank">BTiTeam.org</a></u>&nbsp;]<br />';
   return $design_copyright;
 }
@@ -969,6 +969,7 @@ function get_block($block_title, $alignement, $block, $use_cache = true, $width1
   $use_cache = ($use_cache)?$CACHE_DURATION > 0:false;
     
   if ($use_cache) {
+
     // read cache
     if (file_exists($cache_file) && (time()-$CACHE_DURATION) < filemtime($cache_file)) {
       $blocktpl->set('block_content', file_get_contents($cache_file));
