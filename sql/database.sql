@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 08, 2010 at 03:44 PM
+-- Generation Time: Jun 10, 2010 at 01:57 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.2
 
@@ -1213,7 +1213,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}settings` (
 --
 
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
-('name', 'CyBerFuN'),
+('name', 'CyBerFuN xBTiT 1.2'),
 ('url', 'http://localhost/'),
 ('announce', 'a:1:{i:0;s:29:"http://localhost/announce.php";}'),
 ('email', 'xbtitfm@xdns.ro'),
