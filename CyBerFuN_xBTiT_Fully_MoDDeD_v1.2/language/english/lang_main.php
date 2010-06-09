@@ -463,6 +463,7 @@ $language["NEED_MORE_POINTS"] = "[need more points]";
 $language["CHANGE_USERNAME"] = "Change username (price - ";
 $language['SEEDBONUS_MOD_LOGIN'] = 'Please <a href="index.php?page=login">login</a> on the site using your account.';
 $language["MNU_IRC"] = "iRC";
+$language["cyberfun_menu_helpdesk"] = "HelpDesk";
 $language["STICKY_TORRENT"] = "<b>Sticky</b>";
 $language["STICKY_TORRENT_EXPLAIN"] = "(Always on top of the torrent list)";
 // FAQ
