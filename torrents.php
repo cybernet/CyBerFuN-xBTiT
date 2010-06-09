@@ -302,7 +302,7 @@ if ($count > 0) {
    $torrenttpl->set("WT1", intval($CURUSER["WT"]) > 0, TRUE);
 /*Mod by losmi - sticky mod
     Start Operation #5*/
-    $sticky_color = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}sticky ORDER BY id", true);
+    $sticky_color = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}sticky ORDER BY id", true, $btit_settings['cache_duration']);
     if(mysql_num_rows($sticky_color) > 0)
     {
     $st = mysql_fetch_assoc($sticky_color);
@@ -414,16 +414,16 @@ $torrents[$i]["rating"] = $language["NA"];
    // waitingtime
    // display only if the curuser have some WT restriction
    // gold mod
-    $silver_picture='';
+    $silver_picture = '';
     $gold_picture ='';
-     $res=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+    $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true, $btit_settings['cache_duration']);
             foreach ($res as $key=>$value)
             {
                 $silver_picture = $value["silver_picture"];
                 $gold_picture = $value["gold_picture"];
             }
        
-    $torrents[$i]["gold"]='';
+    $torrents[$i]["gold"] = '';
     if($data['gold'] == 1)
     {
     $torrents[$i]["gold"] = '<img src="gold/'.$silver_picture.'" alt="silver"/>';
@@ -432,7 +432,7 @@ $torrents[$i]["rating"] = $language["NA"];
     {
     $torrents[$i]["gold"] = '<img src="gold/'.$gold_picture.'" alt="gold"/>';
     }
-	// gold mod end
+   // gold mod end
    if (intval($CURUSER["WT"]) > 0)
       {
       $wait = 0;
@@ -443,7 +443,7 @@ $torrents[$i]["rating"] = $language["NA"];
       else $ratio = 0.0;
       $vz = $data["added"];
       $timer = floor((time() - $vz) / 3600);
-      if($ratio < 1.0 && $CURUSER['uid'] != $data["uploader"]){
+      if($ratio < 1.0 && $CURUSER['uid'] != $data["uploader"]) {
           $wait = $CURUSER["WT"];
       }
       $wait -= $timer;
@@ -488,7 +488,7 @@ $torrents[$i]["rating"] = $language["NA"];
          $torrents[$i]["seeds"] = "<a href=\"index.php?page=peers&amp;id=".$data["hash"]."\" title=\"".$language["PEERS_DETAILS"]."\">" . $data["seeds"] . "</a>";
          $torrents[$i]["classe_leechers"] = linkcolor($data["leechers"]);
          $torrents[$i]["leechers"] = "<a href=\"index.php?page=peers&amp;id=".$data["hash"]."\" title=\"".$language["PEERS_DETAILS"]."\">" .$data["leechers"] . "</a>";
-         if ($data["finished"]>0)
+         if ($data["finished"] > 0)
             $torrents[$i]["complete"] = "<a href=\"index.php?page=torrent_history&amp;id=".$data["hash"]."\" title=\"History - ".$data["filename"]."\">" . $data["finished"] . "</a>";
          else
              $torrents[$i]["complete"] = "---";
