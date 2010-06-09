@@ -2,7 +2,7 @@
 
 // CyBerFuN.ro & xList.ro
 
-// CyBerFuN .::. Stats
+// CyBerFuN .::. Stats Bar
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xList.ro/

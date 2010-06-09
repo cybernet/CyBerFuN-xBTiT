@@ -36,12 +36,12 @@ if (!defined("IN_BTIT"))
 
     $uid = intval($CURUSER["uid"]);
     //$res=do_sqlquery("SELECT u.lip,u.username, $udownloaded as downloaded,$uuploaded as uploaded, UNIX_TIMESTAMP(u.joined) as joined, u.flag, c.name, c.flagpic FROM $utables LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$uid",true);
-    $res=get_result("SELECT c.name, c.flagpic FROM {$TABLE_PREFIX}countries c WHERE id=".$CURUSER["flag"],true,$btit_settings['cache_duration']);
+    $res = get_result("SELECT c.name, c.flagpic FROM {$TABLE_PREFIX}countries c WHERE id=".$CURUSER["flag"], true, $btit_settings['cache_duration']);
     $row = $res[0];
 
-    if (max(0,$CURUSER["downloaded"])>0)
+    if (max(0,$CURUSER["downloaded"]) > 0)
      {
-       $sr = $CURUSER["uploaded"]/$CURUSER["downloaded"];
+       $sr = $CURUSER["uploaded"] / $CURUSER["downloaded"];
        if ($sr >= 4)
          $s = "images/smilies/thumbsup.gif";
        else if ($sr >= 2)
@@ -54,29 +54,32 @@ if (!defined("IN_BTIT"))
          $s = "images/smilies/sad.gif";
        else
          $s = "images/smilies/thumbsdown.gif";
-      $ratio=number_format($sr,2)."&nbsp;&nbsp;<img src=\"$s\" alt=\"\" />";
+      $ratio = number_format($sr, 2)."&nbsp;&nbsp;<img src=\"$s\" alt=\"\" />";
      }
     else
-       $ratio='&#8734;';
+       $ratio = '&#8734;';
 
-  $ucptpl=array();
-  $ucptpl["username"]=unesc($CURUSER["username"]);
-  if ($CURUSER["avatar"] && $CURUSER["avatar"]!="")
-     $ucptpl["avatar"]="<img border=\"0\" onload=\"resize_avatar(this);\" src=\"".htmlspecialchars($CURUSER["avatar"])."\" alt=\"\" />";
+  $ucptpl = array();
+  $ucptpl["username"] = unesc($CURUSER["username"]);
+  if ($CURUSER["avatar"] && $CURUSER["avatar"] != "")
+     $ucptpl["avatar"] = "<img border=\"0\" onload=\"resize_avatar(this);\" src=\"".htmlspecialchars($CURUSER["avatar"])."\" alt=\"".unesc($CURUSER["username"])." avatar\" />";
   else
-     $ucptpl["avatar"]="";
-  $ucptpl["email"]=htmlspecialchars($CURUSER["email"]);
-  $ucptpl["lastip"]=long2ip($CURUSER["lip"]);
-  $ucptpl["userlevel"]=unesc($CURUSER["level"]);
-  $ucptpl["userjoin"]=($CURUSER["joined"]==0 ? "N/A" : get_date_time($CURUSER["joined"]));
-  $ucptpl["lastaccess"]=($CURUSER["lastconnect"]==0 ? "N/A" : get_date_time($CURUSER["lastconnect"]));
-  $ucptpl["country"]=($CURUSER["flag"]==0 ? "":unesc($row['name']))."&nbsp;&nbsp;<img src=\"images/flag/".(!$row["flagpic"] || $row["flagpic"]==""?"unknown.gif":$row["flagpic"])."\" alt='".($CURUSER["flag"]==0 ? "unknow":unesc($row['name']))."' />";
-  $ucptpl["download"]=makesize($CURUSER["downloaded"]);
-  $ucptpl["upload"]=makesize($CURUSER["uploaded"]);
-  $ucptpl["ratio"]=$ratio;
-  $usercptpl->set("ucp",$ucptpl);
-  $usercptpl->set("AVATAR",$CURUSER["avatar"] && $CURUSER["avatar"]!="",true);
-  $usercptpl->set("CAN_EDIT",$CURUSER["edit_users"]=="yes" || $CURUSER["admin_access"]=="yes",true);
+     $ucptpl["avatar"] = "";
+  $ucptpl["email"] = htmlspecialchars($CURUSER["email"]);
+  $ucptpl["lastip"] = long2ip($CURUSER["lip"]);
+  $ucptpl["userlevel"] = unesc($CURUSER["level"]);
+  $ucptpl["userjoin"] = ($CURUSER["joined"] == 0 ? "N/A" : get_date_time($CURUSER["joined"]));
+  $ucptpl["lastaccess"] = ($CURUSER["lastconnect"] == 0 ? "N/A" : get_date_time($CURUSER["lastconnect"]));
+  $ucptpl["country"] = ($CURUSER["flag"] == 0 ? "":unesc($row['name']))."&nbsp;&nbsp;<img src=\"images/flag/".(!$row["flagpic"] || $row["flagpic"]==""?"unknown.gif":$row["flagpic"])."\" alt='".($CURUSER["flag"] == 0 ? "unknow":unesc($row['name']))."' />";
+  $ucptpl["download"] = makesize($CURUSER["downloaded"]);
+  $ucptpl["upload"] = makesize($CURUSER["uploaded"]);
+  $ucptpl["ratio"] = $ratio;
+//TorrentBar - Start By Confe
+  $ucptpl["bar"] = ("<img src=\"$BASEURL/stats.php/".$CURUSER["uid"].".png\" /><br /><input type=\"text\" style=\"border-color: #000000; border-style: solid; border-width: 1px; width: 346px; height: 15px;\" value=\"[img]$BASEURL/stats.php/".$CURUSER["uid"].".png[/img]\" readonly />");
+	  //TorrentBar - End By Confe
+  $usercptpl->set("ucp", $ucptpl);
+  $usercptpl->set("AVATAR", $CURUSER["avatar"] && $CURUSER["avatar"] != "", true);
+  $usercptpl->set("CAN_EDIT", $CURUSER["edit_users"] == "yes" || $CURUSER["admin_access"] == "yes", true);
 
   // Only show if forum is internal
   if ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' )
@@ -85,17 +88,17 @@ if (!defined("IN_BTIT"))
      $posts = $sql[0]['tp'];
      unset($sql);
      $memberdays = max(1, round( ( time() - $CURUSER['joined'] ) / 86400 ));
-     $posts_per_day = number_format(round($posts / $memberdays,2),2);
-     $usercptpl->set("INTERNAL_FORUM",true,true);
+     $posts_per_day = number_format(round($posts / $memberdays, 2), 2);
+     $usercptpl->set("INTERNAL_FORUM", true, true);
      $usercptpl->set("posts",$posts."&nbsp;[" . sprintf($language["POSTS_PER_DAY"], $posts_per_day) . "]");
   }
-  elseif ($GLOBALS["FORUMLINK"]=="smf")
+  elseif ($GLOBALS["FORUMLINK"] == "smf")
      {
-     $forum=get_result("SELECT dateRegistered, posts FROM {$db_prefix}members WHERE ID_MEMBER=".$CURUSER["smf_fid"],true,$btit_settings['cache_duration']);
-     $forum=$forum[0];
+     $forum = get_result("SELECT dateRegistered, posts FROM {$db_prefix}members WHERE ID_MEMBER=".$CURUSER["smf_fid"], true, $btit_settings['cache_duration']);
+     $forum = $forum[0];
      $memberdays = max(1, round( ( time() - $forum["dateRegistered"] ) / 86400 ));
-     $posts_per_day = number_format(round($forum["posts"] / $memberdays,2),2);
-     $usercptpl->set("INTERNAL_FORUM",true,true);
+     $posts_per_day = number_format(round($forum["posts"] / $memberdays, 2), 2);
+     $usercptpl->set("INTERNAL_FORUM", true, true);
      $usercptpl->set("posts",$forum["posts"]."&nbsp;[" . sprintf($language["POSTS_PER_DAY"], $posts_per_day) . "]");
      unset($forum);
   }
@@ -114,13 +117,13 @@ if (!defined("IN_BTIT"))
       $ttables="{$TABLE_PREFIX}files f";
       }
 
-  $resuploaded = get_result("SELECT count(*) as tf FROM {$TABLE_PREFIX}files WHERE uploader=$uid ORDER BY data DESC",true,$btit_settings['cache_duration']);
+  $resuploaded = get_result("SELECT count(*) as tf FROM {$TABLE_PREFIX}files WHERE uploader=$uid ORDER BY data DESC", true, $btit_settings['cache_duration']);
   $numtorrent = $resuploaded[0]['tf'];
   unset($resuploaded);
 
   $utorrents = intval($CURUSER["torrentsperpage"]);
 
-  if ($numtorrent>0)
+  if ($numtorrent > 0)
      {
      list($pagertop, $pagerbottom, $limit) = pager(($utorrents==0?15:$utorrents), $numtorrent, "index.php?page=usercp&amp;uid=$uid&amp;",array("pagename" => "ucp_uploaded"));
 
@@ -136,18 +139,18 @@ if (!defined("IN_BTIT"))
          $i=0;
          foreach ($resuploaded as $id=>$rest)
                  {
-                  $uptortpl[$i]["filename"]=cut_string(unesc($rest["filename"]),intval($btit_settings["cut_name"]));
-                  $uptortpl[$i]["added"]=date("d/m/Y",$rest["added"]-$offset);
-                  $uptortpl[$i]["size"]=makesize($rest["size"]);
-                  $uptortpl[$i]["seedcolor"]=linkcolor($rest["seeds"]);
-                  $uptortpl[$i]["seeds"]=$rest[seeds];
-                  $uptortpl[$i]["leechcolor"]=linkcolor($rest["leechers"]);
-                  $uptortpl[$i]["leechers"]=$rest[leechers];
-                  $uptortpl[$i]["completed"]=($rest["finished"]>0?$rest["finished"]:"---");
-                  $uptortpl[$i]["editlink"]="index.php?page=edit&amp;info_hash=".$rest["hash"]."&amp;returnto=".urlencode("index.php?page=torrents")."";
-                  $uptortpl[$i]["dellink"]="index.php?page=delete&amp;info_hash=".$rest["hash"]."&amp;returnto=".urlencode("index.php?page=torrents")."";
-                  $uptortpl[$i]["editimg"]=image_or_link("$STYLEPATH/images/edit.png","",$language["EDIT"]);
-                  $uptortpl[$i]["delimg"]=image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"]);
+                  $uptortpl[$i]["filename"] = cut_string(unesc($rest["filename"]), intval($btit_settings["cut_name"]));
+                  $uptortpl[$i]["added"] = date("d/m/Y", $rest["added"] - $offset);
+                  $uptortpl[$i]["size"] = makesize($rest["size"]);
+                  $uptortpl[$i]["seedcolor"] = linkcolor($rest["seeds"]);
+                  $uptortpl[$i]["seeds"] = $rest[seeds];
+                  $uptortpl[$i]["leechcolor"] = linkcolor($rest["leechers"]);
+                  $uptortpl[$i]["leechers"] = $rest[leechers];
+                  $uptortpl[$i]["completed"] = ($rest["finished"]>0?$rest["finished"]:"---");
+                  $uptortpl[$i]["editlink"] = "index.php?page=edit&amp;info_hash=".$rest["hash"]."&amp;returnto=".urlencode("index.php?page=torrents")."";
+                  $uptortpl[$i]["dellink"] = "index.php?page=delete&amp;info_hash=".$rest["hash"]."&amp;returnto=".urlencode("index.php?page=torrents")."";
+                  $uptortpl[$i]["editimg"] = image_or_link("$STYLEPATH/images/edit.png","",$language["EDIT"]);
+                  $uptortpl[$i]["delimg"] = image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"]);
                   $i++;
                }
              $usercptpl->set("uptor",$uptortpl);

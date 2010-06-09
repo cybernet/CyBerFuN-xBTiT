@@ -57,6 +57,10 @@ function popusers(url)
     <td class="header" align="left"><tag:language.RATIO />:</td>
     <td class="lista" colspan="2" align="left"><tag:ucp.ratio /></td>
   </tr>
+  <tr>
+    <td class="header" align="left"><tag:language.TORRENTBAR /></td>
+    <td class="lista" colspan="2" align="left"><tag:ucp.bar /></td>
+  </tr>
 
 <if:INTERNAL_FORUM>
   <tr>
