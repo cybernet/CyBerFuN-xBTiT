@@ -45,5 +45,5 @@ $language['REMAINING'] = 'Remaining';
 $language['SENT_INVITATIONS'] = 'Sent Invitations';
 $language['STATUS'] = 'Status';
 $language['WELCOME_UCP_INVITE'] = 'Welcome to your Invitation Panel.<br />Here you may send invitations, so your friends can register in '.$SITENAME.'.<br />';
-$language['TORRENTBAR'] = 'Torrent Bar';
+$language['TORRENTBAR'] = 'Stats Bar';
 ?>
