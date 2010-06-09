@@ -8,4 +8,3 @@
   </table>
 </div>
 <div align="center"><tag:script /></div>
-
