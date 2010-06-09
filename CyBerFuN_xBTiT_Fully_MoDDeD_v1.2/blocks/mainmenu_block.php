@@ -63,8 +63,10 @@ if ($res["activated"] == 'yes' && ($CURUSER["view_users"] == "yes"))
 // http://xlist.ro/
    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=modules&amp;module=irc\">".$language["MNU_IRC"]."</a></td>\n");
 
-if ($CURUSER["view_users"] == "yes")
+if ($CURUSER["view_users"] == "yes") {
    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=users\">".$language["MNU_MEMBERS"]."</a></td>\n");
+   print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=modules&amp;module=helpdesk\">Helpdesk</a></td>\n");
+}
 /*
 if ($CURUSER["view_news"] == "yes")
    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=viewnews\">".$language["MNU_NEWS"]."</a></td>\n");

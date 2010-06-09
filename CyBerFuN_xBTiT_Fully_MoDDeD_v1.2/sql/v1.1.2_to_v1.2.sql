@@ -55,3 +55,16 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}friendlist` (
   KEY `user_id` (`user_id`),
   KEY `friend_id` (`friend_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+INSERT INTO `{$db_prefix}modules` (`name`,`activated`,`type`,`changed`,`created`) VALUES ('helpdesk','yes','misc',NOW(),NOW());
+CREATE TABLE IF NOT EXISTS `{$db_prefix}helpdesk` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(60) NOT NULL DEFAULT '',
+  `msg_problem` text,
+  `added` int(11) NOT NULL DEFAULT '0',
+  `solved_date` int(11) NOT NULL DEFAULT '0',
+  `solved` enum('no','yes','ignored') NOT NULL DEFAULT 'no',
+  `added_by` int(10) NOT NULL DEFAULT '0',
+  `solved_by` int(10) NOT NULL DEFAULT '0',
+  `msg_answer` text,
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
