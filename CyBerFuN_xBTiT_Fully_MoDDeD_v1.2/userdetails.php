@@ -132,21 +132,21 @@ else
 $utorrents = intval($CURUSER["torrentsperpage"]);
 
 $userdetailtpl = new bTemplate();
-$userdetailtpl-> set("friend","<a href=index.php?page=friendlist&do=add&friend_id=".$id."><font color=green>add to friendlist</font></a>");
+$userdetailtpl-> set("friend","<a href=index.php?page=friendlist&do=add&friend_id=".$id."><font color=green>".$language["cyberfun_add_frd_lst"]."</font></a>");
 $hmm = mysql_query("SELECT * FROM {$TABLE_PREFIX}ignore WHERE ignore_id = ".$id." AND user_id = ".$CURUSER['uid']);
 
 if (mysql_num_rows($hmm)){
 if ($row["id_level"] < 6)
-$userdetailtpl-> set("ign","<font color=orange>User is already ignored</font>");  
-} 
+$userdetailtpl-> set("ign","<font color=orange>".$language["cyberfun_usr_alrd_ign"]."</font>");
+}
 else
 if ($row["id_level"] < 6)
-$userdetailtpl-> set("ign","<a href=index.php?page=usercp&uid=".$CURUSER["uid"]."&do=ignore&action=add&ignore_id=".$id."><font color=orange>Ignore user</font></a>");       
+$userdetailtpl-> set("ign","<a href=index.php?page=usercp&uid=".$CURUSER["uid"]."&do=ignore&action=add&ignore_id=".$id."><font color=orange>".$language["cyberfun_ignore_user"]."</font></a>");
 if ($row["id_level"] > 5)
-$userdetailtpl-> set("ign","<font color=orange>Staff can not Ignore</font>");
+$userdetailtpl-> set("ign","<font color=orange>".$language["cyberfun_staff_c_n_b_ign"]."</font>");
 $userdetailtpl-> set("language",$language);
 $userdetailtpl-> set("userdetail_username", unesc($row["username"]). warn($row, true));
-//$userdetailtpl-> set("userdetail_no_guest", $CURUSER["uid"] > 1, TRUE);
+// $userdetailtpl-> set("userdetail_no_guest", $CURUSER["uid"] > 1, TRUE);
 if ($CURUSER["uid"] > 1 && $id != $CURUSER["uid"])
     $userdetailtpl -> set("userdetail_send_pm", "&nbsp;&nbsp;&nbsp;<a href=\"index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=".$CURUSER["uid"]."&amp;what=new&amp;to=".urlencode(unesc($row["username"]))."\">".image_or_link("$STYLEPATH/images/pm.png","",$language["PM"])."</a>");
 if ($CURUSER["edit_users"] == "yes" && $id != $CURUSER["uid"])

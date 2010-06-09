@@ -38,4 +38,10 @@ $language['GUEST_DETAILS']      = 'You can\'t view the details for the Guest acc
 $language['USER_INVITATIONS']   = 'Invitations';
 $language['USER_INVITED_BY']    = 'Invited By';
 $language['POINTS']             = 'Points';
+// * List start
+$language['cyberfun_add_frd_lst']                 = 'Add to Friend List';
+$language['cyberfun_usr_alrd_ign']                 = 'User is already ignored';
+$language['cyberfun_ignore_user']                 = 'Ignore user';
+$language['cyberfun_staff_c_n_b_ign']             = 'Staff can not be ignored';
+// * List end
 ?>
