@@ -338,7 +338,7 @@ function print_debug($level = 3, $key = ' - ') {
     }
     return implode($key, array_reverse($return));
 }
-
+/*
 function print_version() {
 $CURRENTPATH = dirname(__FILE__);
 global $STYLEPATH;
@@ -347,7 +347,7 @@ include($CURRENTPATH.'/cyberfun_footer.php');
   return '';
   return $cyberfun_footer;
 }
-
+*/
 function print_designer() {
   global $STYLEPATH, $tracker_version, $CyBerFuN_xBTiT_version;
 
@@ -356,7 +356,7 @@ function print_designer() {
      $CyBerFuN_xBTiT_version = '' . $CyBerFuN_xBTiT_version . '';
      $design_copyright = '' . $design_copyright . '';
   } else
-     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 520 )';
+     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 522 )';
      $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT ' . $CyBerFuN_xBTiT_version . ' By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By <a href="http://www.btiteam.org/" target="_blank">BTiTeam.org</a></u>&nbsp;]<br />';
   return $design_copyright;
 }
