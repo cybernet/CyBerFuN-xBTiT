@@ -338,16 +338,16 @@ function print_debug($level = 3, $key = ' - ') {
     }
     return implode($key, array_reverse($return));
 }
-/*
+
 function print_version() {
 $CURRENTPATH = dirname(__FILE__);
-global $STYLEPATH;
+
 include($CURRENTPATH.'/cyberfun_footer.php');
   global $tracker_version;
   return '';
   return $cyberfun_footer;
 }
-*/
+
 function print_designer() {
   global $STYLEPATH, $tracker_version, $CyBerFuN_xBTiT_version;
 
