@@ -7,6 +7,13 @@ function popusers(url)
   if (window.focus) {newwindow.focus()}
 }
 </script>
+<script type="text/javascript">
+function SelectAll(id)
+{
+    document.getElementById(id).focus();
+    document.getElementById(id).select();
+}
+</script>
 <table border="0" width="100%" class="lista">
   <tr>
     <td align="center" class="lista" colspan="3"><br /><tag:language.UCP_NOTE_1 /><br /><tag:language.UCP_NOTE_2 /><br /><br /></td>

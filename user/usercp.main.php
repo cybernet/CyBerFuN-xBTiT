@@ -74,9 +74,11 @@ if (!defined("IN_BTIT"))
   $ucptpl["download"] = makesize($CURUSER["downloaded"]);
   $ucptpl["upload"] = makesize($CURUSER["uploaded"]);
   $ucptpl["ratio"] = $ratio;
-//TorrentBar - Start By Confe
-  $ucptpl["bar"] = ("<img src=\"$BASEURL/stats.php/".$CURUSER["uid"].".png\" /><br /><input type=\"text\" style=\"border-color: #000000; border-style: solid; border-width: 1px; width: 346px; height: 15px;\" value=\"[img]$BASEURL/stats.php/".$CURUSER["uid"].".png[/img]\" readonly />");
-	  //TorrentBar - End By Confe
+// TorrentBar - Start By Confe
+// Select aLL by cybernet2u
+  $ucptpl["bar"] = ("<img src=\"$BASEURL/stats.php/".$CURUSER["uid"].".png\" /><br /><input type=\"text\" id=\"bar\" onClick=\"SelectAll('bar');\" style=\"border-color: #000000; border-style: solid; border-width: 1px; width: 346px; height: 15px;\" value=\"[img]$BASEURL/stats.php/".$CURUSER["uid"].".png[/img]\" readonly />");
+// Select aLL by cybernet2u
+// TorrentBar - End By Confe
   $usercptpl->set("ucp", $ucptpl);
   $usercptpl->set("AVATAR", $CURUSER["avatar"] && $CURUSER["avatar"] != "", true);
   $usercptpl->set("CAN_EDIT", $CURUSER["edit_users"] == "yes" || $CURUSER["admin_access"] == "yes", true);
