@@ -49,7 +49,7 @@ $stafftpl-> set("language", $language);
 
 if ($CURUSER["view_users"] == "no")
 {
-    err_msg($language["ERROR"],$language["NOT_AUTHORIZED"]." ".strtolower($language["STAFF"])."!");
+    err_msg($language["ERROR"], $language["NOT_AUTHORIZED"]." ".strtolower($language["STAFF"])."!");
     stdfoot();
     exit;
 }
@@ -73,7 +73,7 @@ else
     {
         ((is_null($row["avatar"]) || $row["avatar"] == "") ? $avatar = "<img src='$STYLEURL/images/default_avatar.gif' height=80 width=80>" : $avatar = "<img src='".$row["avatar"]."' height=80 width=80>");
         (is_null($row["lastaction"]) ? $lastseen = $row["lastconnect"] : $lastseen = $row["lastaction"]);
-        ((time()-$lastseen > 900) ? $status = "<img src='images/offline.gif' border='0' alt='".$language["OFFLINE"]."'>" : $status = "<img src='images/online.gif' border='0' alt='".$language["ONLINE"]."'>");
+        ((time() - $lastseen > 900) ? $status = "<img src='images/offline.gif' border='0' alt='".$language["OFFLINE"]."'>" : $status = "<img src='images/online.gif' border='0' alt='".$language["ONLINE"]."'>");
         if(is_null($row["flagpic"]))
         {
             $row["flagpic"] = "unknown.gif";
@@ -91,6 +91,6 @@ else
         $i++;
     }
 }
-$stafftpl-> set("user",$user);
+$stafftpl-> set("user", $user);
 
 ?>
