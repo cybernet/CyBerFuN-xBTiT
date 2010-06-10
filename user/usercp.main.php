@@ -35,7 +35,6 @@ if (!defined("IN_BTIT"))
 
 
     $uid = intval($CURUSER["uid"]);
-    //$res=do_sqlquery("SELECT u.lip,u.username, $udownloaded as downloaded,$uuploaded as uploaded, UNIX_TIMESTAMP(u.joined) as joined, u.flag, c.name, c.flagpic FROM $utables LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$uid",true);
     $res = get_result("SELECT c.name, c.flagpic FROM {$TABLE_PREFIX}countries c WHERE id=".$CURUSER["flag"], true, $btit_settings['cache_duration']);
     $row = $res[0];
 
@@ -106,17 +105,17 @@ if (!defined("IN_BTIT"))
   }
   if ($XBTT_USE)
      {
-      $tseeds="f.seeds+ifnull(x.seeders,0)";
-      $tleechs="f.leechers+ifnull(x.leechers,0)";
-      $tcompletes="f.finished+ifnull(x.completed,0)";
-      $ttables="{$TABLE_PREFIX}files f INNER JOIN xbt_files x ON x.info_hash=f.bin_hash";
+      $tseeds = "f.seeds+ifnull(x.seeders,0)";
+      $tleechs = "f.leechers+ifnull(x.leechers,0)";
+      $tcompletes = "f.finished+ifnull(x.completed,0)";
+      $ttables = "{$TABLE_PREFIX}files f INNER JOIN xbt_files x ON x.info_hash=f.bin_hash";
      }
   else
       {
-      $tseeds="f.seeds";
-      $tleechs="f.leechers";
-      $tcompletes="f.finished";
-      $ttables="{$TABLE_PREFIX}files f";
+      $tseeds = "f.seeds";
+      $tleechs = "f.leechers";
+      $tcompletes = "f.finished";
+      $ttables = "{$TABLE_PREFIX}files f";
       }
 
   $resuploaded = get_result("SELECT count(*) as tf FROM {$TABLE_PREFIX}files WHERE uploader=$uid ORDER BY data DESC", true, $btit_settings['cache_duration']);
@@ -127,7 +126,7 @@ if (!defined("IN_BTIT"))
 
   if ($numtorrent > 0)
      {
-     list($pagertop, $pagerbottom, $limit) = pager(($utorrents==0?15:$utorrents), $numtorrent, "index.php?page=usercp&amp;uid=$uid&amp;",array("pagename" => "ucp_uploaded"));
+     list($pagertop, $pagerbottom, $limit) = pager(($utorrents == 0 ? 15 : $utorrents), $numtorrent, "index.php?page=usercp&amp;uid=$uid&amp;", array("pagename" => "ucp_uploaded"));
 
      $usercptpl->set("pagertop", $pagertop);
 
@@ -137,8 +136,8 @@ if (!defined("IN_BTIT"))
      {
          include("include/offset.php");
          $usercptpl->set("RESULTS", true, true);
-         $uptortpl=array();
-         $i=0;
+         $uptortpl = array();
+         $i = 0;
          foreach ($resuploaded as $id=>$rest)
                  {
                   $uptortpl[$i]["filename"] = cut_string(unesc($rest["filename"]), intval($btit_settings["cut_name"]));
@@ -148,13 +147,13 @@ if (!defined("IN_BTIT"))
                   $uptortpl[$i]["seeds"] = $rest[seeds];
                   $uptortpl[$i]["leechcolor"] = linkcolor($rest["leechers"]);
                   $uptortpl[$i]["leechers"] = $rest[leechers];
-                  $uptortpl[$i]["completed"] = ($rest["finished"]>0?$rest["finished"]:"---");
+                  $uptortpl[$i]["completed"] = ($rest["finished"] > 0 ? $rest["finished"] : "---");
                   $uptortpl[$i]["editlink"] = "index.php?page=edit&amp;info_hash=".$rest["hash"]."&amp;returnto=".urlencode("index.php?page=torrents")."";
                   $uptortpl[$i]["dellink"] = "index.php?page=delete&amp;info_hash=".$rest["hash"]."&amp;returnto=".urlencode("index.php?page=torrents")."";
                   $uptortpl[$i]["editimg"] = image_or_link("$STYLEPATH/images/edit.png","",$language["EDIT"]);
                   $uptortpl[$i]["delimg"] = image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"]);
                   $i++;
-               }
+                 }
              $usercptpl->set("uptor",$uptortpl);
     }
   else
