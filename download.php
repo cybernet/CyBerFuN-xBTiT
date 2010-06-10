@@ -40,7 +40,7 @@
 ////////////////////////////////////////////////////////////////////////////////////
 
 $THIS_BASEPATH = dirname(__FILE__);
-$mysiteurl = "[xlist.ro]";
+$mysiteurl = "[CyBerFuN-xBTiT-1.2]";
 
 require_once ("$THIS_BASEPATH/include/functions.php");
 require_once ("$THIS_BASEPATH/include/BDecode.php");
