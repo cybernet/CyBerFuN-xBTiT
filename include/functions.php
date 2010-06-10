@@ -177,7 +177,7 @@ function createGoldCategories($selected='')
       $g_desc = '';
       $s_desc = '';
       $c_desc = '';
-        $res=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+        $res=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true);
             foreach ($res as $key=>$value)
             {
                 $g_desc = $value["gold_description"];

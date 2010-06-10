@@ -48,9 +48,7 @@ require_once ("$THIS_BASEPATH/include/BEncode.php");
 
 dbconn();
 
-(isset($_GET["key"])? $key = $_GET["key"] : $key = 0);
-
-if (!$CURUSER || $CURUSER["can_download"] == "no" || $CURUSER["dlrandom"] != $key)
+if (!$CURUSER || $CURUSER["can_download"] == "no")
    {
        require(load_language("lang_main.php"));
        die($language["NOT_AUTH_DOWNLOAD"]);
