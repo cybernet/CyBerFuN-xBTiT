@@ -39,7 +39,7 @@ if (!defined("IN_BTIT"))
         stdfoot();
         exit();
 }
-$usercptpl= new bTemplate();
-$usercptpl-> set("language",$language);
+$usercptpl = new bTemplate();
+$usercptpl-> set("language", $language);
 
 ?>

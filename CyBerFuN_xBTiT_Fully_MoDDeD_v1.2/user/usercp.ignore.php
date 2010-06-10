@@ -36,7 +36,7 @@ if (!defined("IN_BTIT"))
 require_once ("include/functions.php");
 require_once ("include/config.php");
 
-      if ($CURUSER["id_level"]==1)
+      if ($CURUSER["id_level"] == 1)
 {
 	redirect("users.php"); // redirects to users.php if guest
 	exit();
@@ -53,7 +53,7 @@ $ignore_id = $_GET["ignore_id"];
 
 // Add member to friendlist
 
-if ($action=="add")
+if ($action == "add")
 {
 	if (!isset($ignore_id))
 	{
@@ -61,7 +61,7 @@ if ($action=="add")
 		exit();
 	}
 
-    $hmm=mysql_query("SELECT * FROM {$TABLE_PREFIX}ignore WHERE ignore_id = '$ignore_id' AND user_id = ".$CURUSER['uid']);
+    $hmm = mysql_query("SELECT * FROM {$TABLE_PREFIX}ignore WHERE ignore_id = '$ignore_id' AND user_id = ".$CURUSER['uid']);
 	if (mysql_num_rows($hmm))
 	{
 		err_msg(ERROR,MEMBER_ALREADY_EXIST);
@@ -83,7 +83,7 @@ if ($action=="add")
 
 }
 // Delete friend
-elseif ($action=="del")
+elseif ($action == "del")
 {
 
 	{
@@ -97,33 +97,39 @@ elseif ($action=="del")
 else
 {
 
-	$qry=mysql_query("SELECT * FROM {$TABLE_PREFIX}ignore WHERE user_id = ".$CURUSER['uid']);
-	$coun=mysql_num_rows($qry);
+	$qry = mysql_query("SELECT * FROM {$TABLE_PREFIX}ignore WHERE user_id = ".$CURUSER['uid']);
+	$coun = mysql_num_rows($qry);
 	
-if ($coun > 0){$usercptpl-> set("seznam",true,true);$usercptpl-> set("noseznam",false,true);}else{$usercptpl-> set("noseznam",true,true);$usercptpl-> set("seznam",false,true);}
+if ($coun > 0) {
+$usercptpl-> set("seznam",true,true);$usercptpl-> set("noseznam",false,true);
+}
+else
+{
+$usercptpl-> set("noseznam",true,true);$usercptpl-> set("seznam",false,true);
+}
 if (!$coun)
 
-         $ignore=array();
-         $i=0;
-	while ($res=mysql_fetch_array($qry))
+         $ignore = array();
+         $i = 0;
+	while ($res = mysql_fetch_array($qry))
 	{
-		$tor=mysql_query("SELECT ul.prefixcolor, ul.suffixcolor, ul.level, u.username, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect FROM {$TABLE_PREFIX}users u LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id>1 AND u.id = ".$res['ignore_id']);
+		$tor = mysql_query("SELECT ul.prefixcolor, ul.suffixcolor, ul.level, u.username, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect FROM {$TABLE_PREFIX}users u LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id>1 AND u.id = ".$res['ignore_id']);
 
-        $ret=mysql_fetch_array($tor);
+        $ret = mysql_fetch_array($tor);
 
-       $ignore[$i]["id"]=$res["id"];
-       $ignore[$i]["name"]=("<a href=index.php?page=userdetails&id=".$res["ignore_id"].">".unesc($ret["prefixcolor"]).unesc($ret["username"]).unesc($ret["suffixcolor"])."</a>");
-       $ignore[$i]["added"]=("<center>$res[added]</center>");
-       $ignore[$i]["delete"]=("<center><a href=\"index.php?page=usercp&uid=".$CURUSER["uid"]."&do=ignore&action=del&amp;id=".$ignore[$i]["id"]."\" onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a></center>");
+       $ignore[$i]["id"] = $res["id"];
+       $ignore[$i]["name"] = ("<a href=index.php?page=userdetails&id=".$res["ignore_id"].">".unesc($ret["prefixcolor"]).unesc($ret["username"]).unesc($ret["suffixcolor"])."</a>");
+       $ignore[$i]["added"] = ("<center>$res[added]</center>");
+       $ignore[$i]["delete"] = ("<center><a href=\"index.php?page=usercp&uid=".$CURUSER["uid"]."&do=ignore&action=del&amp;id=".$ignore[$i]["id"]."\" onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a></center>");
        $i++;
     }
        
 if (!$coun)	
 
-$usercptpl-> set ("nic","<tr><td class=lista align=center colspan=40><center>List Ignore users is empty</tr></td>");
+$usercptpl->set("nic", "<tr><td class=lista align=center colspan=40><center>List Ignore users is empty</tr></td>");
 
 }
-$usercptpl->set("ignore",$ignore);
+$usercptpl->set("ignore", $ignore);
 
     block_end();
 

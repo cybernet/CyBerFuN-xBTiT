@@ -63,16 +63,16 @@ else
     if (isset($_GET["do"])) $do = $_GET["do"];
       else $do = "";
     if (isset($_GET["action"]))
-       $action=$_GET["action"];
+       $action = $_GET["action"];
 
 $USER_PATH = dirname(__FILE__);
 
 require_once("$USER_PATH/usercp.menu.php");
 $menucptpl = new bTemplate();
-$menucptpl->set("usercp_menu",$usercp_menu);
+$menucptpl->set("usercp_menu", $usercp_menu);
 $tpl->set("main_left", set_block($language["USER_CP_1"], "center", $menucptpl->fetch(load_template("usercp.menu.tpl"))));
 
-$usercptpl=new bTemplate();
+$usercptpl = new bTemplate();
 $usercptpl->set("language",$language);
 
 switch ($do)
