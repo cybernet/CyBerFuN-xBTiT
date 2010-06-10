@@ -1213,7 +1213,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}settings` (
 --
 
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
-('name', 'CyBerFuN'),
+('name', 'CyBerFuN xBTiT 1.2'),
 ('url', 'http://localhost/'),
 ('announce', 'a:1:{i:0;s:29:"http://localhost/announce.php";}'),
 ('email', 'xbtitfm@xdns.ro'),
@@ -1278,7 +1278,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('price_name', '999999'),
 ('irc_server', 'irc.freenode.net'),
 ('irc_port', '6667'),
-('irc_channel', 'test_only'),
+('irc_channel', 'cyberfun_xbtit'),
 ('inv_login', 'false'),
 ('att_login', '99'),
 ('CyBerFuN_xBTiT_installed_versi', '1.2 revision 537');
