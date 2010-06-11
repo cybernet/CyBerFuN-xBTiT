@@ -1205,6 +1205,6 @@ if (!function_exists("stripos")) {
   function stripos($str,$needle) {
    return strpos(strtolower($str),strtolower($needle));
   }
-
+}
 // EOF
 ?>

@@ -108,7 +108,8 @@ if($CURUSER["admin_access"] == "yes")
     $peerstpl->set("uid", $CURUSER["uid"]);
     $peerstpl->set("random", $CURUSER["random"]);
     $clients = array();
-	$i = 0;    
+    $i = 0;
+    $clientarr = array();
     foreach($clientarr as $n => $v)
     {
         $clients[$i]["client"] = $n;
@@ -127,9 +128,9 @@ if($CURUSER["admin_access"] == "yes")
     $sqlquery .= "FROM {$TABLE_PREFIX}banned_client ";
     $sqlquery .= "ORDER BY client_name ASC";
 
-    $res = mysql_query($sqlquery);
+    $res = get_result($sqlquery, true, $btit_settings['cache_duration']);
 
-    if(mysql_num_rows($res) > 0)
+    if(count($res) > 0)
     {
         $i = 0;
         $banned = array();
@@ -155,8 +156,7 @@ if($CURUSER["admin_access"] == "yes")
 else
 {
     $peerstpl->set("ADMIN_ACCESS", FALSE, TRUE);
-
-    $clientarr = array();
+}
 
     foreach ($res as $id=>$row)
     {

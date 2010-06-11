@@ -188,10 +188,10 @@ if (ereg("^Mozilla\\/", $agent) || ereg("^Opera\\/", $agent) || ereg("^Links ", 
     die("This a a bittorrent application and can't be loaded into a browser");
 }
 
-$sqlquery ="SELECT client_name, reason ";
-$sqlquery.="FROM {$TABLE_PREFIX}banned_client ";
-$sqlquery.="WHERE peer_id='".substr($peer_id, 0, 16)."' ";
-$sqlquery.=" OR peer_id='".substr($peer_id, 0, 6)."'";
+$sqlquery = "SELECT client_name, reason ";
+$sqlquery .= "FROM {$TABLE_PREFIX}banned_client ";
+$sqlquery .= "WHERE peer_id='".substr($peer_id, 0, 16)."' ";
+$sqlquery .= " OR peer_id='".substr($peer_id, 0, 6)."'";
 
 
 // Check if client is banned
