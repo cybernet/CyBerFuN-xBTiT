@@ -34,7 +34,7 @@
 if (!defined("IN_BTIT"))
       die("non direct access!");
 
-if (!$CURUSER || ($CURUSER["admin_access"]!="yes" && $CURUSER["edit_users"]!="yes"))
+if (!$CURUSER || ($CURUSER["admin_access"] != "yes" && $CURUSER["edit_users"] != "yes"))
    {
        err_msg($language["ERROR"],$language["NOT_ADMIN_CP_ACCESS"]);
        stdfoot();
@@ -111,14 +111,24 @@ switch ($do)
       $tpl->set("main_content",set_block($language["DUPLICATES"],"center",$admintpl->fetch(load_template("admin.duplicates.tpl"))));
       break;
 	  
-	case 'gold':
-          include("$ADMIN_PATH/admin.gold.php");
-          $tpl->set("main_content",set_block($language["ACP_GOLD"],"center",$admintpl->fetch(load_template("admin.gold.tpl"))));
-          break;
+    case 'gold':
+      include("$ADMIN_PATH/admin.gold.php");
+      $tpl->set("main_content",set_block($language["ACP_GOLD"],"center",$admintpl->fetch(load_template("admin.gold.tpl"))));
+      break;
 
     case 'visible':
       include("$ADMIN_PATH/admin.visible.php");
       $tpl->set("main_content",set_block($language["VISIBLE_SETTINGS"],"center",$admintpl->fetch(load_template("admin.visible.tpl"))));
+      break;
+
+    case 'banclient':
+      include("$ADMIN_PATH/admin.ban_client.php");
+      $tpl->set("main_content",set_block($language["BAN_CLIENT"],"center",$admintpl->fetch(load_template("admin.ban_client.tpl"))));
+      break;
+      
+    case 'clearclientban':
+      include("$ADMIN_PATH/admin.client_clearban.php");
+      $tpl->set("main_content",set_block($language["REMOVE_CLIENTBAN"],"center",$admintpl->fetch(load_template("admin.client_clearban.tpl"))));
       break;
 
     case 'language':
@@ -236,7 +246,8 @@ switch ($do)
       include("$ADMIN_PATH/admin.users.tools.php");
       $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.users.tools.tpl"))));
       break;
-    case 'sanity':
+
+    case 'sanity':
       require_once("$THIS_BASEPATH/include/sanity.php");
 
       $now = time();

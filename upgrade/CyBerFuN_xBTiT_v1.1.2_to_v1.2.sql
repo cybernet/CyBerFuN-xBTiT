@@ -68,3 +68,15 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}helpdesk` (
   `msg_answer` text,
   UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+CREATE TABLE IF NOT EXISTS `{$db_prefix}banned_client` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `peer_id` varchar(16) NOT NULL,
+  `peer_id_ascii` varchar(8) NOT NULL,
+  `user_agent` varchar(255) NOT NULL,
+  `client_name` varchar(255) NOT NULL,
+  `reason` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `peer_id` (`peer_id`),
+  KEY `peer_id_ascii` (`peer_id_ascii`),
+  KEY `user_agent` (`user_agent`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;

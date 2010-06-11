@@ -65,7 +65,7 @@ require('include/settings.php'); // get the db connection info
 	$rating_unitwidth     = 30; // the width (in pixels) of each rating unit (star, etc.)
 	// if you changed your graphic to be 50 pixels wide, you should change the value above
 	
-$rating_conn = mysql_connect($rating_dbhost, $rating_dbuser, $rating_dbpass) or die  ('Error connecting to CyBerFuN MySQL server');
+$rating_conn = mysql_connect($rating_dbhost, $rating_dbuser, $rating_dbpass) or die  ('Error connecting to CyBerFuN xBTiT MySQL server');
 	//mysql_select_db($rating_dbname);
 
 ?>

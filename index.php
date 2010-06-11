@@ -9,7 +9,7 @@
 
 if (file_exists("install.unlock") && file_exists("install.php"))
    {
-   if (dirname($_SERVER["PHP_SELF"])=="/" || dirname($_SERVER["PHP_SELF"])=="\\")
+   if (dirname($_SERVER["PHP_SELF"]) == "/" || dirname($_SERVER["PHP_SELF"]) == "\\")
       header("Location: http://".$_SERVER["HTTP_HOST"]."/install.php");
    else
       header("Location: http://".$_SERVER["HTTP_HOST"].dirname($_SERVER["PHP_SELF"])."/install.php");
@@ -44,43 +44,43 @@ dbconn(true);
 
 
 // get user's style
-$resheet=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}style where id=".$CURUSER["style"]." LIMIT 1",TRUE,$btit_settings["cache_duration"]);
+$resheet = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}style where id=".$CURUSER["style"]." LIMIT 1", TRUE, $btit_settings["cache_duration"]);
 if (!$resheet)
    {
 
-   $STYLEPATH="$THIS_BASEPATH/style/xbtit_default";
-   $STYLEURL="$BASEURL/style/xbtit_default";
+   $STYLEPATH = "$THIS_BASEPATH/style/xbtit_default";
+   $STYLEURL = "$BASEURL/style/xbtit_default";
 }
 else
     {
-        $resstyle=mysql_fetch_array($resheet);
-        $STYLEPATH="$THIS_BASEPATH/".$resstyle["style_url"];
-        $STYLEURL="$BASEURL/".$resstyle["style_url"];
+        $resstyle = mysql_fetch_array($resheet);
+        $STYLEPATH = "$THIS_BASEPATH/".$resstyle["style_url"];
+        $STYLEURL = "$BASEURL/".$resstyle["style_url"];
 }
 
-$style_css=load_css("main.css");
+$style_css = load_css("main.css");
 
 
-$idlang=intval($_GET["language"]);
+$idlang = intval($_GET["language"]);
 
-$pageID=(isset($_GET["page"])?$_GET["page"]:"");
+$pageID = (isset($_GET["page"]) ? $_GET["page"]:"");
 
-$no_columns=(isset($_GET["nocolumns"]) && intval($_GET["nocolumns"])==1?true:false);
+$no_columns = (isset($_GET["nocolumns"]) && intval($_GET["nocolumns"]) == 1 ? true : false);
 
 // getting user language
-if ($idlang==0)
-   $reslang=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}language WHERE id=".$CURUSER["language"]." LIMIT 1",TRUE,$btit_settings["cache_duration"]);
+if ($idlang == 0)
+   $reslang = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}language WHERE id=".$CURUSER["language"]." LIMIT 1", TRUE, $btit_settings["cache_duration"]);
 else
-   $reslang=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}language WHERE id=$idlang"." LIMIT 1",TRUE,$btit_settings["cache_duration"]);
+   $reslang = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}language WHERE id=$idlang"." LIMIT 1", TRUE, $btit_settings["cache_duration"]);
 
 if (!$reslang)
    {
-   $USERLANG="$THIS_BASEPATH/language/english";
+   $USERLANG = "$THIS_BASEPATH/language/english";
    }
 else
     {
-        $rlang=mysql_fetch_array($reslang);
-        $USERLANG="$THIS_BASEPATH/".$rlang["language_url"];
+        $rlang = mysql_fetch_array($reslang);
+        $USERLANG = "$THIS_BASEPATH/".$rlang["language_url"];
     }
 
 
@@ -90,12 +90,12 @@ clearstatcache();
 session_start();
 
 
-check_online(session_id(), ($pageID==""?"index":$pageID));
+check_online(session_id(), ($pageID == "" ? "index":$pageID));
 
 require(load_language("lang_main.php"));
 
 
-$tpl=new bTemplate();
+$tpl = new bTemplate();
 $tpl->set("main_title",$btit_settings["name"]." .::. "."Index");
 
 // is language right to left?
@@ -105,29 +105,29 @@ else
    $tpl->set("main_rtl","");
 if (!empty($language["charset"]))
   {
-   $GLOBALS["charset"]=$language["charset"];
-   $btit_settings["default_charset"]=$language["charset"];
-}
+   $GLOBALS["charset"] = $language["charset"];
+   $btit_settings["default_charset"] = $language["charset"];
+  }
 $tpl->set("main_charset",$GLOBALS["charset"]);
 $tpl->set("main_css","$style_css");
 
 
 require_once("$THIS_BASEPATH/include/blocks.php");
 
-$logo.="<div></div>";
-$slideIt="<span style=\"align:left;\"><a href=\"javascript:collapse2.slideit()\"><img src=\"$STYLEURL/images/slide.png\" border=\"0\" alt=\"\" /></a></span>";
-$header.="<div>".main_menu()."</div>";
+$logo .= "<div></div>";
+$slideIt = "<span style=\"align:left;\"><a href=\"javascript:collapse2.slideit()\"><img src=\"$STYLEURL/images/slide.png\" border=\"0\" alt=\"\" /></a></span>";
+$header .= "<div>".main_menu()."</div>";
 
-$left_col=side_menu();
-$right_col=right_menu();
+$left_col = side_menu();
+$right_col = right_menu();
 
-if ($left_col=="" && $right_col=="")
-   $no_columns=1;
+if ($left_col == "" && $right_col == "")
+   $no_columns = 1;
 
 include 'include/jscss.php';
 
 $tpl->set("main_jscript",$morescript);
-if (!$no_columns && $pageID!='admin' && $pageID!='forum' && $pageID!='torrents' && $pageID!='usercp') {
+if (!$no_columns && $pageID != 'admin' && $pageID != 'forum' && $pageID != 'torrents' && $pageID != 'usercp') {
   $tpl->set("main_left",$left_col);
   $tpl->set("main_right",$right_col);
 }
@@ -147,15 +147,15 @@ $tpl->set("main_title",$btit_settings["name"]." .::. "."$object->filename");
 switch ($pageID) {
 
     case 'modules':
-        $module_name=htmlspecialchars($_GET["module"]);
-        $modules=get_result("SELECT * FROM {$TABLE_PREFIX}modules WHERE name=".sqlesc($module_name)." LIMIT 1",true,$btit_settings["cache_duration"]);
-        if (count($modules)<1) // MODULE NOT SET
-           stderr($language["ERROR"],$language["MODULE_NOT_PRESENT"]);
+        $module_name = htmlspecialchars($_GET["module"]);
+        $modules = get_result("SELECT * FROM {$TABLE_PREFIX}modules WHERE name=".sqlesc($module_name)." LIMIT 1", true, $btit_settings["cache_duration"]);
+        if (count($modules) < 1) // MODULE NOT SET
+           stderr($language["ERROR"], $language["MODULE_NOT_PRESENT"]);
 
-        if ($modules[0]["activated"]=="no") // MODULE SET BUT NOT ACTIVED
-           stderr($language["ERROR"],$language["MODULE_UNACTIVE"]);
+        if ($modules[0]["activated"] == "no") // MODULE SET BUT NOT ACTIVED
+           stderr($language["ERROR"], $language["MODULE_UNACTIVE"]);
 
-        $module_out="";
+        $module_out = "";
         if (!file_exists("$THIS_BASEPATH/modules/$module_name/index.php")) // MODULE SET, ACTIVED, BUT WRONG FOLDER??
            stderr($language["ERROR"],$language["MODULE_LOAD_ERROR"]."<br />\n$THIS_BASEPATH/modules/$module_name/index.php");
 
@@ -187,7 +187,7 @@ switch ($pageID) {
         ob_start();
         require("$THIS_BASEPATH/ajaxchat/getHistoryChatData.php");
         $tpl->set("main_title",$btit_settings["name"]." .::. "."Shout History");
-        $out=ob_get_contents();
+        $out = ob_get_contents();
         ob_end_clean();
         $tpl->set("main_content",set_block($language["SHOUTBOX"]." ".$language["HISTORY"],"left",$out));
         break;
@@ -217,11 +217,13 @@ switch ($pageID) {
         break;
 
 // friendlist
+
     case 'friendlist':
         require("$THIS_BASEPATH/friendlist.php");
         $tpl->set("main_content",set_block($language["FRIENDLIST"],"center",$friendtpl->fetch(load_template("friendlist.tpl"))));
         $tpl->set("main_title",$btit_settings["name"]." .::. ".$language["FRIENDLIST"]."");
         break;
+
 // end friendlist
 
     case 'edit':
@@ -286,7 +288,7 @@ switch ($pageID) {
     case 'torrent-details':
     case 'details':
         require("$THIS_BASEPATH/details.php");
-        $tpl->set("main_content",set_block($language["TORRENT_DETAIL"],"center",$torrenttpl->fetch(load_template("torrent.details.tpl")),($GLOBALS["usepopup"]?false:true)));
+        $tpl->set("main_content",set_block($language["TORRENT_DETAIL"],"center",$torrenttpl->fetch(load_template("torrent.details.tpl")),($GLOBALS["usepopup"] ? false : true)));
         break;
 
     case 'users':
@@ -335,11 +337,13 @@ switch ($pageID) {
         break;
 
 /*Mod by losmi - faq mod*/
+
     case 'faq':
         require("$THIS_BASEPATH/faq.php");
         $tpl->set("main_content",set_block($language["MNU_FAQ"],"center",$faqtpl->fetch(load_template("faq.tpl"))));
-        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->F.A.Q.");
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."F.A.Q.");
         break;
+
 /*End mod by losmi faq - mod*/
     
     case 'index':
@@ -356,25 +360,25 @@ if ($GZIP_ENABLED)
     {
      if (stristr($_SERVER["HTTP_ACCEPT_ENCODING"],"gzip") && extension_loaded('zlib') && ini_get("zlib.output_compression") == 0)
          {
-         if (ini_get('output_handler')!='ob_gzhandler')
+         if (ini_get('output_handler') != 'ob_gzhandler')
              {
              ob_start("ob_gzhandler");
-             $gzip='enabled';
+             $gzip = 'enabled';
              }
          else
              {
              ob_start();
-             $gzip='enabled';
+             $gzip = 'enabled';
              }
      }
      else
          {
          ob_start();
-         $gzip='disabled';
+         $gzip = 'disabled';
          }
 }
 else
-    $gzip='disabled';
+    $gzip = 'disabled';
 
 
 

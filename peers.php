@@ -43,7 +43,7 @@ if (!defined("IN_BTIT"))
       die("non direct access!");
 
 
-$i=0;
+$i = 0;
 $scriptname = htmlspecialchars($_SERVER["PHP_SELF"]."?page=peers&amp;id=$_GET[id]");
 $addparam = "";
 $id = AddSlashes($_GET["id"]);
@@ -102,8 +102,78 @@ else
     {
     $peerstpl->set("NOPEERS", FALSE, TRUE);
 
+if($CURUSER["admin_access"] == "yes")
+{
+    $peerstpl->set("ADMIN_ACCESS", TRUE, TRUE);
+    $peerstpl->set("uid", $CURUSER["uid"]);
+    $peerstpl->set("random", $CURUSER["random"]);
+    $clients = array();
+	$i = 0;    
+    foreach($clientarr as $n => $v)
+    {
+        $clients[$i]["client"] = $n;
+        $clients[$i]["user_agent"] = $v["user_agent"];
+        $clients[$i]["peer_id"] = $v["peer_id"];
+        $clients[$i]["peer_id_ascii"] = $v["peer_id_ascii"];
+        $clients[$i]["times_seen"] = $v["times_seen"];
+        $clients[$i]["encode1"] = urlencode($v["user_agent"]);
+        $clients[$i]["encode2"] = urlencode($v["peer_id"]);
+        $clients[$i]["encode3"] = urlencode("index.php?page=peers&id=".$id);
+        $i++;
+    }
+    $peerstpl->set("clients", $clients);
+    
+    $sqlquery = "SELECT * ";
+    $sqlquery .= "FROM {$TABLE_PREFIX}banned_client ";
+    $sqlquery .= "ORDER BY client_name ASC";
+
+    $res = mysql_query($sqlquery);
+
+    if(mysql_num_rows($res) > 0)
+    {
+        $i = 0;
+        $banned = array();
+        while($row = mysql_fetch_assoc($res))
+        {
+            $banned[$i]["client_name"] = $row["client_name"];
+            $banned[$i]["user_agent"] = $row["user_agent"];
+            $banned[$i]["peer_id"] = $row["peer_id"];
+            $banned[$i]["peer_id_ascii"] = $row["peer_id_ascii"];
+            $banned[$i]["reason"] = stripslashes($row["reason"]);
+            $banned[$i]["id"] = $row["id"];
+            $banned[$i]["encode"] = urlencode("index.php?page=peers&id=".$id);	 
+            $i++;
+        }
+        $peerstpl->set("banned_clients", TRUE, TRUE);
+        $peerstpl->set("banned", $banned);
+    }
+    else
+    {
+        $peerstpl->set("banned_clients", FALSE, TRUE);
+    }
+}
+else
+{
+    $peerstpl->set("ADMIN_ACCESS", FALSE, TRUE);
+
+    $clientarr = array();
+
     foreach ($res as $id=>$row)
     {
+    // Ban clients by Petr1fied
+    if($CURUSER["admin_access"] == "yes")
+    {
+        $gotclient = htmlspecialchars(getagent(unesc($row["client"]), unesc($row["peer_id"])));
+        if(!array_key_exists($gotclient,$clientarr))
+        {
+            $clientarr[$gotclient]["user_agent"] = ((substr($row["client"], 0, 7)=="Azureus") ? substr($row["client"], 0,  (((stripos($row["client"], ";")==true) ? stripos($row["client"], ";") : strlen($row["client"])))) : $row["client"]);
+            $clientarr[$gotclient]["peer_id"] = substr($row["peer_id"], 0, 16);
+            $clientarr[$gotclient]["peer_id_ascii"] = hex2bin(substr($row["peer_id"], 0, 16));
+            $clientarr[$gotclient]["times_seen"] = 1;
+        }
+        else
+            $clientarr[$gotclient]["times_seen"] = $clientarr[$gotclient]["times_seen"] + 1;
+    }
       // for user name instead of peer
      if ($XBTT_USE)
         $resu = TRUE;
