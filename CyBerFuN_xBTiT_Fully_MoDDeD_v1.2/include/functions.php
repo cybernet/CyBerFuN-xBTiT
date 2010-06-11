@@ -356,7 +356,7 @@ function print_designer() {
      $CyBerFuN_xBTiT_version = '' . $CyBerFuN_xBTiT_version . '';
      $design_copyright = '' . $design_copyright . '';
   } else
-     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 537 )';
+     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 539 )';
      $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT ' . $CyBerFuN_xBTiT_version . ' By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By <a href="http://www.btiteam.org/" target="_blank">BTiTeam.org</a></u>&nbsp;]<br />';
   return $design_copyright;
 }
@@ -1200,6 +1200,11 @@ if ( !function_exists('htmlspecialchars_decode') ) {
     return strtr($text, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
   }
 }
+
+if (!function_exists("stripos")) {
+  function stripos($str,$needle) {
+   return strpos(strtolower($str),strtolower($needle));
+  }
 
 // EOF
 ?>

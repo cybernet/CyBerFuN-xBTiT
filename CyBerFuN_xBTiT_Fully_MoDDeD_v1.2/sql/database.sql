@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 10, 2010 at 11:07 PM
+-- Generation Time: Jun 11, 2010 at 11:16 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.2
 
@@ -51,6 +51,30 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}ajax_ratings` (
 
 --
 -- Dumping data for table `{$db_prefix}ajax_ratings`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}bannedclient`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}banned_client` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `peer_id` varchar(16) NOT NULL,
+  `peer_id_ascii` varchar(8) NOT NULL,
+  `user_agent` varchar(255) NOT NULL,
+  `client_name` varchar(255) NOT NULL,
+  `reason` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `peer_id` (`peer_id`),
+  KEY `peer_id_ascii` (`peer_id_ascii`),
+  KEY `user_agent` (`user_agent`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}bannedclient`
 --
 
 
@@ -1281,7 +1305,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('irc_channel', 'cyberfun_xbtit'),
 ('inv_login', 'false'),
 ('att_login', '99'),
-('CyBerFuN_xBTiT_installed_versi', '1.2 revision 537');
+('CyBerFuN_xBTiT_installed_versi', '1.2 revision 539');
 
 -- --------------------------------------------------------
 

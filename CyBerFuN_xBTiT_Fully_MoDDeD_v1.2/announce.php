@@ -188,6 +188,17 @@ if (ereg("^Mozilla\\/", $agent) || ereg("^Opera\\/", $agent) || ereg("^Links ", 
     die("This a a bittorrent application and can't be loaded into a browser");
 }
 
+$sqlquery ="SELECT client_name, reason ";
+$sqlquery.="FROM {$TABLE_PREFIX}banned_client ";
+$sqlquery.="WHERE peer_id='".substr($peer_id, 0, 16)."' ";
+$sqlquery.=" OR peer_id='".substr($peer_id, 0, 6)."'";
+
+
+// Check if client is banned
+$client_ban = mysql_fetch_array(mysql_query($sqlquery));
+if($client_ban)
+    show_error("I'm sorry, $client_ban[0] is banned from this tracker (".stripslashes($client_ban[1]).")");
+
 // check if al needed information is sent by the client
 if (!isset($_GET["port"]) || !isset($_GET["downloaded"]) || !isset($_GET["uploaded"]) || !isset($_GET["left"]))
     show_error("Invalid information received from BitTorrent client");

@@ -354,4 +354,18 @@ $language["CyBerFuN_enable_invalid_login_check"] = "Enable invalid login check";
 // Invalid Login System Language End by cybernet2u
 // GOLD
 $language["ACP_GOLD"] = "Gold torrents settings";
+//
+$language['BAN_CLIENT'] = 'Ban BitTorrent Client';
+$language['REMOVE_CLIENTBAN'] = 'Remove BitTorrent Client Ban';
+$language['CLIENT_REMOVED'] = 'This client has been removed from the banned list.<br /><br />';
+$language['RETURN'] = 'Return';
+$language['UNBAN_MAIN'] = 'By visiting this page you are indicating that you wish to remove the ban on the following client:';
+$language['CONFIRM_ACTION'] = 'Are you sure you want to do this? (you will receive no further confirmation).';
+$language['CLIENT_ALREADY_BANNED'] = 'This client is already banned!';
+$language['ALL_VERSIONS'] = 'All versions';
+$language['CLIENT_ADDED'] = 'This client has been added to the banned list<br /><br />';
+$language['NEED_A_REASON'] = 'You must enter a reason!';
+$language['BAN_MAIN'] = 'By visiting this page you are indicating that you want to ban the following client:';
+$language['BAN_ALL_VERSIONS'] = 'Ban all versions?';
+$language['REASON'] = 'Reason';
 ?>
