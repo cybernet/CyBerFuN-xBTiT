@@ -4,7 +4,7 @@ INSERT INTO `{$db_prefix}settings` (
 `value`
 )
 VALUES (
-'CyBerFuN_xBTiT_installed_version', '1.2 revision 537'
+'CyBerFuN_xBTiT_installed_version', '1.2 revision 541'
 );
 UPDATE `{$db_prefix}hacks` SET `version` = '3.1.1' WHERE `{$db_prefix}hacks`.`id` =1;
 ALTER TABLE `{$db_prefix}users` ADD INDEX ( `smf_fid` );
@@ -80,3 +80,6 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}banned_client` (
   KEY `peer_id_ascii` (`peer_id_ascii`),
   KEY `user_agent` (`user_agent`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+RENAME TABLE `tags` TO `{$db_prefix}tags` ;
+ALTER TABLE `{$db_prefix}sticky` CHANGE `id` `id` INT( 11 ) NOT NULL AUTO_INCREMENT ;
+ALTER TABLE `{$db_prefix}visible` CHANGE `id` `id` INT( 11 ) NOT NULL AUTO_INCREMENT ;

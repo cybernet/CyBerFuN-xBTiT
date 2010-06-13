@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 11, 2010 at 11:16 PM
+-- Generation Time: Jun 13, 2010 at 11:42 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.2
 
@@ -12,29 +12,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `xbtit`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tags`
---
-
-CREATE TABLE IF NOT EXISTS `tags` (
-  `id` int(20) NOT NULL AUTO_INCREMENT,
-  `tag` char(250) NOT NULL,
-  `count` char(250) NOT NULL,
-  `ip` char(250) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `id_2` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `tags`
---
-
-INSERT INTO `tags` (`id`, `tag`, `count`, `ip`) VALUES
-(1, 'xList.ro', '7', '127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -117,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}blocks` (
   `minclassview` int(11) NOT NULL DEFAULT '0',
   `maxclassview` int(11) NOT NULL DEFAULT '8',
   PRIMARY KEY (`blockid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `{$db_prefix}blocks`
@@ -128,27 +105,27 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 (2, 'clock', 'r', 3, 1, 'BLOCK_CLOCK', 'no', 3, 8),
 (3, 'forum', 'l', 3, 0, 'BLOCK_FORUM', 'no', 3, 8),
 (4, 'lastmember', 'l', 4, 1, 'BLOCK_LASTMEMBER', 'no', 3, 8),
-(6, 'trackerinfo', 'r', 5, 0, 'BLOCK_INFO', 'no', 3, 8),
-(7, 'user', 'r', 4, 0, 'BLOCK_USER', 'no', 3, 8),
-(8, 'online', 'b', 1, 1, 'BLOCK_ONLINE', 'no', 3, 8),
-(10, 'toptorrents', 'c', 8, 0, 'BLOCK_TOPTORRENTS', 'no', 3, 8),
-(11, 'lasttorrents', 'c', 7, 1, 'BLOCK_LASTTORRENTS', 'no', 3, 8),
-(12, 'news', 'c', 5, 0, 'BLOCK_NEWS', 'no', 3, 8),
-(13, 'mainmenu', 't', 1, 1, 'BLOCK_MENU', 'no', 1, 8),
-(14, 'maintrackertoolbar', 't', 2, 1, 'BLOCK_MAINTRACKERTOOLBAR', 'no', 3, 8),
-(15, 'mainusertoolbar', 't', 3, 1, 'BLOCK_MAINUSERTOOLBAR', 'no', 3, 8),
-(16, 'serverload', 'c', 9, 1, 'BLOCK_SERVERLOAD', 'no', 8, 8),
-(17, 'poller', 'l', 2, 1, 'BLOCK_POLL', 'no', 3, 8),
-(18, 'seedwanted', 'c', 6, 0, 'BLOCK_SEEDWANTED', 'no', 3, 8),
-(19, 'paypal', 'r', 1, 0, 'BLOCK_PAYPAL', 'no', 1, 8),
-(20, 'ajax_shoutbox', 'c', 3, 1, 'BLOCK_SHOUTBOX', 'no', 3, 8),
-(21, 'featured', 'c', 4, 0, 'BLOCK_FEATURED', 'yes', 3, 8),
-(22, 'lasttorrent', 'l', 1, 1, 'BLOCK_LASTTORRENT', '', 3, 8),
-(23, 'lasttorrentmarq', 'c', 2, 0, 'BLOCK_LASTTORRENT_MARQ', '', 3, 8),
-(24, 'twitter', 'l', 5, 0, 'TWITTER', 'no', 3, 8),
-(25, 'categories', 'r', 2, 1, 'BLOCK_CAT', 'no', 3, 8),
-(27, 'login', 'c', 1, 1, 'LOGIN', 'no', 1, 1),
-(28, 'cloud', 'c', 0, 1, 'BLOCK_CLOUD', 'no', 3, 8);
+(5, 'trackerinfo', 'r', 5, 0, 'BLOCK_INFO', 'no', 3, 8),
+(6, 'user', 'r', 4, 0, 'BLOCK_USER', 'no', 3, 8),
+(7, 'online', 'b', 1, 1, 'BLOCK_ONLINE', 'no', 3, 8),
+(8, 'toptorrents', 'c', 8, 0, 'BLOCK_TOPTORRENTS', 'no', 3, 8),
+(9, 'lasttorrents', 'c', 7, 1, 'BLOCK_LASTTORRENTS', 'no', 3, 8),
+(10, 'news', 'c', 5, 0, 'BLOCK_NEWS', 'no', 3, 8),
+(11, 'mainmenu', 't', 1, 1, 'BLOCK_MENU', 'no', 1, 8),
+(12, 'maintrackertoolbar', 't', 2, 1, 'BLOCK_MAINTRACKERTOOLBAR', 'no', 3, 8),
+(13, 'mainusertoolbar', 't', 3, 1, 'BLOCK_MAINUSERTOOLBAR', 'no', 3, 8),
+(14, 'serverload', 'c', 9, 1, 'BLOCK_SERVERLOAD', 'no', 8, 8),
+(15, 'poller', 'l', 2, 1, 'BLOCK_POLL', 'no', 3, 8),
+(16, 'seedwanted', 'c', 6, 0, 'BLOCK_SEEDWANTED', 'no', 3, 8),
+(17, 'paypal', 'r', 1, 0, 'BLOCK_PAYPAL', 'no', 1, 8),
+(18, 'ajax_shoutbox', 'c', 3, 1, 'BLOCK_SHOUTBOX', 'no', 3, 8),
+(19, 'featured', 'c', 4, 0, 'BLOCK_FEATURED', 'yes', 3, 8),
+(20, 'lasttorrent', 'l', 1, 1, 'BLOCK_LASTTORRENT', '', 3, 8),
+(21, 'lasttorrentmarq', 'c', 2, 0, 'BLOCK_LASTTORRENT_MARQ', '', 3, 8),
+(22, 'twitter', 'l', 5, 0, 'TWITTER', 'no', 3, 8),
+(23, 'categories', 'r', 2, 1, 'BLOCK_CAT', 'no', 3, 8),
+(24, 'login', 'c', 1, 1, 'LOGIN', 'no', 1, 1),
+(25, 'cloud', 'c', 0, 1, 'BLOCK_CLOUD', 'no', 3, 8);
 
 -- --------------------------------------------------------
 
@@ -163,16 +140,16 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}bonus` (
   `traffic` bigint(20) unsigned NOT NULL DEFAULT '0',
   `gb` int(9) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `{$db_prefix}bonus`
 --
 
 INSERT INTO `{$db_prefix}bonus` (`id`, `name`, `points`, `traffic`, `gb`) VALUES
-(3, '1', '30.0', 1073741824, 1),
-(4, '2', '50.0', 2147483648, 2),
-(5, '3', '100.0', 5368709120, 5);
+(1, '1', '30.0', 1073741824, 1),
+(2, '2', '50.0', 2147483648, 2),
+(3, '3', '100.0', 5368709120, 5);
 
 -- --------------------------------------------------------
 
@@ -187,29 +164,29 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}categories` (
   `sort_index` int(10) unsigned NOT NULL DEFAULT '0',
   `image` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=43 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `{$db_prefix}categories`
 --
 
 INSERT INTO `{$db_prefix}categories` (`id`, `name`, `sub`, `sort_index`, `image`) VALUES
-(6, 'Books', 0, 110, 'books.png'),
-(5, 'Anime', 0, 90, 'other.png'),
-(4, 'Other', 0, 1000, 'utilities2.png'),
-(3, 'Games', 0, 40, 'games.png'),
-(2, 'Music', 0, 20, 'music.png'),
-(1, 'Movies', 0, 10, 'mov1es.png'),
-(18, 'TV Shows', 0, 200, 'episodes.png'),
-(11, 'DVD-R', 1, 0, 'movies.png'),
-(12, 'Adult', 0, 6969, 'pr0n.png'),
-(13, 'Blu-Ray Rips', 1, 11, 'mov1es.png'),
-(14, 'Apps', 0, 2222, 'other.png'),
-(15, 'Windows', 14, 2223, 'win.png'),
-(16, 'Linux', 14, 2224, 'linux.png'),
-(17, 'Mac', 14, 2225, 'mac.png'),
-(24, 'Videos', 1, 12, 'mov1es.png'),
-(42, 'Other', 18, 999, 'episodes.png');
+(1, 'Books', 0, 110, 'books.png'),
+(2, 'Anime', 0, 90, 'other.png'),
+(3, 'Other', 0, 1000, 'utilities2.png'),
+(4, 'Games', 0, 40, 'games.png'),
+(5, 'Music', 0, 20, 'music.png'),
+(6, 'Movies', 0, 10, 'mov1es.png'),
+(7, 'TV Shows', 0, 200, 'episodes.png'),
+(8, 'DVD-R', 1, 0, 'movies.png'),
+(9, 'Adult', 0, 6969, 'pr0n.png'),
+(10, 'Blu-Ray Rips', 1, 11, 'mov1es.png'),
+(11, 'Apps', 0, 2222, 'other.png'),
+(12, 'Windows', 14, 2223, 'win.png'),
+(13, 'Linux', 14, 2224, 'linux.png'),
+(14, 'Mac', 14, 2225, 'mac.png'),
+(15, 'Videos', 1, 12, 'mov1es.png'),
+(16, 'Other', 18, 999, 'episodes.png');
 
 -- --------------------------------------------------------
 
@@ -1305,7 +1282,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('irc_channel', 'cyberfun_xbtit'),
 ('inv_login', 'false'),
 ('att_login', '99'),
-('CyBerFuN_xBTiT_installed_versi', '1.2 revision 539');
+('CyBerFuN_xBTiT_installed_versi', '1.2 revision 541');
 
 -- --------------------------------------------------------
 
@@ -1314,11 +1291,11 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}sticky` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `color` varchar(255) NOT NULL DEFAULT '#bce1ac;',
   `level` int(11) NOT NULL DEFAULT '3',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `{$db_prefix}sticky`
@@ -1345,16 +1322,39 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}style` (
 --
 
 INSERT INTO `{$db_prefix}style` (`id`, `style`, `style_url`) VALUES
-(5, 'CyBerFuN', 'style/CyBerFuN'),
-(7, 'CReD', 'style/redline'),
-(8, 'CyBerFuN Dark', 'style/mesh'),
-(1, 'xBtit_Default', 'style/xbtit_default'),
-(2, 'Mint Green', 'style/mintgreen'),
-(3, 'Dark Lair', 'style/darklair'),
-(4, 'The Hive', 'style/thehive'),
-(6, 'Holiday Spirit', 'style/holiday-spirit'),
+(1, 'CyBerFuN', 'style/CyBerFuN'),
+(2, 'CReD', 'style/redline'),
+(3, 'CyBerFuN Dark', 'style/mesh'),
+(4, 'xBtit_Default', 'style/xbtit_default'),
+(5, 'Mint Green', 'style/mintgreen'),
+(6, 'Dark Lair', 'style/darklair'),
+(7, 'The Hive', 'style/thehive'),
+(8, 'Holiday Spirit', 'style/holiday-spirit'),
 (9, 'x002', 'style/NB-002'),
 (10, 'x005', 'style/NB-005');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}tags`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}tags` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `tag` char(250) NOT NULL,
+  `count` char(250) NOT NULL,
+  `ip` char(250) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `id_2` (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `{$db_prefix}tags`
+--
+
+INSERT INTO `{$db_prefix}tags` (`id`, `tag`, `count`, `ip`) VALUES
+(1, 'xList.ro', '7', '127.0.0.1');
 
 -- --------------------------------------------------------
 

@@ -154,7 +154,7 @@ function createUsersLevelCombo($selected=0)
       foreach ($ret as $key=>$value)
       {
         $s='';
-        if($value['id_level']==$selected)
+        if($value['id_level'] == $selected)
         {
             $s='selected';
         }
@@ -166,7 +166,7 @@ function createUsersLevelCombo($selected=0)
       return $gold_select_box;
 }
 
-function createGoldCategories($selected='')
+function createGoldCategories($selected = '')
 {
         global $TABLE_PREFIX;
       $gold_categories = array(
@@ -204,15 +204,15 @@ function createGoldCategories($selected='')
       ajde(this.value)\">";
       foreach ($gold_categories as $key=>$value)
       {
-        $s='';
-        if($key==$selected)
+        $s = '';
+        if($key == $selected)
         {
-            $s='selected';
+            $s = 'selected';
         }
-        $gold_select_box .="<option value='".$key."' ".$s.">".$value."</option>";
+        $gold_select_box .= "<option value='".$key."' ".$s.">".$value."</option>";
         
       }
-      $gold_select_box .='</select><div id="description"></div>';
+      $gold_select_box .= '</select><div id="description"></div>';
       return $gold_select_box;
 }
 // end gold
@@ -966,7 +966,7 @@ function get_block($block_title, $alignement, $block, $use_cache = true, $width1
   $blocktpl->set('block_align',$alignement);
 
   $cache_file = realpath(dirname(__FILE__).'/..').'/cache/'.md5($block.$CURUSER['id_level']).'.txt';
-  $use_cache = ($use_cache)?$CACHE_DURATION > 0:false;
+  $use_cache = ($use_cache) ? $CACHE_DURATION > 0 : false;
     
   if ($use_cache) {
 
