@@ -110,19 +110,19 @@ elseif($active == 2){
 
 /* Rewrite, part 1: encode "WHERE" statement only. */
 
-// selezione categoria
+// select category
 $ip = getenv('REMOTE_ADDR');
 $counts = +1;
 $date = date('YmdHis');
-$result2 = mysql_query("SELECT * FROM tags WHERE tags.tag = '$trova' LIMIT 1") or die;
-$count2 = mysql_num_rows($result2);
+$result2 = get_result("SELECT * FROM {$TABLE_PREFIX}tags WHERE {$TABLE_PREFIX}tags.tag = '$trova' LIMIT 1", true, $btit_settings['cache_duration']);
+$count2 = count($result2);
 if ($count2 == 0)
 {
-mysql_query("INSERT INTO tags (tag, count, ip) VALUES ('$trova', '$counts', '$ip')");
+mysql_query("INSERT INTO {$TABLE_PREFIX}tags (tag, count, ip) VALUES ('$trova', '$counts', '$ip')");
 }
 else
 {
-mysql_query("UPDATE tags SET count = count+1, ip = '$ip' WHERE tag = '$trova'");
+mysql_query("UPDATE {$TABLE_PREFIX}tags SET {$TABLE_PREFIX}tags.count = count+1, ip = '$ip' WHERE tag = '$trova'");
 }
 if ($category[0] > 0) {
    $where .= " AND category IN (".implode(",",$category).")"; // . $_GET["category"];
