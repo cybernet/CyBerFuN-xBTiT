@@ -13,7 +13,7 @@ mysql_connect("$dbhost", $dbuser, $dbpass);
 mysql_select_db($database);
 function tag_info() {
   //pay attention below
-  $result = mysql_query("SELECT * FROM tags GROUP BY tag ORDER BY count DESC LIMIT 35");
+  $result = mysql_query("SELECT * FROM {$TABLE_PREFIX}tags GROUP BY tag ORDER BY count DESC LIMIT 35");
   //fetch
   while($row = mysql_fetch_array($result)) {
     //make an array
@@ -71,7 +71,7 @@ function tag_info() {
     . '" href="index.php?page=torrents&search=' . $tag
     . '" title="\'' . $tag  . '\' returned a count of ' . $count . '">'
     . htmlspecialchars(stripslashes($tag)) . '</a>';
-   //word filter
+   // word filter
 	$cloud_tags = str_replace("tits", "",$cloud_tags);
 	$cloud_tags = str_replace("sex", "",$cloud_tags);
 	$cloud_tags = str_replace("busty", "",$cloud_tags);
@@ -82,13 +82,11 @@ function tag_info() {
 	$cloud_tags = str_replace("dick", "",$cloud_tags);
 	$cloud_tags = str_replace("gay", "",$cloud_tags);
 	$cloud_tags = str_replace("Gay", "",$cloud_tags);
-  //end tag entries
+  // end tag entries
   }
   $cloud_html = join("\n", $cloud_tags) . "\n";
-//show cloud
+// show cloud
 return $cloud_html;
 }
-
-
 
 ?>

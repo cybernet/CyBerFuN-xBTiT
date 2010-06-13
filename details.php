@@ -104,8 +104,6 @@ if(!$CURUSER || $CURUSER["view_torrents"] != "yes")
 
 $res = get_result("SELECT tag, f.screen1, f.screen2, f.screen3, f.image, u.warn, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'", true, $btit_settings['cache_duration']);
 
-// die("SELECT f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'");
-
 if (count($res) < 1)
    stderr($language["ERROR"], "Bad ID!", $GLOBALS["usepopup"]);
 $row = $res[0];
@@ -115,8 +113,8 @@ $spacer = "&nbsp;&nbsp;";
 
 $torrenttpl = new bTemplate();
 // Snatchers hack by DT dec 2008
-$sres = mysql_query("SELECT * FROM {$TABLE_PREFIX}history WHERE infohash = '$id' AND date IS NOT NULL ORDER BY date DESC LIMIT 10 ");
-$srow = mysql_num_rows($sres);
+$sres = get_result("SELECT * FROM {$TABLE_PREFIX}history WHERE infohash = '$id' AND date IS NOT NULL ORDER BY date DESC LIMIT 10 ", true, $btit_settings['cache_duration']);
+$srow = count($sres);
 
 	if ($srow)
 
@@ -126,7 +124,7 @@ $srow = mysql_num_rows($sres);
     while ($srow = mysql_fetch_array($sres))
 
 {
-$res = mysql_query("SELECT prefixcolor, suffixcolor, users.id, username, level FROM {$TABLE_PREFIX}users users INNER JOIN {$TABLE_PREFIX}users_level users_level ON users.id_level=users_level.id WHERE users.id='".$srow["uid"]."'") or die(mysql_error());
+$res = get+result("SELECT prefixcolor, suffixcolor, users.id, username, level FROM {$TABLE_PREFIX}users users INNER JOIN {$TABLE_PREFIX}users_level users_level ON users.id_level=users_level.id WHERE users.id='".$srow["uid"]."'", true, $btit_settings['cache_duration']);
 $result = mysql_fetch_array($res);
 $snatchers[$plus]["snatch"] = "<a href=index.php?page=userdetails&id=$result[id]>".unesc($result["prefixcolor"]).unesc($result["username"]).unesc($result["suffixcolor"])."</a>&nbsp;";
 $plus++;
@@ -371,12 +369,12 @@ else
 // comments...
 if ($XBTT_USE)
    {
-    $subres = get_result("SELECT u.downloaded+IFNULL(x.downloaded,0) as downloaded, u.uploaded+IFNULL(x.uploaded,0) as uploaded, u.avatar, c.id, c.text, UNIX_TIMESTAMP(c.added) as data, c.user, u.id uid, u.id_level FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username LEFT JOIN xbt_users x ON x.uid=u.id LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE info_hash = '" . $id . "' ORDER BY c.added DESC",true,$btit_settings['cache_duration']);
+    $subres = get_result("SELECT u.downloaded+IFNULL(x.downloaded,0) as downloaded, u.uploaded+IFNULL(x.uploaded,0) as uploaded, u.avatar, c.id, c.text, UNIX_TIMESTAMP(c.added) as data, c.user, u.id uid, u.id_level FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username LEFT JOIN xbt_users x ON x.uid=u.id LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE info_hash = '" . $id . "' ORDER BY c.added DESC", true, $btit_settings['cache_duration']);
    }
 else
     {
 
-$subres = get_result("SELECT u.downloaded as downloaded, u.uploaded as uploaded, u.avatar, u.id_level, u.custom_title, c.id, u.warn, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC",true,$btit_settings['cache_duration']);
+$subres = get_result("SELECT u.downloaded as downloaded, u.uploaded as uploaded, u.avatar, u.id_level, u.custom_title, c.id, u.warn, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC", true, $btit_settings['cache_duration']);
 }
 if (!$subres || count($subres) == 0) {
      if($CURUSER["uid"] > 1)
@@ -417,7 +415,7 @@ else {
        $comments[$count]["downloaded"] = "<img src=\"images/speed_down.png\">&nbsp;".(makesize($subrow["downloaded"]));
        // only users able to delete torrents can delete comments...
        if ($CURUSER["delete_torrents"] == "yes")
-         $comments[$count]["delete"] = "<a onclick=\"return confirm('". str_replace("'","\'",$language["DELETE_CONFIRM"])."')\" href=\"index.php?page=comment&amp;id=$id&amp;cid=" . $subrow["id"] . "&amp;action=delete\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>";
+         $comments[$count]["delete"] = "<a onclick=\"return confirm('". str_replace("'","\'",$language["DELETE_CONFIRM"])."')\" href=\"index.php?page=comment&amp;id=".$row["info_hash"]."&amp;cid=" . $subrow["id"] . "&amp;action=delete\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>";
        $comments[$count]["comment"] = format_comment($subrow["text"]);
        $count++;
         }
