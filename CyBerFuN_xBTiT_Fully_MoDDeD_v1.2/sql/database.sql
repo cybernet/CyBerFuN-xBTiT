@@ -1204,7 +1204,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}readposts` (
 --
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}settings` (
-  `key` varchar(30) NOT NULL,
+  `key` varchar(41) NOT NULL,
   `value` varchar(200) NOT NULL,
   PRIMARY KEY (`key`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -1282,7 +1282,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('irc_channel', 'cyberfun_xbtit'),
 ('inv_login', 'false'),
 ('att_login', '99'),
-('CyBerFuN_xBTiT_installed_versi', '1.2 revision 545');
+('CyBerFuN_xBTiT_installed_version', '1.2 revision 546');
 
 -- --------------------------------------------------------
 
