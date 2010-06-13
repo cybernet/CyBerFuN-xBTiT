@@ -510,10 +510,6 @@ if ($btit_settings['xbtt_use'])
     $res = get_result("SELECT u.warn, u.lip, u.cip, seedbonus, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;", true, $btit_settings['cache_duration']);
     $row = $res[0];
   }
-/* this part is now updated by check_online function
-  if ($id > 1)
-    quickQuery("UPDATE {$TABLE_PREFIX}users SET lip=".$nip.", cip='".AddSlashes($ip)."' WHERE id = $id") or sqlerr(__FILE__, __LINE__);
-*/
 
   // CHECK FOR INSTALLATION FOLDER WITHOUT INSTALL.ME
   if ($row['id_level'] == 8 && (file_exists('install.php') || file_exists('upgrade.php'))) // only owner level

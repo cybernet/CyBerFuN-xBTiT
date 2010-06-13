@@ -35,13 +35,13 @@
 if (!defined("IN_BTIT"))
       die("non direct access!");
       
-      if ($CURUSER["id_level"]==1)
+      if ($CURUSER["id_level"] == 1)
 {
 	redirect("users.php"); // redirects to users.php if guest
 	exit();
 }
-$friendtpl= new bTemplate();
-$friendtpl-> set("language",$language);
+$friendtpl = new bTemplate();
+$friendtpl-> set("language", $language);
 require_once("include/functions.php");
 
 dbconn();
@@ -52,7 +52,7 @@ $friend_id = $_GET["friend_id"];
 
 // Add member to friendlist
 
-if ($do=="add")
+if ($do == "add")
 {
 	if (!isset($friend_id))
 	{
@@ -60,7 +60,7 @@ if ($do=="add")
 		exit();
 	}
 
-    $hmm=mysql_query("SELECT * FROM {$TABLE_PREFIX}friendlist WHERE friend_id = '$friend_id' AND user_id = ".$CURUSER['uid']);
+    $hmm = mysql_query("SELECT * FROM {$TABLE_PREFIX}friendlist WHERE friend_id = '$friend_id' AND user_id = ".$CURUSER['uid']);
 	if (mysql_num_rows($hmm))
 	{
 		err_msg(ERROR,MEMBER_ALREADY_EXIST);
@@ -82,7 +82,7 @@ if ($do=="add")
 
 }
 // Delete friend
-elseif ($do=="del")
+elseif ($do == "del")
 {
 
 	{
@@ -96,19 +96,19 @@ elseif ($do=="del")
 else
 {
 
-	$qry=mysql_query("SELECT * FROM {$TABLE_PREFIX}friendlist WHERE user_id = ".$CURUSER['uid']);
-	$coun=mysql_num_rows($qry);
+	$qry = mysql_query("SELECT * FROM {$TABLE_PREFIX}friendlist WHERE user_id = ".$CURUSER['uid']);
+	$coun = mysql_num_rows($qry);
 
 
 	if ($coun)
 
-         $friend=array();
+         $friend = array();
          $i=0;
-	while ($res=mysql_fetch_array($qry))
+	while ($res = mysql_fetch_array($qry))
 	{
-		$tor=mysql_query("SELECT ul.prefixcolor, ul.suffixcolor, ul.level, u.username, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect FROM {$TABLE_PREFIX}users u LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id>1 AND u.id = ".$res['friend_id']);
+		$tor = mysql_query("SELECT ul.prefixcolor, ul.suffixcolor, ul.level, u.username, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect FROM {$TABLE_PREFIX}users u LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id>1 AND u.id = ".$res['friend_id']);
 
-        $ret=mysql_fetch_array($tor);
+        $ret = mysql_fetch_array($tor);
         $avatar = ($ret["avatar"] && $ret["avatar"] != "" ? htmlspecialchars($ret["avatar"]) : "");
         if ($avatar=="")
         $av=("<img src='$STYLEURL/images/default_avatar.gif' border='0' width=50 />");
@@ -117,8 +117,8 @@ else
 // Online User
 
 		$last = $ret['lastconnect'];
-		$online=time();
-			$online-=60*15;
+		$online = time();
+			$online -= 60 * 15;
 		if($last > $online)
 		{
 			$online = "<img src=images/fonline.gif border=0> User is Online";
@@ -126,13 +126,13 @@ else
 		else
 			$online = "<img src=images/foffline.gif border=0> User is Offline";
 // end online users
-       $friend[$i]["id"]=$res["id"];
-       $friend[$i]["avatar"]=("<center>$av</center>");
-       $friend[$i]["name"]=("<a href=index.php?page=userdetails&id=".$res["friend_id"].">".unesc($ret["prefixcolor"]).unesc($ret["username"]).unesc($ret["suffixcolor"])."</a>");
-       $friend[$i]["level"]=$ret['level'];
-       $friend[$i]["acces"]= date("d/m/y h:i:s",$ret['lastconnect']);
-       $friend[$i]["status"]=("<center>$online</center>");
-       $friend[$i]["delete"]=("<center><a href=\"index.php?page=friendlist&do=del&amp;id=".$friend[$i]["id"]."\" onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a></center>");
+       $friend[$i]["id"] = $res["id"];
+       $friend[$i]["avatar"] = ("<center>$av</center>");
+       $friend[$i]["name"] = ("<a href=index.php?page=userdetails&id=".$res["friend_id"].">".unesc($ret["prefixcolor"]).unesc($ret["username"]).unesc($ret["suffixcolor"])."</a>");
+       $friend[$i]["level"] = $ret['level'];
+       $friend[$i]["acces"] = date("d/m/y h:i:s",$ret['lastconnect']);
+       $friend[$i]["status"] = ("<center>$online</center>");
+       $friend[$i]["delete"] = ("<center><a href=\"index.php?page=friendlist&do=del&amp;id=".$friend[$i]["id"]."\" onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a></center>");
        $i++;
 }
 }
