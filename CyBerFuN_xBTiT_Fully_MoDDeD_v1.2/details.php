@@ -124,7 +124,7 @@ $srow = count($sres);
     while ($srow = mysql_fetch_array($sres))
 
 {
-$res = get+result("SELECT prefixcolor, suffixcolor, users.id, username, level FROM {$TABLE_PREFIX}users users INNER JOIN {$TABLE_PREFIX}users_level users_level ON users.id_level=users_level.id WHERE users.id='".$srow["uid"]."'", true, $btit_settings['cache_duration']);
+$res = get_result("SELECT prefixcolor, suffixcolor, users.id, username, level FROM {$TABLE_PREFIX}users users INNER JOIN {$TABLE_PREFIX}users_level users_level ON users.id_level=users_level.id WHERE users.id='".$srow["uid"]."'", true, $btit_settings['cache_duration']);
 $result = mysql_fetch_array($res);
 $snatchers[$plus]["snatch"] = "<a href=index.php?page=userdetails&id=$result[id]>".unesc($result["prefixcolor"]).unesc($result["username"]).unesc($result["suffixcolor"])."</a>&nbsp;";
 $plus++;
