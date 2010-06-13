@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 13, 2010 at 09:54 PM
+-- Generation Time: Jun 14, 2010 at 12:02 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.2
 
@@ -1282,7 +1282,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('irc_channel', 'cyberfun_xbtit'),
 ('inv_login', 'false'),
 ('att_login', '99'),
-('CyBerFuN_xBTiT_installed_versi', '1.2 revision 542');
+('CyBerFuN_xBTiT_installed_versi', '1.2 revision 545');
 
 -- --------------------------------------------------------
 
