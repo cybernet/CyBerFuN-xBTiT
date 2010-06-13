@@ -4,7 +4,7 @@ INSERT INTO `{$db_prefix}settings` (
 `value`
 )
 VALUES (
-'CyBerFuN_xBTiT_installed_version', '1.2 revision 541'
+'CyBerFuN_xBTiT_installed_version', '1.2 revision 542'
 );
 UPDATE `{$db_prefix}hacks` SET `version` = '3.1.1' WHERE `{$db_prefix}hacks`.`id` =1;
 ALTER TABLE `{$db_prefix}users` ADD INDEX ( `smf_fid` );
