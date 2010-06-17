@@ -388,7 +388,7 @@ else
 
 $userdetailtpl->set("pagertophist", "");
 
-if ($sanq[0]['th'] > 0)
+if ($anq[0]['th'] > 0)
    {
     $userdetailtpl->set("RESULTS_2", true, true);
     $torhistory = array();
@@ -405,7 +405,7 @@ if ($sanq[0]['th'] > 0)
     foreach ($anq as $ud_id=>$torlist)
         {
             $torlist['filename'] = unesc($torlist['filename']);
-            $filename = cut_string($torlist['filename'],intval($btit_settings["cut_name"]));
+            $filename = cut_string($torlist['filename'], intval($btit_settings["cut_name"]));
 
             if ($GLOBALS["usepopup"])
             {
