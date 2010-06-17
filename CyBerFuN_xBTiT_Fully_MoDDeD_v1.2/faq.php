@@ -2,7 +2,7 @@
 
 // CyBerFuN.ro & xList.ro
 
-// CyBerFuN .::. Faq
+// CyBerFuN .::. FaQ
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xList.ro/
@@ -44,11 +44,11 @@ if (!defined("IN_BTIT"))
       die("non direct access!");
 
 if ($limit > 0)
-  $limitqry = "LIMIT $limit";
-$res = do_sqlquery("SELECT f.title AS title, f.id AS id, f.description AS description ,fg.title AS cat_title, fg.id AS cat_id, fg.sort_index AS sort_index 
+$limitqry = "LIMIT $limit";
+$res = get_result("SELECT f.title AS title, f.id AS id, f.description AS description ,fg.title AS cat_title, fg.id AS cat_id, fg.sort_index AS sort_index 
                     FROM {$TABLE_PREFIX}faq f 
                     INNER JOIN {$TABLE_PREFIX}faq_group fg on f.cat_id=fg.id 
-                    WHERE f.active = '1' AND fg.active = '1' GROUP BY f.id ORDER BY fg.sort_index DESC $limitqry");
+                    WHERE f.active = '1' AND fg.active = '1' GROUP BY f.id ORDER BY fg.sort_index DESC $limitqry", true, $btit_settings['cache_duration']);
 
 
 
@@ -59,7 +59,7 @@ $faqtpl->set("language", $language);
 $faq = array();
 $i = 0;
 
-$faqtpl->set("faq_exists", (mysql_num_rows($res) > 0), TRUE);
+$faqtpl->set("faq_exists", (count($res) > 0), TRUE);
 
 include("$THIS_BASEPATH/include/offset.php");
 
