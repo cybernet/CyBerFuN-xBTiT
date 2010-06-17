@@ -2,13 +2,19 @@
 
 // CyBerFuN.ro & xList.ro
 
-// CyBerFuN .::. Announce
+// CyBerFuN .::. Announce my beep
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xList.ro/
+// http://xDnS.ro/
+// http://yDnS.ro/
 // Modified By cybernet2u
 
 // CyBerFuN xBTiT Fully MoDDeD v1.2
+
+
+// https://cyberfun-xbtit.svn.sourceforge.net/svnroot/cyberfun-xbtit
+
 
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
@@ -114,9 +120,9 @@ function summaryAdd($column, $value, $abs = false)
 
 // connect to db
 if ($GLOBALS["persist"])
-    $conres = mysql_pconnect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
+    $conres = mysql_pconnect($dbhost, $dbuser, $dbpass) or show_error("Tracker error - mysql_connect: " . mysql_error());
 else
-    $conres = mysql_connect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
+    $conres = mysql_connect($dbhost, $dbuser, $dbpass) or show_error("Tracker error - mysql_connect: " . mysql_error());
 
     mysql_select_db($database) or show_error("Tracker error - $database - ".mysql_error());
 
