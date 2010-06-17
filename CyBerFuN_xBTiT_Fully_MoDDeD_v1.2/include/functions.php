@@ -1,11 +1,19 @@
 <?php
+
 // CyBerFuN.ro & xList.ro
 
 // CyBerFuN .::. Functions
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xList.ro/
+// http://xDnS.ro/
+// http://yDnS.ro/
 // Modified By cybernet2u
+
+// CyBerFuN xBTiT Fully MoDDeD v1.2
+
+
+// https://cyberfun-xbtit.svn.sourceforge.net/svnroot/cyberfun-xbtit
 
 error_reporting(E_ALL ^ E_NOTICE);
 
@@ -120,7 +128,7 @@ function genrelistfaq($append = '',$table = 'faq')
 }
 /*End mod by losmi - faq mod*/
 // gold mod
-function getStatus($gold=0)
+function getStatus($gold = 0)
 {
     if($gold == 0)
     {
@@ -135,7 +143,7 @@ function getStatus($gold=0)
     }
     return 'none';
 }
-function createUsersLevelCombo($selected=0)
+function createUsersLevelCombo($selected = 0)
      {
 
      global $TABLE_PREFIX;
@@ -153,15 +161,15 @@ function createUsersLevelCombo($selected=0)
       <select name='level' >";
       foreach ($ret as $key=>$value)
       {
-        $s='';
+        $s = '';
         if($value['id_level'] == $selected)
         {
-            $s='selected';
+            $s = 'selected';
         }
-        $gold_select_box .="<option value='".$value['id_level']."' ".$s.">".$value['level']."</option>";
+        $gold_select_box .= "<option value='".$value['id_level']."' ".$s.">".$value['level']."</option>";
         
       }
-      $gold_select_box .='</select><div id="description"></div>';
+      $gold_select_box .= '</select><div id="description"></div>';
       
       return $gold_select_box;
 }
@@ -177,7 +185,7 @@ function createGoldCategories($selected = '')
       $g_desc = '';
       $s_desc = '';
       $c_desc = '';
-        $res=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true);
+        $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true);
             foreach ($res as $key=>$value)
             {
                 $g_desc = $value["gold_description"];
@@ -482,7 +490,7 @@ function userlogin() {
     die();
   }
 // guest
-    $id = (!isset($_COOKIE['uid']))?1:max(1, (int)$_COOKIE['uid']);
+    $id = (!isset($_COOKIE['uid'])) ? 1 : max(1, (int)$_COOKIE['uid']);
 
 if ($btit_settings['xbtt_use'])
   {
