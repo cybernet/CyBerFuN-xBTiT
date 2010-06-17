@@ -2,7 +2,7 @@
 
 // CyBerFuN.ro & xList.ro
 
-// CyBerFuN .::. Username
+// CyBerFuN .::. UserName
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xList.ro/
@@ -45,18 +45,18 @@ dbconn();
   if ($CURUSER["uid"] > 1)
     {
   $uid = $CURUSER['uid'];
-  $r = do_sqlquery("SELECT * from {$TABLE_PREFIX}users where id=$uid");
+  $r = get_result("SELECT * from {$TABLE_PREFIX}users where id=$uid");
   $c = mysql_result($r, 0, "seedbonus");
 if($c >= $GLOBALS["price_name"]) {
-          if (isset($_POST["name"])) $custom = mysql_escape_string($_POST["name"]);
+          if (isset($_POST["name"])) $custom = mysql_real_escape_string($_POST["name"]);
              else $custom = "";
     if ("$custom" == "")
         {
         }
     else
         {
-          $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users WHERE username='".htmlspecialchars($custom)."'",true);
-          if (mysql_num_rows($res) > 0){}else
+          $res = get_result("SELECT * FROM {$TABLE_PREFIX}users WHERE username='".htmlspecialchars($custom)."'", true);
+          if (count($res) > 0){}else
           {do_sqlquery("UPDATE {$TABLE_PREFIX}users SET username='".htmlspecialchars($custom)."' WHERE id=$CURUSER[uid]");
           if ($FORUMLINK == "smf")
                 {do_sqlquery("UPDATE {db_prefix}members SET  memberName='".htmlspecialchars($custom)."' WHERE ID_MEMBER=".$CURUSER["smf_fid"]);}

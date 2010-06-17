@@ -48,7 +48,7 @@ if(isset($_GET['pollId'])){
   $pollId = $_GET['pollId'];
   $pollId = preg_replace("/[^0-9]/si", "", $pollId);
 
-  $userID = intval( 0+ $CURUSER['uid']);
+  $userID = intval( 0 + $CURUSER['uid']);
 
 
   // Insert new vote into the database
@@ -60,11 +60,11 @@ if(isset($_GET['pollId'])){
 
   echo '<?xml version="1.0" ?>';
 
-  $res = mysql_query("select ID,pollerTitle from {$TABLE_PREFIX}poller where ID='".$pollId."'");
+  $res = mysql_query("select ID, pollerTitle from {$TABLE_PREFIX}poller where ID='".$pollId."'");
   if($inf = mysql_fetch_array($res)){
     echo "<pollerTitle>".unesc($inf["pollerTitle"])."</pollerTitle>\n";
 
-    $resOptions = mysql_query("select ID,optionText from {$TABLE_PREFIX}poller_option where pollerID='".$inf["ID"]."' order by pollerOrder") or die(mysql_error());
+    $resOptions = mysql_query("select ID, optionText from {$TABLE_PREFIX}poller_option where pollerID='".$inf["ID"]."' order by pollerOrder") or die(mysql_error());
     while($infOptions = mysql_fetch_array($resOptions)){
       echo "<option>\n";
       echo "\t<optionText>".unesc($infOptions["optionText"])."</optionText>\n";
