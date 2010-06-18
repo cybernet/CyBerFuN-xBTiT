@@ -81,7 +81,10 @@ if ($XBTT_USE)
     } else
        $pid = "";
 
-    $query_string = implode_with_keys("&", $_GET);
+    if (isset($_SERVER['QUERY_STRING']))
+        $query_string = substr($_SERVER['QUERY_STRING'], strpos($_SERVER['QUERY_STRING'], "?") + 1);
+    else
+        $query_string = implode_with_keys("&", $_GET);
 
     if ($pid != "") // private announce
     {
