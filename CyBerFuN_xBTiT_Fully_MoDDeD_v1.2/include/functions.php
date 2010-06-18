@@ -364,7 +364,7 @@ function print_designer() {
      $CyBerFuN_xBTiT_version = '' . $CyBerFuN_xBTiT_version . '';
      $design_copyright = '' . $design_copyright . '';
   } else
-     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 546 )';
+     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 551 )';
      $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT ' . $CyBerFuN_xBTiT_version . ' By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By <a href="http://www.btiteam.org/" target="_blank">BTiTeam.org</a></u>&nbsp;]<br />';
   return $design_copyright;
 }
@@ -487,10 +487,8 @@ function userlogin() {
 ?>
 <html><body><h1>403 Forbidden</h1>Unauthorized IP address.</body></html>
 <?php
-    die();
-  }
-// guest
-    $id = (!isset($_COOKIE['uid'])) ? 1 : max(1, (int)$_COOKIE['uid']);
+die();
+}
 
 if ($btit_settings['xbtt_use'])
   {
@@ -504,6 +502,9 @@ if ($btit_settings['xbtt_use'])
     $uuploaded = "u.uploaded";
     $utables = "{$TABLE_PREFIX}users u";
   }
+// guest
+
+$id = (!isset($_COOKIE['uid']))?1:max(1, (int)$_COOKIE['uid']);
 
   $res = get_result("SELECT u.warn, u.lip, u.cip, seedbonus, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = $id LIMIT 1;", true, $btit_settings['cache_duration']);
   $row = $res[0];
