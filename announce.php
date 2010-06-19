@@ -250,7 +250,7 @@ if ($pid == "" || !$pid)
 
 // PID turned on
 if ($PRIVATE_ANNOUNCE) {
-  $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE pid='".$pid."' LIMIT 1");
+   $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE pid='".$pid."' LIMIT 1");
   if (!$respid || mysql_num_rows($respid) != 1)
      show_error("Invalid PiD (private announce): $pid. Please redownload torrent from $BASEURL");
   else
@@ -285,7 +285,7 @@ if ($PRIVATE_ANNOUNCE) {
    $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE u.cip='$ip' LIMIT 1");
    if (!$respid || mysql_num_rows($respid) != 1)
      // maybe it's guest with new query I must found at least guest user
-    $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE u.id=1 LIMIT 1");
+   $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE u.id=1 LIMIT 1");
     if (!$respid || mysql_num_rows($respid) != 1)
       {
         // do nothing but tracker is misconfigured!!!
@@ -530,7 +530,7 @@ function sendRandomPeers($info_hash)
 
     if (isset($_GET["compact"]) && $_GET["compact"] == '1')
       {
-        $p='';
+        $p = '';
         while ($row = mysql_fetch_assoc($result))
             $p .= str_pad(pack("Nn", ip2long($row["ip"]), $row["port"]), 6);
         echo strlen($p).':'.$p;
@@ -597,7 +597,7 @@ function killPeer($userid, $hash, $left, $assumepeer = false)
 }
 
 /*mod gold - Gold method checks is torrent set to gold silver or classic*/
-function checkGold($info_hash,$downloaded)
+function checkGold($info_hash, $downloaded)
 {
     global $TABLE_PREFIX;
      $re = mysql_query("SELECT gold FROM {$TABLE_PREFIX}files 
@@ -606,7 +606,7 @@ function checkGold($info_hash,$downloaded)
 
     if ($gold['gold'] == 1) // silver torrent go go leach
      {
-        $downloaded = (int)$downloaded/2;
+        $downloaded = (int)$downloaded / 2;
      }
      else if($gold['gold'] == 2) // gold torrent go go leach
      {
@@ -618,7 +618,7 @@ function checkGold($info_hash,$downloaded)
      }
      return $downloaded;
 }
-//end mod gold
+// end mod gold
 
 // Transfers bytes from "left" to "dlbytes" when a peer reports in.
 function collectBytes($peer, $hash, $left, $downloaded = 0, $uploaded = 0, $pid = "")
@@ -629,7 +629,7 @@ function collectBytes($peer, $hash, $left, $downloaded = 0, $uploaded = 0, $pid 
     $peerid = $peer["peer_id"];
 	// gold mod
      $downloaded = checkGold($info_hash,$downloaded);
-    // end gold mod
+        // end gold mod
 
     ################################################################################################
     # Speed stats in peers with filename
@@ -740,18 +740,18 @@ if ($LIVESTATS)
          {
          $livestat = mysql_fetch_assoc($resstat);
          // only if uploaded/downloaded are >= stored data in peer list
-         //if ($uploaded >= $livestat["uploaded"])
+         // if ($uploaded >= $livestat["uploaded"])
                $newup = max(0, ($uploaded - $livestat["uploaded"]));
-         //else
-         //      $newup=$uploaded;
+         // else
+         //      $newup = $uploaded;
 
-         //if ($downloaded>=$livestat["downloaded"])
+         // if ($downloaded>=$livestat["downloaded"])
                $newdown = max(0, ($downloaded - $livestat["downloaded"]));
          //else
          //      $newdown=$downloaded;
          // rev 485
 	 // gold mod
-     $newdown = checkGold($info_hash,$newdown);
+               $newdown = checkGold($info_hash, $newdown);
      // end gold mod
          quickquery("UPDATE {$TABLE_PREFIX}users SET downloaded=IFNULL(downloaded,0)+$newdown, uploaded=IFNULL(uploaded,0)+$newup WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")."");
          }
@@ -768,7 +768,7 @@ if ($LIVESTATS)
               quickQuery("UPDATE {$TABLE_PREFIX}history set uploaded=IFNULL(uploaded,0)+$newup, downloaded=IFNULL(downloaded,0)+$newdown WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
             }
           mysql_free_result($resu);
-       }
+         }
        // end history    }
 }
 
@@ -791,10 +791,10 @@ switch ($event)
           if ($resu && mysql_num_rows($resu) == 1)
             {
               $curuid = mysql_fetch_assoc($resu);
-              quickQuery("UPDATE {$TABLE_PREFIX}history set active='yes',agent='".getagent($agent,$peer_id)."' WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
+              quickQuery("UPDATE {$TABLE_PREFIX}history set active='yes', agent='".getagent($agent,$peer_id)."' WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
               // record is not present, create it (only if not seeder: original seeder don't exist in history table, other already exists)
               if (mysql_affected_rows() == 0 && $left > 0)
-                 quickQuery("INSERT INTO {$TABLE_PREFIX}history (uid,infohash,active,agent) VALUES (".$curuid["id"].",'$info_hash','yes','".getagent($agent, $peer_id)."')");
+                 quickQuery("INSERT INTO {$TABLE_PREFIX}history (uid, infohash, active, agent) VALUES (".$curuid["id"].", '$info_hash', 'yes', '".getagent($agent, $peer_id)."')");
             }
           mysql_free_result($resu);
        }
@@ -824,7 +824,7 @@ switch ($event)
           if ($resu && mysql_num_rows($resu) == 1)
             {
               $curuid = mysql_fetch_assoc($resu);
-              quickQuery("UPDATE {$TABLE_PREFIX}history set active='no',".($LIVESTATS?"":" uploaded=IFNULL(uploaded,0)+$uploaded, downloaded=IFNULL(downloaded,0)+$downloaded,")." agent='".getagent($agent,$peer_id)."' WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
+              quickQuery("UPDATE {$TABLE_PREFIX}history set active='no', ".($LIVESTATS?"":" uploaded=IFNULL(uploaded,0)+$uploaded, downloaded=IFNULL(downloaded,0)+$downloaded,")." agent='".getagent($agent,$peer_id)."' WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
             }
           mysql_free_result($resu);
        }
@@ -874,7 +874,7 @@ switch ($event)
                quickQuery("UPDATE {$TABLE_PREFIX}history SET date=UNIX_TIMESTAMP(), active='yes', agent='".getagent($agent,$peer_id)."' WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
                // record is not present, create it
                if (mysql_affected_rows() == 0)
-                  quickQuery("INSERT INTO {$TABLE_PREFIX}history (uid,infohash,date,active,agent) VALUES (".$curuid["id"].",'$info_hash',UNIX_TIMESTAMP(),'yes','".getagent($agent,$peer_id)."')");
+                  quickQuery("INSERT INTO {$TABLE_PREFIX}history (uid, infohash, date, active, agent) VALUES (".$curuid["id"].", '$info_hash', UNIX_TIMESTAMP(), 'yes', '".getagent($agent,$peer_id)."')");
 
              }
            mysql_free_result($resu);
