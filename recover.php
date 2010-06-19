@@ -1,4 +1,21 @@
 <?php
+
+// CyBerFuN.ro & xList.ro
+
+// CyBerFuN .::. recover
+// http://tracker.cyberfun.ro/
+// http://www.cyberfun.ro/
+// http://xList.ro/
+// http://xDnS.ro/
+// http://yDnS.ro/
+// Modified By cybernet2u
+
+// CyBerFuN xBTiT Fully MoDDeD v1.2
+
+
+// https://cyberfun-xbtit.svn.sourceforge.net/svnroot/cyberfun-xbtit
+
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -215,6 +232,7 @@ elseif ($act == "recover");
            else
              {
                include("$THIS_BASEPATH/include/security_code.php");
+
                $scode_index = rand(0, count($security_code) - 1);
                $scode = "<input type=\"hidden\" name=\"security_index\" value=\"$scode_index\" />\n";
                $scode .= $security_code[$scode_index]["question"];
