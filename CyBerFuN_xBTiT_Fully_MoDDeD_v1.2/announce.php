@@ -194,7 +194,7 @@ $agent = mysql_real_escape_string($_SERVER["HTTP_USER_AGENT"]);
 if (ereg("^Mozilla\\/", $agent) || ereg("^Opera\\/", $agent) || ereg("^Links ", $agent) || ereg("^Lynx\\/", $agent))
 {
     header("HTTP/1.0 500 Bad Request");
-    die("This a a bittorrent application and can't be loaded into a browser");
+    die("CyBerFuN xBTiT - This a a bittorrent application and can't be loaded into a browser");
 }
 
 $sqlquery = "SELECT client_name, reason ";
@@ -276,7 +276,7 @@ if ($PRIVATE_ANNOUNCE) {
         if ($wait <= 0) $wait = 0;
         elseif($wait != 0 && $left != 0) {
                show_error($rowpid["username"]." your Waiting Time = ".$wait." h");
-                                        }
+                                         }
       }
       // end
   }
@@ -480,7 +480,7 @@ function start($info_hash, $ip, $port, $peer_id, $left, $downloaded = 0, $upload
             quickQuery("UPDATE {$TABLE_PREFIX}peers SET ip=\"$ip\", compact=\"$compact\", with_peerid=\"$peerid\", without_peerid=\"$no_peerid\" WHERE peer_id=\"$peer_id\"  AND infohash=\"$info_hash\"");
             return "WHERE natuser='N'";
         }
-        error_log("BtiTracker: start: ".mysql_error());
+        error_log("CyBerFuN xBTiT Tracker: start: ".mysql_error());
         show_error("Tracker/database error. The details are in the error log.");
     }
     $GLOBALS["trackerid"] = mysql_insert_id();
@@ -497,7 +497,7 @@ function start($info_hash, $ip, $port, $peer_id, $left, $downloaded = 0, $upload
         summaryAdd("leechers", 1);
         return "WHERE natuser='N'";
     }
-}
+    }
 
 /// End of function start
 
@@ -711,7 +711,7 @@ function runSpeed($info_hash, $delta)
 
 
 // select how many users with same pid or ip
-$results = mysql_query("SELECT status, count(status) FROM {$TABLE_PREFIX}peers WHERE ".($PRIVATE_ANNOUNCE?"pid=\"$pid\"":"ip=\"$ip\"")." AND infohash=\"$info_hash\" AND peer_id<>\"$peer_id\" GROUP BY status") or show_error("Tracker error: invalid torrent");
+$results = mysql_query("SELECT status, count(status) FROM {$TABLE_PREFIX}peers WHERE ".($PRIVATE_ANNOUNCE?"pid=\"$pid\"":"ip=\"$ip\"")." AND infohash=\"$info_hash\" AND peer_id<>\"$peer_id\" GROUP BY status") or show_error("CyBerFuN xBTiT Tracker error: invalid torrent");
 $status = array();
 
 while ($resstat = mysql_fetch_row($results))
@@ -812,7 +812,7 @@ switch ($event)
        if (!$LIVESTATS)
 	   {
         //gold mod
-        $downloaded = checkGold($info_hash,$downloaded);
+        $downloaded = checkGold($info_hash, $downloaded);
             @mysql_query("UPDATE {$TABLE_PREFIX}users SET uploaded=IFNULL(uploaded,0)+$uploaded, downloaded=IFNULL(downloaded,0)+$downloaded WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")." AND id>1 LIMIT 1");
 	   }
        // end gold mod
@@ -841,7 +841,7 @@ switch ($event)
         else
         {
 		    // gold mod
-            $downloaded = checkGold($info_hash,$downloaded);
+            $downloaded = checkGold($info_hash, $downloaded);
             // end gold mod
             quickQuery("UPDATE {$TABLE_PREFIX}peers SET bytes=0, status=\"seeder\", lastupdate=UNIX_TIMESTAMP(), downloaded=$downloaded, uploaded=$uploaded, pid=\"$pid\" WHERE sequence=\"".$GLOBALS["trackerid"]."\" AND infohash=\"$info_hash\"");
 
