@@ -434,11 +434,11 @@ $torrents[$i]["rating"] = $language["NA"];
     $torrents[$i]["gold"] = '';
     if($data['gold'] == 1)
     {
-    $torrents[$i]["gold"] = '<img src="gold/'.$silver_picture.'" alt="silver"/>';
+    $torrents[$i]["gold"] = '<img src="gold/'.$silver_picture.'" alt="silver" align="right" />';
     }
     if($data['gold'] == 2)
     {
-    $torrents[$i]["gold"] = '<img src="gold/'.$gold_picture.'" alt="gold"/>';
+    $torrents[$i]["gold"] = '<img src="gold/'.$gold_picture.'" alt="Gold" align="right" />';
     }
    // gold mod end
    if (intval($CURUSER["WT"]) > 0)
