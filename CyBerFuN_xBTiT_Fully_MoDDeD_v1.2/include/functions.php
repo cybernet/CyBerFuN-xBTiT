@@ -357,15 +357,16 @@ include($CURRENTPATH.'/cyberfun_footer.php');
 }
 
 function print_designer() {
-  global $STYLEPATH, $tracker_version, $CyBerFuN_xBTiT_version;
+  global $STYLEPATH, $tracker_version, $CyBerFuN_xBTiT_version, $google_tracking_code;
 
   if (file_exists($STYLEPATH.'/style_copyright.php')) {
      include($STYLEPATH.'/style_copyright.php');
      $CyBerFuN_xBTiT_version = '' . $CyBerFuN_xBTiT_version . '';
      $design_copyright = '' . $design_copyright . '';
+     $google_analytics = '' . $google_tracking_code . '';
   } else
-     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 551 )';
-     $design_copyright = '[&nbsp;&nbsp;<u>CyBerFuN xBTiT ' . $CyBerFuN_xBTiT_version . ' By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By <a href="http://www.btiteam.org/" target="_blank">BTiTeam.org</a></u>&nbsp;]<br />';
+     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 554 )';
+     $design_copyright = "[&nbsp;&nbsp;<u>CyBerFuN xBTiT " . $CyBerFuN_xBTiT_version . " By cybernet</u>: <a href=\"http://xList.ro/\" target=\"_blank\">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit " . $tracker_version . " By <a href=\"http://www.btiteam.org/\" target=\"_blank\">BTiTeam.org</a></u>&nbsp;]<br />\n" . $google_analytics . "";
   return $design_copyright;
 }
 
