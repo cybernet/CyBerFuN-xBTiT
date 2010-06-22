@@ -310,8 +310,8 @@ if ($count > 0) {
    $torrenttpl->set("WT1", intval($CURUSER["WT"]) > 0, TRUE);
 /*Mod by losmi - sticky mod
     Start Operation #5*/
-    $sticky_color = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}sticky ORDER BY id", true, $btit_settings['cache_duration']);
-    if(mysql_num_rows($sticky_color) > 0)
+    $sticky_color = get_result("SELECT * FROM {$TABLE_PREFIX}sticky ORDER BY id", true, $btit_settings['cache_duration']);
+    if(count($sticky_color) > 0)
     {
     $st = mysql_fetch_assoc($sticky_color);
     $s_c = $st['color'];
@@ -331,7 +331,7 @@ if ($count > 0) {
    $torrenttpl->set("uploader1", $SHOW_UPLOADER, TRUE);
 
     /*Mod by losmi - visible mod*/
-    $users_level = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users_level ORDER BY id", true);
+    $users_level = get_result("SELECT * FROM {$TABLE_PREFIX}users_level ORDER BY id", true);
    
     while ($row = mysql_fetch_assoc($users_level))
     {
@@ -424,7 +424,7 @@ $torrents[$i]["rating"] = $language["NA"];
    // gold mod
     $silver_picture = '';
     $gold_picture ='';
-    $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true, $btit_settings['cache_duration']);
+    $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true, $btit_settings['cache_duration']);
             foreach ($res as $key=>$value)
             {
                 $silver_picture = $value["silver_picture"];
