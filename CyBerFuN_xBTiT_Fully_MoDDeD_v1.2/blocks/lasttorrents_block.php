@@ -27,7 +27,7 @@ else
   else
      $sql = "SELECT f.gold as gold, f.image as img, info_hash as hash, seeds, leechers, dlbytes AS dwned, format(finished,0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE leechers + seeds > 0 ORDER BY data DESC LIMIT " . $GLOBALS["block_last10limit"];
 
-     $row = get_result($sql,true,$btit_settings['cache_duration']);
+     $row = get_result($sql, true, $btit_settings['cache_duration']);
   ?>
   <tr>
       <td align="center" width="20" class="header">&nbsp;<?php echo $language["DOWN"]; ?>&nbsp;</td>
@@ -70,19 +70,19 @@ if (max(0,$CURUSER["WT"]) > 0)
         $gold = '';
         if($data['gold'] == 1)
         {
-        $gold = '<img src="gold/'.$silver_picture.'" alt="silver"/>';
+        $gold = '<img src="gold/'.$silver_picture.'" alt="silver" align="right" />';
         }
         if($data['gold'] == 2)
         {
-        $gold = '<img src="gold/'.$gold_picture.'" alt="gold"/>';
+        $gold = '<img src="gold/'.$gold_picture.'" alt="gold" align="right" />';
         }
         // end gold mod
 // Start baloon hack DT
-$hover=($data["img"]);
-if ($hover=="")
- $balon=("nocover.jpg");
+$hover = ($data["img"]);
+if ($hover == "")
+ $balon = ("nocover.jpg");
  else
- $balon =($data["img"]);
+ $balon = ($data["img"]);
 // End baloon hack DT
 
        if ($GLOBALS["usepopup"])

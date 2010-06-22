@@ -1345,8 +1345,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}tags` (
   `count` char(250) NOT NULL,
   `ip` char(250) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `id_2` (`id`)
+  UNIQUE KEY `tag` (`tag`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
