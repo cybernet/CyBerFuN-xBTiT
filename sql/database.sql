@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 14, 2010 at 12:02 AM
+-- Generation Time: Jun 23, 2010 at 09:23 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.2
 
@@ -515,7 +515,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}faq` (
 --
 
 INSERT INTO `{$db_prefix}faq` (`id`, `title`, `description`, `cat_id`, `active`, `date`) VALUES
-(1, 'test3', 'test4', 1, '-1', '0000-00-00');
+(1, 'test3', 'test4', 1, '-1', CURDATE());
 
 -- --------------------------------------------------------
 
@@ -538,7 +538,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}faq_group` (
 --
 
 INSERT INTO `{$db_prefix}faq_group` (`id`, `title`, `description`, `active`, `sort_index`, `date`) VALUES
-(1, 'test', 'test2', '1', 1, '0000-00-00');
+(1, 'test', 'test2', '1', 1, CURDATE());
 
 -- --------------------------------------------------------
 
@@ -696,7 +696,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
 --
 
 INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`, `active`, `date`, `gold_description`, `silver_description`, `classic_description`) VALUES
-(2, 3, 'gold.gif', 'silver.gif', '1', CURDATE(), 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
+(1, 3, 'gold.gif', 'silver.gif', '1', CURDATE(), 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
 
 -- --------------------------------------------------------
 
@@ -876,7 +876,7 @@ INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES
 CREATE TABLE IF NOT EXISTS `{$db_prefix}logs` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `added` int(10) DEFAULT NULL,
-  `txt` text,
+  `txt` text CHARACTER SET utf8,
   `type` varchar(10) NOT NULL DEFAULT 'add',
   `user` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -899,13 +899,13 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}messages` (
   `sender` int(10) unsigned NOT NULL DEFAULT '0',
   `receiver` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) DEFAULT NULL,
-  `subject` varchar(50) CHARACTER SET utf8 COLLATE utf8_hungarian_ci NOT NULL COMMENT '"subectu`" descutziei :))',
-  `msg` text CHARACTER SET utf8 COMMENT 'Hai sa vedem In c fel in injura :))',
-  `readed` enum('yes','no') NOT NULL DEFAULT 'no',
+  `subject` varchar(50) NOT NULL COMMENT 'reason for making my database bigger',
+  `msg` text COMMENT 'lets see how he lie to us',
+  `readed` enum('yes','no') CHARACTER SET latin1 NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   KEY `receiver` (`receiver`),
   KEY `sender` (`sender`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}messages`
@@ -1150,7 +1150,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}posts` (
   KEY `topicid` (`topicid`),
   KEY `userid` (`userid`),
   FULLTEXT KEY `body` (`body`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}posts`
@@ -1282,7 +1282,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('irc_channel', 'cyberfun_xbtit'),
 ('inv_login', 'false'),
 ('att_login', '99'),
-('CyBerFuN_xBTiT_installed_version', '1.2 revision 560');
+('CyBerFuN_xBTiT_installed_version', '1.2 revision 561');
 
 -- --------------------------------------------------------
 
@@ -1524,7 +1524,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
 --
 
 INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `pm_mail_notify`, `status_comment_notify`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`, `custom_title`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `seedbonus`) VALUES
-(1, 'Guest', '', 1, 0, 'none', 'true', 'true', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 'no', '', '0000-00-00 00:00:00', 0, '', NULL, 0, 0, 0, '0000-00-00 00:00:00', '0.000000');
+(1, 'Guest', '', 1, 0, 'none', 'true', 'true', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 'no', '', NOW(), 0, '', NULL, 0, 0, 0, NOW(), '0.000000');
 
 -- --------------------------------------------------------
 
