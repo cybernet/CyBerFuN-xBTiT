@@ -68,24 +68,7 @@ if (isset($_GET["act"]) && $_GET["act"] == "update")
        redirect("index.php?page=torrent-details&id=$id");
        exit();
    }
-/* ################################################################################
 
-if (isset($_GET["vote"]) && $_GET["vote"]==$language["VOTE"])
-   {
-   if (isset($_GET["rating"]) && $_GET["rating"]==0)
-   {
-        err_msg($language["ERROR"],$language["ERR_NO_VOTE"],$GLOBALS["usepopup"]);
-        stdfoot(($GLOBALS["usepopup"]?false:true),false);
-        exit();
-   }
-   else {
-      do_sqlquery("INSERT INTO {$TABLE_PREFIX}ratings SET infohash='$id',userid=$CURUSER[uid],rating=".intval($_GET["rating"]).",added='".time()."'",true);
-      redirect("index.php?page=torrent-details&id=$id");
-      exit();
-   }
-   exit();
-}
-################################################################################ */
 if ($XBTT_USE)
    {
     $tseeds = "f.seeds+ifnull(x.seeders,0) as seeds";
@@ -201,67 +184,7 @@ if (isset($row["cat_name"]))
     $row["cat_name"] = unesc($row["cat_name"]);
 else
     $row["cat_name"] = unesc($language["NONE"]);
-/* ################################################################################
 
-$vres = do_sqlquery("SELECT sum(rating) as totrate, count(*) as votes FROM {$TABLE_PREFIX}ratings WHERE infohash = '$id'",true, $btit_settings['cache_duration']);
-$vrow = $vres[0];
-if ($vrow && $vrow["votes"]>=1)
-   {
-   $totrate=round($vrow["totrate"]/$vrow["votes"],1);
-   if ($totrate==5)
-      $totrate="<img src=\"$STYLEURL/images/5.gif\" title=\"$vrow[votes] ".$language["VOTES_RATING"].": $totrate/5.0)\" alt=\"\" />";
-   elseif ($totrate>4.4 && $totrate<5)
-      $totrate="<img src=\"$STYLEURL/images/4.5.gif\" title=\"$vrow[votes] ".$language["VOTES_RATING"].": $totrate/5.0)\" alt=\"\" />";
-   elseif ($totrate>3.9 && $totrate<4.5)
-      $totrate="<img src=\"$STYLEURL/images/4.gif\" title=\"$vrow[votes] ".$language["VOTES_RATING"].": $totrate/5.0)\" alt=\"\" />";
-   elseif ($totrate>3.4 && $totrate<4)
-      $totrate="<img src=\"$STYLEURL/images/3.5.gif\" title=\"$vrow[votes] ".$language["VOTES_RATING"].": $totrate/5.0)\" alt=\"\" />";
-   elseif ($totrate>2.9 && $totrate<3.5)
-      $totrate="<img src=\"$STYLEURL/images/3.gif\" title=\"$vrow[votes] ".$language["VOTES_RATING"].": $totrate/5.0)\" alt=\"\" />";
-   elseif ($totrate>2.4 && $totrate<3)
-      $totrate="<img src=\"$STYLEURL/images/2.5.gif\" title=\"$vrow[votes] ".$language["VOTES_RATING"].": $totrate/5.0)\" alt=\"\" />";
-   elseif ($totrate>1.9 && $totrate<2.5)
-      $totrate="<img src=\"$STYLEURL/images/2.gif\" title=\"$vrow[votes] ".$language["VOTES_RATING"].": $totrate/5.0)\" alt=\"\" />";
-   elseif ($totrate>1.4 && $totrate<2)
-      $totrate="<img src=\"$STYLEURL/images/1.5.gif\" title=\"$vrow[votes] ".$language["VOTES_RATING"].": $totrate/5.0)\" alt=\"\" />";
-   else
-      $totrate="<img src=\"$STYLEURL/images/1.gif\" title=\"$vrow[votes] ".$language["VOTES_RATING"].": $totrate/5.0)\" alt=\"\" />";
-   }
-else
-    $totrate=$language["NA"];
-
-unset($vrow);
-unset($vres);
-
-if ($row["username"]!=$CURUSER["username"] && $CURUSER["uid"]>1)
-   {
-   $ratings = array(5 => $language["FIVE_STAR"] ,4 =>$language["FOUR_STAR"] ,3 =>$language["THREE_STAR"] ,2 =>$language["TWO_STAR"] ,1 =>$language["ONE_STAR"] );
-   $xres = do_sqlquery("SELECT rating, added FROM {$TABLE_PREFIX}ratings WHERE infohash = '$id' AND userid = " . $CURUSER["uid"],true);
-   $xrow = @mysql_fetch_array($xres);
-   if ($xrow)
-       $s = $totrate. " (".$language["YOU_RATE"]." \"" . $ratings[$xrow["rating"]] . "\")";
-   else {
-       $s = "<form method=\"get\" action=\"index.php\" name=\"frm_vote\">\n";
-       $s .="<input type=\"hidden\" name=\"page\" value=\"torrent-details\" />\n";
-       $s .= "<input type=\"hidden\" name=\"id\" value=\"$id\" />\n";
-       $s .= "<select name=\"rating\">\n";
-       $s .= "<option value=\"0\">(".$language["ADD_RATING"].")</option>\n";
-       foreach ($ratings as $k => $v) {
-           $s .= "<option value=\"$k\">$v</option>\n";
-       }
-       $s .= "</select>\n";
-       $s .= "<input type=\"submit\" name=\"vote\" value=\"".$language["VOTE"]."\" />";
-       $s .= "</form>\n";
-       }
-}
-else
-    {
-    $s = $totrate;
-}
-$row["rating"]=$s;
-
-
-*/
 # <!--
 ##################################################################
 ########################################################################-->
@@ -377,12 +300,11 @@ else
 // comments...
 if ($XBTT_USE)
    {
-    $subres = get_result("SELECT u.downloaded+IFNULL(x.downloaded,0) as downloaded, u.uploaded+IFNULL(x.uploaded,0) as uploaded, u.avatar, c.id, c.text, UNIX_TIMESTAMP(c.added) as data, c.user, u.id uid, u.id_level FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username LEFT JOIN xbt_users x ON x.uid=u.id LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE info_hash = '" . $id . "' ORDER BY c.added DESC", true, $btit_settings['cache_duration']);
+    $subres = get_result("SELECT u.downloaded+IFNULL(x.downloaded,0) as downloaded, u.uploaded+IFNULL(x.uploaded,0) as uploaded, u.avatar, c.id, c.text, UNIX_TIMESTAMP(c.added) as data, c.user, u.id uid, u.id_level FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username LEFT JOIN xbt_users x ON x.uid=u.id LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE info_hash = '" . $id . "' ORDER BY c.added DESC", true, 0);
    }
 else
-    {
-
-$subres = get_result("SELECT u.downloaded as downloaded, u.uploaded as uploaded, u.avatar, u.id_level, u.custom_title, c.id, u.warn, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC", true, $btit_settings['cache_duration']);
+   {
+    $subres = get_result("SELECT u.downloaded as downloaded, u.uploaded as uploaded, u.avatar, u.id_level, u.custom_title, c.id, u.warn, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC", true, 0);
 }
 if (!$subres || count($subres) == 0) {
      if($CURUSER["uid"] > 1)
@@ -404,7 +326,7 @@ else {
      $count = 0;
      foreach ($subres as $id=>$subrow) {
 
-       $level = do_sqlquery("SELECT level FROM {$TABLE_PREFIX}users_level WHERE id_level='$subrow[id_level]'");
+       $level = get_result("SELECT level FROM {$TABLE_PREFIX}users_level WHERE id_level='$subrow[id_level]'", true, $btit_settings['cache_duration']);
        $lvl = mysql_fetch_assoc($level);
        if (!$subrow[uid])
         $title = "orphaned";

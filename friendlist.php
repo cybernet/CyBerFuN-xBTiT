@@ -120,17 +120,17 @@ else
 	if ($coun)
 
          $friend = array();
-         $i=0;
+         $i = 0;
 	while ($res = mysql_fetch_array($qry))
 	{
 		$tor = mysql_query("SELECT ul.prefixcolor, ul.suffixcolor, ul.level, u.username, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect FROM {$TABLE_PREFIX}users u LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id>1 AND u.id = ".$res['friend_id']);
 
         $ret = mysql_fetch_array($tor);
         $avatar = ($ret["avatar"] && $ret["avatar"] != "" ? htmlspecialchars($ret["avatar"]) : "");
-        if ($avatar=="")
-        $av=("<img src='$STYLEURL/images/default_avatar.gif' border='0' width=50 />");
+        if ($avatar == "")
+        $av = ("<img src='$STYLEURL/images/default_avatar.gif' border='0' width=50 />");
            else
-           $av=("<img width=50 src=$avatar>");
+           $av = ("<img width=50 src=$avatar>");
 // Online User
 
 		$last = $ret['lastconnect'];
