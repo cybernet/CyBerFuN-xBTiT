@@ -696,7 +696,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
 --
 
 INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`, `active`, `date`, `gold_description`, `silver_description`, `classic_description`) VALUES
-(1, 3, 'gold.gif', 'silver.gif', '1', '0000-00-00', 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
+(2, 3, 'gold.gif', 'silver.gif', '1', CURDATE(), 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
 
 -- --------------------------------------------------------
 
@@ -719,7 +719,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}hacks` (
 --
 
 INSERT INTO `{$db_prefix}hacks` (`id`, `title`, `version`, `author`, `added`, `folder`) VALUES
-(1, 'email_notification', '3.1.1', 'Original author: signo | based on smacked1''s hack', 0, 'email_notification');
+(1, 'email_notification', '3.1.1', 'Original author: signo | based on smacked1''s hack', NOW(), 'email_notification');
 
 -- --------------------------------------------------------
 
@@ -1282,7 +1282,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('irc_channel', 'cyberfun_xbtit'),
 ('inv_login', 'false'),
 ('att_login', '99'),
-('CyBerFuN_xBTiT_installed_version', '1.2 revision 559');
+('CyBerFuN_xBTiT_installed_version', '1.2 revision 560');
 
 -- --------------------------------------------------------
 
