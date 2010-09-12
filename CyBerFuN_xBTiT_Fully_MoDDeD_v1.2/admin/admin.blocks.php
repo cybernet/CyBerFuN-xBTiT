@@ -329,37 +329,37 @@ function read_blocks()
       }
       unset($br);
       $admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=blocks&amp;action=save");
-      $admintpl->set("top_blocks",$t > 0, true);
-	    $admintpl->set("dropdown_blocks",$d > 0,true);
-	    $admintpl->set("extra_blocks",$e > 0, true);
-      $admintpl->set("left_blocks",$l > 0, true);
-      $admintpl->set("center_blocks",$c > 0, true);
-      $admintpl->set("right_blocks",$r > 0, true);
-      $admintpl->set("bottom_blocks",$b > 0, true);
-      $admintpl->set("tops",$tops);
-	    $admintpl->set("dropdown",$dropdown);
-	    $admintpl->set("extras",$extras);
-      $admintpl->set("lefts",$lefts);
-      $admintpl->set("centers",$centers);
-      $admintpl->set("rights",$rights);
-      $admintpl->set("bottoms",$bottom);
-      $admintpl->set("language",$language);
-      $admintpl->set("edit_block",false,true);
-      $admintpl->set("add_new_block","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=blocks&amp;action=edit");
+      $admintpl->set("top_blocks", $t > 0, true);
+	    $admintpl->set("dropdown_blocks", $d > 0,true);
+	    $admintpl->set("extra_blocks", $e > 0, true);
+      $admintpl->set("left_blocks", $l > 0, true);
+      $admintpl->set("center_blocks", $c > 0, true);
+      $admintpl->set("right_blocks", $r > 0, true);
+      $admintpl->set("bottom_blocks", $b > 0, true);
+      $admintpl->set("tops", $tops);
+	    $admintpl->set("dropdown", $dropdown);
+	    $admintpl->set("extras", $extras);
+      $admintpl->set("lefts", $lefts);
+      $admintpl->set("centers", $centers);
+      $admintpl->set("rights", $rights);
+      $admintpl->set("bottoms", $bottom);
+      $admintpl->set("language", $language);
+      $admintpl->set("edit_block", false, true);
+      $admintpl->set("add_new_block", "index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=blocks&amp;action=edit");
 
 }
 
-function position_combo($current="l")
+function position_combo($current = "l")
   {
     global $language;
     $ret="\n<select name=\"block_position\" size=\"1\">";
-    $ret.="\n<option value=\"t\" ".($current=="t"?"selected=\"selected\"":"").">".$language["TOP"]."</option>";
-	  $ret.="\n<option value=\"d\" ".($current=="d"?"selected=\"selected\"":"").">".$language["DROPDOWN"]."</option>";
-	  $ret.="\n<option value=\"e\" ".($current=="e"?"selected=\"selected\"":"").">".$language["EXTRA"]."</option>";
-    $ret.="\n<option value=\"l\" ".($current=="l"?"selected=\"selected\"":"").">".$language["LEFT"]."</option>";
-    $ret.="\n<option value=\"c\" ".($current=="c"?"selected=\"selected\"":"").">".$language["CENTER"]."</option>";
-    $ret.="\n<option value=\"r\" ".($current=="r"?"selected=\"selected\"":"").">".$language["RIGHT"]."</option>";
-    $ret.="\n<option value=\"b\" ".($current=="b"?"selected=\"selected\"":"").">".$language["BOTTOM"]."</option>";
+    $ret.="\n<option value=\"t\" ".($current == "t" ? "selected=\"selected\"":"").">".$language["TOP"]."</option>";
+	  $ret.="\n<option value=\"d\" ".($current == "d" ? "selected=\"selected\"":"").">".$language["DROPDOWN"]."</option>";
+	  $ret.="\n<option value=\"e\" ".($current == "e" ? "selected=\"selected\"":"").">".$language["EXTRA"]."</option>";
+    $ret.="\n<option value=\"l\" ".($current == "l" ? "selected=\"selected\"":"").">".$language["LEFT"]."</option>";
+    $ret.="\n<option value=\"c\" ".($current == "c" ? "selected=\"selected\"":"").">".$language["CENTER"]."</option>";
+    $ret.="\n<option value=\"r\" ".($current == "r" ? "selected=\"selected\"":"").">".$language["RIGHT"]."</option>";
+    $ret.="\n<option value=\"b\" ".($current == "b" ? "selected=\"selected\"":"").">".$language["BOTTOM"]."</option>";
     $ret.="\n</select>";
 
     return $ret;
@@ -400,16 +400,16 @@ switch ($action)
         while($reslevel = mysql_fetch_assoc($rlevel))
             $alevel[] = $reslevel;
 
-        $id = (isset($_GET["id"])?intval($_GET["id"]):0);
+        $id = (isset($_GET["id"]) ? intval($_GET["id"]) : 0);
         if ($id > 0)
           {
             $cb = get_result("SELECT * FROM {$TABLE_PREFIX}blocks WHERE blockid=$id", true);
             if (count($cb) > 0)
               {
-              $admintpl->set("combo_blocks_name",blocks_combo($cb[0]["content"]));
-              $admintpl->set("combo_position",position_combo($cb[0]["position"]));
-              $admintpl->set("block_title",$cb[0]["title"]);
-              $admintpl->set("block_cache",($cb[0]["cache"] == "yes"?"checked=\"checked\"":""));
+              $admintpl->set("combo_blocks_name", blocks_combo($cb[0]["content"]));
+              $admintpl->set("combo_position", position_combo($cb[0]["position"]));
+              $admintpl->set("block_title", $cb[0]["title"]);
+              $admintpl->set("block_cache", ($cb[0]["cache"] == "yes"?"checked=\"checked\"":""));
 
               $combo_min_view = "\n<select name=\"minclassview\" size=\"1\">";
               foreach($alevel as $level)
