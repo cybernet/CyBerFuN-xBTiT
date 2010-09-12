@@ -82,6 +82,7 @@ function CheckForm()
     <tr>
       <td class="header" ><tag:language.FILE_NAME /></td>
       <td class="lista" align="left"><input type="text" name="filename" size="50" maxlength="200" /></td>
+     <input type="hidden" name="moder" value="<tag:moder />" />
     </tr>
     <tr>
       <td class="header" >Tag</td>

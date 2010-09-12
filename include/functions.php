@@ -224,6 +224,62 @@ function createGoldCategories($selected = '')
       return $gold_select_box;
 }
 // end gold
+
+function updatemoder($prefix, $moder, $id)
+  {
+    do_sqlquery("UPDATE {$prefix}files SET moder = '$moder' WHERE info_hash = '".$id."'");
+  }
+  
+  function getmoderdetails($mod,$hash)
+  {
+    global $CURUSER;
+    if ($CURUSER["edit_torrents"]=="yes" && $CURUSER['moderate_trusted']=='yes') {
+                        $link="<a title=\"".$mod."\" href=\"index.php?page=edit&info_hash=".$hash."\"><img alt=\"".$mod."\" src=\"images/mod/".$mod.".png\"></a>";
+                        }
+                        else {
+                        $link="<img alt=\"".$mod."\" src=\"images/mod/".$mod.".png\">";
+                        }
+                        $resend='';
+                    if($mod=='bad')
+                    {
+                        $resend = '<br/>(Edit your torret to resend torrent for validation)';
+                    }
+
+                    return $link.$resend;
+  }
+  function genrelistreasons()
+     {
+
+     global $TABLE_PREFIX;
+
+    $ret = array();
+    $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}warn_reasons ORDER BY id");
+
+    while ($row = mysql_fetch_assoc($res))
+        $ret[] = $row;
+
+    unset($row);
+    mysql_free_result($res);
+
+    return $ret;
+}
+  function updatemoderbyhash($moder,$torhash)
+  {
+    global $TABLE_PREFIX;
+    do_sqlquery("UPDATE {$TABLE_PREFIX}files SET moder = '$moder' WHERE info_hash = '" . $torhash . "'",true);
+  }
+  function getmoderstatusbyhash($hash)
+  {
+    global $TABLE_PREFIX;
+    $query ="SELECT moder FROM {$TABLE_PREFIX}files  WHERE info_hash ='" . $hash . "'";
+
+
+    $res = do_sqlquery($query,true);
+    $results = mysql_fetch_assoc($res);
+
+    return $results['moder'];
+  }
+
 function load_css($css_name) {
 // control if input template name exist in current user's stylepath, else return default
   global $BASEURL, $STYLEPATH, $STYLEURL;

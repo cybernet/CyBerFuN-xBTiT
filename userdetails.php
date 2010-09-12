@@ -93,6 +93,11 @@ else
     $utables = "{$TABLE_PREFIX}users u";
     }
 
+if ($CURUSER['trusted'])
+       $only = "AND 1=1";
+    else
+       $only = "AND moder='ok'";
+
 
 if ($id > 1) {
    $res = get_result("SELECT ul.id_level, u.seedbonus, u.invited_by, u.invitations, u.custom_title, u.warn, u.warnreason, u.warns, u.warnadded, u.warnaddedby, u.avatar, u.email, u.cip, u.username, $udownloaded as downloaded,$uuploaded as uploaded, UNIX_TIMESTAMP(u.joined) as joined, UNIX_TIMESTAMP(u.lastconnect) as lastconnect, ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id", true, $btit_settings['cache_duration']);
@@ -225,16 +230,16 @@ elseif ($GLOBALS["FORUMLINK"] == "smf")
 }
 
 
-$userdetailtpl-> set("warn_access", (($row["warn"] == "yes")?TRUE:FALSE), TRUE);
+$userdetailtpl-> set("warn_access", (($row["warn"] == "yes") ? TRUE : FALSE), TRUE);
 $userdetailtpl-> set("warnreason", (!$row["warnreason"] ? "" : unesc($row["warnreason"])));   
 $userdetailtpl-> set("warnadded", (!$row["warnadded"] ? "" : unesc($row["warnadded"])));
 $userdetailtpl-> set("warnaddedby", (!$row["warnaddedby"] ? "" : unesc($row["warnaddedby"])));
 $userdetailtpl-> set("warns", (!$row["warns"] ? "" : unesc($row["warns"])));   
-$userdetailtpl-> set("rewarn_access", (($row["warn"] == "yes")?TRUE:FALSE), TRUE);
-$userdetailtpl-> set("adminwarn_access", (($CURUSER["edit_torrents"] == "yes" || $CURUSER["edit_users"] == "yes")?TRUE:FALSE), TRUE);
-$userdetailtpl-> set("nowarn_access", (($CURUSER["edit_torrents"] == "yes" || $CURUSER["edit_users"] == "yes")?TRUE:FALSE), TRUE);
-$userdetailtpl-> set("warns_access", (($row["warn"] == "no")?TRUE:FALSE), TRUE);
-$userdetailtpl-> set("warn", ($row["warn"] = "yes"?"checked=\"checked\"":""));
+$userdetailtpl-> set("rewarn_access", (($row["warn"] == "yes") ? TRUE : FALSE), TRUE);
+$userdetailtpl-> set("adminwarn_access", (($CURUSER["edit_torrents"] == "yes" || $CURUSER["edit_users"] == "yes") ? TRUE : FALSE), TRUE);
+$userdetailtpl-> set("nowarn_access", (($CURUSER["edit_torrents"] == "yes" || $CURUSER["edit_users"] == "yes") ? TRUE : FALSE), TRUE);
+$userdetailtpl-> set("warns_access", (($row["warn"] == "no") ? TRUE : FALSE), TRUE);
+$userdetailtpl-> set("warn", ($row["warn"] = "yes" ? "checked=\"checked\"":""));
 $userdetailtpl-> set("warnreason", $row["warnreason"]);
 $userdetailtpl-> set("id", $id);
 
@@ -261,6 +266,7 @@ if ($resuploaded && $numtorrent > 0)
            $filename = cut_string($rest["filename"], intval($btit_settings["cut_name"]));
            if ($GLOBALS["usepopup"])
            {
+	       $uptortpl[$i]["moder"] = getmoderdetails(getmoderstatusbyhash($rest['info_hash']), $rest['info_hash']);
                $uptortpl[$i]["filename"] = "<a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$rest{"info_hash"}."')\" title=\"".$language["VIEW_DETAILS"].": ".$rest["filename"]."\">".$filename."</a>";
                $uptortpl[$i]["added"] = date("d/m/Y",$rest["added"]-$offset);
                $uptortpl[$i]["size"] = makesize($rest["size"]);
@@ -277,6 +283,7 @@ if ($resuploaded && $numtorrent > 0)
            else
            {
                $uptortpl[$i]["filename"] = "<a href=\"index.php?page=torrent-details&amp;id=".$rest{"info_hash"}."\" title=\"".$language["VIEW_DETAILS"].": ".$rest["filename"]."\">".$filename."</a>";
+	       $uptortpl[$i]["moder"] = getmoderdetails(getmoderstatusbyhash($rest['info_hash']), $rest['info_hash']);
                $uptortpl[$i]["added"] = date("d/m/Y", $rest["added"] - $offset);
                $uptortpl[$i]["size"] = makesize($rest["size"]);
                $uptortpl[$i]["seedcolor"] = linkcolor($rest["seeds"]);
@@ -342,11 +349,12 @@ if ($sanq[0] > 0)
          if ($torlist['ip'] != "")
            {
              $torlist['filename'] = unesc($torlist['filename']);
-             $filename = cut_string($torlist['filename'],intval($btit_settings["cut_name"]));
+             $filename = cut_string($torlist['filename'], intval($btit_settings["cut_name"]));
 
              if ($GLOBALS["usepopup"])
              {
                  $tortpl[$i]["filename"] = "<a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$torlist['infohash']."')\" title=\"".$language["VIEW_DETAILS"].": ".$torlist['filename']."\">".$filename."</a>";
+		getmoderdetails(getmoderstatusbyhash($torlist->infohash),$torlist->infohash);
                  $tortpl[$i]["size"] = makesize($torlist['size']);
                  $tortpl[$i]["status"] = unesc($torlist['status']);
                  $tortpl[$i]["downloaded"] = makesize($torlist['downloaded']);
@@ -367,6 +375,7 @@ if ($sanq[0] > 0)
              else
              {
                  $tortpl[$i]["filename"] = "<a href=\"index.php?page=torrent-details&amp;id=".$torlist['infohash']."\" title=\"".$language["VIEW_DETAILS"].": ".$torlist['filename']."\">".$filename."</a>";
+		getmoderdetails(getmoderstatusbyhash($torlist->infohash),$torlist->infohash);
                  $tortpl[$i]["size"] = makesize($torlist['size']);
                  $tortpl[$i]["status"] = unesc($torlist['status']);
                  $tortpl[$i]["downloaded"] = makesize($torlist['downloaded']);

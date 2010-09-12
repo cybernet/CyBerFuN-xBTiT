@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.3
+-- version 3.3.5
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 23, 2010 at 09:23 PM
+-- Generation Time: Aug 05, 2010 at 04:50 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.2
 
@@ -23,7 +23,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}ajax_ratings` (
   `id` varchar(40) NOT NULL,
   `total_votes` int(11) NOT NULL,
   `total_value` int(11) NOT NULL,
-  `used_ips` longtext
+  `used_ips` longtext,
+  KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -42,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}banned_client` (
   `peer_id` varchar(16) NOT NULL,
   `peer_id_ascii` varchar(8) NOT NULL,
   `user_agent` varchar(255) NOT NULL,
-  `client_name` varchar(255) NOT NULL,
+  `client_name` varchar(255) CHARACTER SET utf8 NOT NULL,
   `reason` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `peer_id` (`peer_id`),
@@ -65,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}bannedip` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `added` int(11) NOT NULL DEFAULT '0',
   `addedby` int(10) unsigned NOT NULL DEFAULT '0',
-  `comment` varchar(255) NOT NULL DEFAULT '',
+  `comment` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `first` bigint(11) unsigned DEFAULT NULL,
   `last` bigint(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -135,7 +136,7 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}bonus` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL DEFAULT '',
+  `name` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `points` decimal(4,1) NOT NULL DEFAULT '0.0',
   `traffic` bigint(20) unsigned NOT NULL DEFAULT '0',
   `gb` int(9) NOT NULL DEFAULT '0',
@@ -217,8 +218,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}chat` (
 CREATE TABLE IF NOT EXISTS `{$db_prefix}comments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `text` text NOT NULL,
-  `ori_text` text NOT NULL,
+  `text` text CHARACTER SET utf8 NOT NULL,
+  `ori_text` text CHARACTER SET utf8 NOT NULL,
   `user` varchar(20) NOT NULL DEFAULT '',
   `info_hash` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
@@ -502,8 +503,8 @@ INSERT INTO `{$db_prefix}countries` (`id`, `name`, `flagpic`, `domain`) VALUES
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}faq` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL,
-  `description` text NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `description` text CHARACTER SET utf8 NOT NULL,
   `cat_id` int(11) NOT NULL,
   `active` enum('-1','0','1') NOT NULL DEFAULT '1',
   `date` date NOT NULL,
@@ -525,8 +526,8 @@ INSERT INTO `{$db_prefix}faq` (`id`, `title`, `description`, `cat_id`, `active`,
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}faq_group` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL,
-  `description` text NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `description` text CHARACTER SET utf8 NOT NULL,
   `active` enum('-1','0','1') NOT NULL DEFAULT '1',
   `sort_index` int(11) NOT NULL,
   `date` date NOT NULL,
@@ -564,20 +565,20 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}featured` (
 --
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
-  `info_hash` varchar(40) NOT NULL DEFAULT '',
-  `filename` varchar(250) NOT NULL DEFAULT '',
-  `url` varchar(250) NOT NULL DEFAULT '',
-  `info` varchar(250) NOT NULL DEFAULT '',
+  `info_hash` varchar(40) CHARACTER SET latin1 NOT NULL DEFAULT '',
+  `filename` varchar(250) CHARACTER SET latin1 NOT NULL DEFAULT '',
+  `url` varchar(250) CHARACTER SET latin1 NOT NULL DEFAULT '',
+  `info` varchar(250) CHARACTER SET latin1 NOT NULL DEFAULT '',
   `data` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `size` bigint(20) NOT NULL DEFAULT '0',
   `comment` text,
-  `comment_notify` varchar(50) NOT NULL DEFAULT 'true',
+  `comment_notify` varchar(50) CHARACTER SET latin1 NOT NULL DEFAULT 'true',
   `category` int(10) unsigned NOT NULL DEFAULT '6',
-  `external` enum('yes','no') NOT NULL DEFAULT 'no',
-  `announce_url` varchar(100) NOT NULL DEFAULT '',
+  `external` enum('yes','no') CHARACTER SET latin1 NOT NULL DEFAULT 'no',
+  `announce_url` varchar(100) CHARACTER SET latin1 NOT NULL DEFAULT '',
   `uploader` int(10) NOT NULL DEFAULT '1',
   `lastupdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `anonymous` enum('true','false') NOT NULL DEFAULT 'false',
+  `anonymous` enum('true','false') CHARACTER SET latin1 NOT NULL DEFAULT 'false',
   `lastsuccess` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `dlbytes` bigint(20) unsigned NOT NULL DEFAULT '0',
   `seeds` int(10) unsigned NOT NULL DEFAULT '0',
@@ -587,20 +588,21 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
   `lastSpeedCycle` int(10) unsigned NOT NULL DEFAULT '0',
   `speed` bigint(20) unsigned NOT NULL DEFAULT '0',
   `bin_hash` blob NOT NULL,
-  `image` varchar(255) NOT NULL,
-  `screen1` varchar(255) NOT NULL,
-  `screen2` varchar(255) NOT NULL,
-  `screen3` varchar(255) NOT NULL,
+  `image` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `screen1` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `screen2` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `screen3` varchar(255) CHARACTER SET latin1 NOT NULL,
   `visible` int(11) NOT NULL DEFAULT '1',
-  `sticky` enum('0','1') NOT NULL DEFAULT '0',
+  `sticky` enum('0','1') CHARACTER SET latin1 NOT NULL DEFAULT '0',
   `tag` text,
-  `gold` enum('0','1','2') NOT NULL DEFAULT '0',
+  `gold` enum('0','1','2') CHARACTER SET latin1 NOT NULL DEFAULT '0',
+  `moder` enum('um','bad','ok') CHARACTER SET latin1 NOT NULL DEFAULT 'um',
   PRIMARY KEY (`info_hash`),
   KEY `filename` (`filename`),
   KEY `category` (`category`),
   KEY `uploader` (`uploader`),
   KEY `bin_hash` (`bin_hash`(20))
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `{$db_prefix}files`
@@ -633,8 +635,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files_thanks` (
 CREATE TABLE IF NOT EXISTS `{$db_prefix}forums` (
   `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(60) NOT NULL DEFAULT '',
-  `description` varchar(200) DEFAULT NULL,
+  `name` varchar(60) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `description` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
   `minclassread` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `minclasswrite` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `postcount` int(10) unsigned NOT NULL DEFAULT '0',
@@ -822,7 +824,6 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}invitations` (
   `hash` varchar(32) NOT NULL DEFAULT '',
   `time_invited` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `confirmed` enum('true','false') NOT NULL DEFAULT 'false',
-  PRIMARY KEY (`id`),
   KEY `inviter` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -909,6 +910,26 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}messages` (
 
 --
 -- Dumping data for table `{$db_prefix}messages`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}moderate_reasons`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}moderate_reasons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `description` text CHARACTER SET utf8 NOT NULL,
+  `active` enum('-1','0','1') NOT NULL DEFAULT '1',
+  `ordering` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}moderate_reasons`
 --
 
 
@@ -1501,11 +1522,11 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
   `time_offset` varchar(4) NOT NULL DEFAULT '0',
   `temp_email` varchar(50) NOT NULL DEFAULT '',
   `warn` enum('yes','no') NOT NULL DEFAULT 'no',
-  `warnreason` varchar(255) NOT NULL,
+  `warnreason` varchar(255) CHARACTER SET utf8 NOT NULL,
   `warnadded` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `warns` bigint(20) DEFAULT '0',
   `warnaddedby` varchar(255) NOT NULL,
-  `custom_title` varchar(50) DEFAULT NULL,
+  `custom_title` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
   `smf_fid` int(10) NOT NULL DEFAULT '0',
   `invitations` int(10) NOT NULL DEFAULT '0',
   `invited_by` int(10) NOT NULL DEFAULT '0',
@@ -1556,6 +1577,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users_level` (
   `prefixcolor` varchar(200) NOT NULL DEFAULT '',
   `suffixcolor` varchar(200) NOT NULL DEFAULT '',
   `WT` int(11) NOT NULL DEFAULT '0',
+  `trusted` enum('yes','no') NOT NULL DEFAULT 'no',
+  `moderate_trusted` enum('yes','no') NOT NULL DEFAULT 'no',
   UNIQUE KEY `base` (`id`),
   KEY `id_level` (`id_level`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
@@ -1564,15 +1587,15 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users_level` (
 -- Dumping data for table `{$db_prefix}users_level`
 --
 
-INSERT INTO `{$db_prefix}users_level` (`id`, `id_level`, `level`, `view_torrents`, `edit_torrents`, `delete_torrents`, `view_users`, `edit_users`, `delete_users`, `view_news`, `edit_news`, `delete_news`, `can_upload`, `can_download`, `view_forum`, `edit_forum`, `delete_forum`, `predef_level`, `can_be_deleted`, `admin_access`, `prefixcolor`, `suffixcolor`, `WT`) VALUES
-(1, 1, 'guest', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'guest', 'no', 'no', '', '', 0),
-(2, 2, 'validating', 'yes', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'validating', 'no', 'no', '', '', 0),
-(3, 3, 'Members', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'member', 'no', 'no', '<span style=''color:#000000''>', '</span>', 0),
-(4, 4, 'Uploader', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'uploader', 'no', 'no', '', '', 0),
-(5, 5, 'V.I.P.', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'vip', 'no', 'no', '', '', 0),
-(6, 6, 'Moderator', 'yes', 'yes', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'no', 'yes', 'yes', 'yes', 'yes', 'no', 'moderator', 'no', 'no', '<span style=''color: #428D67''>', '</span>', 0),
-(7, 7, 'Administrator', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'admin', 'no', 'yes', '<span style=''color:#FF8000''>', '</span>', 0),
-(8, 8, 'Owner', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'owner', 'no', 'yes', '<span style=''color:#EE4000''>', '</span>', 0);
+INSERT INTO `{$db_prefix}users_level` (`id`, `id_level`, `level`, `view_torrents`, `edit_torrents`, `delete_torrents`, `view_users`, `edit_users`, `delete_users`, `view_news`, `edit_news`, `delete_news`, `can_upload`, `can_download`, `view_forum`, `edit_forum`, `delete_forum`, `predef_level`, `can_be_deleted`, `admin_access`, `prefixcolor`, `suffixcolor`, `WT`, `trusted`, `moderate_trusted`) VALUES
+(1, 1, 'guest', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'guest', 'no', 'no', '', '', 0, 'no', 'no'),
+(2, 2, 'validating', 'yes', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'validating', 'no', 'no', '', '', 0, 'no', 'no'),
+(3, 3, 'Members', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'member', 'no', 'no', '<span style=''color:#000000''>', '</span>', 0, 'no', 'no'),
+(4, 4, 'Uploader', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'uploader', 'no', 'no', '', '', 0, 'no', 'no'),
+(5, 5, 'V.I.P.', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'vip', 'no', 'no', '', '', 0, 'no', 'no'),
+(6, 6, 'Moderator', 'yes', 'yes', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'no', 'yes', 'yes', 'yes', 'yes', 'no', 'moderator', 'no', 'no', '<span style=''color: #428D67''>', '</span>', 0, 'no', 'no'),
+(7, 7, 'Administrator', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'admin', 'no', 'yes', '<span style=''color:#FF8000''>', '</span>', 0, 'no', 'no'),
+(8, 8, 'Owner', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'owner', 'no', 'yes', '<span style=''color:#EE4000''>', '</span>', 0, 'no', 'no');
 
 -- --------------------------------------------------------
 
@@ -1593,3 +1616,22 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}visible` (
 
 INSERT INTO `{$db_prefix}visible` (`id`, `color`, `level`) VALUES
 (1, '#000;', 7);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}warn_reasons`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}warn_reasons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `active` enum('-1','0','1') NOT NULL DEFAULT '1',
+  `title` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `text` text CHARACTER SET utf8 NOT NULL,
+  `level` int(11) NOT NULL DEFAULT '12',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}warn_reasons`
+--

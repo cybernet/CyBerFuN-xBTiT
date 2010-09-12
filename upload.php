@@ -112,10 +112,14 @@ if (isset($_POST["filename"]))
    $filename = mysql_real_escape_string(htmlspecialchars($_POST["filename"]));
 else
     $filename = mysql_real_escape_string(htmlspecialchars($_FILES["torrent"]["name"]));
+
+if (isset($_POST["moder"]))
+    $moder = $_POST["moder"];
+
 if (isset($_POST["tag"]))
    $tag = mysql_real_escape_string(htmlspecialchars($_POST["tag"]));
 else
-    $tag = "";
+   $tag = "";
 
 if (isset($hash) && $hash) $url = $TORRENTSDIR . "/" . $hash . ".btf";
 else $url = 0;
@@ -493,8 +497,9 @@ if (!isset($array["announce"]))
               else
                   $query = "INSERT INTO {$TABLE_PREFIX}files (tag, info_hash, filename, url, info, category, data, size, comment, comment_notify, external,announce_url, uploader,anonymous, bin_hash, image, screen1, screen2, screen3) VALUES (\"$tag\", \"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$comment_notify,\"yes\",\"$announce\",$curuid,$anonyme,0x$hash, '$file_name', '$file_name_s1', '$file_name_s2', '$file_name_s3')";
         }
-      //echo $query;
+      // echo $query;
       $status = do_sqlquery($query); // makeTorrent($hash, true);
+      updatemoder($TABLE_PREFIX, $moder, $hash);
 
       /*
 Operation #2
@@ -529,7 +534,7 @@ Mod by losmi -visible torrent
              stderr($language["ERROR"], $language["ERR_MOVING_TORR"]);
          }
          // try to chmod new moved file, on some server chmod without this could result 600, seems to be php bug
-         @chmod($TORRENTSDIR . "/" . $hash . ".btf",0766);
+         @chmod($TORRENTSDIR . "/" . $hash . ".btf", 0766);
 		 // gold/silver torrent
              do_sqlquery("UPDATE {$TABLE_PREFIX}files SET gold='$gold' WHERE info_hash=\"$hash\"");
 //         if ($announce!=$BASEURL."/announce.php")
@@ -678,10 +683,20 @@ case 0:
             }
       $gold_select_box = createGoldCategories();
       $uploadtpl->set("upload_gold_combo",$gold_select_box);
-	  $bbc = textbbcode("upload", "info");
+      $bbc = textbbcode("upload", "info");
       $uploadtpl->set("upload.announces", $announcs);
       $uploadtpl->set("upload_categories_combo", $combo_categories);
-      $uploadtpl->set("textbbcode",  $bbc);
+      $uploadtpl->set("textbbcode", $bbc);
+      if ($CURUSER['trusted'] == 'yes')
+          {
+          $moder = "ok";
+          }
+          else{
+          $moder = "um";
+          }
+          
+          $uploadtpl->set("moder", $moder);
+    // moder
       $uploadtpl->set("imageon", $GLOBALS["imageon"] == "true", TRUE);
       $uploadtpl->set("screenon", $GLOBALS["screenon"] == "true", TRUE);
       $tplfile = "upload";

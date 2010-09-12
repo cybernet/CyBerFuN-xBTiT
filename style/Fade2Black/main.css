@@ -1,0 +1,518 @@
+body {
+    font-family: tahoma, arial, helvetica, sans-serif;
+    font-size: 8pt;
+    background: #000;
+		color:#F5FFFC;
+	  margin: 10px 12px 20px 8px;
+    padding: 0;
+}
+
+.highlight {
+  background: #F8F81A;
+  color: #FF0000;
+}
+
+.btn{
+  background: #252525;
+  border: 1px solid #000;
+  color: #000;
+  font-family: Verdana, Helvetica, Sans-Serif;
+  font-size: 9px;
+  padding: 2px;
+  vertical-align: middle;
+  cursor: pointer;
+
+}
+
+/* Input boxes - just a bit smaller than normal so they align well. */
+textarea { font-size: 9pt; color: #A5BADC; font-family: verdana, arial, helvetica, sans-serif; background-color: #3d3d3d; }
+
+/* Checkboxes shouldn't have a background color. */
+input.check { background-color: transparent; }
+
+/* Selects are a bit smaller, because it makes them look even better 8). */
+input, select, button {font-size:8pt;	font-weight: normal; color: #000;	font-family: verdana, arial, helvetica, sans-serif;}
+
+/* Standard horizontal rule.. */
+hr {	color: #808080;	background-color: transparent; }
+
+/* A quote, perhaps from another post. */
+.quote {	color: #8000FF;	background-color: #000;	font-family: verdana, arial, helvetica, sans-serif; border: 1px solid #817cae; margin: 1px; padding: 1px;	font-size: x-small;	line-height: 1.4em;}
+
+/* A code block - maybe even PHP ;). */
+.code { color: #A5BCDE; background-color: #000; font-family: courier new, times new roman, monospace;	font-size: x-small;	line-height: 1.3em;
+/* Put a nice border around it. */
+border: 1px solid #565962; margin: 1px auto 1px auto;	padding: 1px;	width: 99%;
+	/* If IE wrap its contents, Else show scrollbars. */
+white-space: nowrap; overflow: auto;
+/* Stop after about 24 lines, and just show a scrollbar. */
+max-height: 24em;}
+
+.post{
+  border:1px solid #373d47;
+  background-color: #51647a;#797E95;
+  padding:0px;
+  margin:0px;
+  color:#000000;
+  line-height: 1.4em;
+  text-align:left;
+  white-space:wrap;
+	overflow: auto;
+}
+img {
+  border:0px;
+	overflow: auto;
+	max-width: 54em;
+}
+textarea {
+	display:block;
+	overflow: auto;
+	line-height: 1.4em;
+}
+
+select.drop_pager {
+  background-color: #595959;
+  font-size: 11px;
+
+}
+
+.pager {
+  background-color: #595959;
+  border: 1px solid #000;
+  padding: 1px 3px 1px 3px;
+}
+
+.pagercurrent {
+  background-color: #7FBDFA;
+  border: 1px solid #072A66;
+  padding: 1px 3px 1px 3px;
+}
+
+.pager a:link,
+.pager a:visited,
+.pagercurrent a:link,
+.pagercurrent a:visited {
+    text-decoration:none;
+}
+
+.pager a:hover,
+.pagercurrent a:hover {
+    text-decoration:underline overline;
+}
+/* this is new for the usermenu and stats */
+.usmen {
+	border:1px solid #373d47;
+  background-color:#000;
+	height:27px;
+	width:100%;
+	padding:0px;
+}
+
+.usmen a:link, .usmen a:active, .usmen a:visited { text-decoration:none; color:#A5BADC; font-size: 8pt; }
+.usmen a:hover { text-decoration:none; color: #373D47; font-size: 8pt; }
+
+/* this is new for the menu */
+.tcat {
+  background: url(images/tcat_menu.gif);
+	height:32px;
+	padding:2px;
+}
+.tcat a:visited, .tcat_avisited
+{
+	color: #F5FFFC;
+	text-decoration: none;
+}
+.tcat a:hover, .tcat a:active, .tcat_ahover
+{
+	color: #A5BADC;
+}
+/* this is new  for the login/logout */
+.t_cat, .t_cat a:link, .t_cat_alink
+{
+	background: url(images/tcat_menu.gif);
+	height:32px;
+	color:#5E5E5E;
+	text-decoration: none;
+}
+.t_cat a:visited, .t_cat_avisited
+{
+	color: #F5FFFC;
+	text-decoration: none;
+}
+.t_cat a:hover, .t_cat a:active, .t_cat_ahover
+{
+	color: #A5BADC;
+}
+/* the end */
+#main {
+    display:block;
+		color:#F5FFFC;
+		background-image: url("images/gradient_background.jpg");
+		background-attachment:fixed;
+		border-top:2px solid #272b32;
+		border-right:1px solid #373d47;
+		border-bottom:1px solid #373d47;
+		border-left:1px solid #373d47;
+    width:100%;
+		padding:0px;
+		margin-top:5px;
+    margin: 10px auto;
+}
+* html #main {
+   background-repeat: repeat-x;
+}
+#logo {
+  background:transparent;
+	width:100%; 
+	height:200px;
+}
+.tracker_logo {
+  background:transparent;  
+	height:150px; 
+	width:666px;
+}
+
+#header{
+  background:transparent;
+	width:100%;	
+}
+
+#nocolumns { width:100%; align:center; }
+
+#footer{
+		background:transparent;
+    height:150px;
+    width:100%;
+}
+
+a:link,a:active,a:visited { color: #A5BADC; background-color: transparent; text-decoration: none; }
+a:hover { color: #e9f0f6; background-color: transparent; text-decoration: none; }
+
+h1 {
+    font-size: 10pt;
+}
+
+p {
+    font-size: 8pt;
+}
+
+table {
+    border:0px;
+		padding:0px;
+}
+table.tool { }
+table.lista {
+    background: #474747;
+    border: 1px solid #000;
+}
+
+td.block {
+	background:url("images/block.png"); 
+	background-repeat:repeat-x;
+	color: #A5BADC;
+	height:28px;
+	border-bottom: solid 1px #000;
+}
+
+td.blocklist {
+         color:#9BAEBF; 
+				 background:#292929;
+         padding:2px;
+         margin:0px;
+         font-size: 8pt;
+         font-weight: bold;
+}
+.user {background:#151920;}
+td.lista {
+    color:#F5FFFC; 
+		background:#373d47;
+		padding:2px;
+    margin:0px;
+		text-align:left;
+    font-size: 8pt;
+		border-left:solid 1px #595959;
+		border-right:solid 1px #595959;
+}
+
+td {
+font-size: 8pt;
+}
+
+td.header {
+	color: #758181;
+	height:27px;
+	font-style: normal;
+	background: url(images/usmen.gif) #000 repeat-x;
+	border: 1px solid #000;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+td.title {
+    font-size: 8pt;
+}
+
+td.navigation {
+    background-color: #000;
+    font-weight: bold;
+    font-size: 8pt;
+}
+
+form {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.sublink {
+    font-style: italic;
+    font-size: 7pt;
+    font-weight: normal;
+}
+
+a.index {
+    font-weight: bold;
+}
+
+a.biglink {
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+.important {
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+td.red {
+    background-color:#3D3D3D;
+    color: red;
+}
+
+
+td.yellow {
+    background-color:#3D3D3D;
+    color: #BEC635;
+}
+
+
+td.green {
+    background-color:#3D3D3D;
+    color: green;
+}
+
+td.progress {
+    padding: 0px;
+    background-image: url(images/backprogress.gif);
+    background-repeat: repeat-x;
+    height: 10px;
+}
+
+td.red a:link {
+    color: red;
+}
+td.red a:visited {
+    color: red;
+}
+
+td.yellow a:link {
+    color: #BEC635;
+}
+td.yellow a:visited {
+    color: #BEC635;
+}
+
+td.green a:link {
+    color: green;
+}
+
+td.green a:visited {
+    color: green;
+}
+li{
+list-style-position:inside;
+} 
+
+.error { color:#a5badc; font-weight: bold; font-size: 14pt; background:url(images/block.png); background-repeat: repeat-x;}
+.information { color:black; font-weight: bold; font-size: 14pt; background:url(images/chb.gif); background-repeat: repeat-x;}
+.success { color:#a5badc; font-weight: bold; font-size: 14pt; background:url(images/block.png); background-repeat: repeat-x;}
+
+/* ######### End Main Tracker Body ######### Start Ajax Poll System ######### */
+
+td.deleted {
+    background-color:#FF95AC;
+    color:#000000;
+}
+
+td.added {
+    background-color:#C1FF83;
+    color:#000000;
+}
+
+td.modified {
+    background-color:#DEDEDE;
+    color:#000000;
+}
+
+#mainContainer {
+    width:100%;
+		overflow:auto;
+    margin:0;
+    text-align:left;    
+}
+
+#mainContent {
+    padding:0px;
+		
+}
+  
+.clear {
+    clear:both;
+}
+
+.poller {  /* The poller box */
+  
+		width:100%;
+		background-image: url(images/poller.png);
+		color:#9BAEBF; 
+		font-weight:bold;
+		overflow:hidden;
+}
+
+.pollerTitle {  /* Poller title above radio buttons */
+    margin-top:0px;
+    margin-bottom:5px;
+    font-weight:bold;
+    font-size:1em;
+}
+
+.pollerOption {  /* Label for each radio button */
+    margin:0px;
+}
+
+.result_pollerOption {  /* Label for each option above graph - i.e. results */
+    margin:0px;
+    font-size:0.8em;
+}
+
+.result_pollerTitle {  /* Title of poller - when ajax shows the results */
+    margin-top:0px;
+    margin-bottom:5px;
+    font-weight:bold;
+    font-size:1em;
+}
+
+.result_pollGraph img {  /* Don't change this one, it is used to get the left and right image(the corner) positioned correctly */
+    float:left;
+}
+
+.result_pollGraph div {  /* The <div> tag where the percentage result is shown */
+    float:left;
+    height:12px;
+    background-repeat:repeat-x;
+    color:#FFF;
+    font-size:0.9em;
+    line-height:16px;
+}
+
+.result_pollGraph {  /* Graph div - parent of both the corner images and the div displaying percentage votes */  
+    height:12px;
+}
+  
+.poller_waitMessage {  /* Message when Ajax is working getting restults fromt the server */
+    display:none;  
+}  
+
+.result_totalVotes{
+    clear:left;
+    font-size:0.8em;
+    margin-top:10px;
+    font-style:italic;
+    background:transparent;
+}
+
+th {
+    text-align:left;
+}
+.formButton {
+    width:75px;
+}
+/* ######### End Ajax Poll System ######### Start Ajax Chat ######### */
+#chat {
+overflow: auto;
+width: 100%;
+height: 220px;
+padding: 0px;
+}
+
+#chatoutput ul {
+	list-style: none;
+	margin:0px;
+	padding:0px;
+	padding:5px 4px 6px 5px;
+}
+
+div.chatoutput {
+	color:#A5BADC; 
+	background:#4D5157;
+	padding:5px 0px 3px 10px;
+	margin:0px;
+	line-height: 150%;
+	margin-bottom:2px;
+}
+
+div.loader {
+background-image: url('images/ajaxchat/loading.gif'); 
+background-repeat: no-repeat; 
+background-position:center center; 
+width:32px; 
+height:32px;
+}
+
+#chatoutput ul li {
+}
+
+#chatoutput ul li span.name {
+	display: block;
+	background:url(images/ajaxchat/bubble.png) no-repeat left;
+	padding-left:19px;
+      margin-bottom:1px;
+	font-weight: normal;
+	color:#F5FFFC;
+}
+
+#chatoutput ul li:hover span.name {
+	background:url(images/ajaxchat/bubblehover.png) no-repeat left;
+}
+
+form {
+	padding:0px;
+	margin:6px;
+}
+
+#chatoutput {
+	text-align: left;
+	margin-right: 0px;
+}
+
+/* swaps edit and delete images on mouse over */
+img.EditSwap {
+background:url(images/ajaxchat/shout_edit_gray.gif) no-repeat bottom;
+}
+img.EditSwap:hover {
+background:url(images/ajaxchat/shout_edit.png) no-repeat bottom; 
+}
+img.DeleteSwap {
+background:url(images/ajaxchat/shout_delete_gray.gif) no-repeat bottom;
+}
+img.DeleteSwap:hover {
+background:url(images/ajaxchat/shout_delete.png) no-repeat bottom; 
+}
+/* end of swaping */
+
+img.form {
+background:url(images/ajaxchat/frame.png) no-repeat;
+}
+img.form:hover {
+background:url(images/ajaxchat/frame_hover.png) no-repeat;
+}
+/* ######### End Ajax Chat ######### */

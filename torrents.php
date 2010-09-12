@@ -300,6 +300,8 @@ $i = 0;
 
 if ($count > 0) {
   foreach ($results as $tid=>$data) {
+if(getmoderstatusbyhash($data["hash"]) == 'ok')
+       {
 
     /*Mod by losmi - visible mod*/
     $ok_level = $data['visible'];
@@ -564,7 +566,7 @@ $torrents[$i]["rating"] = $language["NA"];
   $i++;
   }
 } // if count
-
+}
 // assign array to loop tag
 
 $torrenttpl->set("torrents", $torrents);

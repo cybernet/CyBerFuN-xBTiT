@@ -352,9 +352,9 @@ $language["CyBerFuN_invalid_login_system_check"] = "Invalid Login System Check";
 $language["CyBerFuN_allowed_login_attempts"] = "Allowed login attempts";
 $language["CyBerFuN_enable_invalid_login_check"] = "Enable invalid login check";
 // Invalid Login System Language End by cybernet2u
-// GOLD
+// GOLD START
 $language["ACP_GOLD"] = "Gold torrents settings";
-//
+// GOLD END
 $language['BAN_CLIENT'] = 'Ban BitTorrent Client';
 $language['REMOVE_CLIENTBAN'] = 'Remove BitTorrent Client Ban';
 $language['CLIENT_REMOVED'] = 'This client has been removed from the banned list.<br /><br />';
@@ -368,4 +368,20 @@ $language['NEED_A_REASON'] = 'You must enter a reason!';
 $language['BAN_MAIN'] = 'By visiting this page you are indicating that you want to ban the following client:';
 $language['BAN_ALL_VERSIONS'] = 'Ban all versions?';
 $language['REASON'] = 'Reason';
+// Torrent Moderation start
+$language["ACP_ADD_WARN"]="Torrent moderation resaons";
+$language["WARN_TITLE"]="Title of reason";
+$language["WARN_TEXT"]="Explain reason";
+$language["WARN_ADD_REASON"]="Add new reason";
+$language["TRUSTED"]="Trusted";
+$language["TRUSTED_MODERATION"]="Trusted moderation";
+$language["TORRENT_STATUS"]="Torrent status";
+$language["TORRENT_MODERATION"]="Moderation";
+$language["MODERATE_TORRENT"] = "Moderate";
+$language["MODERATE_STATUS_OK"] = "Ok";
+$language["MODERATE_STATUS_BAD"] = "Bad";
+$language["MODERATE_STATUS_UN"] = "Unmoderated";
+$language["FRM_CONFIRM_VALIDATE"] = "Confirm revalidation";
+$language["MODERATE_PANEL"] = "Mod Torrent Panel";
+// Torrent Moderation end
 ?>

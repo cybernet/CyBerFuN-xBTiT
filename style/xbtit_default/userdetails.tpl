@@ -262,11 +262,13 @@
 
   <tr>
 
-    <td class="block" align="center" colspan="6"><b><tag:language.UPLOADED /> <tag:language.TORRENTS /></b></td>
+    <td class="block" align="center" colspan="7"><b><tag:language.UPLOADED /> <tag:language.TORRENTS /></b></td>
 
   </tr>
 
   <tr>
+
+    <td align="center" class="header"><tag:language.TORRENT_STATUS /></td>
 
     <td align="center" class="header"><tag:language.FILE /></td>
 
@@ -288,6 +290,8 @@
 
   <tr>
 
+    <td class="lista" align="center" style="text-align: left;"><tag:uptor[].moder /></td>
+
     <td class="lista" align="center" style="padding-left:10px;"><tag:uptor[].filename /></td>
 
     <td class="lista" align="center" style="text-align: center;"><tag:uptor[].added /></td>
@@ -308,7 +312,7 @@
 
   <tr>
 
-    <td class="lista" align="center" colspan="6"><tag:language.NO_TORR_UP_USER /></td>
+    <td class="lista" align="center" colspan="7"><tag:language.NO_TORR_UP_USER /></td>
 
   </tr>
 

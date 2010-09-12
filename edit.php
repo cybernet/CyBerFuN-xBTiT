@@ -61,7 +61,7 @@ if ($link == "")
 
 if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
 
-   if ($_POST["action"] == $language["FRM_CONFIRM"]) {
+   if ($_POST["action"] == $language["FRM_CONFIRM"] || $_POST["action"] == $language["FRM_CONFIRM_VALIDATE"]) {
 
    if ($_POST["name"] == '')
         {
@@ -95,10 +95,56 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
    $fname = htmlspecialchars(AddSlashes(unesc($_POST["name"])));
    $torhash = AddSlashes($_POST["info_hash"]);
    write_log("Modified torrent $fname ($torhash)", "modify");
+if($_POST["action"] == $language["FRM_CONFIRM"])
+   {
+       if($CURUSER['moderate_trusted'] == 'yes')
+       {
+            $moder = $_POST['moder'];
+       }
+       else 
+       {
+            $moder = 'bad';
+       }
+   }
+   else 
+   {
+    
+            $moder = 'um';
+       
+   }
+  /* if ($CURUSER['trusted']=='yes')
+          {
+          $moder="ok";
+          }*/
    if($golden != '' && isset($golden))
     do_sqlquery("UPDATE {$TABLE_PREFIX}files SET gold='$golden' WHERE info_hash='" . $torhash . "'", true);
-   do_sqlquery("UPDATE {$TABLE_PREFIX}files SET tag='".AddSlashes($_POST["tag"])."', filename='$fname', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . "  , visible = $visible, sticky = '" . $sticky . "'WHERE info_hash='" . $torhash . "'", true);
-$userfile = $_FILES["userfile"];
+    do_sqlquery("UPDATE {$TABLE_PREFIX}files SET tag='".AddSlashes($_POST["tag"])."', filename='$fname', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . "  , visible = $visible, sticky = '" . $sticky . "'WHERE info_hash='" . $torhash . "'", true);
+
+updatemoderbyhash($moder,$torhash);
+      
+      if($moder == 'ok')
+  {
+    $get_user = "SELECT f.moder as moder, f.filename, f.info_hash, f.uploader as upname, u.username as uploader, c.image, c.name as cname, f.category as catid FROM {$TABLE_PREFIX}files f LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category WHERE info_hash='".$torhash."'";
+    $row = do_sqlquery($get_user, true);
+
+if (mysql_num_rows($row) == 1) {
+    
+    
+        $username ='';
+        while ($data = mysql_fetch_array($row)) {
+            $username = $data['upname'];
+            $file = $data['filename'];
+            $uploader = $data['uploader'];
+        }
+        $msg = '[b]'.$uploader.' your torrent '.$file.' is approved![/b]
+        Do not reply, this is an automatic message.';
+        do_sqlquery("INSERT INTO `{$TABLE_PREFIX}messages` (`sender`, `receiver`, `added`, `subject`, `msg`) VALUES ('".$CURUSER["uid"]."', '".$username."', UNIX_TIMESTAMP(), '".$file."', '".$msg."')");
+      }
+  }
+ if ($_POST["ex_moder"] != $moder && $moder == "bad" && $CURUSER["moderate_trusted"] == "yes") {
+redirect("index.php?page=moder&hash=".$torhash."");
+}
+        $userfile = $_FILES["userfile"];
         $screen1 = $_FILES["screen1"];
         $screen2 = $_FILES["screen2"];
         $screen3 = $_FILES["screen3"];
@@ -390,6 +436,8 @@ if (isset($_GET["info_hash"])) {
            stderr($language["ERROR"], $language["CANT_EDIT_TORR"]);
        }
 
+    $moder_status = getmoderstatusbyhash(AddSlashes($_GET["info_hash"]));
+
     $torrenttpl = new bTemplate();
     $torrenttpl->set("language", $language);
     $row = $res[0];
@@ -497,6 +545,31 @@ if (isset($_GET["info_hash"])) {
     $torrent["complete"] = $results["finished"]." ".$language["X_TIMES"];
     $torrent["peers"] = $language["SEEDERS"] .": " .$results["seeds"].",".$language["LEECHERS"] .": ". $results["leechers"]."=". ($results["leechers"] + $results["seeds"]). " ". $language["PEERS"];
     $torrent["cat_combo"] = categories($results["cat_name"]); //$s;
+
+if ($CURUSER['edit_torrents'] == "yes" && $CURUSER['moderate_trusted'] == 'yes')
+    {
+        switch ($moder_status)
+        {
+        case 'ok':
+        $checked1="SELECTED";
+        break;
+        case 'bad':
+        $checked2="SELECTED";
+        break;
+        case 'um':
+        $checked3="SELECTED";
+        break;
+        }
+    
+    $torrent["moder"]="<select name=\"moder\" id=\"icon\" onchange=\"showimage()\">
+                                            <option $checked1 value=\"ok\">".$language["MODERATE_STATUS_OK"]."</option>
+                                            <option $checked2 value=\"bad\">".$language["MODERATE_STATUS_BAD"]."</option>
+                                            <option $checked3 value=\"um\">".$language["MODERATE_STATUS_UN"]."</option>
+                                        </select> ";
+    }
+    
+    $torrent["moder"].="<img name=\"icons\" src=\"images/mod/$moder_status.png\" alt=\"$moder_status\" title=\"$moder_status\">";
+    $torrent["ex_moder"]=$moder_status;
 // email_notification
 		$res1 = mysql_fetch_assoc(mysql_query("SELECT comment_notify FROM {$TABLE_PREFIX}files WHERE info_hash = '" . AddSlashes($_GET["info_hash"]) . "'")) or sqlerr();
 		$arr1 = $res1["comment_notify"];
