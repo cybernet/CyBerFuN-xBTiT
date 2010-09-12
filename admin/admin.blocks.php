@@ -248,7 +248,7 @@ function read_blocks()
 
                 $centers[$c]["combo"]="\n<select name=\"sort_".$blk["blockid"]."\" size=\"1\">";
                 for ($i=0;$i<count($br);$i++)
-                $centers[$c]["combo"].="\n<option value=\"$i\" ".($i==$blk["sortid"]?"selected=\"selected\"":"").">$i</option>";
+                $centers[$c]["combo"].="\n<option value=\"$i\" ".($i == $blk["sortid"] ? "selected=\"selected\"":"").">$i</option>";
                 $centers[$c]["combo"].="\n</select>";
                 $centers[$c]["status"]=$blk["status"];
                 $centers[$c]["title"]=$language[$blk["title"]].
@@ -280,49 +280,49 @@ function read_blocks()
                 $rights[$r]["combo_max_view"].="\n</select>";
 
 
-                $rights[$r]["combo"]="\n<select name=\"sort_".$blk["blockid"]."\" size=\"1\">";
+                $rights[$r]["combo"] = "\n<select name=\"sort_".$blk["blockid"]."\" size=\"1\">";
                 for ($i=0;$i<count($br);$i++)
-                $rights[$r]["combo"].="\n<option value=\"$i\" ".($i==$blk["sortid"]?"selected=\"selected\"":"").">$i</option>";
-                $rights[$r]["combo"].="\n</select>";
-                $rights[$r]["status"]=$blk["status"];
-                $rights[$r]["title"]=$language[$blk["title"]].
+                $rights[$r]["combo"] .= "\n<option value=\"$i\" ".($i==$blk["sortid"]?"selected=\"selected\"":"").">$i</option>";
+                $rights[$r]["combo"] .= "\n</select>";
+                $rights[$r]["status"] = $blk["status"];
+                $rights[$r]["title"] = $language[$blk["title"]].
                     "&nbsp;&nbsp;<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=blocks&amp;action=edit&amp;id=".$blk["blockid"]."\">".
                     image_or_link("$STYLEPATH/images/edit.png","",$language["EDIT"])."</a>";
-                $rights[$r]["check"]="<input name=\"status_".$blk["blockid"]."\" type=\"checkbox\" ".($blk["status"]=="1"?"checked=\"checked\"":"")." />";
+                $rights[$r]["check"] = "<input name=\"status_".$blk["blockid"]."\" type=\"checkbox\" ".($blk["status"] == "1" ? "checked=\"checked\"":"")." />";
                 $r++;
                 break;
 
           case 'b':
-                $bottom[$b]["pos"]="\n<select name=\"position_".$blk["blockid"]."\" size=\"1\">";
-                $bottom[$b]["pos"].="\n<option value=\"t\">".$language["TOP"]."</option>";
+                $bottom[$b]["pos"] = "\n<select name=\"position_".$blk["blockid"]."\" size=\"1\">";
+                $bottom[$b]["pos"] .= "\n<option value=\"t\">".$language["TOP"]."</option>";
 				        $bottom[$b]["pos"].="\n<option value=\"d\">".$language["DROPDOWN"]."</option>";
 				        $bottom[$b]["pos"].="\n<option value=\"e\">".$language["EXTRA"]."</option>";
-                $bottom[$b]["pos"].="\n<option value=\"l\">".$language["LEFT"]."</option>";
-                $bottom[$b]["pos"].="\n<option value=\"c\">".$language["CENTER"]."</option>";
-                $bottom[$b]["pos"].="\n<option value=\"r\">".$language["RIGHT"]."</option>";
-                $bottom[$b]["pos"].="\n<option selected=\"selected\" value=\"b\">".$language["BOTTOM"]."</option>";
-                $bottom[$b]["pos"].="\n</select>";
+                $bottom[$b]["pos"] .= "\n<option value=\"l\">".$language["LEFT"]."</option>";
+                $bottom[$b]["pos"] .= "\n<option value=\"c\">".$language["CENTER"]."</option>";
+                $bottom[$b]["pos"] .= "\n<option value=\"r\">".$language["RIGHT"]."</option>";
+                $bottom[$b]["pos"] .= "\n<option selected=\"selected\" value=\"b\">".$language["BOTTOM"]."</option>";
+                $bottom[$b]["pos"] .= "\n</select>";
 
-                $bottom[$b]["combo_min_view"]="\n<select name=\"minclassview_".$blk["blockid"]."\" size=\"1\">";
+                $bottom[$b]["combo_min_view"] = "\n<select name=\"minclassview_".$blk["blockid"]."\" size=\"1\">";
                 foreach($alevel as $level)
-                $bottom[$b]["combo_min_view"].="\n<option value=\"".$level["id_level"].($blk["minclassview"] == $level["id_level"] ? "\" selected=\"selected\">" : "\">").$level["level"]."</option>";
-                $bottom[$b]["combo_min_view"].="\n</select>";
+                $bottom[$b]["combo_min_view"] .= "\n<option value=\"".$level["id_level"].($blk["minclassview"] == $level["id_level"] ? "\" selected=\"selected\">" : "\">").$level["level"]."</option>";
+                $bottom[$b]["combo_min_view"] .= "\n</select>";
 
-                $bottom[$b]["combo_max_view"]="\n<select name=\"maxclassview_".$blk["blockid"]."\" size=\"1\">";
+                $bottom[$b]["combo_max_view"] = "\n<select name=\"maxclassview_".$blk["blockid"]."\" size=\"1\">";
                 foreach($alevel as $level)
-                $bottom[$b]["combo_max_view"].="\n<option value=\"".$level["id_level"].($blk["maxclassview"] == $level["id_level"] ? "\" selected=\"selected\">" : "\">").$level["level"]."</option>";
-                $bottom[$b]["combo_max_view"].="\n</select>";
+                $bottom[$b]["combo_max_view"] .= "\n<option value=\"".$level["id_level"].($blk["maxclassview"] == $level["id_level"] ? "\" selected=\"selected\">" : "\">").$level["level"]."</option>";
+                $bottom[$b]["combo_max_view"] .= "\n</select>";
 
 
-                $bottom[$b]["combo"]="\n<select name=\"sort_".$blk["blockid"]."\" size=\"1\">";
+                $bottom[$b]["combo"] = "\n<select name=\"sort_".$blk["blockid"]."\" size=\"1\">";
                 for ($i=0;$i<count($br);$i++)
-                $bottom[$b]["combo"].="\n<option value=\"$i\" ".($i==$blk["sortid"]?"selected=\"selected\"":"").">$i</option>";
-                $bottom[$b]["combo"].="\n</select>";
-                $bottom[$b]["status"]=$blk["status"];
-                $bottom[$b]["title"]=$language[$blk["title"]].
+                $bottom[$b]["combo"] .= "\n<option value=\"$i\" ".($i == $blk["sortid"] ? "selected=\"selected\"":"").">$i</option>";
+                $bottom[$b]["combo"] .= "\n</select>";
+                $bottom[$b]["status"] = $blk["status"];
+                $bottom[$b]["title"] = $language[$blk["title"]].
                     "&nbsp;&nbsp;<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=blocks&amp;action=edit&amp;id=".$blk["blockid"]."\">".
                     image_or_link("$STYLEPATH/images/edit.png","",$language["EDIT"])."</a>";
-                $bottom[$b]["check"]="<input name=\"status_".$blk["blockid"]."\" type=\"checkbox\" ".($blk["status"]=="1"?"checked=\"checked\"":"")." />";
+                $bottom[$b]["check"] = "<input name=\"status_".$blk["blockid"]."\" type=\"checkbox\" ".($blk["status"] == "1" ? "checked=\"checked\"":"")." />";
                 $b++;
                 break;
           }
