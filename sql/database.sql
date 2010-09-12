@@ -1303,7 +1303,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('irc_channel', 'cyberfun_xbtit'),
 ('inv_login', 'false'),
 ('att_login', '99'),
-('CyBerFuN_xBTiT_installed_version', '1.2 revision 561');
+('CyBerFuN_xBTiT_installed_version', '1.2 revision 565');
 
 -- --------------------------------------------------------
 
