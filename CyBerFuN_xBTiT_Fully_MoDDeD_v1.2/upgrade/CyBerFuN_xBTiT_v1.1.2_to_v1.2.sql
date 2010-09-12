@@ -1,9 +1,5 @@
 ALTER TABLE `{$db_prefix}settings` CHANGE `key` `key` VARCHAR( 41 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-<<<<<<< .working
-INSERT INTO `{$db_prefix}settings` ( `key`, `value` ) VALUES ( 'CyBerFuN_xBTiT_installed_version', '1.2 revision 561' ) ;
-=======
-INSERT INTO `{$db_prefix}settings` ( `key`, `value` ) VALUES ( 'CyBerFuN_xBTiT_installed_version', '1.2 revision 118' ) ;
->>>>>>> .merge-right.r118
+INSERT INTO `{$db_prefix}settings` ( `key`, `value` ) VALUES ( 'CyBerFuN_xBTiT_installed_version', '1.2 revision 565' ) ;
 UPDATE `{$db_prefix}hacks` SET `version` = '3.1.1' WHERE `{$db_prefix}hacks`.`id` =1;
 ALTER TABLE `{$db_prefix}users` ADD INDEX ( `smf_fid` );
 UPDATE `{$db_prefix}users_level` SET `prefixcolor` = '<span style=''color:#000000''>' WHERE `{$db_prefix}users_level`.`id` =3;
@@ -110,7 +106,7 @@ ALTER TABLE `{$db_prefix}faq_group` CHANGE  `title`  `title` VARCHAR( 255 ) CHAR
 ALTER TABLE `{$db_prefix}faq_group` CHANGE  `description`  `description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
 ALTER TABLE `{$db_prefix}faq` CHANGE  `title`  `title` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
 ALTER TABLE `{$db_prefix}faq` CHANGE  `description`  `description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
-UPDATE `{$db_prefix}settings` SET  `value` =  '1.2 revision 118' WHERE  `{$db_prefix}settings`.`key` =  'CyBerFuN_xBTiT_installed_version' ;
+UPDATE `{$db_prefix}settings` SET  `value` =  '1.2 revision 565' WHERE  `{$db_prefix}settings`.`key` =  'CyBerFuN_xBTiT_installed_version' ;
 ALTER TABLE `{$db_prefix}invitations` DROP PRIMARY KEY ;
 CREATE TABLE IF NOT EXISTS `{$db_prefix}moderate_reasons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
