@@ -488,32 +488,32 @@ $language['VALIDATION_SENT_TO_2'] = 'You will need to click on the link containe
 $language['STICKY_TORRENT'] = '<b>Sticky</b>';
 $language['STICKY_TORRENT_EXPLAIN'] = '( Always on top of the torrent list )';
 // GOLD
-$language["GOLD_TYPE"]="Torrent type";
-$language["GOLD_PICTURE"]="Gold picture";
-$language["SILVER_PICTURE"]="Silver picture";
-$language["GOLD_DESCRIPTION"]="Gold description";
-$language["SILVER_DESCRIPTION"]="Silver description";
-$language["CLASSIC_DESCRIPTION"]="Classic description";
-$language["GOLD_LEVEL"]="Who can add gold/silver torrents";
+$language["GOLD_TYPE"] = "Torrent type";
+$language["GOLD_PICTURE"] = "Gold picture";
+$language["SILVER_PICTURE"] = "Silver picture";
+$language["GOLD_DESCRIPTION"] = "Gold description";
+$language["SILVER_DESCRIPTION"] = "Silver description";
+$language["CLASSIC_DESCRIPTION"] = "Classic description";
+$language["GOLD_LEVEL"] = "Who can add gold/silver torrents";
 // ign
-$language['IGN_OTHER']='Other';
-$language['LIST_IGNORE']='Ignore';
-$language['IGNORE1']='Ignore users';
-$language['IGNORE2']='Unable to send';
-$language['IGNORE_USERS']='Ignore user';
-$language['SINCE_IGNORE']='Since when ignore';
-$language['DELETE_IGNORE']='Cancel ignore';
+$language['IGN_OTHER'] = 'Other';
+$language['LIST_IGNORE'] = 'Ignore';
+$language['IGNORE1'] = 'Ignore users';
+$language['IGNORE2'] = 'Unable to send';
+$language['IGNORE_USERS'] = 'Ignore user';
+$language['SINCE_IGNORE'] = 'Since when ignore';
+$language['DELETE_IGNORE'] = 'Cancel ignore';
 // friend list
 $language["FRIENDLIST"] = "Friendlist";
 // Torrent Moderation start
-$language["ACP_ADD_WARN"]="Torrent moderation resaons";
-$language["WARN_TITLE"]="Title of reason";
-$language["WARN_TEXT"]="Explain reason";
-$language["WARN_ADD_REASON"]="Add new reason";
-$language["TRUSTED"]="Trusted";
-$language["TRUSTED_MODERATION"]="Trusted moderation";
-$language["TORRENT_STATUS"]="Torrent status";
-$language["TORRENT_MODERATION"]="Moderation";
+$language["ACP_ADD_WARN"] = "Torrent moderation resaons";
+$language["WARN_TITLE"] = "Title of reason";
+$language["WARN_TEXT"] = "Explain reason";
+$language["WARN_ADD_REASON"] = "Add new reason";
+$language["TRUSTED"] = "Trusted";
+$language["TRUSTED_MODERATION"] = "Trusted moderation";
+$language["TORRENT_STATUS"] = "Torrent status";
+$language["TORRENT_MODERATION"] = "Moderation";
 $language["MODERATE_TORRENT"] = "Moderate";
 $language["MODERATE_STATUS_OK"] = "Ok";
 $language["MODERATE_STATUS_BAD"] = "Bad";
@@ -521,4 +521,14 @@ $language["MODERATE_STATUS_UN"] = "Unmoderated";
 $language["FRM_CONFIRM_VALIDATE"] = "Confirm revalidation";
 $language["MODERATE_PANEL"] = "Mod Torrent Panel";
 // Torrent Moderation end
+
+# Language definitions added by TreetopClimber.
+$language['EXTRA'] = 'extra';
+$language['DROPDOWN'] = 'dropdown';
+$language['TORRENT_MENU'] = 'Torrent Menu';
+$language['USER_MENU'] = 'User Menu';
+$language['ADMIN_ACCESS'] = 'Admin Access';
+$language['STAFF_ACCESS'] = 'Staff';
+$language['UPLOAD_LINK'] = 'Torrent Upload';
+# End
 ?>

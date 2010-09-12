@@ -124,3 +124,21 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}warn_reasons` (
   `level` int(11) NOT NULL DEFAULT '12',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+UPDATE `{$db_prefix}blocks` SET  `position` =  'e' WHERE  `{$db_prefix}blocks`.`blockid` =11 ;
+INSERT INTO `{$db_prefix}blocks` (
+`blockid` ,
+`content` ,
+`position` ,
+`sortid` ,
+`status` ,
+`title` ,
+`cache` ,
+`minclassview` ,
+`maxclassview`
+)
+VALUES (
+NULL ,  'dropdownmenu',  'd',  '1',  '1',  'BLOCK_DDMENU',  'no',  '1',  '8'
+) ;
+UPDATE `{$db_prefix}style` SET  `style` =  'xBTiT Default' WHERE  `{$db_prefix}style`.`id` =4 ;
+UPDATE `{$db_prefix}style` SET  `style` =  'Mint' WHERE  `{$db_prefix}style`.`id` =5 ;
+UPDATE `{$db_prefix}style` SET  `style` =  'Yellow Jacket' WHERE  `{$db_prefix}style`.`id` =7 ;

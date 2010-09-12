@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.5
+-- version 3.3.6
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 05, 2010 at 04:50 PM
+-- Generation Time: Sep 13, 2010 at 02:15 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.2
 
@@ -126,7 +126,8 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 (22, 'twitter', 'l', 5, 0, 'TWITTER', 'no', 3, 8),
 (23, 'categories', 'r', 2, 1, 'BLOCK_CAT', 'no', 3, 8),
 (24, 'login', 'c', 1, 1, 'LOGIN', 'no', 1, 1),
-(25, 'cloud', 'c', 0, 1, 'BLOCK_CLOUD', 'no', 3, 8);
+(25, 'cloud', 'c', 0, 1, 'BLOCK_CLOUD', 'no', 3, 8),
+(26, 'dropdownmenu', 'd', 1, 1, 'BLOCK_DDMENU', 'no', 1, 8);
 
 -- --------------------------------------------------------
 
@@ -1346,10 +1347,10 @@ INSERT INTO `{$db_prefix}style` (`id`, `style`, `style_url`) VALUES
 (1, 'CyBerFuN', 'style/CyBerFuN'),
 (2, 'CReD', 'style/redline'),
 (3, 'CyBerFuN Dark', 'style/mesh'),
-(4, 'xBtit_Default', 'style/xbtit_default'),
-(5, 'Mint Green', 'style/mintgreen'),
+(4, 'xBTiT Default', 'style/xbtit_default'),
+(5, 'Mint', 'style/mintgreen'),
 (6, 'Dark Lair', 'style/darklair'),
-(7, 'The Hive', 'style/thehive'),
+(7, 'Yellow Jacket', 'style/thehive'),
 (8, 'Holiday Spirit', 'style/holiday-spirit'),
 (9, 'x002', 'style/NB-002'),
 (10, 'x005', 'style/NB-005');
