@@ -39,22 +39,22 @@ if (!defined("IN_ACP"))
 
 
 
-function blocks_combo($current_block="")
+function blocks_combo($current_block = "")
    {
       global $THIS_BASEPATH, $language;
 
       $dir = @opendir("$THIS_BASEPATH/blocks/");
-      $ret="\n<select name=\"block_name\" size=\"1\">\n<option value=\"\" ".($current_block==""?"selected=\"selected\"":"").">".$language["SELECT"]."</option>";
+      $ret = "\n<select name=\"block_name\" size=\"1\">\n<option value=\"\" ".($current_block == "" ? "selected=\"selected\"":"").">".$language["SELECT"]."</option>";
       while($file = @readdir($dir))
         {
-        if (@is_file("$THIS_BASEPATH/blocks/" . $file) && $file!="index.php")
+        if (@is_file("$THIS_BASEPATH/blocks/" . $file) && $file != "index.php")
           {
-            $content=str_replace(array("_block",".php"),"",$file);
-            $ret.="\n<option value=\"$content\" ".($current_block==$content?"selected=\"selected\"":"").">$file</option>";
+            $content = str_replace(array("_block", ".php"),"", $file);
+            $ret .= "\n<option value=\"$content\" ".($current_block == $content?"selected=\"selected\"":"").">$file</option>";
         }
       }
       @closedir($dir);
-      $ret.="\n</select>";
+      $ret .= "\n</select>";
 
       return $ret;
 }
@@ -69,17 +69,17 @@ function read_blocks()
       $tops = array();
 	    $dropdown = array();
 	    $extras = array();
-      $lefts=array();
-      $centers=array();
-      $rights=array();
-      $bottom=array();
-      $t=0;
-	    $d=0;
-	    $e=0;
-      $l=0;
-      $c=0;
-      $r=0;
-      $b=0;
+      $lefts = array();
+      $centers = array();
+      $rights = array();
+      $bottom = array();
+      $t = 0;
+	    $d = 0;
+	    $e = 0;
+      $l = 0;
+      $c = 0;
+      $r = 0;
+      $b = 0;
 
       $rlevel = mysql_query("SELECT DISTINCT id_level, predef_level, level FROM {$TABLE_PREFIX}users_level ORDER BY id_level");
       $alevel = array();
@@ -182,10 +182,10 @@ function read_blocks()
                 $extras[$e]["combo"].="\n<option value=\"$i\" ".($i==$blk["sortid"]?"selected=\"selected\"":"").">$i</option>";
                 $extras[$e]["combo"].="\n</select>";
                 $extras[$e]["status"]=$blk["status"];
-                $extras[$e]["title"]=$language[$blk["title"]].
+                $extras[$e]["title"] = $language[$blk["title"]].
                     "&nbsp;&nbsp;<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=blocks&amp;action=edit&amp;id=".$blk["blockid"]."\">".
                     image_or_link("$STYLEPATH/images/edit.png","",$language["EDIT"])."</a>";
-                $extras[$e]["check"]="<input name=\"status_".$blk["blockid"]."\" type=\"checkbox\" ".($blk["status"]=="1"?"checked=\"checked\"":"")." />";
+                $extras[$e]["check"] = "<input name=\"status_".$blk["blockid"]."\" type=\"checkbox\" ".($blk["status"] == "1" ? "checked=\"checked\"":"")." />";
                 $e++;
                 break;			
 
