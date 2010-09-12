@@ -344,7 +344,7 @@ $language["LEVEL_STICKY"] = "Who can add sticky torrents? (default: Uploader)";
 // sticky end
 // FAQ start
 $language["ACP_FAQ_GROUP"] = "Faq groups";
-$language["ACP_FAQ"] = "Faq";
+$language["ACP_FAQ"] = "FAQ";
 $language["ACP_FAQ_QUESTION"] = "Faq questions";
 // FAQ end
 // Invalid Login System Language Start by cybernet2u
@@ -369,14 +369,14 @@ $language['BAN_MAIN'] = 'By visiting this page you are indicating that you want 
 $language['BAN_ALL_VERSIONS'] = 'Ban all versions?';
 $language['REASON'] = 'Reason';
 // Torrent Moderation start
-$language["ACP_ADD_WARN"]="Torrent moderation resaons";
-$language["WARN_TITLE"]="Title of reason";
-$language["WARN_TEXT"]="Explain reason";
-$language["WARN_ADD_REASON"]="Add new reason";
-$language["TRUSTED"]="Trusted";
-$language["TRUSTED_MODERATION"]="Trusted moderation";
-$language["TORRENT_STATUS"]="Torrent status";
-$language["TORRENT_MODERATION"]="Moderation";
+$language["ACP_ADD_WARN"] = "Torrent moderation resaons";
+$language["WARN_TITLE"] = "Title of reason";
+$language["WARN_TEXT"] = "Explain reason";
+$language["WARN_ADD_REASON"] = "Add new reason";
+$language["TRUSTED"] = "Trusted";
+$language["TRUSTED_MODERATION"] = "Trusted moderation";
+$language["TORRENT_STATUS"] = "Torrent status";
+$language["TORRENT_MODERATION"] ="Moderation";
 $language["MODERATE_TORRENT"] = "Moderate";
 $language["MODERATE_STATUS_OK"] = "Ok";
 $language["MODERATE_STATUS_BAD"] = "Bad";
