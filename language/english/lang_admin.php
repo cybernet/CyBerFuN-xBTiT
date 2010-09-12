@@ -384,4 +384,16 @@ $language["MODERATE_STATUS_UN"] = "Unmoderated";
 $language["FRM_CONFIRM_VALIDATE"] = "Confirm revalidation";
 $language["MODERATE_PANEL"] = "Mod Torrent Panel";
 // Torrent Moderation end
+// Manual Hack Install
+$language['MHI_VIEW_INSRUCT'] = 'View manual installation instructions?';
+$language['MHI_MAN_INSRUCT_FOR'] = 'Manual Installation instructions for';
+$language['MHI_RUN_QUERY'] = 'Run the following SQL Query via phpMyAdmin';
+$language['MHI_IN'] = 'In';
+$language['MHI_ALSO_IN'] = 'Also in';
+$language['MHI_FIND_THIS'] = 'find this';
+$language['MHI_ADD_THIS'] = 'Add this';
+$language['MHI_IT'] = 'it';
+$language['MHI_REPLACE'] = 'Replace with';
+$language['MHI_COPY'] = 'Copy';
+$language['MHI_AS'] = 'as';
 ?>
