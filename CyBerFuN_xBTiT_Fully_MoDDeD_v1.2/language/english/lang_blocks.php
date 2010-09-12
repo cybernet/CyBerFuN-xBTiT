@@ -28,4 +28,7 @@ $language["TWITTER"] = "Twitter Updates";
 $language["BLOCK_CAT"] = "Categories";
 $language["BLOCK_CLOUD"] = "Search Cloud";
 $language["BLOCK_UNVALIDATED"] = "Account not yet validated";
+/* We leave this name (drop down menu) blank so it doesnt use the block head showing its name, it looks unsightly and non professional imho!! TreetopClimber */
+$language['BLOCK_DDMENU'] = "";
+$language['BLOCK_CALENDAR'] = "Calendar";
 ?>

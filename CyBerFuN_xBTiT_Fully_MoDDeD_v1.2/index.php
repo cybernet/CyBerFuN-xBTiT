@@ -155,7 +155,9 @@ $tpl->set("main_css","$style_css");
 require_once("$THIS_BASEPATH/include/blocks.php");
 
 $logo .= "<div></div>";
-$slideIt = "<span style=\"align:left;\"><a href=\"javascript:collapse2.slideit()\"><img src=\"$STYLEURL/images/slide.png\" border=\"0\" alt=\"\" /></a></span>";
+$dropdown = dropdown_menu();
+$extra = extra_menu();
+$slideIt = "<span style=\"align:left;\"><a href=\"javascript:collapse2.slideit()\"><img src=\"$STYLEURL/images/slide.png\" border=\"0\" alt=\"click\" /></a></span>";
 $header .= "<div>".main_menu()."</div>";
 
 $left_col = side_menu();
@@ -164,7 +166,7 @@ $right_col = right_menu();
 if ($left_col == "" && $right_col == "")
    $no_columns = 1;
 
-include 'include/jscss.php';
+include ("include/jscss.php");
 
 $tpl->set("main_jscript",$morescript);
 if (!$no_columns && $pageID != 'admin' && $pageID != 'forum' && $pageID != 'torrents' && $pageID != 'usercp') {
@@ -172,13 +174,18 @@ if (!$no_columns && $pageID != 'admin' && $pageID != 'forum' && $pageID != 'torr
   $tpl->set("main_right",$right_col);
 }
 
-$tpl->set("main_logo",$logo);
+$tpl->set("main_logo", $logo);
 
-$tpl->set("main_slideIt",$slideIt);
+$tpl->set("main_dropdown", $dropdown);
 
-$tpl->set("main_header",$header.$err_msg_install);
+$tpl->set("main_extra", $extra);
 
-$tpl->set("more_css",$morecss);
+$tpl->set("main_slideIt", $slideIt);
+
+$tpl->set("main_header", $header.$err_msg_install);
+
+$tpl->set("more_css", $morecss);
+
 $data = mysql_query ("SELECT filename FROM {$TABLE_PREFIX}files WHERE info_hash = '$_GET[id]'");
 while ($object = mysql_fetch_object($data))
 $tpl->set("main_title",$btit_settings["name"]." .::. "."$object->filename");
