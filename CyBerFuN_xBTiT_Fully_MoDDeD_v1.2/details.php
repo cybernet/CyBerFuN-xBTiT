@@ -95,6 +95,8 @@ if(!$CURUSER || $CURUSER["view_torrents"] != "yes")
 
 $res = get_result("SELECT tag, f.screen1, f.screen2, f.screen3, f.image, u.warn, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'", true, $btit_settings['cache_duration']);
 
+$res_m = getmoderstatusbyhash($id);
+
 if (count($res) < 1)
    stderr($language["ERROR"], "Bad ID!", $GLOBALS["usepopup"]);
 $row = $res[0];
@@ -107,16 +109,16 @@ $torrenttpl = new bTemplate();
 $sres = get_result("SELECT * FROM {$TABLE_PREFIX}history WHERE infohash = '$id' AND date IS NOT NULL ORDER BY date DESC LIMIT 10 ", true, $btit_settings['cache_duration']);
 $srow = count($sres);
 
-	if ($srow)
+	if (count($sres) > 0)
 
        $snatchers = array();
        $plus = 0;
 
-    while ($srow = mysql_fetch_array($sres))
+    foreach ($sres as $id=>$srow)
 
 {
 $res = get_result("SELECT prefixcolor, suffixcolor, users.id, username, level FROM {$TABLE_PREFIX}users users INNER JOIN {$TABLE_PREFIX}users_level users_level ON users.id_level=users_level.id WHERE users.id='".$srow["uid"]."'", true, $btit_settings['cache_duration']);
-$result = mysql_fetch_array($res);
+$result = $res[0];
 $snatchers[$plus]["snatch"] = "<a href=index.php?page=userdetails&id=$result[id]>".unesc($result["prefixcolor"]).unesc($result["username"]).unesc($result["suffixcolor"])."</a>&nbsp;";
 $plus++;
 }
@@ -272,6 +274,16 @@ $torrenttpl->set("NOT_XBTT", !$XBBT_USE, TRUE);
 $torrenttpl->set("YES_TAG", $row["tag"], TRUE);
 
 $row["speed"] = $speed;
+
+// moder
+    if ($CURUSER['moderate_trusted'] == 'yes')
+    $moderation = TRUE;
+    $torrenttpl->set("MODER", $moderation, TRUE);
+    
+    $moder = $res_m;
+    $row["moderation"] .= "<a title=\"".$moder."\" href=\"index.php?page=edit&info_hash=".$row["info_hash"]."\"><img alt=\"".$moder."\" src=\"images/mod/".$moder.".png\"></a>";
+// moder
+
 if (($XBTT_USE && !$PRIVATE_ANNOUNCE) || $row["external"] == "yes") 
    {
 $row["downloaded"] = $row["finished"]." " . $language["X_TIMES"];
@@ -327,7 +339,7 @@ else {
      foreach ($subres as $id=>$subrow) {
 
        $level = get_result("SELECT level FROM {$TABLE_PREFIX}users_level WHERE id_level='$subrow[id_level]'", true, $btit_settings['cache_duration']);
-       $lvl = mysql_fetch_assoc($level);
+       $lvl = $level[0];
        if (!$subrow[uid])
         $title = "orphaned";
        elseif (!"$subrow[custom_title]")

@@ -26,6 +26,14 @@ print("</td><td class=\"red\" align=\"center\"> <img src=\"images/speed_down.png
 print("</td><td class=\"yellow\" align=\"center\"> (<img src=\"images/arany.png\"> ".($CURUSER['downloaded'] > 0 ? number_format($CURUSER['uploaded'] / $CURUSER['downloaded'], 2):"---").")</td>\n");
 print("<td class=\"green\" align=\"center\"><a href=index.php?page=modules&module=seedbonus>(BON ".($CURUSER['seedbonus'] > 0 ? number_format($CURUSER['seedbonus'], 2):"---").")</a></td>\n");
 
+$full = "SELECT f.moder as moder, f.filename, f.info_hash, f.uploader as upname, u.username as uploader, c.image, c.name as cname, f.category as catid FROM {$TABLE_PREFIX}files f LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category";
+$sql = $full." WHERE moder='um'";
+$row = do_sqlquery($sql, true);
+$um_t = (int)mysql_num_rows($row);
+
+if ($CURUSER['moderate_trusted'] == 'yes')
+    print("<td align=\"center\"><a href=\"index.php?page=moder\">".$language["MODERATE_PANEL"]."</a> (".$um_t.")</td>");
+
 if ($CURUSER["admin_access"] == "yes")
    print("\n<td align=\"center\" style=\"text-align:center;\"><a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."\">".$language["MNU_ADMINCP"]."</a></td>\n");
 

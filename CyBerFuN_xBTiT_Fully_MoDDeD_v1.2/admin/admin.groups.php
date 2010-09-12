@@ -39,26 +39,26 @@ if (!defined("IN_ACP"))
 
 
 
-$admintpl->set("add_new",false,true);
+$admintpl->set("add_new", false, true);
 
 
 switch ($action)
     {
         
         case 'delete':
-          $id=max(0,$_GET["id"]);
+          $id = max(0, $_GET["id"]);
           // controle if this level can be cancelled
-          $rcanc=do_sqlquery("SELECT can_be_deleted FROM {$TABLE_PREFIX}users_level WHERE id=$id");
-          if (!$rcanc || mysql_num_rows($rcanc)==0)
+          $rcanc = do_sqlquery("SELECT can_be_deleted FROM {$TABLE_PREFIX}users_level WHERE id=$id");
+          if (!$rcanc || mysql_num_rows($rcanc) == 0)
             {
              err_msg($language["ERROR"], $language["ERR_CANT_FIND_GROUP"]);
-             stdfoot(false,false,true);
+             stdfoot(false, false, true);
              die;
             }
-          $rcancanc=mysql_fetch_array($rcanc);
-          if ($rcancanc["can_be_deleted"]=="yes")
+          $rcancanc = mysql_fetch_array($rcanc);
+          if ($rcancanc["can_be_deleted"] == "yes")
              {
-             do_sqlquery("DELETE FROM {$TABLE_PREFIX}users_level WHERE id=$id",true);
+             do_sqlquery("DELETE FROM {$TABLE_PREFIX}users_level WHERE id=$id", true);
              success_msg($language["SUCCESS"],$language["GROUP_DELETED"]."<br />\n<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=groups\">".$language["ACP_USER_GROUP"]."</a>");
              stdfoot(false,false,true);
              die;
@@ -91,6 +91,8 @@ switch ($action)
           $current_group["delete_users"]=($current_group["delete_users"]=="yes"?"checked=\"checked\"":"");
           $current_group["view_news"]=($current_group["view_news"]=="yes"?"checked=\"checked\"":"");
           $current_group["edit_news"]=($current_group["edit_news"]=="yes"?"checked=\"checked\"":"");
+          $current_group["trusted"]=($current_group["trusted"]=="yes"?"checked=\"checked\"":"");
+          $current_group["moderate_trusted"]=($current_group["moderate_trusted"]=="yes"?"checked=\"checked\"":"");
           $current_group["delete_news"]=($current_group["delete_news"]=="yes"?"checked=\"checked\"":"");
           $current_group["view_forum"]=($current_group["view_forum"]=="yes"?"checked=\"checked\"":"");
           $current_group["edit_forum"]=($current_group["edit_forum"]=="yes"?"checked=\"checked\"":"");
@@ -149,6 +151,8 @@ switch ($action)
                    $update[]="view_forum=".sqlesc(isset($_POST["vforum"])?"yes":"no");
                    $update[]="edit_forum=".sqlesc(isset($_POST["eforum"])?"yes":"no");
                    $update[]="delete_forum=".sqlesc(isset($_POST["dforum"])?"yes":"no");
+                   $update[]="trusted=".sqlesc(isset($_POST["trusted"])?"yes":"no");
+                   $update[]="moderate_trusted=".sqlesc(isset($_POST["moderate_trusted"])?"yes":"no");
                    $update[]="can_upload=".sqlesc(isset($_POST["upload"])?"yes":"no");
                    $update[]="can_download=".sqlesc(isset($_POST["down"])?"yes":"no");
                    $update[]="admin_access=".sqlesc(isset($_POST["admincp"])?"yes":"no");
@@ -185,6 +189,8 @@ switch ($action)
                 $groups[$i]["forum_aut"]=$level["view_forum"]."/".$level["edit_forum"]."/".$level["delete_forum"];
                 $groups[$i]["can_upload"]=$level["can_upload"];
                 $groups[$i]["can_download"]=$level["can_download"];
+	        $groups[$i]["trusted"]=$level["trusted"];
+                $groups[$i]["moderate_trusted"]=$level["moderate_trusted"];
                 $groups[$i]["admin_access"]=$level["admin_access"];
                 $groups[$i]["WT"]=$level["WT"];
                 $groups[$i]["delete"]=($level["can_be_deleted"]=="no"?"No":"<a onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\" href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=groups&amp;action=delete&amp;id=".$level["id"]."\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>");

@@ -296,6 +296,11 @@ switch ($pageID) {
         $tpl->set("main_content",set_block($language["MORE_SMILES"],"center",$moresmiles_tpl->fetch(load_template("moresmiles.tpl"))));
         $tpl->set("main_title",$btit_settings["name"]." "."More Smilies");
         break;
+    case 'moder':
+        require("$THIS_BASEPATH/moder.php");
+        $tpl->set("main_content",set_block($language["MODERATE_TORRENT"],"center",$torrenttpl->fetch(load_template("admin.moder.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Moderate");
+        break;
 
    case 'news':
         require("$THIS_BASEPATH/news.php");

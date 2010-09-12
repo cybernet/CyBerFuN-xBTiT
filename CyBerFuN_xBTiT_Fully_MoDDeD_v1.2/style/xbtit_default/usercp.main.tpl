@@ -82,7 +82,7 @@ function SelectAll(id)
     <td class="block" align="center" colspan="8"><b><tag:language.UPLOADED /> <tag:language.MNU_TORRENT /></b></td>
   </tr>
   <tr>
-    <td align="center" class="header"><tag:language.FILE /></td>
+    <td align="center" class="header"><tag:language.FILE /> <tag:language.TORRENT_STATUS /></td>
     <td align="center" class="header"><tag:language.ADDED /></td>
     <td align="center" class="header"><tag:language.SIZE /></td>
     <td align="center" class="header"><tag:language.SHORT_S /></td>
@@ -94,7 +94,7 @@ function SelectAll(id)
 <if:RESULTS>
 <loop:uptor>
   <tr>
-    <td class="lista" style="padding-left:10px;"><tag:uptor[].filename /></td>
+    <td class="lista" style="padding-left:10px;"><tag:uptor[].filename /><tag:uptor[].moder /></td>
     <td class="lista" align="center" style="text-align: center;"><tag:uptor[].added /></td>
     <td class="lista" align="center" style="text-align: center;"><tag:uptor[].size /></td>
     <td class="<tag:uptor[].seedcolor />" align="center" style="text-align: center;"><tag:uptor[].seeds /></td>

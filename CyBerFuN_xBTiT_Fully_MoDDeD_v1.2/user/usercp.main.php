@@ -142,6 +142,7 @@ if (!defined("IN_BTIT"))
                  {
                   $uptortpl[$i]["filename"] = cut_string(unesc($rest["filename"]), intval($btit_settings["cut_name"]));
                   $uptortpl[$i]["added"] = date("d/m/Y", $rest["added"] - $offset);
+		  $uptortpl[$i]["moder"] = getmoderdetails(getmoderstatusbyhash($rest['hash']), $rest['hash']);
                   $uptortpl[$i]["size"] = makesize($rest["size"]);
                   $uptortpl[$i]["seedcolor"] = linkcolor($rest["seeds"]);
                   $uptortpl[$i]["seeds"] = $rest[seeds];

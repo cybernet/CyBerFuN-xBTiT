@@ -79,6 +79,12 @@ function show_wait()
 <td class="lista" align="center"><tag:torrent.tag /></td>
 </tr></if:YES_TAG>
         </tr>
+    <if:MODER>
+            <tr>
+              <td align="right" class="header"><tag:language.TORRENT_MODERATION /></td>
+              <td class="lista" align="center"><tag:torrent.moderation /></td>
+            </tr>
+    </if:MODER>
         <tr>
           <td align="right" class="header"><tag:language.TORRENT /></td>
           <td class="lista" align="center"><a href="download.php?id=<tag:torrent.info_hash />&amp;f=<tag:torrent.filename />.torrent"onClick="javascript:pageTracker._trackPageview('/download/<tag:torrent.info_hash />');"><img src="../images/xList_ro_DownLoad.gif" alt="<tag:torrent.filename />"></a></td>

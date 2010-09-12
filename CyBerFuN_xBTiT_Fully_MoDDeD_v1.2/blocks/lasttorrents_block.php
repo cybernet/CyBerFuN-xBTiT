@@ -49,6 +49,8 @@ if (max(0,$CURUSER["WT"]) > 0)
   {
       foreach ($row as $id=>$data)
       {
+if(getmoderstatusbyhash($data['hash']) == 'ok')
+            {
       echo "<tr>";
           if ( strlen($data["hash"]) > 0 )
           {
@@ -152,8 +154,9 @@ if ($hover == "")
 
         }
            echo "</tr>\n";
-           }
-      }
+            }
+           } //end of getmoderstatusbyhash($data['hash'])=='ok'
+        }
   }
   else
   {
