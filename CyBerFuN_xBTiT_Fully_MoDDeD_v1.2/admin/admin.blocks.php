@@ -65,10 +65,10 @@ function read_blocks()
 
     require_once(load_language("lang_blocks.php"));
 
-      $br=get_result("SELECT * FROM {$TABLE_PREFIX}blocks ORDER BY sortid",true);
-      $tops=array();
-	    $dropdown=array();
-	    $extras=array();
+      $br = get_result("SELECT * FROM {$TABLE_PREFIX}blocks ORDER BY sortid", true);
+      $tops = array();
+	    $dropdown = array();
+	    $extras = array();
       $lefts=array();
       $centers=array();
       $rights=array();
@@ -81,10 +81,10 @@ function read_blocks()
       $r=0;
       $b=0;
 
-      $rlevel=mysql_query("SELECT DISTINCT id_level, predef_level, level FROM {$TABLE_PREFIX}users_level ORDER BY id_level");
-      $alevel=array();
-      while($reslevel=mysql_fetch_assoc($rlevel))
-          $alevel[]=$reslevel;
+      $rlevel = mysql_query("SELECT DISTINCT id_level, predef_level, level FROM {$TABLE_PREFIX}users_level ORDER BY id_level");
+      $alevel = array();
+      while($reslevel = mysql_fetch_assoc($rlevel))
+          $alevel[] = $reslevel;
 
       foreach($br as $id=>$blk)
         {
@@ -329,13 +329,13 @@ function read_blocks()
       }
       unset($br);
       $admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=blocks&amp;action=save");
-      $admintpl->set("top_blocks",$t>0,true);
-	    $admintpl->set("dropdown_blocks",$d>0,true);
-	    $admintpl->set("extra_blocks",$e>0,true);
-      $admintpl->set("left_blocks",$l>0,true);
-      $admintpl->set("center_blocks",$c>0,true);
-      $admintpl->set("right_blocks",$r>0,true);
-      $admintpl->set("bottom_blocks",$b>0,true);
+      $admintpl->set("top_blocks",$t > 0, true);
+	    $admintpl->set("dropdown_blocks",$d > 0,true);
+	    $admintpl->set("extra_blocks",$e > 0, true);
+      $admintpl->set("left_blocks",$l > 0, true);
+      $admintpl->set("center_blocks",$c > 0, true);
+      $admintpl->set("right_blocks",$r > 0, true);
+      $admintpl->set("bottom_blocks",$b > 0, true);
       $admintpl->set("tops",$tops);
 	    $admintpl->set("dropdown",$dropdown);
 	    $admintpl->set("extras",$extras);
@@ -370,24 +370,24 @@ switch ($action)
     {
 
       case 'confirm':
-        if ($_POST["confirm"]==$language["FRM_CONFIRM"])
+        if ($_POST["confirm"] == $language["FRM_CONFIRM"])
           {
-            $id=(isset($_GET["id"])?intval($_GET["id"]):0);
-            $block_name=sqlesc($_POST["block_name"]);
-            $block_position=sqlesc($_POST["block_position"]);
-            $block_title=sqlesc($_POST["block_title"]);
-            $block_cache=isset($_POST["use_cache"])?"'yes'":"'no'";
-            $block_minview=sqlesc(intval($_POST["minclassview"]));
-            $block_maxview=sqlesc(intval($_POST["maxclassview"]));
-            if ($block_name=="''")
-                stderr($language["ERROR"],$language["ERR_BLOCK_NAME"]);
-            if ($id>0) // update existing block
+            $id = (isset($_GET["id"]) ? intval($_GET["id"]) : 0);
+            $block_name = sqlesc($_POST["block_name"]);
+            $block_position = sqlesc($_POST["block_position"]);
+            $block_title = sqlesc($_POST["block_title"]);
+            $block_cache = isset($_POST["use_cache"])?"'yes'":"'no'";
+            $block_minview = sqlesc(intval($_POST["minclassview"]));
+            $block_maxview = sqlesc(intval($_POST["maxclassview"]));
+            if ($block_name == "''")
+                stderr($language["ERROR"], $language["ERR_BLOCK_NAME"]);
+            if ($id > 0) // update existing block
               {
-              do_sqlquery("UPDATE {$TABLE_PREFIX}blocks SET content=$block_name, position=$block_position, title=$block_title, cache=$block_cache, minclassview=$block_minview, maxclassview=$block_maxview WHERE blockid=$id",true);
+              do_sqlquery("UPDATE {$TABLE_PREFIX}blocks SET content=$block_name, position=$block_position, title=$block_title, cache=$block_cache, minclassview=$block_minview, maxclassview=$block_maxview WHERE blockid=$id", true);
             }
             else
               {
-              do_sqlquery("INSERT INTO {$TABLE_PREFIX}blocks SET content=$block_name, position=$block_position, title=$block_title, cache=$block_cache, status=0, minclassview=$block_minview, maxclassview=$block_maxview",true);
+              do_sqlquery("INSERT INTO {$TABLE_PREFIX}blocks SET content=$block_name, position=$block_position, title=$block_title, cache=$block_cache, status=0, minclassview=$block_minview, maxclassview=$block_maxview", true);
             }
         }
         read_blocks();
@@ -395,73 +395,73 @@ switch ($action)
 
       case 'edit':
 
-        $rlevel=mysql_query("SELECT DISTINCT id_level, predef_level, level FROM {$TABLE_PREFIX}users_level ORDER BY id_level");
-        $alevel=array();
-        while($reslevel=mysql_fetch_assoc($rlevel))
-            $alevel[]=$reslevel;
+        $rlevel = mysql_query("SELECT DISTINCT id_level, predef_level, level FROM {$TABLE_PREFIX}users_level ORDER BY id_level");
+        $alevel = array();
+        while($reslevel = mysql_fetch_assoc($rlevel))
+            $alevel[] = $reslevel;
 
-        $id=(isset($_GET["id"])?intval($_GET["id"]):0);
-        if ($id>0)
+        $id = (isset($_GET["id"])?intval($_GET["id"]):0);
+        if ($id > 0)
           {
-            $cb=get_result("SELECT * FROM {$TABLE_PREFIX}blocks WHERE blockid=$id",true);
-            if (count($cb)>0)
+            $cb = get_result("SELECT * FROM {$TABLE_PREFIX}blocks WHERE blockid=$id", true);
+            if (count($cb) > 0)
               {
               $admintpl->set("combo_blocks_name",blocks_combo($cb[0]["content"]));
               $admintpl->set("combo_position",position_combo($cb[0]["position"]));
               $admintpl->set("block_title",$cb[0]["title"]);
-              $admintpl->set("block_cache",($cb[0]["cache"]=="yes"?"checked=\"checked\"":""));
+              $admintpl->set("block_cache",($cb[0]["cache"] == "yes"?"checked=\"checked\"":""));
 
-              $combo_min_view="\n<select name=\"minclassview\" size=\"1\">";
+              $combo_min_view = "\n<select name=\"minclassview\" size=\"1\">";
               foreach($alevel as $level)
-                  $combo_min_view.="\n<option value=\"".$level["id_level"].($cb[0]["minclassview"] == $level["id_level"] ? "\" selected=\"selected\">" : "\">").$level["level"]."</option>";
-              $combo_min_view.="\n</select>";
+                  $combo_min_view .= "\n<option value=\"".$level["id_level"].($cb[0]["minclassview"] == $level["id_level"] ? "\" selected=\"selected\">" : "\">").$level["level"]."</option>";
+              $combo_min_view .= "\n</select>";
 
-              $combo_max_view="\n<select name=\"maxclassview\" size=\"1\">";
+              $combo_max_view = "\n<select name=\"maxclassview\" size=\"1\">";
               foreach($alevel as $level)
-                  $combo_max_view.="\n<option value=\"".$level["id_level"].($cb[0]["maxclassview"] == $level["id_level"] ? "\" selected=\"selected\">" : "\">").$level["level"]."</option>";
-              $combo_max_view.="\n</select>";
+                  $combo_max_view .= "\n<option value=\"".$level["id_level"].($cb[0]["maxclassview"] == $level["id_level"] ? "\" selected=\"selected\">" : "\">").$level["level"]."</option>";
+              $combo_max_view .= "\n</select>";
             }
             else
                 stderr($language["ERROR"],$language["BLOCK_BAD_ID"]);
         }
         else
           {
-            $admintpl->set("combo_blocks_name",blocks_combo());
-            $admintpl->set("combo_position",position_combo());
-            $admintpl->set("block_title","");
-            $admintpl->set("block_cache","");
+            $admintpl->set("combo_blocks_name", blocks_combo());
+            $admintpl->set("combo_position", position_combo());
+            $admintpl->set("block_title", "");
+            $admintpl->set("block_cache", "");
 
-            $combo_min_view="\n<select name=\"minclassview\" size=\"1\">";
+            $combo_min_view = "\n<select name=\"minclassview\" size=\"1\">";
             foreach($alevel as $level)
-                $combo_min_view.="\n<option value=\"".$level["id_level"].($level["id_level"]==1 ? "\" selected=\"selected\">" : "\">").$level["level"]."</option>";
-            $combo_min_view.="\n</select>";
+                $combo_min_view .= "\n<option value=\"".$level["id_level"].($level["id_level"] == 1 ? "\" selected=\"selected\">" : "\">").$level["level"]."</option>";
+            $combo_min_view .= "\n</select>";
 
-            $combo_max_view="\n<select name=\"maxclassview\" size=\"1\">";
+            $combo_max_view = "\n<select name=\"maxclassview\" size=\"1\">";
             foreach($alevel as $level)
-                $combo_max_view.="\n<option value=\"".$level["id_level"].($level["id_level"]==8 ? "\" selected=\"selected\">" : "\">").$level["level"]."</option>";
-            $combo_max_view.="\n</select>";
+                $combo_max_view .= "\n<option value=\"".$level["id_level"].($level["id_level"] == 8 ? "\" selected=\"selected\">" : "\">").$level["level"]."</option>";
+            $combo_max_view .= "\n</select>";
         }
 
-        $admintpl->set("combo_min_view",$combo_min_view);
-        $admintpl->set("combo_max_view",$combo_max_view);
-        $admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=blocks&amp;action=confirm&amp;id=$id");
-        $admintpl->set("language",$language);
-        $admintpl->set("edit_block",true,true);
+        $admintpl->set("combo_min_view", $combo_min_view);
+        $admintpl->set("combo_max_view", $combo_max_view);
+        $admintpl->set("frm_action", "index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=blocks&amp;action=confirm&amp;id=$id");
+        $admintpl->set("language", $language);
+        $admintpl->set("edit_block", true, true);
         break;
 
       case 'save':
-        if ($_POST["confirm"]==$language["FRM_CONFIRM"])
+        if ($_POST["confirm"] == $language["FRM_CONFIRM"])
           {
-            $br=get_result("SELECT * FROM {$TABLE_PREFIX}blocks",true);
+            $br = get_result("SELECT * FROM {$TABLE_PREFIX}blocks", true);
             foreach($br as $id=>$block)
                {
-                  $active=(isset($_POST["status_".$block["blockid"]])?1:0);
-                  $position=sqlesc($_POST["position_".$block["blockid"]]);
-                  $sort=max(0,$_POST["sort_".$block["blockid"]]);
-                  $block_minview=sqlesc(intval($_POST["minclassview_".$block["blockid"]]));
-                  $block_maxview=sqlesc(intval($_POST["maxclassview_".$block["blockid"]]));
-                  $id=$block["blockid"];
-                  do_sqlquery("UPDATE {$TABLE_PREFIX}blocks SET position=$position, sortid=$sort, status=$active, minclassview=$block_minview, maxclassview=$block_maxview WHERE blockid=$id",true);
+                  $active = (isset($_POST["status_".$block["blockid"]])?1:0);
+                  $position = sqlesc($_POST["position_".$block["blockid"]]);
+                  $sort = max(0, $_POST["sort_".$block["blockid"]]);
+                  $block_minview = sqlesc(intval($_POST["minclassview_".$block["blockid"]]));
+                  $block_maxview = sqlesc(intval($_POST["maxclassview_".$block["blockid"]]));
+                  $id = $block["blockid"];
+                  do_sqlquery("UPDATE {$TABLE_PREFIX}blocks SET position=$position, sortid=$sort, status=$active, minclassview=$block_minview, maxclassview=$block_maxview WHERE blockid=$id", true);
             }
         }            
         // don't break, we read the new block's position ;)
