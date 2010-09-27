@@ -1,4 +1,4 @@
-<table class="lista" width="100%">
+<table class="lista" width="150%">
   <loop:admin_menu>
   <tr>
     <td class="header">
@@ -7,7 +7,7 @@
   </tr>
   <loop:admin_menu[].menu>
   <tr>
-    <td class="lista">
+    <td class="post" valign="middle" style="padding-left:10px;overflow:auto;">
         <a href="<tag:admin_menu[].menu[].url />"><tag:admin_menu[].menu[].description /></a>
     </td>
   </tr>
