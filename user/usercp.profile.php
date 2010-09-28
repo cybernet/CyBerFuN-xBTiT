@@ -37,19 +37,19 @@ if (!defined("IN_BTIT"))
 switch ($action)
 {
     case 'post':
-           $idlangue=intval(0+$_POST["language"]);
-           $idstyle=intval(0+$_POST["style"]);
-           $email=AddSlashes($_POST["email"]);
-           $avatar=htmlspecialchars(AddSlashes($_POST["avatar"]));
-           $idflag=intval(0+$_POST["flag"]);
-           $timezone=intval($_POST["timezone"]);
+           $idlangue = intval(0 + $_POST["language"]);
+           $idstyle = intval(0 + $_POST["style"]);
+           $email = AddSlashes($_POST["email"]);
+           $avatar = str_replace(array('\t','%25','%00'), array('','',''), htmlspecialchars(AddSlashes($_POST["avatar"])));
+           $idflag = intval(0 + $_POST["flag"]);
+           $timezone = intval($_POST["timezone"]);
 
            // Password confirmation required to update user record
-           (isset($_POST["passconf"])) ? $password=md5($_POST["passconf"]) : $password="";
+           (isset($_POST["passconf"])) ? $password = md5($_POST["passconf"]) : $password="";
                       
-           $res=do_sqlquery("SELECT password FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"],true);
-           if(mysql_num_rows($res)>0)
-               $user=mysql_fetch_assoc($res);           
+           $res = do_sqlquery("SELECT password FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"],true);
+           if(mysql_num_rows($res) > 0)
+               $user = mysql_fetch_assoc($res);           
 
            if(!isset($user) || $password=="" || $user["password"]!=$password)
            {
