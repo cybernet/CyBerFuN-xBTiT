@@ -25,7 +25,6 @@
         <td align="right" class="header">Tag</td>
         <td class="lista"><input type="text" name="tag" value="<tag:torrent.tag />" size="60" /></td>
       </tr>
-      <tr>
         <td class="header" ><tag:language.CATEGORY_FULL /></td>
         <td class="lista"><tag:torrent.cat_combo /></td>
       </tr>

@@ -97,7 +97,7 @@ function expandAll()
         <loop:torrents>
         <tr>
           <td align="center" width="45" class="lista" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].category /></td>
-          <td align="left" class="lista" style="white-space:wrap;padding-left:10px;<tag:torrents[].color />"><tag:torrents[].filename /><tag:torrents[].gold /><tag:torrents[].level /></td>
+          <td class="lista" valign="middle" onMouseOver="this.className='post'" onMouseOut="this.className='lista'" style="padding-left:10px;overflow:auto;<tag:torrents[].color />"><tag:torrents[].filename /><tag:torrents[].gold /><tag:torrents[].level /></td>
           <if:WT1>
           <td align="center" width="20" class="lista" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].waiting /></td>
           <else:WT1>
