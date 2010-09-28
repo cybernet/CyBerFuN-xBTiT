@@ -1,13 +1,4 @@
 <?php
-
-// CyBerFuN.ro & xList.ro
-
-// CyBerFuN .::. crk_protection
-// http://tracker.cyberfun.ro/
-// http://www.cyberfun.ro/
-// http://xList.ro/
-// Modified By cybernet2u
-
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -53,9 +44,9 @@
 */
 function crk($l) {
 
-  global $CURUSER, $btit_settings;
+  global $CURUSER,$btit_settings;
 
-  $xip = $_SERVER["REMOTE_ADDR"];
+  $xip=$_SERVER["REMOTE_ADDR"];
   if (function_exists("dbconn"))
      dbconn();
   if (function_exists("write_log"))
@@ -66,46 +57,70 @@ function crk($l) {
 }
 
 //the bad words...
-$ban['union'] = 'select';
-//$ban['update'] = 'set';
-$ban['set password for'] = '@';
+$ban['union']='select';
+//$ban['update']='set';
+$ban['set password for']='@';
 
-$ban2 = array('delete from','insert into','<script', '<object', '.write', '.location', '.cookie', '.open', 'vbscript:', '<iframe', '<layer', '<style', ':expression', '<base', 'id_level', 'users_level', 'xbt_', 'c99.txt', 'c99shell', 'r57.txt', 'r57shell.txt','/home/', '/var/', '/www/', '/etc/', '/bin', '/sbin/', '$_GET', '$_POST', '$_REQUEST', 'window.open', 'javascript:', 'xp_cmdshell',  '.htpasswd', '.htaccess', '<?php', '<?', '?>', '</script>');
+$ban2=array('delete from','insert into','<script', '<object', '.write', '.location', '.cookie', '.open', 'vbscript:', '<iframe', '<layer', '<style', ':expression', '<base', 'id_level', 'users_level', 'xbt_', 'c99.txt', 'c99shell', 'r57.txt', 'r57shell.txt','/home/', '/var/', '/www/', '/etc/', '/bin', '/sbin/', '$_GET', '$_POST', '$_REQUEST', 'window.open', 'javascript:', 'xp_cmdshell',  '.htpasswd', '.htaccess', '<?php', '<?', '?>', '</script>');
+
+$host=FALSE;
+$host=@getenv("SERVER_NAME");
+if($host===FALSE)
+    $host=$_SERVER["SERVER_NAME"];
+
+$url=explode(".",$host);
+unset($url[0]);
+if(count($url)>0)
+{
+    foreach($url as $urlpart)
+    {
+        if(in_array(".".$urlpart,$ban2))
+            $remove[]=array_search(".".$urlpart,$ban2);
+    }
+}
+
+if(isset($remove) && is_array($remove))
+{
+    foreach($remove as $key)
+    {
+        unset($ban2[$key]);
+    }
+}
 
 //checking the bad words
-$cepl = $_SERVER['QUERY_STRING'];
+$cepl=$_SERVER['QUERY_STRING'];
 if (!empty($cepl)) {
-  $cepl = preg_replace('/([\x00-\x08][\x0b-\x0c][\x0e-\x20])/', '', $cepl); 
-  $cepl = urldecode($cepl);
-  $cepl = strtolower($cepl);
+  $cepl=preg_replace('/([\x00-\x08][\x0b-\x0c][\x0e-\x20])/', '', $cepl); 
+  $cepl=urldecode($cepl);
+  $cepl=strtolower($cepl);
 }
 foreach ($ban as $k => $l)
-  if (str_replace($k, '',$cepl) != $cepl && str_replace($l, '', $cepl) != $cepl)
+  if (str_replace($k, '',$cepl)!=$cepl&&str_replace($l, '',$cepl)!=$cepl)
       crk(($cepl));
-if (str_replace($ban2,'',$cepl) != $cepl)
+if (str_replace($ban2,'',$cepl)!=$cepl)
   crk(($cepl));
 
-$cepl = implode(' ', $_REQUEST);
+$cepl=implode(' ', $_REQUEST);
 if (!empty($cepl)) {
-  $cepl = preg_replace('/([\x00-\x08][\x0b-\x0c][\x0e-\x20])/', '', $cepl);
-  $cepl = urldecode($cepl);
-  $cepl = strtolower($cepl);
+  $cepl=preg_replace('/([\x00-\x08][\x0b-\x0c][\x0e-\x20])/', '', $cepl);
+  $cepl=urldecode($cepl);
+  $cepl=strtolower($cepl);
 }
 foreach ($ban as $k => $l)
-  if(str_replace($k, '', $cepl) != $cepl && str_replace($l, '', $cepl) != $cepl)
+  if(str_replace($k, '',$cepl)!=$cepl&&str_replace($l, '',$cepl)!=$cepl)
     crk(($cepl));
-if (str_replace($ban2, '', $cepl) != $cepl)
+if (str_replace($ban2,'',$cepl)!=$cepl)
   crk(($cepl));
 
-$cepl = implode(' ', $_COOKIE);
+$cepl=implode(' ', $_COOKIE);
 if (!empty($cepl)) {
-  $cepl = preg_replace('/([\x00-\x08][\x0b-\x0c][\x0e-\x20])/', '', $cepl); 
-  $cepl = urldecode($cepl);
-  $cepl = strtolower($cepl);
+  $cepl=preg_replace('/([\x00-\x08][\x0b-\x0c][\x0e-\x20])/', '', $cepl); 
+  $cepl=urldecode($cepl);
+  $cepl=strtolower($cepl);
 }
 foreach ($ban as $k => $l)
-  if(str_replace($k, '', $cepl) != $cepl && str_replace($l, '', $cepl) != $cepl)
+  if(str_replace($k, '',$cepl)!=$cepl&&str_replace($l, '',$cepl)!=$cepl)
    crk(($cepl));
-if (str_replace($ban2,'', $cepl) != $cepl)
+if (str_replace($ban2,'',$cepl)!=$cepl)
   crk(($cepl));
 ?>
