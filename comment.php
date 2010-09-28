@@ -125,7 +125,7 @@ EOD;
        die(mysql_error());
 	}
 	if(empty($comment)){
-     stderr($language["ERROR"],"Empty!");
+     stderr($language["ERROR"], $language['ERR_COMMENT_EMPTY']);
      exit();
      }
 	 else{
