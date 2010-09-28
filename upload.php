@@ -493,6 +493,8 @@ if (!isset($array["announce"]))
                 // ok, we found our announce, so it's internal and we will set our announce as main
                    $array["announce"] = $TRACKER_ANNOUNCEURLS[0];
                    $query = "INSERT INTO {$TABLE_PREFIX}files (tag, info_hash, filename, url, info, category, data, size, comment, comment_notify, uploader,anonymous, bin_hash, image, screen1, screen2, screen3) VALUES (\"$tag\", \"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$comment_notify,$curuid,$anonyme,0x$hash, '$file_name', '$file_name_s1', '$file_name_s2', '$file_name_s3')";
+				   if ($XBTT_USE)
+				   do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash, ctime=UNIX_TIMESTAMP() ON DUPLICATE KEY UPDATE flags=0", true);
                 }
               else
                   $query = "INSERT INTO {$TABLE_PREFIX}files (tag, info_hash, filename, url, info, category, data, size, comment, comment_notify, external,announce_url, uploader,anonymous, bin_hash, image, screen1, screen2, screen3) VALUES (\"$tag\", \"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$comment_notify,\"yes\",\"$announce\",$curuid,$anonyme,0x$hash, '$file_name', '$file_name_s1', '$file_name_s2', '$file_name_s3')";
