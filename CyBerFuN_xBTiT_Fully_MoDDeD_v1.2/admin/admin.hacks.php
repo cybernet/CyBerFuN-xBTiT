@@ -70,7 +70,7 @@ switch ($action)
                     {
                         $lines=count(explode("\n",$value["data"]));
                         $HTMLOUT.="<br /><span style='font-family:arial; font-size:12pt; color:#000000;'>".$language["MHI_RUN_QUERY"].":</span><br />\n";
-                        $HTMLOUT.="<textarea rows='$lines' cols='120'>".str_replace("{\$db_prefix}",$TABLE_PREFIX,$value["data"])."</textarea><br />\n";
+                        $HTMLOUT.="<textarea rows='$lines' cols='98'>".str_replace( array("{\$db_prefix}","<",">"),array($TABLE_PREFIX,"&lt;","&gt;"),$value["data"])."</textarea><br />\n";
                     }
                 }
                 $HTMLOUT.="<br />";
@@ -89,12 +89,12 @@ switch ($action)
                     if($action=="add" || $action=="replace")
                     {
                         $HTMLOUT.="\n<span style='font-family:arial; font-size:14pt; color:#000000;'>".(($firstpass==0)?$language["MHI_IN"]:$language["MHI_ALSO_IN"])." <span style='color:#0000FF'>".$name . "</span> ".$language["MHI_FIND_THIS"].":</span>";
-                        $HTMLOUT.="\n<br /><textarea rows='$lines' cols='120'>".$value["search"]."</textarea><br /><br />";
+                        $HTMLOUT.="\n<br /><textarea rows='$lines' cols='98'>".str_replace(array("<",">"),array("&lt;","&gt;"),$value["search"])."</textarea><br /><br />";
                         if($action=="add")
                             $HTMLOUT.="\n<span style='font-family:arial; font-size:14pt; color:#000000;'>".$language["MHI_ADD_THIS"]." " . $where . " ".$language["MHI_IT"].":</span>";
                         elseif($action=="replace")
                             $HTMLOUT.="\n<span style='font-family:arial; font-size:14pt; color:#000000;'>".$language["MHI_REPLACE"].":</span>";
-                        $HTMLOUT.="\n<br /><textarea rows='$lines2' cols='120'>".$data."</textarea><br /><br />";
+                        $HTMLOUT.="\n<br /><textarea rows='$lines2' cols='98'>".str_replace(array("<",">"),array("&lt;","&gt;"),$data)."</textarea><br /><br />";
                         $firstpass=1;
                     }
                     elseif($action=="copy")
@@ -114,7 +114,7 @@ switch ($action)
 
     case 'uninstall_ok':
 
-        if (isset($_POST["confirm"]) && $_POST["confirm"] != $language["HACK_UNINSTALL"])
+        if (isset($_POST["confirm"]) && $_POST["confirm"]!=$language["HACK_UNINSTALL"])
           {
           redirect("index.php?page=admin&user=".$CURUSER["uid"]."&code=".$CURUSER["random"]."&do=hacks&action=read");
           die();
@@ -122,121 +122,121 @@ switch ($action)
 
 
         if (isset($_GET["id"]))
-            $hack_id = intval($_GET["id"]);
+            $hack_id=intval($_GET["id"]);
         else
-            $hack_id = 0;
+            $hack_id=0;
 
-        $ui_hack = get_result("SELECT folder FROM {$TABLE_PREFIX}hacks WHERE id=$hack_id", true);
+        $ui_hack=get_result("SELECT folder FROM {$TABLE_PREFIX}hacks WHERE id=$hack_id",true);
 
-        if (count($ui_hack) > 0)
+        if (count($ui_hack)>0)
           {
 
             include("$THIS_BASEPATH/include/class.update_hacks.php");
 
-            $hack_folder = unesc($ui_hack[0]["folder"]);
+            $hack_folder=unesc($ui_hack[0]["folder"]);
 
             // used to define the current path (hack path)
-            $CURRENT_FOLDER = "$THIS_BASEPATH/hacks/$hack_folder";
+            $CURRENT_FOLDER="$THIS_BASEPATH/hacks/$hack_folder";
 
             // create object
-            $newhack = new update_hacks();
+            $newhack=new update_hacks();
 
             // we open the work definition file
-            $hstring = $newhack->open_hack("$THIS_BASEPATH/hacks/$hack_folder/modification.xml");
+            $hstring=$newhack->open_hack("$THIS_BASEPATH/hacks/$hack_folder/modification.xml");
 
             // all structure is now in an array
-            $new_hack_array = $newhack->hack_to_array($hstring);
+            $new_hack_array=$newhack->hack_to_array($hstring);
 
             // we will install the hack or we can just test if installation will run fine.
-            if ($newhack->uninstall_hack($new_hack_array, true))
+            if ($newhack->uninstall_hack($new_hack_array,true))
               {
                if ($newhack->uninstall_hack($new_hack_array))
                  {
-                  do_sqlquery("DELETE FROM {$TABLE_PREFIX}hacks WHERE id=$hack_id", true);
+                  do_sqlquery("DELETE FROM {$TABLE_PREFIX}hacks WHERE id=$hack_id",true);
                   success_msg($language["SUCCESS"],$language["HACK_UNINSTALLED_OK"]);
-                  stdfoot(true, false);
+                  stdfoot(true,false);
                   die;
                }
             }
             else
               {
-                 stderr($language["ERROR"], join("<br />\n",$newhack->errors));
+                 stderr($language["ERROR"],join("<br />\n",$newhack->errors));
             }
         }
         else
-          stderr($language["ERROR"], $language["HACK_BAD_ID"]);
+          stderr($language["ERROR"],$language["HACK_BAD_ID"]);
 
       break;
 
     case 'uninstall':
 
         if (isset($_GET["id"]))
-            $hack_id = intval($_GET["id"]);
+            $hack_id=intval($_GET["id"]);
         else
-            $hack_id = 0;
+            $hack_id=0;
 
-        $ui_hack = get_result("SELECT folder FROM {$TABLE_PREFIX}hacks WHERE id=$hack_id", true);
+        $ui_hack=get_result("SELECT folder FROM {$TABLE_PREFIX}hacks WHERE id=$hack_id",true);
 
-        if (count($ui_hack) > 0)
+        if (count($ui_hack)>0)
           {
 
             include("$THIS_BASEPATH/include/class.update_hacks.php");
 
-            $hack_folder = unesc($ui_hack[0]["folder"]);
+            $hack_folder=unesc($ui_hack[0]["folder"]);
 
             // used to define the current path (hack path)
-            $CURRENT_FOLDER = "$THIS_BASEPATH/hacks/$hack_folder";
+            $CURRENT_FOLDER="$THIS_BASEPATH/hacks/$hack_folder";
 
             // create object
-            $newhack = new update_hacks();
+            $newhack=new update_hacks();
 
             // we open the work definition file
-            $hstring = $newhack->open_hack("$THIS_BASEPATH/hacks/$hack_folder/modification.xml");
+            $hstring=$newhack->open_hack("$THIS_BASEPATH/hacks/$hack_folder/modification.xml");
 
             // all structure is now in an array
             $new_hack_array=$newhack->hack_to_array($hstring);
 
             // we will install the hack or we can just test if installation will run fine.
-            if ($newhack->uninstall_hack($new_hack_array, true))
+            if ($newhack->uninstall_hack($new_hack_array,true))
               {
-                $admintpl->set("test_result", $newhack->file);
-                $admintpl->set("test", true, true);
-                $admintpl->set("test_ok", true, true);
+                $admintpl->set("test_result",$newhack->file);
+                $admintpl->set("test",true,true);
+                $admintpl->set("test_ok",true,true);
             }
             else
               {
-                $admintpl->set("test_result", $newhack->errors);
-                $admintpl->set("test", true, true);
-                $admintpl->set("test_ok", false, true);
+                $admintpl->set("test_result",$newhack->errors);
+                $admintpl->set("test",true,true);
+                $admintpl->set("test_ok",false,true);
             }
-            $admintpl->set("language", $language);
-            $admintpl->set("hack_folder", $hack_folder);
-            $admintpl->set("hack_install", $language["HACK_UNINSTALL"]);
-            $admintpl->set("hack_main_link", "index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=hacks&amp;action=read");
-            $admintpl->set("form_action", "index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=hacks&amp;action=uninstall_ok&amp;id=$hack_id");
-            $admintpl->set("hack_title_action", "<b>".$language["HACK_UNINSTALL"].":&nbsp;".$new_hack_array[0]["title"]."</b>");
+            $admintpl->set("language",$language);
+            $admintpl->set("hack_folder",$hack_folder);
+            $admintpl->set("hack_install",$language["HACK_UNINSTALL"]);
+            $admintpl->set("hack_main_link","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=hacks&amp;action=read");
+            $admintpl->set("form_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=hacks&amp;action=uninstall_ok&amp;id=$hack_id");
+            $admintpl->set("hack_title_action","<b>".$language["HACK_UNINSTALL"].":&nbsp;".$new_hack_array[0]["title"]."</b>");
 
         }
         else
-          stderr($language["ERROR"], $language["HACK_BAD_ID"]);
+          stderr($language["ERROR"],$language["HACK_BAD_ID"]);
 
 
       break;
 
     case 'ftp_session':
         if (isset($_POST["add_hack_folder"]))
-            $hack_folder = $_POST["add_hack_folder"];
+            $hack_folder=$_POST["add_hack_folder"];
 
-        if (isset($_POST["confirm"]) && $_POST["confirm"] == $language["FRM_CONFIRM"])
+        if (isset($_POST["confirm"]) && $_POST["confirm"]==$language["FRM_CONFIRM"])
           {
-           $ftp_data = array();
-           $ftp_data["server"] = $_POST["ftp_server"];
-           $ftp_data["port"] = $_POST["ftp_port"];
-           $ftp_data["username"] = $_POST["ftp_user"];
-           $ftp_data["pass"] = $_POST["ftp_pwd"];
-           $ftp_data["basedir"] = $_POST["ftp_basedir"];
+           $ftp_data=array();
+           $ftp_data["server"]=$_POST["ftp_server"];
+           $ftp_data["port"]=$_POST["ftp_port"];
+           $ftp_data["username"]=$_POST["ftp_user"];
+           $ftp_data["pass"]=$_POST["ftp_pwd"];
+           $ftp_data["basedir"]=$_POST["ftp_basedir"];
 
-           $_SESSION["ftp_data"] = $ftp_data;
+           $_SESSION["ftp_data"]=$ftp_data;
 
            unset($ftp_data);
            redirect("index.php?page=admin&user=".$CURUSER["uid"]."&code=".$CURUSER["random"]."&do=hacks&action=test&add_hack_folder=".urlencode($hack_folder));
@@ -250,7 +250,7 @@ switch ($action)
 
     case 'ftp':
         if (isset($_GET["hack"]))
-            $hack_folder = urldecode($_GET["hack"]);
+            $hack_folder=urldecode($_GET["hack"]);
          $admintpl->set("language",$language);
          $admintpl->set("hack_folder",$hack_folder);
          $admintpl->set("form_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=hacks&amp;action=ftp_session");
@@ -260,7 +260,7 @@ switch ($action)
 
     case 'install':
 
-        if (isset($_POST["confirm"]) && $_POST["confirm"] != $language["HACK_INSTALL"])
+        if (isset($_POST["confirm"]) && $_POST["confirm"]!=$language["HACK_INSTALL"])
           {
           redirect("index.php?page=admin&user=".$CURUSER["uid"]."&code=".$CURUSER["random"]."&do=hacks&action=read");
           die();
@@ -269,25 +269,25 @@ switch ($action)
         include("$THIS_BASEPATH/include/class.update_hacks.php");
 
         if (isset($_POST["add_hack_folder"]))
-            $hack_folder = $_POST["add_hack_folder"];
+            $hack_folder=$_POST["add_hack_folder"];
         elseif (isset($_GET["add_hack_folder"]))
-            $hack_folder = urldecode($_GET["add_hack_folder"]);
+            $hack_folder=urldecode($_GET["add_hack_folder"]);
 
 
         // used to define the current path (hack path)
-        $CURRENT_FOLDER = "$THIS_BASEPATH/hacks/$hack_folder";
+        $CURRENT_FOLDER="$THIS_BASEPATH/hacks/$hack_folder";
 
         // create object
-        $newhack = new update_hacks();
+        $newhack=new update_hacks();
 
         // we open the work definition file
-        $hstring = $newhack->open_hack("$THIS_BASEPATH/hacks/$hack_folder/modification.xml");
+        $hstring=$newhack->open_hack("$THIS_BASEPATH/hacks/$hack_folder/modification.xml");
 
         // all structure is now in an array
-        $new_hack_array = $newhack->hack_to_array($hstring);
+        $new_hack_array=$newhack->hack_to_array($hstring);
 
         // we will test again, then if ok, we install the hack
-        if ($newhack->install_hack($new_hack_array, true))
+        if ($newhack->install_hack($new_hack_array,true))
           {
 
                if ($newhack->install_hack($new_hack_array))
@@ -297,16 +297,16 @@ switch ($action)
                             sqlesc($new_hack_array[0]["title"]),
                             sqlesc($new_hack_array[0]["version"]),
                             sqlesc($new_hack_array[0]["author"]),
-                            sqlesc($hack_folder)), true);
-                  success_msg($language["SUCCESS"], $language["HACK_INSTALLED_OK"]);
-                  stdfoot(true, false);
+                            sqlesc($hack_folder)),true);
+                  success_msg($language["SUCCESS"],$language["HACK_INSTALLED_OK"]);
+                  stdfoot(true,false);
                   die;
 
                }
         }
         else
           {
-             stderr($language["ERROR"], join("<br />\n",$newhack->errors));
+             stderr($language["ERROR"],join("<br />\n",$newhack->errors));
         }
 
       break;
@@ -317,25 +317,25 @@ switch ($action)
         include("$THIS_BASEPATH/include/class.update_hacks.php");
 
         if (isset($_POST["add_hack_folder"]))
-            $hack_folder = $_POST["add_hack_folder"];
+            $hack_folder=$_POST["add_hack_folder"];
         elseif (isset($_GET["add_hack_folder"]))
-            $hack_folder = urldecode($_GET["add_hack_folder"]);
+            $hack_folder=urldecode($_GET["add_hack_folder"]);
 
 
         // used to define the current path (hack path)
-        $CURRENT_FOLDER = "$THIS_BASEPATH/hacks/$hack_folder";
+        $CURRENT_FOLDER="$THIS_BASEPATH/hacks/$hack_folder";
 
         // create object
-        $newhack = new update_hacks();
+        $newhack=new update_hacks();
 
         // we open the work definition file
-        $hstring = $newhack->open_hack("$THIS_BASEPATH/hacks/$hack_folder/modification.xml");
+        $hstring=$newhack->open_hack("$THIS_BASEPATH/hacks/$hack_folder/modification.xml");
 
         // all structure is now in an array
-        $new_hack_array = $newhack->hack_to_array($hstring);
+        $new_hack_array=$newhack->hack_to_array($hstring);
 
         // we will install the hack or we can just test if installation will run fine.
-        if ($newhack->install_hack($new_hack_array, true))
+        if ($newhack->install_hack($new_hack_array,true))
           {
             $admintpl->set("test_result",$newhack->file);
             $admintpl->set("test",true,true);
@@ -383,11 +383,11 @@ switch ($action)
           {
           if (is_dir("$THIS_BASEPATH/hacks/$file") && $file!="." && $file!=".." && file_exists("$THIS_BASEPATH/hacks/$file/modification.xml"))
              if (!in_array($file,$installed))
-               $combo .= "\n<option value=\"$file\">$file</option>";
+               $combo.="\n<option value=\"$file\">$file</option>";
         }
         @closedir($dir);
         unset($installed);
-        $combo .= "\n</select>";
+        $combo.="\n</select>";
 
         $admintpl->set("form_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=hacks&amp;action=test");
         $admintpl->set("hack_combo",$combo);
