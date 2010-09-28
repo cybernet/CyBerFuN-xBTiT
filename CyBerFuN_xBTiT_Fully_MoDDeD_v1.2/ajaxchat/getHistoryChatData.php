@@ -43,13 +43,16 @@
   ################################################################*/
   
   define("DELETE_CONFIRM", "If you are really sure you want to delete this click OK, othervise Cancel!");
-  $language["ERR_MODERATE_SHOUT"] = "You are not authorised to moderate this shout!";
+  $language["ERR_MODERATE_SHOUT"]="You are not authorised to moderate this shout!";
+
+
 global $CURUSER;
-if ($CURUSER["view_users"] != "yes") {
+if ($CURUSER["view_users"]!="yes") {
 die("Sorry, Shoutbox is not available...");
 }
+
   # avoid Undefined variable: lastID, seems to be never set...
-  $lastID = 0;
+  $lastID=0;
 
     if (isset($_GET["delete"]))
         $delete = $_GET["delete"]; # getting the delete header
@@ -91,7 +94,7 @@ die("Sorry, Shoutbox is not available...");
  }
 
  
-if (isset($_POST["confirm"]) && $_POST["confirm"] == $language["FRM_CANCEL"]) {
+if (isset($_POST["confirm"]) && $_POST["confirm"]==$language["FRM_CANCEL"]) {
     
       header("Location: index.php?page=allshout");
 }
@@ -102,7 +105,7 @@ if (isset($_POST["confirm"]) && $_POST["confirm"] == $language["FRM_CANCEL"]) {
       require_once("ajaxchat/conn.php"); # getting connection data
       $conn = his_getDBConnection(); # establishes the connection to the database
       
-      include("include/settings.php");  # getting table prefix
+      include_once("include/settings.php");  # getting table prefix
 
   # deleting the shout
   if (isset($delete)) {
@@ -112,14 +115,14 @@ if (isset($_POST["confirm"]) && $_POST["confirm"] == $language["FRM_CANCEL"]) {
       $row = mysql_fetch_array($res);
               
         # check for valid moderation
-        if ($CURUSER["admin_access"] != "yes" && $CURUSER["uid"] != "".$row[uid]."") {
+        if ($CURUSER["admin_access"]!="yes" && $CURUSER["uid"]!="".$row[uid]."") {
         shoutError();
         
         }
         
         # actual delete
         else {
-        $sql = "DELETE FROM {$TABLE_PREFIX}chat WHERE id = $sid";
+        $sql ="DELETE FROM {$TABLE_PREFIX}chat WHERE id = $sid";
         $results = mysql_query($sql, $conn);
           
         }
@@ -189,7 +192,7 @@ header("Content-Type: text/html; charset=UTF-8");
 
             if (isset($_POST["confirm"]) && $_POST["confirm"]==$language["FRM_PREVIEW"]) {
                             
-            $post = str_replace("\'", "'", $post);
+            $post = str_replace("\'","'",$post);
 
             print "<div class='chatoutput'>".format_shout($post)."</div>";
             
@@ -279,8 +282,8 @@ getData($lastID);
 # function that do retrieve all messages with a set id
 function getData($lastID) {
 
-  include("include/settings.php");  # getting table prefix
-  include("include/offset.php");
+  include_once("include/settings.php");  # getting table prefix
+  include_once("include/offset.php");
 
   # discard it if we are editing
   $sid = isset($_GET["sid"])?$_GET["sid"]:0; # get shout id (sid)and set it to zero for bool
@@ -297,10 +300,6 @@ function getData($lastID) {
         $id   = $row[id];
         $uid  = $row[uid];
         $time = $row[time];
-$rd=mysql_fetch_row(mysql_query("SELECT warn FROM {$TABLE_PREFIX}users WHERE id=$uid"));
-$row["warn"]=$rd[0];
-unset($rd);
-$name = $name . warn($row);
         $name = $row[name];
         $text = $row[text];
         
@@ -314,7 +313,7 @@ $name = $name . warn($row);
 
           global $CURUSER;
           
-        if ($CURUSER["admin_access"] != "yes" && $CURUSER["uid"] != "".$uid."") {}
+        if ($CURUSER["admin_access"]!="yes" && $CURUSER["uid"]!="".$uid."") {}
         
         else {
                # edit/delete buttons -->
