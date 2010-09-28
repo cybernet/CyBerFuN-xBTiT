@@ -64,13 +64,15 @@ getData($lastID);
 function getData($lastID) {
 
   require_once("conn.php"); # getting connection data
-  include("../include/settings.php");   # getting table prefix
-  include("../include/offset.php");
+  include_once("../include/settings.php");   # getting table prefix
+  include_once("../include/offset.php");
 
 global $CURUSER;
-if ($CURUSER["view_users"] != "yes") {
+if ($CURUSER["view_users"]!="yes") {
 die("Sorry, Shoutbox is not available...");
 }
+
+
     $sql =  "SELECT * FROM {$TABLE_PREFIX}chat WHERE id > ".$lastID." ORDER BY id DESC LIMIT 10";
     $conn = getDBConnection(); # establishes the connection to the database
     $results = mysql_query($sql, $conn);
@@ -84,11 +86,6 @@ die("Sorry, Shoutbox is not available...");
         $time = $row[time];
         $name = $row[name];
         $text = $row[text];
-
-$rd = mysql_fetch_row(mysql_query("SELECT warn FROM {$TABLE_PREFIX}users WHERE id=$uid"));
-$row["warn"] = $rd[0];
-unset($rd);
-$name = $name . warn($row);
         
         # if no name is present somehow, $name and $text are set to the strings under
         # we assume all must be ok, othervise no post will be made by javascript check
