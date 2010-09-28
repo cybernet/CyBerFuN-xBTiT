@@ -1,6 +1,6 @@
 <script type="text/javascript">
 function convert() {
-// gb
+// GB
 	if (Math.round(document.users.downloaded.value)>1073741824)
 		document.users.lbldown.value=Math.round(document.users.downloaded.value/1073741824*100)/100 + ' GB';
 		// mb
@@ -11,7 +11,7 @@ function convert() {
 		document.users.lbldown.value=Math.round(document.users.downloaded.value/1024*100)/100 + ' KB';
 	else
 		document.users.lbldown.value=Math.round(document.users.downloaded.value*100)/100 + ' B';
-// gb
+// GB
 	if (Math.round(document.users.uploaded.value)>1073741824)
 		document.users.lblup.value=Math.round(document.users.uploaded.value/1073741824*100)/100 + ' GB';
 		// MB
@@ -57,7 +57,7 @@ function convert() {
 		</tr>
 		<tr>
 			<td align="left" class="header"><tag:language.USER_LEVEL />:</td>
-			<td align="left" class="lista"><select name="level"><tag:rank_combo /></select></td>
+			<td align="left" class="lista"><tag:rank_combo /></td>
 		</tr>
 
         <tr>
@@ -68,7 +68,7 @@ function convert() {
 
 		<tr>
 			<td align="left" class="header"><tag:language.USER_LANGUE />:</td>
-			<td align="left" class="lista"><select name="language"><tag:language_combo /></select></td>
+			<td align="left" class="lista"><tag:language_combo /></td>
 		</tr>
 		<tr>
 			<td align="left" class="header"><tag:language.UPLOADED />/<tag:language.DOWNLOADED />:</td>
@@ -81,7 +81,7 @@ function convert() {
 		</tr>
 		<tr>
 			<td align="left" class="header"><tag:language.USER_STYLE />:</td>
-			<td align="left" class="lista" colspan="2"><select name="style"><tag:style_combo /></select></td>
+			<td align="left" class="lista" colspan="2"><tag:style_combo /></td>
 		</tr>
 		<tr>
 			<td align="left" class="header"><tag:language.PEER_COUNTRY />:</td>
@@ -89,7 +89,7 @@ function convert() {
 		</tr>
 		<tr>
 			<td align="left" class="header"><tag:language.TIMEZONE />:</td>
-			<td align="left" class="lista" colspan="2"><select name="timezone"><tag:tz_combo /></select></td>
+			<td align="left" class="lista" colspan="2"><tag:tz_combo /></td>
 		</tr>
 	<if:INTERNAL_FORUM>
 		<tr>
@@ -117,36 +117,36 @@ function convert() {
 <table class="lista" width="100%">
 	<tr>
 		<td class="header"><tag:language.USER_NAME /></td>
-		<td class="lista"><tag:user.username /></td>
+		<td class="lista"><tag:profile.username /></td>
 	</tr>
 	<tr>
 		<td class="header"><tag:language.LAST_IP /></td>
-		<td class="lista"><tag:user.last_ip /></td>
+		<td class="lista"><tag:profile.last_ip /></td>
 	</tr>
 	<tr>
 		<td class="header"><tag:language.USER_LEVEL /></td>
-		<td class="lista"><tag:user.level /></td>
+		<td class="lista"><tag:profile.level /></td>
 	</tr>
 	<tr>
 		<td class="header"><tag:language.USER_JOINED /></td>
-		<td class="lista"><tag:user.joined /></td>
+		<td class="lista"><tag:profile.joined /></td>
 	</tr>
 	<tr>
 		<td class="header"><tag:language.USER_LASTACCESS /></td>
-		<td class="lista"><tag:user.lastaccess /></td>
+		<td class="lista"><tag:profile.lastaccess /></td>
 	</tr>
 	<tr>
 		<td class="header"><tag:language.DOWNLOADED /></td>
-		<td class="lista"><tag:user.downloaded /></td>
+		<td class="lista"><tag:profile.downloaded /></td>
 	</tr>
 	<tr>
 		<td class="header"><tag:language.UPLOADED /></td>
-		<td class="lista"><tag:user.uploaded /></td>
+		<td class="lista"><tag:profile.uploaded /></td>
 	</tr>
 	<tr>
 		<td align="center" class="header" colspan="3">
-      <input type="submit" class="btn" name="confirm" onclick="<tag:user.confirm_delete />" value="<tag:language.FRM_CONFIRM />" />
-      &nbsp;&nbsp;<input type="submit" class="btn" onclick="<tag:user.return />" name="confirm" value="<tag:language.FRM_CANCEL />" />
+      <input type="submit" class="btn" name="confirm" onclick="<tag:profile.confirm_delete />" value="<tag:language.FRM_CONFIRM />" />
+      &nbsp;&nbsp;<input type="submit" class="btn" onclick="<tag:profile.return />" name="confirm" value="<tag:language.FRM_CANCEL />" />
 	</tr>
 </table>
 </if:edit_user>
