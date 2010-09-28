@@ -44,18 +44,14 @@ if (!defined("IN_BTIT"))
 
 if (!defined("IN_ACP"))
       die("non direct access!");
-
-
+	  
+$btit_url_last = "";
+$btit_url_rss = "";
 
 if(get_remote_file("http://www.btiteam.org"))
-  {
+{
   $btit_url_rss = "http://www.btiteam.org/smf/index.php?type=rss;action=.xml;board=83;sa=news";
   $btit_url_last = "http://www.btiteam.org/last_version.txt";
-}
-else
-    {      /*if site down*/
-    $btit_url_rss = "";
-    $btit_url_last = "";
 }
 
 $admin = array();
@@ -133,6 +129,8 @@ else
 
 
 // check last version on btiteam.org site
+if($btit_url_last != "")
+{
 $btit_last = get_cached_version($btit_url_last);
 if (!$btit_last)
 {
@@ -142,6 +140,10 @@ if (!$btit_last)
   else
       $btit_last = "Last version n/a";
 }
+}
+else
+$btit_last="Last version n/a";
+
 $current_version = explode(" ", strtolower($tracker_version)); // array('2.0.0','beta','2')
 $last_version = explode("/", strtolower($btit_last));  // array('2.0.0','beta','2')
 
@@ -220,7 +222,8 @@ $admin["infos"] .= ("\n</table><br />\n");
 unset($sqlver);
 
 // check for news on btiteam site (read rss from comunication forum)
-
+if($btit_url_rss != "")
+{
 include("$THIS_BASEPATH/include/class.rssreader.php");
 
 $btit_news = get_cached_version($btit_url_rss);
@@ -254,8 +257,9 @@ if (!$btit_news)
     write_cached_version($btit_url_rss, $btit_news);
 
 }
-
-
+}
+else
+$btit_news = "<div class=\"blocklist\" style=\"padding:5px; align:center;\">Unable to contact Btiteam's site</div>";
 $admintpl->set("btit_news", set_block("BtiTacker Lastest News", "left", $btit_news));
 $admintpl->set("language", $language);
 $admintpl->set("admin", $admin);
