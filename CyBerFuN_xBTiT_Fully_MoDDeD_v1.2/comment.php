@@ -1,13 +1,12 @@
 <?php
 
-// CyBerFuN.ro & xList.ro
+// CyBerFuN.ro & xList.ro & xDns.ro & xLeech.in
 
-// CyBerFuN .::. comment
+// CyBerFuN .::. Comment
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xList.ro/
 // http://xDnS.ro/
-// http://yDnS.ro/
 // Modified By cybernet2u
 
 // CyBerFuN xBTiT Fully MoDDeD v1.2
@@ -86,7 +85,7 @@ $tpl_comment->set("comment_comment", textbbcode("comment", "comment", htmlspecia
 
 if (isset($_POST["info_hash"])) {
    if ($_POST["confirm"] == $language["FRM_CONFIRM"]) {
-   $comment = addslashes($_POST["comment"]);
+      $comment = (!empty($_POST["comment"]) ? addslashes($_POST["comment"]) : $language['ERR_COMMENT_EMPTY']);
       $user = AddSlashes($CURUSER["username"]);
       if ($user == "") $user = "Anonymous";
 global $BASEURL, $SITENAME, $language;
@@ -124,11 +123,6 @@ EOD;
    else
        die(mysql_error());
 	}
-	if(empty($comment)){
-     stderr($language["ERROR"], $language['ERR_COMMENT_EMPTY']);
-     exit();
-     }
-	 else{
   do_sqlquery("INSERT INTO {$TABLE_PREFIX}comments (added,text,ori_text,user,info_hash) VALUES (NOW(),\"$comment\",\"$comment\",\"$user\",\"" . mysql_real_escape_string(StripSlashes($_POST["info_hash"])) . "\")", true);
   redirect("index.php?page=torrent-details&id=" . StripSlashes($_POST["info_hash"])."#comments");
   die();
