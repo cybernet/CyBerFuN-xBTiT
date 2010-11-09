@@ -210,7 +210,7 @@ if($client_ban)
 
 // check if al needed information is sent by the client
 if (!isset($_GET["port"]) || !isset($_GET["downloaded"]) || !isset($_GET["uploaded"]) || !isset($_GET["left"]))
-    show_error("Invalid information received from BitTorrent client");
+    show_error("CyBerFuN-xBTiT - Invalid information received from BitTorrent client");
 
 $port = $_GET["port"];
 $ip = getip();
@@ -220,7 +220,7 @@ $nip = ip2long($ip);
 $res = mysql_query("SELECT * FROM {$TABLE_PREFIX}bannedip WHERE $nip >= first AND $nip <= last") or error_log(__FILE__." - ".__LINE__);
 if (mysql_num_rows($res) > 0)
  {
-   show_error("You are not authorized to use (".$SITENAME.") -- Your IP address (".$ip.") is BANNED.");
+   show_error("CyBerFuN-xBTiT - You are not authorized to use (".$SITENAME.") -- Your IP address (".$ip.") is BANNED.");
    die();
 }
 // end banned IP
@@ -229,7 +229,7 @@ if (mysql_num_rows($res) > 0)
 // only for internal tracked torrent!
 $res_tor = mysql_query("SELECT UNIX_TIMESTAMP(data) as data, uploader FROM {$TABLE_PREFIX}files WHERE external='no' AND info_hash='".$info_hash."'");
 if (mysql_num_rows($res_tor) == 0)
-   show_error("Please Upload it at $BASEURL / then it can be tracked.");
+   show_error("CyBerFuN-xBTiT - Please Upload it at $BASEURL / then it can be tracked.");
 
 
 
@@ -245,14 +245,14 @@ $pid = AddSlashes(StripSlashes($pid));
 
 // if PID empty string or not send by client
 if ($pid == "" || !$pid)
-   show_error("Please redownload the torrent. PiD system is active and PiD was not found in the torrent");
+   show_error("CyBerFuN-xBTiT - Please redownload the torrent. PiD system is active and PiD was not found in the torrent");
 }
 
 // PID turned on
 if ($PRIVATE_ANNOUNCE) {
    $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE pid='".$pid."' LIMIT 1");
   if (!$respid || mysql_num_rows($respid) != 1)
-     show_error("Invalid PiD (private announce): $pid. Please redownload torrent from $BASEURL");
+     show_error("CyBerFuN-xBTiT - Invalid PiD (private announce): $pid. Please redownload torrent from $BASEURL");
   else
       {
       $rowpid = mysql_fetch_assoc($respid);
@@ -295,7 +295,7 @@ if ($PRIVATE_ANNOUNCE) {
       {
       $rowpid = mysql_fetch_assoc($respid);
       if ($rowpid["can_download"] != "yes")
-         show_error("Sorry your level ($rowpid[level]) is not allowed to download from $BASEURL.");
+         show_error("CyBerFuN-xBTiT - Sorry your level ($rowpid[level]) is not allowed to download from $BASEURL.");
       // wait time
       elseif ($rowpid["WT"] > 0) {
         $wait = 0;
@@ -339,7 +339,7 @@ if (isset($_GET["trackerid"]))
         $GLOBALS["trackerid"] = mysql_real_escape_string($_GET["trackerid"]);
 }
 if (!is_numeric($port) || !is_numeric($downloaded) || !is_numeric($uploaded) || !is_numeric($left))
-    show_error("Invalid numerical field(s) from client");
+    show_error("CyBerFuN-xBTiT - Invalid numerical field(s) from client");
 
 
 /////////////////////////////////////////////////////
@@ -419,7 +419,7 @@ function start($info_hash, $ip, $port, $peer_id, $left, $downloaded = 0, $upload
     {
         // compact check: valid IP address:
         if ($_GET["ip"] != long2ip(ip2long($_GET["ip"])))
-            show_error("Invalid IP address. Must be standard dotted decimal ( hostnames are not allowed )");
+            show_error("CyBerFuN-xBTiT - Invalid IP address. Must be standard dotted decimal ( hostnames are not allowed )");
 
         $ip = mysql_real_escape_string($_GET["ip"]);
     }
@@ -481,7 +481,7 @@ function start($info_hash, $ip, $port, $peer_id, $left, $downloaded = 0, $upload
             return "WHERE natuser='N'";
         }
         error_log("CyBerFuN xBTiT Tracker: start: ".mysql_error());
-        show_error("Tracker/database error. The details are in the error log.");
+        show_error("CyBerFuN-xBTiT - Tracker/database error. The details are in the error log.");
     }
     $GLOBALS["trackerid"] = mysql_insert_id();
 
@@ -600,8 +600,7 @@ function killPeer($userid, $hash, $left, $assumepeer = false)
 function checkGold($info_hash, $downloaded)
 {
     global $TABLE_PREFIX;
-     $re = mysql_query("SELECT gold FROM {$TABLE_PREFIX}files 
-                           WHERE info_hash=\"$info_hash\"");
+     $re = mysql_query("SELECT gold FROM {$TABLE_PREFIX}files WHERE info_hash=\"$info_hash\"");
      $gold = mysql_fetch_assoc($re);
 
     if ($gold['gold'] == 1) // silver torrent go go leach
