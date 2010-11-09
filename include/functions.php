@@ -31,7 +31,7 @@ else
 ini_set("memory_limit", "-1");
 set_time_limit(0);
 }
-
+$tpl = new bTemplate();
 if (ini_get('register_globals')) {
   $superglobals = array($_SERVER, $_ENV, $_FILES, $_COOKIE, $_POST, $_GET);
   if (isset($_SESSION))
