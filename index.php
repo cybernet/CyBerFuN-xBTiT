@@ -78,11 +78,13 @@ if ($BASEURL != $domain) {
 
 $time_start = get_microtime();
 
-//require_once ("$THIS_BASEPATH/include/config.php");
+// require_once ("$THIS_BASEPATH/include/config.php");
 
+clearstatcache();
+session_start();
 dbconn(true);
-
-
+if (empty($_SESSION['user']['style_url']))
+{
 // get user's style
 $resheet = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}style where id=".$CURUSER["style"]." LIMIT 1", TRUE, $btit_settings["cache_duration"]);
 if (!$resheet)
@@ -90,16 +92,26 @@ if (!$resheet)
 
    $STYLEPATH = "$THIS_BASEPATH/style/xbtit_default";
    $STYLEURL = "$BASEURL/style/xbtit_default";
+   
 }
 else
     {
         $resstyle = mysql_fetch_array($resheet);
         $STYLEPATH = "$THIS_BASEPATH/".$resstyle["style_url"];
         $STYLEURL = "$BASEURL/".$resstyle["style_url"];
+  }
+
+  $_SESSION['user']['style_url'] = $STYLEURL;
+  $_SESSION['user']['style_path'] = $STYLEPATH;
+}
+else
+{
+  $STYLEURL = $_SESSION['user']['style_url'];
+  $STYLEPATH = $_SESSION['user']['style_path'];
+
 }
 
 $style_css = load_css("main.css");
-
 
 $idlang = intval($_GET["language"]);
 
@@ -108,6 +120,8 @@ $pageID = (isset($_GET["page"]) ? $_GET["page"]:"");
 $no_columns = (isset($_GET["nocolumns"]) && intval($_GET["nocolumns"]) == 1 ? true : false);
 
 // getting user language
+if (empty($_SESSION['user']['language_path']))
+{
 if ($idlang == 0)
    $reslang = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}language WHERE id=".$CURUSER["language"]." LIMIT 1", TRUE, $btit_settings["cache_duration"]);
 else
@@ -121,16 +135,15 @@ else
     {
         $rlang = mysql_fetch_array($reslang);
         $USERLANG = "$THIS_BASEPATH/".$rlang["language_url"];
-    }
+      }
+  $_SESSION['user']['language_path'] = $USERLANG;
+}
+else
+{
+  $USERLANG = $_SESSION['user']['language_path'];
+}
 
-
-
-clearstatcache();
-
-session_start();
-
-
-check_online(session_id(), ($pageID == "" ? "index":$pageID));
+check_online(session_id(), ($pageID==""?"index":$pageID));
 
 require(load_language("lang_main.php"));
 
