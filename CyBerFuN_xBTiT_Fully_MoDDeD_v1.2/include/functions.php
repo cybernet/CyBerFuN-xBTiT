@@ -590,7 +590,12 @@ $id = (!isset($_COOKIE['uid'])) ? 1 : max(1, (int)$_COOKIE['uid']);
     $err_msg_install = '';
 
   $GLOBALS['CURUSER'] = $row;
-  $_SESSION['user'] = $row;
+  foreach ($row as $key => $value)
+    {
+      if ($key != 'password')
+         $_SESSION['user'][$key] = $value;
+
+	}
   unset($row);
 }
 
