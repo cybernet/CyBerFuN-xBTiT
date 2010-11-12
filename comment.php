@@ -85,9 +85,18 @@ $tpl_comment->set("comment_comment", textbbcode("comment", "comment", htmlspecia
 
 if (isset($_POST["info_hash"])) {
    if ($_POST["confirm"] == $language["FRM_CONFIRM"]) {
-      $comment = (!empty($_POST["comment"]) ? addslashes($_POST["comment"]) : $language['ERR_COMMENT_EMPTY']);
+      $comment = addslashes($_POST["comment"]);
       $user = AddSlashes($CURUSER["username"]);
       if ($user == "") $user = "Anonymous";
+	  if(empty($comment)) {
+	  stderr($language["ERROR"], $language['ERR_COMMENT_EMPTY']);
+	  exit();
+	  }
+	  else {
+	  do_sqlquery("INSERT INTO {$TABLE_PREFIX}comments (added,text,ori_text,user,info_hash) VALUES (NOW(),\"$comment\",\"$comment\",\"$user\",\"" . mysql_real_escape_string(StripSlashes($_POST["info_hash"])) . "\")", true);
+  redirect("index.php?page=torrent-details&id=" . StripSlashes($_POST["info_hash"])."#comments");
+  die();
+  }
 global $BASEURL, $SITENAME, $language;
 
 $res1 = mysql_fetch_assoc(mysql_query("SELECT comment_notify, uploader, anonymous FROM {$TABLE_PREFIX}files WHERE info_hash = '$id'")) or sqlerr();
@@ -123,9 +132,6 @@ EOD;
    else
        die(mysql_error());
 	}
-  do_sqlquery("INSERT INTO {$TABLE_PREFIX}comments (added,text,ori_text,user,info_hash) VALUES (NOW(),\"$comment\",\"$comment\",\"$user\",\"" . mysql_real_escape_string(StripSlashes($_POST["info_hash"])) . "\")", true);
-  redirect("index.php?page=torrent-details&id=" . StripSlashes($_POST["info_hash"])."#comments");
-  die();
   }
 }
 # Comment preview by miskotes
