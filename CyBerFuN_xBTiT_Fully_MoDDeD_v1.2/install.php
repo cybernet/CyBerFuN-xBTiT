@@ -47,6 +47,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
+require_once("include/xbtit_version.php");
 $dbfile = "database.sql";
 // declaration of variables
 $INSTALLPATH = dirname(__FILE__);
@@ -57,8 +58,9 @@ if (!in_array($action, $allowed_actions))
 define("BTIT_INSTALL", TRUE);
 
 // getting globals
+global $tracker_version, $tracker_revision;
 $GLOBALS["btit-tracker"]         = "xbtit";
-$GLOBALS["current_btit_version"] = "v2.1.0";
+$GLOBALS["current_btit_version"] = $tracker_version . " (r".$tracker_revision.")";
 $GLOBALS["btit_installer"]       = "CyBerFuN xBTiT Installer ::";
 
 // getting needed files
@@ -406,8 +408,7 @@ elseif ($action == 'sql_import') {
     // Okay, let's try the prefix if it didn't work...
     if (!mysql_select_db($database, $db_connection) && $database != '')
     {
-        mysql_query("
-            CREATE DATABASE IF NOT EXISTS `$TABLE_PREFIX$database`", $db_connection);
+        mysql_query("CREATE DATABASE IF NOT EXISTS `".$TABLE_PREFIX.$database."` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci", $db_connection);
 
         if (mysql_select_db($TABLE_PREFIX . $database, $db_connection))
         {
@@ -443,7 +444,7 @@ elseif ($action == 'sql_import') {
 
     // If the UTF-8 setting was enabled, add it to the table definitions.
     if (isset($_POST['utf8']))
-        $replaces[') TYPE=MyISAM;'] = ') TYPE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;';
+        $replaces[') TYPE=MyISAM;'] = ') TYPE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
 
     // Read in the SQL.  Turn this on and that off... internationalize... etc.
     $sql_lines = explode("\n", strtr(implode(' ', file(dirname(__FILE__) . '/sql/database.sql')), $replaces));
