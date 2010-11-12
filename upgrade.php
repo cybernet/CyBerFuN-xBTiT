@@ -48,7 +48,7 @@
 ////////////////////////////////////////////////////////////////////////////////////
 
 $dbfile = "upgrade/v141_to_v2.sql";
-
+require_once("include/xbtit_version.php");
 // declaration of variables
 $INSTALLPATH = dirname(__FILE__);
 $action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : 'welcome');
@@ -62,8 +62,9 @@ if (isset($_SERVER['PHP_SELF']))
 $cur_script = $_SERVER['PHP_SELF'];
 
 // getting globals
+global $tracker_version, $tracker_revision;
 $GLOBALS["btit-tracker"]         = "xbtit";
-$GLOBALS["current_btit_version"] = "v2.1.0";
+$GLOBALS["current_btit_version"] = $tracker_version . " (r".$tracker_revision.")";
 $GLOBALS["btit_installer"]       = "CyBerFuN xBTiT Upgrade ::";
 
 // getting needed files
