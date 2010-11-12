@@ -13,7 +13,7 @@
 </style>
 <![endif]-->
 </head>
-<body onLoad="Defaults()">
+<body>
 <div id="main">
   <div id="logo">
     <table width="792" align="center" cellpadding="0" cellspacing="0" border="0">
