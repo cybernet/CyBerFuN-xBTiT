@@ -131,12 +131,14 @@ switch ($action)
                elseif ($updateset!="")
                // <--- Reverify Mail Hack by Petr1fied - End
                   {
-                  do_sqlquery("UPDATE {$TABLE_PREFIX}users SET $updateset WHERE id='".$uid."'",true);
+                  do_sqlquery("UPDATE {$TABLE_PREFIX}users SET $updateset WHERE id='".$uid."'", true);
 
                   success_msg($language["SUCCESS"], $language["INF_CHANGED"]."<br /><a href=\"index.php?page=usercp&amp;uid=".$uid."\">".$language["BCK_USERCP"]."</a>");
                   stdfoot(true,false);
                   exit;
                   }
+                $_SESSION['user']['style_url'] = '';
+                $_SESSION['user']['language_path'] = '';
               }
     break;
 
