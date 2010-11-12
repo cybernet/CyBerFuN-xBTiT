@@ -336,7 +336,7 @@ else {
        $torrenttpl->set("INSERT_COMMENT", false, TRUE);
      $comments = array();
      $count = 0;
-     foreach ($subres as $id=>$subrow) {
+     foreach ($subres as $subrow) {
 
        $level = get_result("SELECT level FROM {$TABLE_PREFIX}users_level WHERE id_level='$subrow[id_level]'", true, $btit_settings['cache_duration']);
        $lvl = $level[0];
