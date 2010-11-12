@@ -37,6 +37,8 @@ function windowunder(link)
                  </if:XBTT>
          <td align="center" class="header"><tag:language.PEER_PROGRESS /></td>
          <td align="center" class="header"><tag:language.PEER_STATUS /></td>
+		 <if:XBTT3>
+		 <else:XBTT3>
          <td align="center" class="header"><tag:language.PEER_CLIENT /></td>
          <td align="center" class="header"><tag:language.DOWNLOADED /></td>
          
@@ -69,7 +71,10 @@ function windowunder(link)
                  </if:XBTT2>
          <td valign="top" align="center" class="lista"><tag:peers[].PROGRESS /></td>
          <td align="center" class="lista"><tag:peers[].STATUS /></td>
+		 <if:XBTT4>
+		 <else:XBTT4>
          <td align="center" class="lista"><tag:peers[].CLIENT /></td>
+		 </if:XBTT4>
          <td align="center" class="lista"><tag:peers[].DOWNLOADED /></td>
          
 
