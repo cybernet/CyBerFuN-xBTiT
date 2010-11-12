@@ -1,6 +1,6 @@
 <?php
 // Traduzione eseguita da mOOn, con il QCheck di Laurianti.
-//Un grazie anche a Confe, e a chi si √® prodigato nel testare il Tracker
+//Un grazie anche a Confe, e a chi si Ë prodigato nel testare il Tracker
 // Per qualsiasi info ci trovate su http://www.btiteam.org
 $language["ACP_BAN_IP"]="Banna Indirizzo IP";
 $language["ACP_FORUM"]="Settaggi Forum";
@@ -11,7 +11,7 @@ $language["ACP_CATEGORIES"]="Settaggi Categorie";
 $language["ACP_TRACKER_SETTINGS"]="Settaggi Tracker";
 $language["ACP_OPTIMIZE_DB"]="Ottimizza il Database";
 $language["ACP_CENSORED"]="Settaggi per parole censurate";
-$language["ACP_DBUTILS"]="Utilit√† per Database";
+$language["ACP_DBUTILS"]="Utilit‡ per Database";
 $language["ACP_HACKS"]="Hacks";
 $language["ACP_HACKS_CONFIG"]="Settaggi Hacks";
 $language["ACP_MODULES"]="Moduli";
@@ -25,9 +25,9 @@ $language["ACP_BLOCKS"]="Settaggi Blocchi";
 $language["ACP_POLLS"]="Settaggi Sondaggi";
 $language["ACP_MENU"]="Menu Amministrazione";
 $language["ACP_FRONTEND"]="Settaggio Contenuti";
-$language["ACP_USERS_TOOLS"]="Utilit√† Utenti";
-$language["ACP_TORRENTS_TOOLS"]="Utilit√† Torrent";
-$language["ACP_OTHER_TOOLS"]="Altre Utilit√†";
+$language["ACP_USERS_TOOLS"]="Utilit‡ Utenti";
+$language["ACP_TORRENTS_TOOLS"]="Utilit‡ Torrent";
+$language["ACP_OTHER_TOOLS"]="Altre Utilit‡";
 $language["ACP_MYSQL_STATS"]="Statistiche MySql";
 $language["XBTT_BACKEND"]="Opzioni XBTT";
 $language["XBTT_USE"]="Usa <a href=\"http://xbtt.sourceforge.net/tracker/\" target=\"_blank\">XBTT</a> come backend?";
@@ -55,10 +55,10 @@ $language["DEFAULT_STYLE"]="Stile base";
 $language["MAX_USERS"]="Utenti max (numerico, 0 = nessun limite)";
 $language["MAX_TORRENTS_PER_PAGE"]="Torrent per pagina";
 $language["SPECIFIC_SETTINGS"]="Settaggi Specifici Tracker";
-$language["SETTING_INTERVAL_SANITY"]="Sanitizza a intervalli (unit√† di misura in secondi, 0 = disabilitato)<br />Un buon Valore, se abilitato √® 1800 (30 minuti)";
-$language["SETTING_INTERVAL_EXTERNAL"]="Aggiorna torrent esterni a intervalli(unit√† di misura in secondi, 0 = disabilitato)<br />Dipende da quanti torrent esterni";
-$language["SETTING_INTERVAL_MAX_REANNOUNCE"]="Intervallo massimo per reannounce (unit√† di misura in secondi)";
-$language["SETTING_INTERVAL_MIN_REANNOUNCE"]="Intervallo minimo per reannounce (unit√† di misura in secondi)";
+$language["SETTING_INTERVAL_SANITY"]="Sanitizza a intervalli (unit‡ di misura in secondi, 0 = disabilitato)<br />Un buon Valore, se abilitato Ë 1800 (30 minuti)";
+$language["SETTING_INTERVAL_EXTERNAL"]="Aggiorna torrent esterni a intervalli(unit‡ di misura in secondi, 0 = disabilitato)<br />Dipende da quanti torrent esterni";
+$language["SETTING_INTERVAL_MAX_REANNOUNCE"]="Intervallo massimo per reannounce (unit‡ di misura in secondi)";
+$language["SETTING_INTERVAL_MIN_REANNOUNCE"]="Intervallo minimo per reannounce (unit‡ di misura in secondi)";
 $language["SETTING_MAX_PEERS"]="Max N. di distributori per richiesta (numerico)";
 $language["SETTING_DYNAMIC"]="Abilita torrent dinamici (non raccomandato)";
 $language["SETTING_NAT_CHECK"]="Controllo NAT";
@@ -68,7 +68,7 @@ $language["SETTING_CALCULATE_SPEED"]="Calcola velocita e byte scaricati";
 $language["SETTING_PEER_CACHING"]="Deposito delle tabelle (puo' decrementare un po il sovraccarico)";
 $language["SETTING_SEEDS_PID"]="Numero massimo di seed con lo stesso PID";
 $language["SETTING_LEECHERS_PID"]="Numero massimo di ricettori con lo stesso PID";
-$language["SETTING_VALIDATION"]="Modalit√† di convalida";
+$language["SETTING_VALIDATION"]="Modalit‡ di convalida";
 $language["SETTING_CAPTCHA"]="Registrazione Sicura (usa ImageCode, necessita le librerie GD+Freetype)";
 $language["SETTING_FORUM"]="Forum link, puo' essere:<br /><li><font color='#FF0000'>internal</font> o vuoto (nessun valore) per forum interno</li><li><font color='#FF0000'>smf</font> per integrare <a target='_new' href='http://www.simplemachines.org'>Simple Machines Forum</a></li><li>La tua soluzione per il forum (Specifica l'url nella casella)</li>";
 $language["BLOCKS_SETTING"]="Indice/Blocco settaggio pagina";
@@ -79,7 +79,7 @@ $language["SETTING_NUM_LASTTORRENTS"]="Limita per il blocco Ultimo Torrent (nume
 $language["SETTING_NUM_TOPTORRENTS"]="Limita per il blocco Torrent piu' Popolare (numerico)";
 $language["CLOCK_ANALOG"]="Analogico";
 $language["CLOCK_DIGITAL"]="Digitale";
-$language["CONFIG_SAVED"]="La configurazione √® stata salvata correttamente!";
+$language["CONFIG_SAVED"]="La configurazione Ë stata salvata correttamente!";
 $language["CACHE_SITE"]="Deposito intervalli (cache intervall)(secondi numerico, 0 = disabilitato)";
 $language["ALL_FIELDS_REQUIRED"]="Tutti i campi sono richiesti!";
 $language["SETTING_CUT_LONG_NAME"]="Taglia la lunghezza del nome del torrent dopo x caratteri (0 = non tagliare)";
@@ -91,7 +91,7 @@ $language["SETTING_SMTP_USERNAME"]="SMTP Utente";
 $language["SETTING_SMTP_PASSWORD"]="SMTP Password";
 $language["SETTING_SMTP_PASSWORD_REPEAT"]="SMTP Password (Ripeti)";
 $language["XBTT_TABLES_ERROR"]="Devi importare le tabelle di xbtt(guarda le istruzioni di installazione di xbtt) nel tuo database prima di attivare il backend di xbtt!";
-$language["XBTT_URL_ERROR"]="L'indirizzo base di Xbtt Ë obbligatorio!";
+$language["XBTT_URL_ERROR"]="L'indirizzo base di Xbtt ? obbligatorio!";
 // BAN FORM
 $language["BAN_NOTE"]="In questa parte del pannello di amministrazione, puoi vedere gli indirizzi ip interdetti, ed escludere altri indirizzi ip dal tracker.<br />\nDevi inserirli in un raggio da (primo IP) a (ultimo IP).";
 $language["BAN_NOIP"]="Non ci sono indirizzi Ip interdetti";
@@ -109,7 +109,7 @@ $language["BAN_DELETED"]="Il raggio di ip interdetti e' stato cancellato dal dat
 $language["LANGUAGE_SETTINGS"]="Settaggio Lingua";
 $language["LANGUAGE"]="Lingua";
 $language["LANGUAGE_ADD"]="Inserisci un nuovo linguaggio";
-$language["LANGUAGE_SAVED"]="Complimenti, il linguaggio √® stato modificato";
+$language["LANGUAGE_SAVED"]="Complimenti, il linguaggio Ë stato modificato";
 // STYLES
 $language["STYLE_SETTINGS"]="Stile/Settaggio Tema";
 $language["STYLE_EDIT"]="Modifica stile";
@@ -136,7 +136,7 @@ $language["ENABLED"]="Abilita";
 $language["ORDER"]="Ordina";
 $language["BLOCK_NAME"]="Nome del Blocco";
 $language["BLOCK_POSITION"]="Posizione";
-$language["BLOCK_TITLE"]="Titolo linguaggi (verr√† usato per visualizzare i linguaggi tradotti)";
+$language["BLOCK_TITLE"]="Titolo linguaggi (verr‡ usato per visualizzare i linguaggi tradotti)";
 $language["BLOCK_USE_CACHE"]="Deposita questo blocco ?";
 $language["ERR_BLOCK_NAME"]="Devi selezionare uno di quelli abilitati!";
 $language["BLOCK_ADD_NEW"]="Aggiungi un nuovo blocco";
@@ -164,21 +164,21 @@ $language["GROUP_EDIT_TORR"]="Modifica Torrent";
 $language["GROUP_VIEW_USERS"]="Vedi Utenti";
 $language["GROUP_DELETE_TORR"]="Cancella Torrent";
 $language["GROUP_EDIT_USERS"]="Modifica Utenti";
-$language["GROUP_DOWNLOAD"]="Pu√≤ Scaricare";
+$language["GROUP_DOWNLOAD"]="PuÚ Scaricare";
 $language["GROUP_DELETE_USERS"]="Cancella Utente";
 $language["GROUP_DELETE_FORUM"]="Cancella Forum";
-$language["GROUP_GO_CP"]="Pu√≤ accedere al pannello di controllo di amministrazione";
+$language["GROUP_GO_CP"]="PuÚ accedere al pannello di controllo di amministrazione";
 $language["GROUP_EDIT_NEWS"]="Modifica le News";
 $language["GROUP_ADD_NEW"]="Aggiungi un Nuovo Gruppo";
-$language["GROUP_UPLOAD"]="Pu√≤ fare Upload";
-$language["GROUP_WT"]="Tempo di attesa se il Punteggio √® <1";
+$language["GROUP_UPLOAD"]="PuÚ fare Upload";
+$language["GROUP_WT"]="Tempo di attesa se il Punteggio Ë <1";
 $language["GROUP_EDIT_GROUP"]="Modifica il Gruppo";
 $language["GROUP_VIEW"]="Vedi";
 $language["GROUP_EDIT"]="Modifica";
 $language["GROUP_DELETE"]="Cancella";
 $language["INSERT_USER_GROUP"]="Inserisci un nuovo utente nel gruppo";
 $language["ERR_CANT_FIND_GROUP"]="Non trovo il gruppo!";
-$language["GROUP_DELETED"]="Il gruppo √® stato cancellato!";
+$language["GROUP_DELETED"]="Il gruppo Ë stato cancellato!";
 // MASS PM
 $language["USERS_FOUND"]="Utente trovato";
 $language["USERS_PMED"]="Invio mail all' Utente";
@@ -195,7 +195,7 @@ $language["MASSPM_INFO"]="Informa";
 // PRUNE USERS
 $language["PRUNE_USERS_PRUNED"]="Utenti Sfoltiti";
 $language["PRUNE_USERS"]="Sfoltisci Utenti";
-$language["PRUNE_USERS_INFO"]="Immetti il numero dei giorni che un utente viene considerato \"dead\" (non connesso da x giorni OR si √® registrato da x giorni senza essersi validato)";
+$language["PRUNE_USERS_INFO"]="Immetti il numero dei giorni che un utente viene considerato \"dead\" (non connesso da x giorni OR si Ë registrato da x giorni senza essersi validato)";
 // SEARCH DIFF
 $language["SEARCH_DIFF"]="Cerca Diff.";
 $language["SEARCH_DIFF_MESSAGE"]="Messagio";
@@ -264,7 +264,34 @@ $language["HACK_SELECT"]="Seleziona";
 $language["HACK_STATUS"]="Stato";
 $language["HACK_INSTALL"]="Installa";
 $language["HACK_UNINSTALL"]="Disinstalla";
-$language["HACK_INSTALLED_OK"]="L'hack √® stato installato con successo !<br />\nPer vedere quali hacks sono installati, ritorna a <a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=hacks&amp;action=read\">adminCP (Hacks)</a>";
+$language["HACK_INSTALLED_OK"]="L'hack Ë stato installato con successo !<br />\nPer vedere quali hacks sono installati, ritorna a <a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=hacks&amp;action=read\">adminCP (Hacks)</a>";
 $language["HACK_BAD_ID"]="Errore nell'ottenere info su questo hack con questo ID.";
-$language["HACK_UNINSTALLED_OK"]="L'hack √® stato disinstallato con successo!<br />\nPer vedere quali hacks sono installati, ritorna a <a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=hacks&amp;action=read\">adminCP (Hacks)</a>";
+$language["HACK_UNINSTALLED_OK"]="L'hack Ë stato disinstallato con successo!<br />\nPer vedere quali hacks sono installati, ritorna a <a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=hacks&amp;action=read\">adminCP (Hacks)</a>";
+$language['HACK_OPERATION']='Operazione';
+$language['HACK_SOLUTION']='Soluzione';
+// added rev 520
+$language['HACK_WHY_FTP']='Alcuni dei file che l&rsquo;hack deve modifcare non sono scrivibili<br />'."\n".'Questo necessita di essere modificato con l&rsquo;accesso via FTP  e usando il chmod o creando i file o le cartelle <br />'."\n".'Le informazioni di accesso FTP temporaneamente memorizzate per eseguire le operazioni necessarie all&rsquo;installazione dell&rsquo;hack.';
+$language['HACK_FTP_SERVER']='Server FTP';
+$language['HACK_FTP_PORT']='Porta FTP';
+$language['HACK_FTP_USERNAME']='FTP Username';
+$language['HACK_FTP_PASSWORD']='FTP Password';
+$language['HACK_FTP_BASEDIR']='Percorso locale di xbtit (il percorso dalla radice quando effettuate l&rsquo;accesso FTP)';
+// USERS TOOLS
+$language['USER_NOT_DELETE']='Non puoi cancelle utenti Ospite o te stesso!';
+$language['USER_NOT_EDIT']='Non puoi modificare utenti Ospite o te stesso!';
+$language['USER_NOT_DELETE_HIGHER']='Non puoi cancellare utenti di livello maggiore del tuo.';
+$language['USER_NOT_EDIT_HIGHER']='Non puoi modificare utenti di livello maggiore del tuo.';
+$language['USER_NO_CHANGE']='Nessuan modifica apportata.';
+//Manual Hack Install
+$language['MHI_VIEW_INSRUCT'] = 'Visualizzare l&rsquo;installazione manuale?';
+$language['MHI_MAN_INSRUCT_FOR'] = 'Istruzioni per l&rsquo;Installazione Manuale di';
+$language['MHI_RUN_QUERY'] = 'Eseguire le seguenti SQL Query usando phpMyAdmin';
+$language['MHI_IN'] = 'In';
+$language['MHI_ALSO_IN'] = 'Anche in';
+$language['MHI_FIND_THIS'] = 'Trovare questo';
+$language['MHI_ADD_THIS'] = 'Aggiungere questo';
+$language['MHI_IT'] = 'esso';
+$language['MHI_REPLACE'] = 'Sostituire con';
+$language['MHI_COPY'] = 'Copia';
+$language['MHI_AS'] = 'come';
 ?>
