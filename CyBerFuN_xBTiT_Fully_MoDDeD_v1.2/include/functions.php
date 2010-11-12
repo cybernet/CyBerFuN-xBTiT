@@ -32,7 +32,7 @@ ini_set("memory_limit", "-1");
 set_time_limit(0);
 }
 $tpl = new bTemplate();
-if (ini_get('register_globals')) {
+if (@ini_get('register_globals')) {
   $superglobals = array($_SERVER, $_ENV, $_FILES, $_COOKIE, $_POST, $_GET);
   if (isset($_SESSION))
     array_unshift($superglobals, $_SESSION);
@@ -60,6 +60,8 @@ if(get_magic_quotes_gpc()){
   remove_magic_quotes($_FILES);
   remove_magic_quotes($_COOKIE);
 }
+
+@date_default_timezone_set(@date_default_timezone_get());
 
 $CURRENTPATH = dirname(__FILE__);
 
@@ -565,10 +567,10 @@ if ($btit_settings['xbtt_use'])
   }
 // guest
 
-$id = (!isset($_COOKIE['uid']))?1:max(1, (int)$_COOKIE['uid']);
+$id = (!isset($_COOKIE['uid'])) ? 1 : max(1, (int)$_COOKIE['uid']);
 
     $res = do_sqlquery("SELECT u.warn, u.lip, u.cip, seedbonus, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language, u.style, u.time_offset, ul.* FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = $id LIMIT 1;", true, $btit_settings['cache_duration']);
-  $row = $res[0];
+	$row = $res[0];
   if (!$row) {
     $id = 1;
     $res = do_sqlquery("SELECT u.warn, u.lip, u.cip, seedbonus, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language, u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;", true, $btit_settings['cache_duration']);
@@ -588,6 +590,7 @@ $id = (!isset($_COOKIE['uid']))?1:max(1, (int)$_COOKIE['uid']);
     $err_msg_install = '';
 
   $GLOBALS['CURUSER'] = $row;
+  $_SESSION['user'] = $row;
   unset($row);
 }
 

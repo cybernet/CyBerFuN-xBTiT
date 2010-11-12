@@ -44,7 +44,7 @@ if (!defined("IN_BTIT"))
 
 if (!defined("IN_ACP"))
       die("non direct access!");
-	  
+/*	  
 $btit_url_last = "";
 $btit_url_rss = "";
 
@@ -53,7 +53,7 @@ if(get_remote_file("http://www.btiteam.org"))
   $btit_url_rss = "http://www.btiteam.org/smf/index.php?type=rss;action=.xml;board=83;sa=news";
   $btit_url_last = "http://www.btiteam.org/last_version.txt";
 }
-
+*/
 $admin = array();
 
 $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}tasks");
@@ -62,9 +62,9 @@ if ($res)
     while ($result = mysql_fetch_array($res))
           {
           if ($result["task"] == "sanity")
-             $admin["lastsanity"] = $language["LAST_SANITY"]."<br />\n".get_date_time($result["last_time"])." (".$language["NEXT"].": ".get_date_time($result["last_time"]+intval($GLOBALS["clean_interval"])).")&nbsp;<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=sanity&amp;action=now\">Do it now!</a><br />";
+             $admin["lastsanity"] = $language["LAST_SANITY"]."<br />\n".get_date_time($result["last_time"])."<br />\n(".$language["NEXT"].": ".get_date_time($result["last_time"]+intval($GLOBALS["clean_interval"])).")<br />\n<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=sanity&amp;action=now\">Do it now!</a><br />";
           elseif ($result["task"] == "update")
-             $admin["lastscrape"] = "<br />\n".$language["LAST_EXTERNAL"]."<br />\n".get_date_time($result["last_time"])." (".$language["NEXT"].": ".get_date_time($result["last_time"]+intval($GLOBALS["update_interval"])).")<br />";
+             $admin["lastscrape"] = "<br />\n".$language["LAST_EXTERNAL"]."<br />\n".get_date_time($result["last_time"])."<br />\n(".$language["NEXT"].": ".get_date_time($result["last_time"]+intval($GLOBALS["update_interval"])).")<br />";
        }
    }
 
@@ -79,7 +79,7 @@ if ($res)
              $xbt_in_db[] = $result[0];
          }
  }
- $ad=array_diff($xbt_tables, $xbt_in_db);
+ $ad = array_diff($xbt_tables, $xbt_in_db);
 
  if (count($ad) == 0)
     $admin["xbtt_ok"] = "<br />\nIT SEEMS THAT ALL XBTT TABLES ARE PRESENT!<br />\n<br />\n";
@@ -129,6 +129,7 @@ else
 
 
 // check last version on btiteam.org site
+/*
 if($btit_url_last != "")
 {
 $btit_last = get_cached_version($btit_url_last);
@@ -158,8 +159,9 @@ if ((implode(" ",$current_version) != implode(" ", $last_version)))
 }
 else
   {
-  $your_version .= "You have the latest xBTiT version installed.";
+  $your_version .= "You have the latest xBtit version installed.($tracker_version Rev.$tracker_revision)";
 }
+*/
 $hack_email_notification_url_last = "http://xbtitnotify.sourceforge.net/last_version/last_email_notification_version.txt";
 
 // check last version on xbtitnotify.sourceforge.net
@@ -191,9 +193,10 @@ else
   {
   $your_email_notification_version .= "".$language["PM_NOTIFY_VERSION"]."";
 }
-
+/*
 if (!empty($your_version))
    $admin["xbtit_version"] = $your_version."<br />\n";
+   */
 if (!empty($your_email_notification_version))
    $admin["email_notification_version"] = $your_email_notification_version."<br />\n";
 
@@ -260,7 +263,7 @@ if (!$btit_news)
 }
 else
 $btit_news = "<div class=\"blocklist\" style=\"padding:5px; align:center;\">Unable to contact Btiteam's site</div>";
-$admintpl->set("btit_news", set_block("BtiTacker Lastest News", "left", $btit_news));
+// $admintpl->set("btit_news", set_block("BtiTacker Lastest News", "left", $btit_news));
 $admintpl->set("language", $language);
 $admintpl->set("admin", $admin);
 
