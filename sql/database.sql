@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.6
+-- version 3.3.8
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Sep 13, 2010 at 02:15 AM
+-- Host: localhost:3306
+-- Generation Time: Nov 13, 2010 at 08:42 PM
 -- Server version: 5.1.41
--- PHP Version: 5.3.2-1ubuntu4.2
+-- PHP Version: 5.3.2-1ubuntu4.5
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -904,6 +904,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}messages` (
   `subject` varchar(50) NOT NULL COMMENT 'reason for making my database bigger',
   `msg` text COMMENT 'lets see how he lie to us',
   `readed` enum('yes','no') CHARACTER SET latin1 NOT NULL DEFAULT 'no',
+  `deletedBySender` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `receiver` (`receiver`),
   KEY `sender` (`sender`)
