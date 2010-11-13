@@ -135,15 +135,15 @@ else
                 redirect("index.php?page=usercp&uid=".$uid."&do=pm&action=list&what=".($what=="in"?"inbox":"outbox"));
                 exit;
                 }
-				if($_GET["type"]=="out"){
+				if($_GET["type"] == "out"){
            foreach($_POST["msg"] as $selected=>$msg)
-           do_sqlquery("UPDATE {$TABLE_PREFIX}messages SET deletedBySender=1 WHERE id='".$msg."'",true);
-           redirect("index.php?page=usercp&uid=".$uid."&do=pm&action=list&what=".($what=="in"?"inbox":"outbox"));
+           do_sqlquery("UPDATE {$TABLE_PREFIX}messages SET deletedBySender=1 WHERE id='".$msg."'", true);
+           redirect("index.php?page=usercp&uid=".$uid."&do=pm&action=list&what=".($what == "in"?"inbox":"outbox"));
            exit();
 	        } 
 	        else{
            foreach($_POST["msg"] as $selected=>$msg)
-                   do_sqlquery("DELETE FROM {$TABLE_PREFIX}messages WHERE id='".$msg."' AND readed='yes'",true);
+                   do_sqlquery("DELETE FROM {$TABLE_PREFIX}messages WHERE id='".$msg."' AND readed='yes'", true);
            redirect("index.php?page=usercp&uid=".$uid."&do=pm&action=list&what=".($what=="in"?"inbox":"outbox"));
            exit();
 		   }
@@ -153,9 +153,9 @@ else
             if($FORUMLINK == "smf")
                 redirect("index.php?page=forum&action=pm".(($_GET["type"]=="out")?";f=outbox":""));
             $id = intval($_GET["id"]);
-			if($_GET["type"]=="out"){
-			do_sqlquery("UPDATE {$TABLE_PREFIX}messages SET deletedBySender=1 WHERE id='".$id."'",true);
-            }else{
+			if($_GET["type"] == "out"){
+			do_sqlquery("UPDATE {$TABLE_PREFIX}messages SET deletedBySender=1 WHERE id='".$id."'", true);
+            } else {
             do_sqlquery("DELETE FROM {$TABLE_PREFIX}messages WHERE receiver=".$uid." AND id=".$id." AND readed='yes'", true);
 			}
             redirect("index.php?page=usercp&uid=".$uid."&do=pm&action=list&what=inbox");
@@ -190,7 +190,7 @@ else
                         while ($result = mysql_fetch_array($res))
                 {
                 $pmouttpl[$i]["readed"] = unesc($result["readed"]);
-                $pmouttpl[$i]["senderid"] = ($result["receiver"]==0||empty($result["receivername"])?"#":(($FORUMLINK=="smf")?$BASEURL."/index.php?page=forum&action=profile;u=".$result["receiver"]:"index.php?page=userdetails&amp;id=".$result["receiver"]));
+                $pmouttpl[$i]["senderid"] = ($result["receiver"] == 0||empty($result["receivername"]) ? "#" : (($FORUMLINK == "smf") ? $BASEURL."/index.php?page=forum&action=profile;u=".$result["receiver"]:"index.php?page=userdetails&amp;id=".$result["receiver"]));
                 $pmouttpl[$i]["sendername"] = unesc($result["receivername"]);
                 $pmouttpl[$i]["added"] = get_date_time($result["added"]);
                 $pmouttpl[$i]["pmlink"] = (($FORUMLINK == "smf") ? $BASEURL."/index.php?page=forum&amp;action=pm;f=outbox":"index.php?page=usercp&amp;do=pm&amp;action=read&amp;uid=".$uid."&amp;id=".$result["id"]."&amp;what=outbox");
