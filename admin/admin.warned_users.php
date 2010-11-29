@@ -48,7 +48,7 @@ else
     $warnres = do_sqlquery("SELECT id, username, warnadded, warnreason, warnaddedby FROM {$TABLE_PREFIX}users WHERE warn='yes' ORDER BY warn='yes' DESC $limit");
     $warnnum = mysql_fetch_row($warnres);
     $num2 = $warnnum[0];
-    $perpage = (max(0,$CURUSER["postsperpage"])>0?$CURUSER["postsperpage"]:20);
+    $perpage = (max(0, $CURUSER["postsperpage"]) > 0 ? $CURUSER["postsperpage"] : 20);
     list($pagertop, $pagerbottom, $limit) = pager($perpage, $num2, "index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=warned_users&amp;");
     
     $admintpl->set("language", $language);

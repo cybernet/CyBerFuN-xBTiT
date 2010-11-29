@@ -1,9 +1,9 @@
 <?php
 
-if (isset($_POST["in_xbtit"]) && $_POST["in_xbtit"]=='1')
+if (isset($_POST["in_xbtit"]) && $_POST["in_xbtit"] == '1')
       die("non direct access!");
 
-if (isset($_POST["in_admin"]) && $_POST["in_xbtit"]=='1')
+if (isset($_POST["in_admin"]) && $_POST["in_xbtit"] == '1')
       die("non direct access!");
 
 session_start();
@@ -45,7 +45,7 @@ if(get_remote_file("http://www.btiteam.org"))
 // check last version on btiteam.org site
 if($btit_url_last != "")
 {
-  $btit_last=get_remote_file($btit_url_last);
+  $btit_last = get_remote_file($btit_url_last);
   if (!$btit_last)
       $btit_last = "Last version n/a";
 }
@@ -106,7 +106,7 @@ if($btit_url_rss != "")
             }
             $btit_news .= "</div>";
         }
-        write_cached_version($btit_url_rss,$btit_news);
+        write_cached_version($btit_url_rss, $btit_news);
     }
 }
 else
