@@ -37,7 +37,7 @@ if (!defined("IN_ACP"))
       die("non direct access!");
 
 
-if (!$CURUSER || $CURUSER["admin_access"]!="yes")
+if (!$CURUSER || $CURUSER["admin_access"] != "yes")
    {
        err_msg(ERROR,NOT_ADMIN_CP_ACCESS);
        stdfoot();
@@ -45,36 +45,36 @@ if (!$CURUSER || $CURUSER["admin_access"]!="yes")
 }
 else
 {
-    $warnres=do_sqlquery("SELECT id, username, warnadded, warnreason, warnaddedby FROM {$TABLE_PREFIX}users WHERE warn='yes' ORDER BY warn='yes' DESC $limit");
-    $warnnum=mysql_fetch_row($warnres);
-    $num2=$warnnum[0];
-    $perpage=(max(0,$CURUSER["postsperpage"])>0?$CURUSER["postsperpage"]:20);
+    $warnres = do_sqlquery("SELECT id, username, warnadded, warnreason, warnaddedby FROM {$TABLE_PREFIX}users WHERE warn='yes' ORDER BY warn='yes' DESC $limit");
+    $warnnum = mysql_fetch_row($warnres);
+    $num2 = $warnnum[0];
+    $perpage = (max(0,$CURUSER["postsperpage"])>0?$CURUSER["postsperpage"]:20);
     list($pagertop, $pagerbottom, $limit) = pager($perpage, $num2, "index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=warned_users&amp;");
     
-    $admintpl->set("language",$language);
-    $admintpl->set("pager_top",$pagertop);
-    $admintpl->set("pager_bottom",$pagerbottom);
+    $admintpl->set("language", $language);
+    $admintpl->set("pager_top", $pagertop);
+    $admintpl->set("pager_bottom", $pagerbottom);
 
-    $warnedres=do_sqlquery("SELECT id, username, warnadded, warnreason, warnaddedby FROM {$TABLE_PREFIX}users WHERE warn='yes' ORDER BY warn='yes' DESC $limit");
-    $warn=array();
+    $warnedres = do_sqlquery("SELECT id, username, warnadded, warnreason, warnaddedby FROM {$TABLE_PREFIX}users WHERE warn='yes' ORDER BY warn='yes' DESC $limit");
+    $warn = array();
     $i=0;
 
     include("$THIS_BASEPATH/include/offset.php");
 
     if ($warnedres)
         {
-        while ($warnview=mysql_fetch_assoc($warnedres))
+        while ($warnview = mysql_fetch_assoc($warnedres))
             {
-          $warn[$i]["username"]=$warnview["username"];
-          $warn[$i]["warnadded"]=$warnview["warnadded"];
-          $warn[$i]["warnreason"]=$warnview["warnreason"];
-          $warn[$i]["warnaddedby"]=$warnview["warnaddedby"];
+          $warn[$i]["username"] = $warnview["username"];
+          $warn[$i]["warnadded"] = $warnview["warnadded"];
+          $warn[$i]["warnreason"] = $warnview["warnreason"];
+          $warn[$i]["warnaddedby"] = $warnview["warnaddedby"];
           $i++;
          }
 
     }
 
-    $admintpl->set("warns",$warn);
+    $admintpl->set("warns", $warn);
 
     unset($warnview);
     mysql_free_result($warnedres);
