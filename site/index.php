@@ -14,7 +14,7 @@
 
 
 // https://cyberfun-xbtit.svn.sourceforge.net/svnroot/cyberfun-xbtit/trunk/site
-
+// http://cyberfun-xbtit.svn.sourceforge.net/viewvc/cyberfun-xbtit/trunk/site/
 
 
 ?>
