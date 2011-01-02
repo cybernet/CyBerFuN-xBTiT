@@ -1,0 +1,502 @@
+<hack>
+  <title>Torrent Request & Vote Hack</title>
+  <author>DiemThuy</author>
+  <version>FM 1.3</version>
+  
+<!-- start Request and Vote Database stuffing-->
+    <file>
+    <name>"database"</name>
+    <operation>
+    <action>"sql"</action>
+    <data><![CDATA[CREATE TABLE {$db_prefix}addedrequests (
+  id int(10) unsigned NOT NULL auto_increment,
+  requestid int(10) unsigned NOT NULL default '0',
+  userid int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (id),
+  KEY pollid (id),
+  KEY userid (userid)
+) TYPE=MyISAM;]]></data>
+    </operation>
+    		<operation>
+			<action>"sql"</action>
+			<data><![CDATA[CREATE TABLE {$db_prefix}requests (
+  id int(10) unsigned NOT NULL auto_increment,
+  userid int(10) unsigned NOT NULL default '0',
+  request varchar(225) default NULL,
+  descr text NOT NULL,
+  added datetime NOT NULL default '0000-00-00 00:00:00',
+  fulfilled datetime NOT NULL default '0000-00-00 00:00:00',
+  hits int(10) unsigned NOT NULL default '0',
+  cat int(10) unsigned NOT NULL default '0',
+  filled varchar(255) default NULL,
+  filledby int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (id),
+  KEY userid (userid)
+) TYPE=MyISAM;]]></data>
+		</operation>
+		        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_prune', '30');]]></data>
+        </operation>
+        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_page', '10');]]></data>
+        </operation>
+                <operation>
+            <action>"sql"</action>
+            <data><![CDATA[INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_post', '1');]]></data>
+        </operation>
+        		        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_sb', '10');]]></data>
+        </operation>
+        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_mb', '10000');]]></data>
+        </operation>
+                <operation>
+            <action>"sql"</action>
+            <data><![CDATA[INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_rwon', 'true');]]></data>
+        </operation>
+        		        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_sbmb', 'true');]]></data>
+        </operation>
+        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_shout', 'true');]]></data>
+        </operation>
+                <operation>
+            <action>"sql"</action>
+            <data><![CDATA[INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_max', '100');]]></data>
+        </operation>
+        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_onoff', 'true');]]></data>
+        </operation>
+        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_number', '5');]]></data>
+        </operation>
+        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_maxon', 'true');]]></data>
+        </operation>
+            <operation>
+      <action>"sql"</action>
+      <data><![CDATA[INSERT INTO `{$db_prefix}blocks` VALUES ('', 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8)]]></data>
+    </operation>
+    </file>
+    
+         <!-- start sanity.php-->
+      <file>
+    <name>"$DEFAULT_ROOT/include/sanity.php"</name>
+        <operation>
+      <search><![CDATA[global]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[ $btit_settings, ]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[// SANITY FOR TORRENTS]]></search>
+      <action>"add"</action>
+      <where>"before"</where>
+      <data><![CDATA[
+      // DT request hack start
+  	$reqprune = $btit_settings["req_prune"];
+	$request = mysql_query("SELECT id FROM {$TABLE_PREFIX}requests WHERE filledby > '0' AND fulfilled < DATE_SUB(NOW(), INTERVAL $reqprune DAY)");
+	$reqrow = mysql_fetch_assoc($request);
+	$reqid = $reqrow["id"];
+	if (mysql_num_rows($request) > 0)
+	{
+	mysql_query("DELETE FROM {$TABLE_PREFIX}requests WHERE filledby > 0 AND id = $reqid");
+	mysql_query("DELETE FROM {$TABLE_PREFIX}addedrequests WHERE requestid = $reqid");
+	}
+ // DT request hack end
+    ]]></data>
+    </operation>
+</file>
+<!-- end sanity.php-->
+
+         <!-- start mainmenu_block.php-->
+      <file>
+    <name>"$DEFAULT_ROOT/blocks/mainmenu_block.php"</name>
+        <operation>
+      <search><![CDATA[print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=extra-stats\">".$language["MNU_STATS"]."</a></td>\n");]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[
+      //request hack
+    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=viewrequests\">".$language["VR"]."</a></td>\n");
+//request hack
+]]></data>
+    </operation>
+  </file>
+   <!-- end mainmenu_block.php-->
+    
+        <!-- start index.php-->
+    <file>
+    <name>"$DEFAULT_ROOT/index.php"</name>
+    <operation>
+              <search><![CDATA[case 'extra-stats':
+        require("$THIS_BASEPATH/extra-stats.php");
+        $tpl->set("main_content",set_block($language["MNU_STATS"],"center",$out));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->Statistics");
+        break;]]></search>
+          <action>"add"</action>
+          <data><![CDATA[
+// DT request hack start
+
+        case 'addrequest':
+        require("$THIS_BASEPATH/addrequest.php");
+        break;
+
+        case 'reqedit':
+        require("$THIS_BASEPATH/reqedit.php");
+        $tpl->set("main_content",set_block($language["RE"],"center",$reqedittpl->fetch(load_template("reqedit.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->reqedit");
+        break;
+
+        case 'reqreset':
+        require("$THIS_BASEPATH/reqreset.php");
+        break;
+
+        case 'takedelreq':
+        require("$THIS_BASEPATH/takedelreq.php");
+        break;
+
+        case 'takerequest':
+        require("$THIS_BASEPATH/takerequest.php");
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->takerequest");
+        break;
+
+        case 'votesview':
+        require("$THIS_BASEPATH/votesview.php");
+        $tpl->set("main_content",set_block($language["VV"],"center",$votesviewtpl->fetch(load_template("votesview.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->votesview");
+        break;
+
+        case 'reqdetails':
+        require("$THIS_BASEPATH/reqdetails.php");
+        $tpl->set("main_content",set_block($language["RD"],"center",$reqdetailstpl->fetch(load_template("reqdetails.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->reqdetails");
+        break;
+
+        case 'reqfilled':
+        require("$THIS_BASEPATH/reqfilled.php");
+        $tpl->set("main_content",set_block($language["RF"],"center",$reqfilledtpl->fetch(load_template("reqfilled.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->reqfilled");
+        break;
+
+        case 'requests':
+        require("$THIS_BASEPATH/requests.php");
+        $tpl->set("main_content",set_block($language["R"],"center",$requeststpl->fetch(load_template("requests.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->requests");
+        break;
+
+        case 'takereqedit':
+        require("$THIS_BASEPATH/takereqedit.php");
+        $tpl->set("main_content",set_block($language["TRE"],"center",$takereqedittpl->fetch(load_template("takereqedit.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->takereqedit");
+        break;
+
+        case 'viewrequests':
+        require("$THIS_BASEPATH/viewrequests.php");
+        $tpl->set("main_content",set_block($language["VR"],"center",$viewrequeststpl->fetch(load_template("viewrequests.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->viewrequests");
+        break;
+
+// DT request hack end
+        ]]></data>
+       <where>"after"</where>
+    </operation>
+    </file>
+     <!-- End index.php -->
+  
+<!-- Start lang_main.php -->
+  <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_main.php"</name>
+    <operation>
+     <search><![CDATA[?>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+$language['RF']='Request Filled';
+$language['VR']='Requests';
+$language['R']='Add Request';
+$language['VV']='View Votes';
+$language['RD']='Request Details';
+$language['RE']='Edit Request';
+      ]]></data>
+      <where>"before"</where>
+    </operation>
+   </file>
+ <!-- End lang_main.php -->
+ 
+ <!-- Start lang_main.php -->
+  <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_blocks.php"</name>
+    <operation>
+     <search><![CDATA[?>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+$language['BLOCK_REQUEST'] = 'Most Voted Requests';
+      ]]></data>
+      <where>"before"</where>
+    </operation>
+   </file>
+ <!-- End lang_main.php -->
+ 
+   <!-- start admin.config -->
+  <file>
+  <name>"$DEFAULT_ROOT/admin/admin.config.php"</name>
+  <operation>
+    <action>"add"</action>
+    <where>"after"</where>
+    <search><![CDATA[$btit_settings["forum"]=$_POST["f_link"];]]></search>
+    <data><![CDATA[
+        // request hack part 1
+                $btit_settings["req_prune"]=$_POST["req_prune"];
+                $btit_settings["req_page"]=$_POST["req_page"];
+                $btit_settings["req_post"]=$_POST["req_post"];
+                $btit_settings["req_shout"]=$_POST["req_shout"];
+                $btit_settings["req_max"]=$_POST["req_max"];
+                $btit_settings["req_maxon"]=$_POST["req_maxon"];
+                $btit_settings["req_onoff"]=$_POST["req_onoff"];
+                $btit_settings["req_number"]=$_POST["req_number"];
+      // request hack (reward)
+                $btit_settings["req_sb"]=$_POST["req_sb"];
+                $btit_settings["req_mb"]=$_POST["req_mb"];
+                $btit_settings["req_rwon"]=$_POST["req_rwon"];
+                $btit_settings["req_sbmb"]=$_POST["req_sbmb"];
+        //request hack part 1 + reward end
+]]></data>
+    </operation>
+      <operation>
+    <action>"add"</action>
+    <where>"before"</where>
+    <search><![CDATA[// language dropdown]]></search>
+    <data><![CDATA[
+            // request hack part 2
+
+            $btit_settings["req_rwonyes"]=($btit_settings["req_rwon"]?"checked=\"checked\"":"");
+            $btit_settings["req_rwonno"]=(!$btit_settings["req_rwon"]?"checked=\"checked\"":"");
+            $btit_settings["req_sbmbyes"]=($btit_settings["req_sbmb"]?"checked=\"checked\"":"");
+            $btit_settings["req_sbmbno"]=(!$btit_settings["req_sbmb"]?"checked=\"checked\"":"");
+            $btit_settings["req_shoutyes"]=($btit_settings["req_shout"]?"checked=\"checked\"":"");
+            $btit_settings["req_shoutno"]=(!$btit_settings["req_shout"]?"checked=\"checked\"":"");
+            $btit_settings["req_onoffyes"]=($btit_settings["req_onoff"]?"checked=\"checked\"":"");
+            $btit_settings["req_onoffno"]=(!$btit_settings["req_onoff"]?"checked=\"checked\"":"");
+            $btit_settings["req_maxonyes"]=($btit_settings["req_maxon"]?"checked=\"checked\"":"");
+            $btit_settings["req_maxonno"]=(!$btit_settings["req_maxon"]?"checked=\"checked\"":"");
+
+             // request hack part 2 end
+]]></data>
+    </operation>
+</file>
+   <!-- end admin.config -->
+   
+   	<!-- start admin.config template -->
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/admin.config.tpl"</name>
+    <operation>
+    <action>"add"</action>
+    <where>"before"</where>
+    <search><![CDATA[<tr>
+      <td align="center" class="header" colspan="2"><input type="submit" name="write" class="btn" value="<tag:language.FRM_CONFIRM />" /></td>
+      <td align="center" class="header" colspan="2"><input type="submit" name="cancel" class="btn" value="<tag:language.FRM_CANCEL />" /></td>
+    </tr>]]></search>
+    <data><![CDATA[
+      <tr>
+      <td class="header" align="center" colspan="4">Request Settings</td>
+      </tr>
+      <tr>
+      <td class="header">Request hack online</td>
+      <td class="lista">&nbsp;&nbsp;enable&nbsp;<input type="radio" name="req_onoff" value="true"<tag:config.req_onoffyes /> />&nbsp;&nbsp;disabled&nbsp;<input type="radio" name="req_onoff" value="false"<tag:config.req_onoffno /> /></td>
+      <td class="header">Requests in block</td>
+      <td class="lista"><input type="text" name="req_number" value="<tag:config.req_number />" size="4" /></td>
+      </tr>
+      <tr>
+      <td class="header">Days for prune filled requests</td>
+      <td class="lista"><input type="text" name="req_prune" value="<tag:config.req_prune />" size="4" /></td>
+      <td class="header">Requests per page</td>
+      <td class="lista"><input type="text" name="req_page" value="<tag:config.req_page />" size="4" /></td>
+      </tr>
+      <tr>
+      <td class="header">min ID level to post requests</td>
+      <td class="lista"><input type="text" name="req_post" value="<tag:config.req_post />" size="4" /></td>
+      <td class="header">Announce request in shoutbox</td>
+      <td class="lista">&nbsp;&nbsp;enable&nbsp;<input type="radio" name="req_shout" value="true"<tag:config.req_shoutyes /> />&nbsp;&nbsp;disabled&nbsp;<input type="radio" name="req_shout" value="false"<tag:config.req_shoutno /> /></td>
+      </tr>
+      <tr>
+      <td class="header">Max requests use</td>
+      <td class="lista">&nbsp;&nbsp;enable&nbsp;<input type="radio" name="req_maxon" value="true"<tag:config.req_maxonyes /> />&nbsp;&nbsp;disabled&nbsp;<input type="radio" name="req_maxon" value="false"<tag:config.req_maxonno /> /></td>
+      <td class="header">Max number of requests</td>
+      <td class="lista"><input type="text" name="req_max" value="<tag:config.req_max />" size="4" /></td>
+      </tr>
+      <tr>
+      <td class="header" align="center" colspan="4">Request Reward ( for furfill a request ) Settings</td>
+      </tr>
+      <tr>
+   	  <td class="header">Request reward sytem</td>
+      <td class="lista">&nbsp;&nbsp;enable&nbsp;<input type="radio" name="req_rwon" value="true"<tag:config.req_rwonyes /> />&nbsp;&nbsp;disabled&nbsp;<input type="radio" name="req_rwon" value="false"<tag:config.req_rwonno /> /></td>
+      <td class="header">Reward in upload or seedbonus</td>
+      <td class="lista">&nbsp;&nbsp;bytes&nbsp;<input type="radio" name="req_sbmb" value="true"<tag:config.req_sbmbyes /> />&nbsp;&nbsp;seedbonus&nbsp;<input type="radio" name="req_sbmb" value="false"<tag:config.req_sbmbno /> /></td>
+      </tr>
+      <tr>
+      <td class="header">Amount in bytes</td>
+      <td class="lista"><input type="text" name="req_mb" value="<tag:config.req_mb />" size="6" /></td>
+      <td class="header">Seedbonus points</td>
+      <td class="lista"><input type="text" name="req_sb" value="<tag:config.req_sb />" size="4" /></td>
+      </tr>
+     ]]></data>
+    </operation>
+  </file>
+  	<!-- end admin.config template -->
+ 
+ <!-- Copy 18 files - WoW -->
+   <file>
+  <name>"$CURRENT_FOLDER/files/addrequest.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT"</where>
+      <data>"addrequest.php"</data>
+    </operation>
+  </file>
+  <file>
+  <name>"$CURRENT_FOLDER/files/reqedit.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT"</where>
+      <data>"reqedit.php"</data>
+    </operation>
+  </file>
+    <file>
+  <name>"$CURRENT_FOLDER/files/reqedit.tpl"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_STYLE_PATH"</where>
+      <data>"reqedit.tpl"</data>
+    </operation>
+  </file>
+    <file>
+  <name>"$CURRENT_FOLDER/files/takedelreq.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT"</where>
+      <data>"takedelreq.php"</data>
+    </operation>
+  </file>
+      <file>
+  <name>"$CURRENT_FOLDER/files/reqreset.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT"</where>
+      <data>"reqreset.php"</data>
+    </operation>
+  </file>
+    <name>"$CURRENT_FOLDER/files/reqfilled.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT"</where>
+      <data>"reqfilled.php"</data>
+    </operation>
+  </file>
+      <file>
+  <name>"$CURRENT_FOLDER/files/reqfilled.tpl"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_STYLE_PATH"</where>
+      <data>"reqfilled.tpl"</data>
+    </operation>
+  </file>
+      <file>
+  <name>"$CURRENT_FOLDER/files/reqdetails.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT"</where>
+      <data>"reqdetails.php"</data>
+    </operation>
+  </file>
+        <file>
+  <name>"$CURRENT_FOLDER/files/reqdetails.tpl"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_STYLE_PATH"</where>
+      <data>"reqdetails.tpl"</data>
+    </operation>
+  </file>
+        <file>
+  <name>"$CURRENT_FOLDER/files/viewrequests.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT"</where>
+      <data>"viewrequests.php"</data>
+    </operation>
+  </file>
+        <file>
+  <name>"$CURRENT_FOLDER/files/viewrequests.tpl"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_STYLE_PATH"</where>
+      <data>"viewrequests.tpl"</data>
+    </operation>
+  </file>
+          <file>
+  <name>"$CURRENT_FOLDER/files/requests.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT"</where>
+      <data>"requests.php"</data>
+    </operation>
+  </file>
+        <file>
+  <name>"$CURRENT_FOLDER/files/requests.tpl"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_STYLE_PATH"</where>
+      <data>"requests.tpl"</data>
+    </operation>
+  </file>
+            <file>
+  <name>"$CURRENT_FOLDER/files/votesview.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT"</where>
+      <data>"votesview.php"</data>
+    </operation>
+  </file>
+        <file>
+  <name>"$CURRENT_FOLDER/files/votesview.tpl"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_STYLE_PATH"</where>
+      <data>"votesview.tpl"</data>
+    </operation>
+  </file>
+ <file>
+  <name>"$CURRENT_FOLDER/files/takerequest.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT"</where>
+      <data>"takerequest.php"</data>
+    </operation>
+  </file>
+<file>
+    <name>"$CURRENT_FOLDER/files/takereqedit.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT"</where>
+      <data>"takereqedit.php"</data>
+    </operation>
+  </file>
+    <file>
+    <name>"$CURRENT_FOLDER/files/Request_block.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/blocks"</where>
+      <data>"request_block.php"</data>
+    </operation>
+  </file>
+ <!-- end good , all good  -->
+</hack>
+
