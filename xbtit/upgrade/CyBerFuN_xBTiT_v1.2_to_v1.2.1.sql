@@ -65,4 +65,11 @@ ALTER TABLE `{$db_prefix}online` CHANGE `user_name` `user_name` VARCHAR( 40 ) CH
 ALTER TABLE `{$db_prefix}online` CHANGE `user_group` `user_group` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
 ALTER TABLE `{$db_prefix}online` CHANGE `location` `location` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
 ALTER TABLE `{$db_prefix}history` ADD INDEX ( `agent` ) ;
+ALTER TABLE `{$db_prefix}history` ADD INDEX ( `active` ) ;
+ALTER TABLE `{$db_prefix}history` CHANGE `agent` `agent` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
+ALTER TABLE `{$db_prefix}history` CHANGE `active` `active` ENUM( 'yes', 'no' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'no' ;
+ALTER TABLE `{$db_prefix}history` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+ALTER TABLE `{$db_prefix}history` ADD INDEX ( `uploaded` ) ;
+ALTER TABLE `{$db_prefix}history` ADD INDEX ( `downloaded` ) ;
+ALTER TABLE `{$db_prefix}categories` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 

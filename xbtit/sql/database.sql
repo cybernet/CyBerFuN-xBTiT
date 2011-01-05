@@ -87,15 +87,15 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}categories` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `name` varchar(30) NOT NULL DEFAULT '',
   `sub` int(10) NOT NULL DEFAULT '0',
   `sort_index` int(10) unsigned NOT NULL DEFAULT '0',
-  `image` varchar(255) NOT NULL DEFAULT '',
+  `image` varchar(255) CHARACTER SET latin1 NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `image` (`image`),
   KEY `sort_index` (`sort_index`),
   KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `{$db_prefix}categories`
@@ -517,14 +517,18 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}hacks` (
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}history` (
   `uid` int(10) DEFAULT NULL,
-  `infohash` varchar(40) NOT NULL DEFAULT '',
+  `infohash` varchar(40) CHARACTER SET latin1 NOT NULL DEFAULT '',
   `date` int(10) DEFAULT NULL,
   `uploaded` bigint(20) NOT NULL DEFAULT '0',
   `downloaded` bigint(20) NOT NULL DEFAULT '0',
   `active` enum('yes','no') NOT NULL DEFAULT 'no',
   `agent` varchar(30) NOT NULL DEFAULT '',
-  UNIQUE KEY `uid` (`uid`,`infohash`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  UNIQUE KEY `uid` (`uid`,`infohash`),
+  KEY `agent` (`agent`),
+  KEY `active` (`active`),
+  KEY `uploaded` (`uploaded`),
+  KEY `downloaded` (`downloaded`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `{$db_prefix}history`
