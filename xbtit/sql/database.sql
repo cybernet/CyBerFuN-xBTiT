@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jan 05, 2011 at 08:49 AM
+-- Generation Time: Jan 05, 2011 at 09:06 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.5
 
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}chat` (
   `name` tinytext NOT NULL,
   `text` text NOT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}chat`
@@ -793,12 +793,15 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}poller_vote` (
 CREATE TABLE IF NOT EXISTS `{$db_prefix}polls` (
   `pid` mediumint(8) NOT NULL AUTO_INCREMENT,
   `startdate` int(10) DEFAULT NULL,
-  `choices` text,
+  `choices` text CHARACTER SET utf8,
   `starter_id` mediumint(8) NOT NULL DEFAULT '0',
   `votes` smallint(5) NOT NULL DEFAULT '0',
-  `poll_question` varchar(255) DEFAULT NULL,
-  `status` enum('true','false') NOT NULL DEFAULT 'false',
-  PRIMARY KEY (`pid`)
+  `poll_question` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `status` enum('true','false') CHARACTER SET utf8 NOT NULL DEFAULT 'false',
+  PRIMARY KEY (`pid`),
+  KEY `poll_question` (`poll_question`),
+  KEY `votes` (`votes`),
+  KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --

@@ -28,3 +28,12 @@ ALTER TABLE `{$db_prefix}files` CHANGE `url` `url` VARCHAR( 250 ) CHARACTER SET 
 ALTER TABLE `{$db_prefix}files` CHANGE `info` `info` VARCHAR( 250 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
 ALTER TABLE `{$db_prefix}files` CHANGE `announce_url` `announce_url` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
 ALTER TABLE `{$db_prefix}files` COMMENT = 'torrents' ;
+ALTER TABLE `{$db_prefix}chat` CHANGE `text` `text` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
+ALTER TABLE `{$db_prefix}chat` CHANGE `name` `name` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
+ALTER TABLE `{$db_prefix}polls` CHANGE `poll_question` `poll_question` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
+ALTER TABLE `{$db_prefix}polls` CHANGE `status` `status` ENUM( 'true', 'false' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'false' ;
+ALTER TABLE `{$db_prefix}polls` CHANGE `choices` `choices` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
+ALTER TABLE `{$db_prefix}polls` ADD INDEX ( `poll_question` ) ;
+ALTER TABLE `{$db_prefix}polls` ADD INDEX ( `votes` ) ;
+ALTER TABLE `{$db_prefix}polls` ADD INDEX ( `status` ) ;
+ALTER TABLE `{$db_prefix}chat` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
