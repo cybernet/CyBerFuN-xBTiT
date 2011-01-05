@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.8.1
+-- version 3.3.9
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jan 05, 2011 at 08:33 AM
+-- Generation Time: Jan 05, 2011 at 08:49 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.5
 
