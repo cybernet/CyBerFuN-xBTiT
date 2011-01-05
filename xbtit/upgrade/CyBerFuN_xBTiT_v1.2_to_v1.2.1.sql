@@ -45,3 +45,5 @@ ALTER TABLE `{$db_prefix}messages` CHANGE `msg` `msg` TEXT CHARACTER SET utf8 CO
 ALTER TABLE `{$db_prefix}messages` CHANGE `readed` `readed` ENUM( 'yes', 'no' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'no' ;
 ALTER TABLE `{$db_prefix}news` CHANGE `title` `title` VARCHAR( 40 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
 ALTER TABLE `{$db_prefix}news` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+ALTER TABLE `{$db_prefix}news` ADD INDEX ( `title` ) ;
+ALTER TABLE `{$db_prefix}news` ADD INDEX ( `user_id` ) ;

@@ -647,8 +647,10 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}news` (
   `user_id` int(10) NOT NULL DEFAULT '0',
   `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `title` varchar(40) NOT NULL DEFAULT '',
-  UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  UNIQUE KEY `id` (`id`),
+  KEY `title` (`title`),
+  KEY `user_id` (`user_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `{$db_prefix}news`
