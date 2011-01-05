@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jan 05, 2011 at 09:28 AM
+-- Generation Time: Jan 05, 2011 at 09:45 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.5
 
@@ -540,9 +540,10 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}history` (
 CREATE TABLE IF NOT EXISTS `{$db_prefix}language` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `language` varchar(20) NOT NULL DEFAULT '',
-  `language_url` varchar(100) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+  `language_url` varchar(100) CHARACTER SET latin1 NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `language_url` (`language_url`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `{$db_prefix}language`
@@ -1148,7 +1149,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
 --
 
 INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`) VALUES
-(1, 'Guest', '', 1, 0, 'none', 1, 1, '2011-01-05 08:17:16', '2011-01-05 08:17:16', 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0);
+(1, 'Guest', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0);
 
 -- --------------------------------------------------------
 

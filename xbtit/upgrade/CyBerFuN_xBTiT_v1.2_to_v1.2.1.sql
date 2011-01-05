@@ -52,3 +52,6 @@ ALTER TABLE `{$db_prefix}style` CHANGE `style_url` `style_url` VARCHAR( 100 ) CH
 ALTER TABLE `{$db_prefix}style` ADD INDEX ( `style` ) ;
 ALTER TABLE `{$db_prefix}style` ADD INDEX ( `style_url` ) ;
 ALTER TABLE `{$db_prefix}style` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+ALTER TABLE `{$db_prefix}language` CHANGE `language` `language` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
+ALTER TABLE `{$db_prefix}language` ADD INDEX ( `language_url` ) ;
+ALTER TABLE `{$db_prefix}language` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
