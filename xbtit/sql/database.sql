@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jan 05, 2011 at 09:49 AM
+-- Generation Time: Jan 05, 2011 at 09:57 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.5
 
@@ -668,18 +668,20 @@ INSERT INTO `{$db_prefix}news` (`id`, `news`, `user_id`, `date`, `title`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}online` (
-  `session_id` varchar(40) NOT NULL,
+  `session_id` varchar(40) CHARACTER SET latin1 NOT NULL,
   `user_id` int(10) NOT NULL,
-  `user_ip` varchar(15) NOT NULL,
+  `user_ip` varchar(15) CHARACTER SET latin1 NOT NULL,
   `location` varchar(20) NOT NULL,
   `lastaction` int(10) NOT NULL,
   `user_name` varchar(40) NOT NULL,
   `user_group` varchar(50) NOT NULL,
-  `prefixcolor` varchar(200) NOT NULL,
-  `suffixcolor` varchar(200) NOT NULL,
+  `prefixcolor` varchar(200) CHARACTER SET latin1 NOT NULL,
+  `suffixcolor` varchar(200) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`session_id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  KEY `user_id` (`user_id`),
+  KEY `prefixcolor` (`prefixcolor`),
+  KEY `location` (`location`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `{$db_prefix}online`

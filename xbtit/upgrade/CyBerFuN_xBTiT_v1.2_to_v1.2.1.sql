@@ -58,3 +58,10 @@ ALTER TABLE `{$db_prefix}language` DEFAULT CHARACTER SET utf8 COLLATE utf8_gener
 ALTER TABLE `{$db_prefix}modules` CHANGE `name` `name` VARCHAR( 40 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
 ALTER TABLE `{$db_prefix}modules` ADD INDEX ( `activated` ) ;
 ALTER TABLE `{$db_prefix}modules` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+ALTER TABLE `{$db_prefix}online` ADD INDEX ( `prefixcolor` ) ;
+ALTER TABLE `{$db_prefix}online` ADD INDEX ( `location` ) ;
+ALTER TABLE `{$db_prefix}online` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+ALTER TABLE `{$db_prefix}online` CHANGE `user_name` `user_name` VARCHAR( 40 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
+ALTER TABLE `{$db_prefix}online` CHANGE `user_group` `user_group` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
+ALTER TABLE `{$db_prefix}online` CHANGE `location` `location` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
+
