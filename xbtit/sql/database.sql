@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jan 05, 2011 at 08:17 AM
+-- Generation Time: Jan 05, 2011 at 08:33 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.5
 
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}bannedip` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `added` int(11) NOT NULL DEFAULT '0',
   `addedby` int(10) unsigned NOT NULL DEFAULT '0',
-  `comment` varchar(255) NOT NULL DEFAULT '',
+  `comment` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `first` bigint(11) unsigned DEFAULT NULL,
   `last` bigint(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -140,8 +140,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}chat` (
 CREATE TABLE IF NOT EXISTS `{$db_prefix}comments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `text` text NOT NULL,
-  `ori_text` text NOT NULL,
+  `text` text CHARACTER SET utf8 NOT NULL,
+  `ori_text` text CHARACTER SET utf8 NOT NULL,
   `user` varchar(20) NOT NULL DEFAULT '',
   `info_hash` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
@@ -424,19 +424,19 @@ INSERT INTO `{$db_prefix}countries` (`id`, `name`, `flagpic`, `domain`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
-  `info_hash` varchar(40) NOT NULL DEFAULT '',
-  `filename` varchar(250) NOT NULL DEFAULT '',
-  `url` varchar(250) NOT NULL DEFAULT '',
-  `info` varchar(250) NOT NULL DEFAULT '',
+  `info_hash` varchar(40) CHARACTER SET latin1 NOT NULL DEFAULT '',
+  `filename` varchar(250) CHARACTER SET latin1 NOT NULL DEFAULT '',
+  `url` varchar(250) CHARACTER SET latin1 NOT NULL DEFAULT '',
+  `info` varchar(250) CHARACTER SET latin1 NOT NULL DEFAULT '',
   `data` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `size` bigint(20) NOT NULL DEFAULT '0',
   `comment` text,
   `category` int(10) unsigned NOT NULL DEFAULT '6',
-  `external` enum('yes','no') NOT NULL DEFAULT 'no',
-  `announce_url` varchar(100) NOT NULL DEFAULT '',
+  `external` enum('yes','no') CHARACTER SET latin1 NOT NULL DEFAULT 'no',
+  `announce_url` varchar(100) CHARACTER SET latin1 NOT NULL DEFAULT '',
   `uploader` int(10) NOT NULL DEFAULT '1',
   `lastupdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `anonymous` enum('true','false') NOT NULL DEFAULT 'false',
+  `anonymous` enum('true','false') CHARACTER SET latin1 NOT NULL DEFAULT 'false',
   `lastsuccess` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `dlbytes` bigint(20) unsigned NOT NULL DEFAULT '0',
   `seeds` int(10) unsigned NOT NULL DEFAULT '0',
@@ -451,7 +451,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
   KEY `category` (`category`),
   KEY `uploader` (`uploader`),
   KEY `bin_hash` (`bin_hash`(20))
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `{$db_prefix}files`
@@ -467,8 +467,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
 CREATE TABLE IF NOT EXISTS `{$db_prefix}forums` (
   `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(60) NOT NULL DEFAULT '',
-  `description` varchar(200) DEFAULT NULL,
+  `name` varchar(60) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `description` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
   `minclassread` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `minclasswrite` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `postcount` int(10) unsigned NOT NULL DEFAULT '0',
@@ -573,7 +573,7 @@ INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES
 CREATE TABLE IF NOT EXISTS `{$db_prefix}logs` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `added` int(10) DEFAULT NULL,
-  `txt` text,
+  `txt` text CHARACTER SET utf8,
   `type` varchar(10) NOT NULL DEFAULT 'add',
   `user` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -596,14 +596,14 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}messages` (
   `sender` int(10) unsigned NOT NULL DEFAULT '0',
   `receiver` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) DEFAULT NULL,
-  `subject` varchar(50) NOT NULL DEFAULT '',
-  `msg` text,
-  `readed` enum('yes','no') NOT NULL DEFAULT 'no',
+  `subject` varchar(50) NOT NULL COMMENT 'reason for making my database bigger',
+  `msg` text CHARACTER SET latin1,
+  `readed` enum('yes','no') CHARACTER SET latin1 NOT NULL DEFAULT 'no',
   `deletedBySender` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `receiver` (`receiver`),
   KEY `sender` (`sender`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}messages`
@@ -845,7 +845,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}posts` (
   KEY `topicid` (`topicid`),
   KEY `userid` (`userid`),
   FULLTEXT KEY `body` (`body`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}posts`
@@ -899,7 +899,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}readposts` (
 --
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}settings` (
-  `key` varchar(30) NOT NULL,
+  `key` varchar(41) NOT NULL,
   `value` varchar(200) NOT NULL,
   PRIMARY KEY (`key`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -1088,7 +1088,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}topics` (
   KEY `userid` (`userid`),
   KEY `subject` (`subject`),
   KEY `lastpost` (`lastpost`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}topics`
