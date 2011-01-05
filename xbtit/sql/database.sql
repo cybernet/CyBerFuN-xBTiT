@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jan 05, 2011 at 09:06 AM
+-- Generation Time: Jan 05, 2011 at 09:28 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.5
 
@@ -974,8 +974,10 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}style` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `style` varchar(20) NOT NULL DEFAULT '',
   `style_url` varchar(100) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+  PRIMARY KEY (`id`),
+  KEY `style` (`style`),
+  KEY `style_url` (`style_url`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `{$db_prefix}style`

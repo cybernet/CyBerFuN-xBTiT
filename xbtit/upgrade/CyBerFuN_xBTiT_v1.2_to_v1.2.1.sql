@@ -47,3 +47,8 @@ ALTER TABLE `{$db_prefix}news` CHANGE `title` `title` VARCHAR( 40 ) CHARACTER SE
 ALTER TABLE `{$db_prefix}news` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 ALTER TABLE `{$db_prefix}news` ADD INDEX ( `title` ) ;
 ALTER TABLE `{$db_prefix}news` ADD INDEX ( `user_id` ) ;
+ALTER TABLE `{$db_prefix}style` CHANGE `style` `style` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
+ALTER TABLE `{$db_prefix}style` CHANGE `style_url` `style_url` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
+ALTER TABLE `{$db_prefix}style` ADD INDEX ( `style` ) ;
+ALTER TABLE `{$db_prefix}style` ADD INDEX ( `style_url` ) ;
+ALTER TABLE `{$db_prefix}style` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
