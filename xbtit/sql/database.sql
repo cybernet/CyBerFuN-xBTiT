@@ -1,61 +1,64 @@
 -- phpMyAdmin SQL Dump
--- version 2.9.1.1
+-- version 3.3.8.1
 -- http://www.phpmyadmin.net
--- 
--- Host: localhost
--- Generation Time: Aug 31, 2007 at 09:49 AM
--- Server version: 5.0.27
--- PHP Version: 5.2.0
--- 
--- Database: `test`
--- 
+--
+-- Host: localhost:3306
+-- Generation Time: Jan 05, 2011 at 08:17 AM
+-- Server version: 5.1.41
+-- PHP Version: 5.3.2-1ubuntu4.5
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+--
+-- Database: `xbtit`
+--
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}bannedip`
--- 
+--
 
-CREATE TABLE `{$db_prefix}bannedip` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `added` int(11) NOT NULL default '0',
-  `addedby` int(10) unsigned NOT NULL default '0',
-  `comment` varchar(255) NOT NULL default '',
-  `first` bigint(11) unsigned default NULL,
-  `last` bigint(11) unsigned default NULL,
-  PRIMARY KEY  (`id`),
+CREATE TABLE IF NOT EXISTS `{$db_prefix}bannedip` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `added` int(11) NOT NULL DEFAULT '0',
+  `addedby` int(10) unsigned NOT NULL DEFAULT '0',
+  `comment` varchar(255) NOT NULL DEFAULT '',
+  `first` bigint(11) unsigned DEFAULT NULL,
+  `last` bigint(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `first_last` (`first`,`last`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}bannedip`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}blocks`
--- 
+--
 
-CREATE TABLE `{$db_prefix}blocks` (
-  `blockid` int(11) unsigned NOT NULL auto_increment,
-  `content` varchar(255) NOT NULL default '',
-  `position` char(1) NOT NULL default '',
-  `sortid` int(11) unsigned NOT NULL default '0',
-  `status` tinyint(3) unsigned default NULL,
-  `title` varchar(255) NOT NULL default '',
+CREATE TABLE IF NOT EXISTS `{$db_prefix}blocks` (
+  `blockid` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `content` varchar(255) NOT NULL DEFAULT '',
+  `position` char(1) NOT NULL DEFAULT '',
+  `sortid` int(11) unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(3) unsigned DEFAULT NULL,
+  `title` varchar(255) NOT NULL DEFAULT '',
   `cache` enum('yes','no') NOT NULL,
-  `minclassview` int(11) NOT NULL default '0',
-  `maxclassview` int(11) NOT NULL default '8',
-  PRIMARY KEY  (`blockid`)
-) ENGINE=MyISAM;
+  `minclassview` int(11) NOT NULL DEFAULT '0',
+  `maxclassview` int(11) NOT NULL DEFAULT '8',
+  PRIMARY KEY (`blockid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}blocks`
--- 
+--
 
-INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `status`, `title`, `cache`, `minclassview`, `maxclassview`) VALUES 
+INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `status`, `title`, `cache`, `minclassview`, `maxclassview`) VALUES
 (1, 'menu', 'r', 5, 1, 'BLOCK_MENU', 'no', 3, 8),
 (2, 'clock', 'r', 2, 1, 'BLOCK_CLOCK', 'no', 3, 8),
 (3, 'forum', 'l', 2, 1, 'BLOCK_FORUM', 'no', 3, 8),
@@ -76,25 +79,24 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 (20, 'ajax_shoutbox', 'c', 2, 1, 'BLOCK_SHOUTBOX', 'no', 3, 8),
 (21, 'dropdownmenu', 'd', 1, 1, 'BLOCK_DDMENU', 'no', 1, 8);
 
-
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}categories`
--- 
+--
 
-CREATE TABLE `{$db_prefix}categories` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `name` varchar(30) NOT NULL default '',
-  `sub` int(10) NOT NULL default '0',
-  `sort_index` int(10) unsigned NOT NULL default '0',
-  `image` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
+CREATE TABLE IF NOT EXISTS `{$db_prefix}categories` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL DEFAULT '',
+  `sub` int(10) NOT NULL DEFAULT '0',
+  `sort_index` int(10) unsigned NOT NULL DEFAULT '0',
+  `image` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}categories`
--- 
+--
 
 INSERT INTO `{$db_prefix}categories` (`id`, `name`, `sub`, `sort_index`, `image`) VALUES
 (7, 'Apps Win', 0, 1010, 'windows.png'),
@@ -111,63 +113,63 @@ INSERT INTO `{$db_prefix}categories` (`id`, `name`, `sub`, `sort_index`, `image`
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}chat`
--- 
+--
 
-CREATE TABLE `{$db_prefix}chat` (
-  `id` mediumint(9) NOT NULL auto_increment,
+CREATE TABLE IF NOT EXISTS `{$db_prefix}chat` (
+  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `uid` mediumint(9) NOT NULL,
-  `time` int(10) NOT NULL default '0',
+  `time` int(10) NOT NULL DEFAULT '0',
   `name` tinytext NOT NULL,
   `text` text NOT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}chat`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}comments`
--- 
+--
 
-CREATE TABLE `{$db_prefix}comments` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `added` datetime NOT NULL default '0000-00-00 00:00:00',
+CREATE TABLE IF NOT EXISTS `{$db_prefix}comments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `text` text NOT NULL,
   `ori_text` text NOT NULL,
-  `user` varchar(20) NOT NULL default '',
-  `info_hash` varchar(40) NOT NULL default '',
-  PRIMARY KEY  (`id`),
+  `user` varchar(20) NOT NULL DEFAULT '',
+  `info_hash` varchar(40) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
   KEY `info_hash` (`info_hash`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}comments`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}countries`
--- 
+--
 
-CREATE TABLE `{$db_prefix}countries` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `name` varchar(50) default NULL,
-  `flagpic` varchar(50) default NULL,
-  `domain` char(3) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
+CREATE TABLE IF NOT EXISTS `{$db_prefix}countries` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  `flagpic` varchar(50) DEFAULT NULL,
+  `domain` char(3) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=245 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}countries`
--- 
+--
 
 INSERT INTO `{$db_prefix}countries` (`id`, `name`, `flagpic`, `domain`) VALUES
 (1, 'Sweden', 'se.png', 'SE'),
@@ -415,133 +417,133 @@ INSERT INTO `{$db_prefix}countries` (`id`, `name`, `flagpic`, `domain`) VALUES
 (243, 'Iraq', 'iq.png', 'IQ'),
 (244, 'Iran, Islamic Republic of', 'ir.png', 'IR');
 
-
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}files`
--- 
+--
 
-CREATE TABLE `{$db_prefix}files` (
-  `info_hash` varchar(40) NOT NULL default '',
-  `filename` varchar(250) NOT NULL default '',
-  `url` varchar(250) NOT NULL default '',
-  `info` varchar(250) NOT NULL default '',
-  `data` datetime NOT NULL default '0000-00-00 00:00:00',
-  `size` bigint(20) NOT NULL default '0',
+CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
+  `info_hash` varchar(40) NOT NULL DEFAULT '',
+  `filename` varchar(250) NOT NULL DEFAULT '',
+  `url` varchar(250) NOT NULL DEFAULT '',
+  `info` varchar(250) NOT NULL DEFAULT '',
+  `data` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `size` bigint(20) NOT NULL DEFAULT '0',
   `comment` text,
-  `category` int(10) unsigned NOT NULL default '6',
-  `external` enum('yes','no') NOT NULL default 'no',
-  `announce_url` varchar(100) NOT NULL default '',
-  `uploader` int(10) NOT NULL default '1',
-  `lastupdate` datetime NOT NULL default '0000-00-00 00:00:00',
-  `anonymous` enum('true','false') NOT NULL default 'false',
-  `lastsuccess` datetime NOT NULL default '0000-00-00 00:00:00',
-  `dlbytes` bigint(20) unsigned NOT NULL default '0',
-  `seeds` int(10) unsigned NOT NULL default '0',
-  `leechers` int(10) unsigned NOT NULL default '0',
-  `finished` int(10) unsigned NOT NULL default '0',
-  `lastcycle` int(10) unsigned NOT NULL default '0',
-  `lastSpeedCycle` int(10) unsigned NOT NULL default '0',
-  `speed` bigint(20) unsigned NOT NULL default '0',
+  `category` int(10) unsigned NOT NULL DEFAULT '6',
+  `external` enum('yes','no') NOT NULL DEFAULT 'no',
+  `announce_url` varchar(100) NOT NULL DEFAULT '',
+  `uploader` int(10) NOT NULL DEFAULT '1',
+  `lastupdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `anonymous` enum('true','false') NOT NULL DEFAULT 'false',
+  `lastsuccess` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `dlbytes` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `seeds` int(10) unsigned NOT NULL DEFAULT '0',
+  `leechers` int(10) unsigned NOT NULL DEFAULT '0',
+  `finished` int(10) unsigned NOT NULL DEFAULT '0',
+  `lastcycle` int(10) unsigned NOT NULL DEFAULT '0',
+  `lastSpeedCycle` int(10) unsigned NOT NULL DEFAULT '0',
+  `speed` bigint(20) unsigned NOT NULL DEFAULT '0',
   `bin_hash` blob NOT NULL,
-  PRIMARY KEY  (`info_hash`),
+  PRIMARY KEY (`info_hash`),
   KEY `filename` (`filename`),
   KEY `category` (`category`),
   KEY `uploader` (`uploader`),
   KEY `bin_hash` (`bin_hash`(20))
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}files`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}forums`
--- 
+--
 
-CREATE TABLE `{$db_prefix}forums` (
-  `sort` tinyint(3) unsigned NOT NULL default '0',
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `name` varchar(60) NOT NULL default '',
-  `description` varchar(200) default NULL,
-  `minclassread` tinyint(3) unsigned NOT NULL default '1',
-  `minclasswrite` tinyint(3) unsigned NOT NULL default '1',
-  `postcount` int(10) unsigned NOT NULL default '0',
-  `topiccount` int(10) unsigned NOT NULL default '0',
-  `minclasscreate` tinyint(3) unsigned NOT NULL default '1',
-  `id_parent` int(10) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
+CREATE TABLE IF NOT EXISTS `{$db_prefix}forums` (
+  `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) NOT NULL DEFAULT '',
+  `description` varchar(200) DEFAULT NULL,
+  `minclassread` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `minclasswrite` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `postcount` int(10) unsigned NOT NULL DEFAULT '0',
+  `topiccount` int(10) unsigned NOT NULL DEFAULT '0',
+  `minclasscreate` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `id_parent` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
   KEY `sort` (`sort`),
   KEY `id_parent` (`id_parent`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}forums`
--- 
+--
+
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}hacks`
--- 
+--
 
-CREATE TABLE `{$db_prefix}hacks` (
-  `id` int(11) NOT NULL auto_increment,
+CREATE TABLE IF NOT EXISTS `{$db_prefix}hacks` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(200) NOT NULL,
   `version` varchar(10) NOT NULL,
   `author` varchar(100) NOT NULL,
   `added` int(11) NOT NULL,
   `folder` varchar(100) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}hacks`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}history`
--- 
+--
 
-CREATE TABLE `{$db_prefix}history` (
-  `uid` int(10) default NULL,
-  `infohash` varchar(40) NOT NULL default '',
-  `date` int(10) default NULL,
-  `uploaded` bigint(20) NOT NULL default '0',
-  `downloaded` bigint(20) NOT NULL default '0',
-  `active` enum('yes','no') NOT NULL default 'no',
-  `agent` varchar(30) NOT NULL default '',
+CREATE TABLE IF NOT EXISTS `{$db_prefix}history` (
+  `uid` int(10) DEFAULT NULL,
+  `infohash` varchar(40) NOT NULL DEFAULT '',
+  `date` int(10) DEFAULT NULL,
+  `uploaded` bigint(20) NOT NULL DEFAULT '0',
+  `downloaded` bigint(20) NOT NULL DEFAULT '0',
+  `active` enum('yes','no') NOT NULL DEFAULT 'no',
+  `agent` varchar(30) NOT NULL DEFAULT '',
   UNIQUE KEY `uid` (`uid`,`infohash`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}history`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}language`
--- 
+--
 
-CREATE TABLE `{$db_prefix}language` (
-  `id` int(10) NOT NULL auto_increment,
-  `language` varchar(20) NOT NULL default '',
-  `language_url` varchar(100) NOT NULL default '',
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
+CREATE TABLE IF NOT EXISTS `{$db_prefix}language` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `language` varchar(20) NOT NULL DEFAULT '',
+  `language_url` varchar(100) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}language`
--- 
+--
 
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES
 (1, 'English', 'language/english'),
@@ -550,115 +552,115 @@ INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES
 (4, 'Srpsko-Hrvatski', 'language/serbocroatian'),
 (5, 'Dutch', 'language/dutch'),
 (6, 'Italiano', 'language/italian'),
-(7, 'Russian','language/russian'),
-(8, 'German','language/german'),
-(9, 'Hungarian','language/hungarian'),
+(7, 'Russian', 'language/russian'),
+(8, 'German', 'language/german'),
+(9, 'Hungarian', 'language/hungarian'),
 (10, 'Français', 'language/french'),
-(11, 'Finnish','language/finnish'),
-(12, 'Vietnamese','language/vietnamese'),
-(13, 'Greek','language/greek'),
-(14, 'Bulgarian','language/bulgarian'),
-(15, 'Spanish','language/spanish'),
-(16, 'Portuguese-BR','language/portuguese-BR'),
-(17, 'Portuguese-PT','language/portuguese-PT');
+(11, 'Finnish', 'language/finnish'),
+(12, 'Vietnamese', 'language/vietnamese'),
+(13, 'Greek', 'language/greek'),
+(14, 'Bulgarian', 'language/bulgarian'),
+(15, 'Spanish', 'language/spanish'),
+(16, 'Portuguese-BR', 'language/portuguese-BR'),
+(17, 'Portuguese-PT', 'language/portuguese-PT');
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}logs`
--- 
+--
 
-CREATE TABLE `{$db_prefix}logs` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `added` int(10) default NULL,
+CREATE TABLE IF NOT EXISTS `{$db_prefix}logs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `added` int(10) DEFAULT NULL,
   `txt` text,
-  `type` varchar(10) NOT NULL default 'add',
-  `user` varchar(40) default NULL,
-  PRIMARY KEY  (`id`),
+  `type` varchar(10) NOT NULL DEFAULT 'add',
+  `user` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `added` (`added`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}logs`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}messages`
--- 
+--
 
-CREATE TABLE `{$db_prefix}messages` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `sender` int(10) unsigned NOT NULL default '0',
-  `receiver` int(10) unsigned NOT NULL default '0',
-  `added` int(10) default NULL,
-  `subject` varchar(50) NOT NULL default '',
+CREATE TABLE IF NOT EXISTS `{$db_prefix}messages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `sender` int(10) unsigned NOT NULL DEFAULT '0',
+  `receiver` int(10) unsigned NOT NULL DEFAULT '0',
+  `added` int(10) DEFAULT NULL,
+  `subject` varchar(50) NOT NULL DEFAULT '',
   `msg` text,
-  `readed` enum('yes','no') NOT NULL default 'no',
+  `readed` enum('yes','no') NOT NULL DEFAULT 'no',
   `deletedBySender` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `receiver` (`receiver`),
   KEY `sender` (`sender`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}messages`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}modules`
--- 
+--
 
-CREATE TABLE `{$db_prefix}modules` (
-  `id` mediumint(3) NOT NULL auto_increment,
-  `name` varchar(40) NOT NULL default '',
-  `activated` enum('yes','no') NOT NULL default 'yes',
-  `type` enum('staff','misc','torrent','style') NOT NULL default 'misc',
-  `changed` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created` datetime NOT NULL default '0000-00-00 00:00:00',
-  PRIMARY KEY  (`id`),
+CREATE TABLE IF NOT EXISTS `{$db_prefix}modules` (
+  `id` mediumint(3) NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) NOT NULL DEFAULT '',
+  `activated` enum('yes','no') NOT NULL DEFAULT 'yes',
+  `type` enum('staff','misc','torrent','style') NOT NULL DEFAULT 'misc',
+  `changed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}modules`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}news`
--- 
+--
 
-CREATE TABLE `{$db_prefix}news` (
-  `id` int(11) NOT NULL auto_increment,
+CREATE TABLE IF NOT EXISTS `{$db_prefix}news` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `news` blob NOT NULL,
-  `user_id` int(10) NOT NULL default '0',
-  `date` datetime NOT NULL default '0000-00-00 00:00:00',
-  `title` varchar(40) NOT NULL default '',
+  `user_id` int(10) NOT NULL DEFAULT '0',
+  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `title` varchar(40) NOT NULL DEFAULT '',
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}news`
--- 
+--
 
-INSERT INTO `{$db_prefix}news` (`id`, `news`, `user_id`, `date`, `title`) VALUES 
-(1, 0x496620796f752063616e20726561642074686973207468656e20796f75722073657420757020776173206120737563636573732e0d0a596f752077696c6c2077616e7420746f2064656c657465207468697320706f73742e200d0a546563686e6963616c20737570706f72742063616e20626520666f756e64206f6e2074686520786274697420666f72756d73205b75726c5d687474703a2f2f7777772e6274697465616d2e6f72672f736d662f5b2f75726c5d, 2, NOW(), 'Welcome ;)');
+INSERT INTO `{$db_prefix}news` (`id`, `news`, `user_id`, `date`, `title`) VALUES
+(1, 0x496620796f752063616e20726561642074686973207468656e20796f75722073657420757020776173206120737563636573732e0d0a596f752077696c6c2077616e7420746f2064656c657465207468697320706f73742e200d0a546563686e6963616c20737570706f72742063616e20626520666f756e64206f6e2074686520786274697420666f72756d73205b75726c5d687474703a2f2f7777772e6274697465616d2e6f72672f736d662f5b2f75726c5d, 2, '2011-01-05 08:17:16', 'Welcome ;)');
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}online`
--- 
+--
 
-CREATE TABLE `{$db_prefix}online` (
+CREATE TABLE IF NOT EXISTS `{$db_prefix}online` (
   `session_id` varchar(40) NOT NULL,
   `user_id` int(10) NOT NULL,
   `user_ip` varchar(15) NOT NULL,
@@ -668,112 +670,91 @@ CREATE TABLE `{$db_prefix}online` (
   `user_group` varchar(50) NOT NULL,
   `prefixcolor` varchar(200) NOT NULL,
   `suffixcolor` varchar(200) NOT NULL,
-  PRIMARY KEY  (`session_id`),
+  PRIMARY KEY (`session_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}online`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}peers`
--- 
+--
 
-CREATE TABLE `{$db_prefix}peers` (
-  `infohash` varchar(40) NOT NULL default '',
-  `peer_id` varchar(40) NOT NULL default '',
-  `bytes` bigint(20) NOT NULL default '0',
-  `ip` varchar(50) NOT NULL default 'error.x',
-  `port` smallint(5) unsigned NOT NULL default '0',
-  `status` enum('leecher','seeder') NOT NULL default 'leecher',
-  `lastupdate` int(10) unsigned NOT NULL default '0',
-  `sequence` int(10) unsigned NOT NULL auto_increment,
-  `natuser` enum('N','Y') NOT NULL default 'N',
-  `client` varchar(60) NOT NULL default '',
-  `dns` varchar(100) NOT NULL default '',
-  `uploaded` bigint(20) unsigned NOT NULL default '0',
-  `downloaded` bigint(20) unsigned NOT NULL default '0',
-  `pid` varchar(32) default NULL,
-  `with_peerid` varchar(101) NOT NULL default '',
-  `without_peerid` varchar(40) NOT NULL default '',
-  `compact` varchar(6) NOT NULL default '',
-  PRIMARY KEY  (`infohash`,`peer_id`),
+CREATE TABLE IF NOT EXISTS `{$db_prefix}peers` (
+  `infohash` varchar(40) NOT NULL DEFAULT '',
+  `peer_id` varchar(40) NOT NULL DEFAULT '',
+  `bytes` bigint(20) NOT NULL DEFAULT '0',
+  `ip` varchar(50) NOT NULL DEFAULT 'error.x',
+  `port` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `status` enum('leecher','seeder') NOT NULL DEFAULT 'leecher',
+  `lastupdate` int(10) unsigned NOT NULL DEFAULT '0',
+  `sequence` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `natuser` enum('N','Y') NOT NULL DEFAULT 'N',
+  `client` varchar(60) NOT NULL DEFAULT '',
+  `dns` varchar(100) NOT NULL DEFAULT '',
+  `uploaded` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `downloaded` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `pid` varchar(32) DEFAULT NULL,
+  `with_peerid` varchar(101) NOT NULL DEFAULT '',
+  `without_peerid` varchar(40) NOT NULL DEFAULT '',
+  `compact` varchar(6) NOT NULL DEFAULT '',
+  PRIMARY KEY (`infohash`,`peer_id`),
   UNIQUE KEY `sequence` (`sequence`),
   KEY `pid` (`pid`),
   KEY `ip` (`ip`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}peers`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
--- Table structure for table `{$db_prefix}poll_voters`
--- 
-
-CREATE TABLE `{$db_prefix}poll_voters` (
-  `vid` int(10) NOT NULL auto_increment,
-  `ip` varchar(16) NOT NULL default '',
-  `votedate` int(10) NOT NULL default '0',
-  `pid` mediumint(8) NOT NULL default '0',
-  `memberid` varchar(32) default NULL,
-  PRIMARY KEY  (`vid`),
-  KEY `pid` (`pid`)
-) ENGINE=MyISAM;
-
--- 
--- Dumping data for table `{$db_prefix}poll_voters`
--- 
-
-
--- --------------------------------------------------------
-
--- 
+--
 -- Table structure for table `{$db_prefix}poller`
--- 
+--
 
-CREATE TABLE `{$db_prefix}poller` (
-  `ID` int(11) NOT NULL auto_increment,
-  `startDate` int(10) NOT NULL default '0',
-  `endDate` int(10) NOT NULL default '0',
-  `pollerTitle` varchar(255) default NULL,
-  `starterID` mediumint(8) NOT NULL default '0',
-  `active` enum('yes','no') NOT NULL default 'no',
-  PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM;
+CREATE TABLE IF NOT EXISTS `{$db_prefix}poller` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `startDate` int(10) NOT NULL DEFAULT '0',
+  `endDate` int(10) NOT NULL DEFAULT '0',
+  `pollerTitle` varchar(255) DEFAULT NULL,
+  `starterID` mediumint(8) NOT NULL DEFAULT '0',
+  `active` enum('yes','no') NOT NULL DEFAULT 'no',
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}poller`
--- 
+--
 
 INSERT INTO `{$db_prefix}poller` (`ID`, `startDate`, `endDate`, `pollerTitle`, `starterID`, `active`) VALUES
-(1, UNIX_TIMESTAMP(), 0, 'How would you rate this script?', 2, 'yes');
+(1, 1294215436, 0, 'How would you rate this script?', 2, 'yes');
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}poller_option`
--- 
+--
 
-CREATE TABLE `{$db_prefix}poller_option` (
-  `ID` int(11) NOT NULL auto_increment,
-  `pollerID` int(11) default NULL,
-  `optionText` varchar(255) default NULL,
-  `pollerOrder` int(11) default NULL,
-  `defaultChecked` char(1) default '0',
-  PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM;
+CREATE TABLE IF NOT EXISTS `{$db_prefix}poller_option` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `pollerID` int(11) DEFAULT NULL,
+  `optionText` varchar(255) DEFAULT NULL,
+  `pollerOrder` int(11) DEFAULT NULL,
+  `defaultChecked` char(1) DEFAULT '0',
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}poller_option`
--- 
+--
 
 INSERT INTO `{$db_prefix}poller_option` (`ID`, `pollerID`, `optionText`, `pollerOrder`, `defaultChecked`) VALUES
 (1, 1, 'Excellent', 1, '1'),
@@ -784,125 +765,148 @@ INSERT INTO `{$db_prefix}poller_option` (`ID`, `pollerID`, `optionText`, `poller
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}poller_vote`
--- 
+--
 
-CREATE TABLE `{$db_prefix}poller_vote` (
-  `ID` int(11) NOT NULL auto_increment,
-  `pollerID` int(11) NOT NULL default '0',
-  `optionID` int(11) default NULL,
-  `ipAddress` bigint(11) default '0',
-  `voteDate` int(10) NOT NULL default '0',
-  `memberID` int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM;
+CREATE TABLE IF NOT EXISTS `{$db_prefix}poller_vote` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `pollerID` int(11) NOT NULL DEFAULT '0',
+  `optionID` int(11) DEFAULT NULL,
+  `ipAddress` bigint(11) DEFAULT '0',
+  `voteDate` int(10) NOT NULL DEFAULT '0',
+  `memberID` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}poller_vote`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}polls`
--- 
+--
 
-CREATE TABLE `{$db_prefix}polls` (
-  `pid` mediumint(8) NOT NULL auto_increment,
-  `startdate` int(10) default NULL,
+CREATE TABLE IF NOT EXISTS `{$db_prefix}polls` (
+  `pid` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `startdate` int(10) DEFAULT NULL,
   `choices` text,
-  `starter_id` mediumint(8) NOT NULL default '0',
-  `votes` smallint(5) NOT NULL default '0',
-  `poll_question` varchar(255) default NULL,
-  `status` enum('true','false') NOT NULL default 'false',
-  PRIMARY KEY  (`pid`)
-) ENGINE=MyISAM;
+  `starter_id` mediumint(8) NOT NULL DEFAULT '0',
+  `votes` smallint(5) NOT NULL DEFAULT '0',
+  `poll_question` varchar(255) DEFAULT NULL,
+  `status` enum('true','false') NOT NULL DEFAULT 'false',
+  PRIMARY KEY (`pid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}polls`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
--- Table structure for table `{$db_prefix}posts`
--- 
+--
+-- Table structure for table `{$db_prefix}poll_voters`
+--
 
-CREATE TABLE `{$db_prefix}posts` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `topicid` int(10) unsigned NOT NULL default '0',
-  `userid` int(10) unsigned NOT NULL default '0',
-  `added` int(10) default NULL,
+CREATE TABLE IF NOT EXISTS `{$db_prefix}poll_voters` (
+  `vid` int(10) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(16) NOT NULL DEFAULT '',
+  `votedate` int(10) NOT NULL DEFAULT '0',
+  `pid` mediumint(8) NOT NULL DEFAULT '0',
+  `memberid` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`vid`),
+  KEY `pid` (`pid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}poll_voters`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}posts`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}posts` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `topicid` int(10) unsigned NOT NULL DEFAULT '0',
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  `added` int(10) DEFAULT NULL,
   `body` text,
-  `editedby` int(10) unsigned NOT NULL default '0',
-  `editedat` int(10) default '0',
-  PRIMARY KEY  (`id`),
+  `editedby` int(10) unsigned NOT NULL DEFAULT '0',
+  `editedat` int(10) DEFAULT '0',
+  PRIMARY KEY (`id`),
   KEY `topicid` (`topicid`),
   KEY `userid` (`userid`),
   FULLTEXT KEY `body` (`body`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}posts`
--- 
+--
+
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}ratings`
--- 
+--
 
-CREATE TABLE `{$db_prefix}ratings` (
-  `infohash` char(40) NOT NULL default '',
-  `userid` int(10) unsigned NOT NULL default '1',
-  `rating` tinyint(3) unsigned NOT NULL default '0',
-  `added` int(10) unsigned NOT NULL default '0',
+CREATE TABLE IF NOT EXISTS `{$db_prefix}ratings` (
+  `infohash` char(40) NOT NULL DEFAULT '',
+  `userid` int(10) unsigned NOT NULL DEFAULT '1',
+  `rating` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `added` int(10) unsigned NOT NULL DEFAULT '0',
   KEY `infohash` (`infohash`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}ratings`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}readposts`
--- 
+--
 
-CREATE TABLE `{$db_prefix}readposts` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `userid` int(10) unsigned NOT NULL default '0',
-  `topicid` int(10) unsigned NOT NULL default '0',
-  `lastpostread` int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`),
+CREATE TABLE IF NOT EXISTS `{$db_prefix}readposts` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  `topicid` int(10) unsigned NOT NULL DEFAULT '0',
+  `lastpostread` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
   KEY `topicid` (`topicid`),
   KEY `userid` (`userid`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}readposts`
--- 
+--
+
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}settings`
--- 
+--
 
-CREATE TABLE `{$db_prefix}settings` (
+CREATE TABLE IF NOT EXISTS `{$db_prefix}settings` (
   `key` varchar(30) NOT NULL,
   `value` varchar(200) NOT NULL,
-  PRIMARY KEY  (`key`)
-) ENGINE=MyISAM;
+  PRIMARY KEY (`key`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}settings`
--- 
+--
 
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('name', 'BTI-Tracker'),
@@ -954,20 +958,20 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}style`
--- 
+--
 
-CREATE TABLE `{$db_prefix}style` (
-  `id` int(10) NOT NULL auto_increment,
-  `style` varchar(20) NOT NULL default '',
-  `style_url` varchar(100) NOT NULL default '',
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM ;
+CREATE TABLE IF NOT EXISTS `{$db_prefix}style` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `style` varchar(20) NOT NULL DEFAULT '',
+  `style_url` varchar(100) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}style`
--- 
+--
 
 INSERT INTO `{$db_prefix}style` (`id`, `style`, `style_url`) VALUES
 (1, 'xBtit Default', 'style/xbtit_default'),
@@ -976,61 +980,62 @@ INSERT INTO `{$db_prefix}style` (`id`, `style`, `style_url`) VALUES
 (4, 'Yellow Jacket', 'style/thehive'),
 (5, 'Frosted', 'style/frosted'),
 (6, 'Holiday Spirit', 'style/holiday-spirit');
+
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}tasks`
--- 
+--
 
-CREATE TABLE `{$db_prefix}tasks` (
-  `task` varchar(20) NOT NULL default '',
-  `last_time` int(10) NOT NULL default '0',
-  PRIMARY KEY  (`task`)
-) ENGINE=MyISAM;
+CREATE TABLE IF NOT EXISTS `{$db_prefix}tasks` (
+  `task` varchar(20) NOT NULL DEFAULT '',
+  `last_time` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`task`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}tasks`
--- 
+--
 
 INSERT INTO `{$db_prefix}tasks` (`task`, `last_time`) VALUES
-('sanity', UNIX_TIMESTAMP()),
-('update', UNIX_TIMESTAMP());
+('sanity', 1294215436),
+('update', 1294215436);
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}timestamps`
--- 
+--
 
-CREATE TABLE `{$db_prefix}timestamps` (
-  `info_hash` char(40) NOT NULL default '',
-  `sequence` int(10) unsigned NOT NULL auto_increment,
-  `bytes` bigint(20) unsigned NOT NULL default '0',
-  `delta` smallint(5) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`sequence`),
+CREATE TABLE IF NOT EXISTS `{$db_prefix}timestamps` (
+  `info_hash` char(40) NOT NULL DEFAULT '',
+  `sequence` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `bytes` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `delta` smallint(5) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`sequence`),
   KEY `sorting` (`info_hash`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}timestamps`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}timezone`
--- 
+--
 
-CREATE TABLE `{$db_prefix}timezone` (
-  `difference` varchar(4) NOT NULL default '0',
+CREATE TABLE IF NOT EXISTS `{$db_prefix}timezone` (
+  `difference` varchar(4) NOT NULL DEFAULT '0',
   `timezone` text NOT NULL,
-  PRIMARY KEY  (`difference`)
-) ENGINE=MyISAM;
+  PRIMARY KEY (`difference`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}timezone`
--- 
+--
 
 INSERT INTO `{$db_prefix}timezone` (`difference`, `timezone`) VALUES
 ('-12', '(GMT - 12:00 hours) Enitwetok, Kwajalien'),
@@ -1066,119 +1071,120 @@ INSERT INTO `{$db_prefix}timezone` (`difference`, `timezone`) VALUES
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}topics`
--- 
+--
 
-CREATE TABLE `{$db_prefix}topics` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `userid` int(10) unsigned NOT NULL default '0',
-  `subject` varchar(40) default NULL,
-  `locked` enum('yes','no') NOT NULL default 'no',
-  `forumid` int(10) unsigned NOT NULL default '0',
-  `lastpost` int(10) unsigned NOT NULL default '0',
-  `sticky` enum('yes','no') NOT NULL default 'no',
-  `views` int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`),
+CREATE TABLE IF NOT EXISTS `{$db_prefix}topics` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  `subject` varchar(40) DEFAULT NULL,
+  `locked` enum('yes','no') NOT NULL DEFAULT 'no',
+  `forumid` int(10) unsigned NOT NULL DEFAULT '0',
+  `lastpost` int(10) unsigned NOT NULL DEFAULT '0',
+  `sticky` enum('yes','no') NOT NULL DEFAULT 'no',
+  `views` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   KEY `subject` (`subject`),
   KEY `lastpost` (`lastpost`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}topics`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}users`
--- 
+--
 
-CREATE TABLE `{$db_prefix}users` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `username` varchar(40) NOT NULL default '',
-  `password` varchar(40) NOT NULL default '',
-  `id_level` int(10) NOT NULL default '1',
-  `random` int(10) default '0',
-  `email` varchar(50) NOT NULL default '',
-  `language` tinyint(4) NOT NULL default '1',
-  `style` tinyint(4) NOT NULL default '1',
-  `joined` datetime NOT NULL default '0000-00-00 00:00:00',
-  `lastconnect` datetime NOT NULL default '0000-00-00 00:00:00',
-  `lip` bigint(11) default '0',
-  `downloaded` bigint(20) default '0',
-  `uploaded` bigint(20) default '0',
-  `avatar` varchar(200) default NULL,
-  `pid` varchar(32) NOT NULL default '',
-  `flag` tinyint(1) unsigned NOT NULL default '0',
-  `topicsperpage` tinyint(3) unsigned NOT NULL default '15',
-  `postsperpage` tinyint(3) unsigned NOT NULL default '15',
-  `torrentsperpage` tinyint(3) unsigned NOT NULL default '15',
-  `cip` varchar(15) default NULL,
-  `time_offset` varchar(4) NOT NULL default '0',
-  `temp_email` varchar(50) NOT NULL default '',
-  `smf_fid` int(10) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
+CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(40) NOT NULL DEFAULT '',
+  `password` varchar(40) NOT NULL DEFAULT '',
+  `id_level` int(10) NOT NULL DEFAULT '1',
+  `random` int(10) DEFAULT '0',
+  `email` varchar(50) NOT NULL DEFAULT '',
+  `language` tinyint(4) NOT NULL DEFAULT '1',
+  `style` tinyint(4) NOT NULL DEFAULT '1',
+  `joined` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `lastconnect` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `lip` bigint(11) DEFAULT '0',
+  `downloaded` bigint(20) DEFAULT '0',
+  `uploaded` bigint(20) DEFAULT '0',
+  `avatar` varchar(200) DEFAULT NULL,
+  `pid` varchar(32) NOT NULL DEFAULT '',
+  `flag` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `topicsperpage` tinyint(3) unsigned NOT NULL DEFAULT '15',
+  `postsperpage` tinyint(3) unsigned NOT NULL DEFAULT '15',
+  `torrentsperpage` tinyint(3) unsigned NOT NULL DEFAULT '15',
+  `cip` varchar(15) DEFAULT NULL,
+  `time_offset` varchar(4) NOT NULL DEFAULT '0',
+  `temp_email` varchar(50) NOT NULL DEFAULT '',
+  `smf_fid` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `id_level` (`id_level`),
   KEY `pid` (`pid`),
   KEY `cip` (`cip`),
   KEY `smf_fid` (`smf_fid`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}users`
--- 
+--
 
 INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`) VALUES
-(1, 'Guest', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0);
+(1, 'Guest', '', 1, 0, 'none', 1, 1, '2011-01-05 08:17:16', '2011-01-05 08:17:16', 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0);
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}users_level`
--- 
+--
 
-CREATE TABLE `{$db_prefix}users_level` (
-  `id` int(10) NOT NULL auto_increment,
-  `id_level` int(11) NOT NULL default '0',
-  `level` varchar(50) NOT NULL default '',
-  `view_torrents` enum('yes','no') NOT NULL default 'yes',
-  `edit_torrents` enum('yes','no') NOT NULL default 'no',
-  `delete_torrents` enum('yes','no') NOT NULL default 'no',
-  `view_users` enum('yes','no') NOT NULL default 'yes',
-  `edit_users` enum('yes','no') NOT NULL default 'no',
-  `delete_users` enum('yes','no') NOT NULL default 'no',
-  `view_news` enum('yes','no') NOT NULL default 'yes',
-  `edit_news` enum('yes','no') NOT NULL default 'no',
-  `delete_news` enum('yes','no') NOT NULL default 'no',
-  `can_upload` enum('yes','no') NOT NULL default 'no',
-  `can_download` enum('yes','no') NOT NULL default 'yes',
-  `view_forum` enum('yes','no') NOT NULL default 'yes',
-  `edit_forum` enum('yes','no') NOT NULL default 'yes',
-  `delete_forum` enum('yes','no') NOT NULL default 'no',
-  `predef_level` enum('guest','validating','member','uploader','vip','moderator','admin','owner') NOT NULL default 'guest',
-  `can_be_deleted` enum('yes','no') NOT NULL default 'yes',
-  `admin_access` enum('yes','no') NOT NULL default 'no',
-  `prefixcolor` varchar(200) NOT NULL default '',
-  `suffixcolor` varchar(200) NOT NULL default '',
-  `WT` int(11) NOT NULL default '0',
+CREATE TABLE IF NOT EXISTS `{$db_prefix}users_level` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `id_level` int(11) NOT NULL DEFAULT '0',
+  `level` varchar(50) NOT NULL DEFAULT '',
+  `view_torrents` enum('yes','no') NOT NULL DEFAULT 'yes',
+  `edit_torrents` enum('yes','no') NOT NULL DEFAULT 'no',
+  `delete_torrents` enum('yes','no') NOT NULL DEFAULT 'no',
+  `view_users` enum('yes','no') NOT NULL DEFAULT 'yes',
+  `edit_users` enum('yes','no') NOT NULL DEFAULT 'no',
+  `delete_users` enum('yes','no') NOT NULL DEFAULT 'no',
+  `view_news` enum('yes','no') NOT NULL DEFAULT 'yes',
+  `edit_news` enum('yes','no') NOT NULL DEFAULT 'no',
+  `delete_news` enum('yes','no') NOT NULL DEFAULT 'no',
+  `can_upload` enum('yes','no') NOT NULL DEFAULT 'no',
+  `can_download` enum('yes','no') NOT NULL DEFAULT 'yes',
+  `view_forum` enum('yes','no') NOT NULL DEFAULT 'yes',
+  `edit_forum` enum('yes','no') NOT NULL DEFAULT 'yes',
+  `delete_forum` enum('yes','no') NOT NULL DEFAULT 'no',
+  `predef_level` enum('guest','validating','member','uploader','vip','moderator','admin','owner') NOT NULL DEFAULT 'guest',
+  `can_be_deleted` enum('yes','no') NOT NULL DEFAULT 'yes',
+  `admin_access` enum('yes','no') NOT NULL DEFAULT 'no',
+  `prefixcolor` varchar(200) NOT NULL DEFAULT '',
+  `suffixcolor` varchar(200) NOT NULL DEFAULT '',
+  `WT` int(11) NOT NULL DEFAULT '0',
   UNIQUE KEY `base` (`id`),
   KEY `id_level` (`id_level`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}users_level`
--- 
+--
 
 INSERT INTO `{$db_prefix}users_level` (`id`, `id_level`, `level`, `view_torrents`, `edit_torrents`, `delete_torrents`, `view_users`, `edit_users`, `delete_users`, `view_news`, `edit_news`, `delete_news`, `can_upload`, `can_download`, `view_forum`, `edit_forum`, `delete_forum`, `predef_level`, `can_be_deleted`, `admin_access`, `prefixcolor`, `suffixcolor`, `WT`) VALUES
 (1, 1, 'guest', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'guest', 'no', 'no', '', '', 0),
 (2, 2, 'validating', 'yes', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'validating', 'no', 'no', '', '', 0),
-(3, 3, 'Members', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'no', 'yes', 'yes', 'no', 'no', 'member', 'no', 'no', '<span style=\'color:#000000\'>', '</span>', 0),
+(3, 3, 'Members', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'no', 'yes', 'yes', 'no', 'no', 'member', 'no', 'no', '<span style=''color:#000000''>', '</span>', 0),
 (4, 4, 'Uploader', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'uploader', 'no', 'no', '', '', 0),
 (5, 5, 'V.I.P.', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'vip', 'no', 'no', '', '', 0),
-(6, 6, 'Moderator', 'yes', 'yes', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'no', 'yes', 'yes', 'yes', 'yes', 'no', 'moderator', 'no', 'no', '<span style=\'color: #428D67\'>', '</span>', 0),
-(7, 7, 'Administrator', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'admin', 'no', 'yes', '<span style=\'color:#FF8000\'>', '</span>', 0),
-(8, 8, 'Owner', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'owner', 'no', 'yes', '<span style=\'color:#EE4000\'>', '</span>', 0);
+(6, 6, 'Moderator', 'yes', 'yes', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'no', 'yes', 'yes', 'yes', 'yes', 'no', 'moderator', 'no', 'no', '<span style=''color: #428D67''>', '</span>', 0),
+(7, 7, 'Administrator', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'admin', 'no', 'yes', '<span style=''color:#FF8000''>', '</span>', 0),
+(8, 8, 'Owner', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'owner', 'no', 'yes', '<span style=''color:#EE4000''>', '</span>', 0);
+
