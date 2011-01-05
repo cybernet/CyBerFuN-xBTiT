@@ -37,3 +37,7 @@ ALTER TABLE `{$db_prefix}polls` ADD INDEX ( `poll_question` ) ;
 ALTER TABLE `{$db_prefix}polls` ADD INDEX ( `votes` ) ;
 ALTER TABLE `{$db_prefix}polls` ADD INDEX ( `status` ) ;
 ALTER TABLE `{$db_prefix}chat` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+ALTER TABLE `{$db_prefix}categories` CHANGE `name` `name` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
+ALTER TABLE `{$db_prefix}categories` ADD INDEX ( `image` ) ;
+ALTER TABLE `{$db_prefix}categories` ADD INDEX ( `sort_index` ) ;
+ALTER TABLE `{$db_prefix}categories` ADD INDEX ( `name` ) ;

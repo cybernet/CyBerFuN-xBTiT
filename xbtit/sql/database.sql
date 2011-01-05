@@ -87,11 +87,14 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}categories` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) NOT NULL DEFAULT '',
+  `name` varchar(30) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `sub` int(10) NOT NULL DEFAULT '0',
   `sort_index` int(10) unsigned NOT NULL DEFAULT '0',
   `image` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `image` (`image`),
+  KEY `sort_index` (`sort_index`),
+  KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
