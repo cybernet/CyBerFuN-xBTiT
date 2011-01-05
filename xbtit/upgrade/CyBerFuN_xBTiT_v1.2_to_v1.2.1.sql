@@ -41,3 +41,7 @@ ALTER TABLE `{$db_prefix}categories` CHANGE `name` `name` VARCHAR( 30 ) CHARACTE
 ALTER TABLE `{$db_prefix}categories` ADD INDEX ( `image` ) ;
 ALTER TABLE `{$db_prefix}categories` ADD INDEX ( `sort_index` ) ;
 ALTER TABLE `{$db_prefix}categories` ADD INDEX ( `name` ) ;
+ALTER TABLE `{$db_prefix}messages` CHANGE `msg` `msg` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
+ALTER TABLE `{$db_prefix}messages` CHANGE `readed` `readed` ENUM( 'yes', 'no' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'no' ;
+ALTER TABLE `{$db_prefix}news` CHANGE `title` `title` VARCHAR( 40 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
+ALTER TABLE `{$db_prefix}news` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
