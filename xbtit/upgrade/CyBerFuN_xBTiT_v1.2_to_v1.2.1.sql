@@ -55,3 +55,6 @@ ALTER TABLE `{$db_prefix}style` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_
 ALTER TABLE `{$db_prefix}language` CHANGE `language` `language` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
 ALTER TABLE `{$db_prefix}language` ADD INDEX ( `language_url` ) ;
 ALTER TABLE `{$db_prefix}language` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+ALTER TABLE `{$db_prefix}modules` CHANGE `name` `name` VARCHAR( 40 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
+ALTER TABLE `{$db_prefix}modules` ADD INDEX ( `activated` ) ;
+ALTER TABLE `{$db_prefix}modules` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;

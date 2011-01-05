@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jan 05, 2011 at 09:45 AM
+-- Generation Time: Jan 05, 2011 at 09:49 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.5
 
@@ -623,13 +623,14 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}messages` (
 CREATE TABLE IF NOT EXISTS `{$db_prefix}modules` (
   `id` mediumint(3) NOT NULL AUTO_INCREMENT,
   `name` varchar(40) NOT NULL DEFAULT '',
-  `activated` enum('yes','no') NOT NULL DEFAULT 'yes',
-  `type` enum('staff','misc','torrent','style') NOT NULL DEFAULT 'misc',
+  `activated` enum('yes','no') CHARACTER SET latin1 NOT NULL DEFAULT 'yes',
+  `type` enum('staff','misc','torrent','style') CHARACTER SET latin1 NOT NULL DEFAULT 'misc',
   `changed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  UNIQUE KEY `name` (`name`),
+  KEY `activated` (`activated`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}modules`
