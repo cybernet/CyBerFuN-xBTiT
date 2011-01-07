@@ -139,8 +139,8 @@ if (strpos($pid, "?"))
 {
   $tmp = substr($pid , strpos($pid , "?"));
   $pid  = substr($pid , 0,strpos($pid , "?"));
-  $tmpname = substr($tmp, 1, strpos($tmp, "=")-1);
-  $tmpvalue = substr($tmp, strpos($tmp, "=")+1);
+  $tmpname = substr($tmp, 1, strpos($tmp, "=") - 1);
+  $tmpvalue = substr($tmp, strpos($tmp, "=") + 1);
   $_GET[$tmpname] = $tmpvalue;
 }
 
@@ -401,7 +401,7 @@ function start($info_hash, $ip, $port, $peer_id, $left, $downloaded=0, $uploaded
     if (isset($_GET["ip"]) && $GLOBALS["ip_override"])
     {
         // compact check: valid IP address:
-        if ($_GET["ip"]!=long2ip(ip2long($_GET["ip"])))
+        if ($_GET["ip"] != long2ip(ip2long($_GET["ip"])))
             show_error("Invalid IP address. Must be standard dotted decimal (hostnames not allowed)");
 
         $ip = mysql_real_escape_string($_GET["ip"]);
@@ -450,7 +450,7 @@ function start($info_hash, $ip, $port, $peer_id, $left, $downloaded=0, $uploaded
     // Special case: duplicated peer_id.
     if (!$results)
     {
-        if (mysql_errno()==1062)
+        if (mysql_errno() == 1062)
         {
             // Duplicate peer_id! Check IP address
             $peer = getPeerInfo($peer_id, $info_hash);
@@ -485,8 +485,8 @@ function start($info_hash, $ip, $port, $peer_id, $left, $downloaded=0, $uploaded
 /// End of function start
 
 // default for max peers with same pid/ip
-if (!isset($GLOBALS["maxseeds"])) $GLOBALS["maxseeds"]=2;
-if (!isset($GLOBALS["maxleech"])) $GLOBALS["maxleech"]=2;
+if (!isset($GLOBALS["maxseeds"])) $GLOBALS["maxseeds"] = 2;
+if (!isset($GLOBALS["maxleech"])) $GLOBALS["maxleech"] = 2;
 
 // send random peers to client (direct print)
 function sendRandomPeers($info_hash)
@@ -497,9 +497,9 @@ function sendRandomPeers($info_hash)
 
 
     if ($GLOBALS["NAT"])
-        $where="WHERE infohash=\"$info_hash\" AND natuser = 'N'";
+        $where = "WHERE infohash=\"$info_hash\" AND natuser = 'N'";
     else
-        $where="WHERE infohash=\"$info_hash\"";
+        $where = "WHERE infohash=\"$info_hash\"";
 
     $query = "SELECT ".((isset($_GET["no_peer_id"]) && $_GET["no_peer_id"] == 1) ? "" : "peer_id,")."ip, port FROM {$TABLE_PREFIX}peers ".$where." ORDER BY RAND() LIMIT ".$GLOBALS["maxpeers"];
 
@@ -513,7 +513,7 @@ function sendRandomPeers($info_hash)
 
     if (isset($_GET["compact"]) && $_GET["compact"] == '1')
       {
-        $p='';
+        $p = '';
         while ($row = mysql_fetch_assoc($result))
             $p .= str_pad(pack("Nn", ip2long($row["ip"]), $row["port"]), 6);
         echo strlen($p).':'.$p;
@@ -586,7 +586,7 @@ function collectBytes($peer, $hash, $left, $downloaded=0, $uploaded=0, $pid="")
 
   global $TABLE_PREFIX;
 
-    $peerid=$peer["peer_id"];
+    $peerid = $peer["peer_id"];
 
     if (!$GLOBALS["countbytes"])
     {
@@ -659,12 +659,12 @@ if ($LIVESTATS)
          $livestat = mysql_fetch_assoc($resstat);
          // only if uploaded/downloaded are >= stored data in peer list
          //if ($uploaded>=$livestat["uploaded"])
-               $newup = max(0,($uploaded-$livestat["uploaded"]));
+               $newup = max(0, ($uploaded-$livestat["uploaded"]));
          //else
          //      $newup=$uploaded;
 
          //if ($downloaded>=$livestat["downloaded"])
-               $newdown = max(0,($downloaded-$livestat["downloaded"]));
+               $newdown = max(0, ($downloaded-$livestat["downloaded"]));
          //else
          //      $newdown=$downloaded;
          // rev 485
@@ -702,14 +702,14 @@ switch ($event)
        // begin history
        if ($LOG_HISTORY)
          {
-          $resu=mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
+          $resu = mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
           // if found at least one user should be 1
-          if ($resu && mysql_num_rows($resu)==1)
+          if ($resu && mysql_num_rows($resu) == 1)
             {
-              $curuid=mysql_fetch_assoc($resu);
-              quickQuery("UPDATE {$TABLE_PREFIX}history set active='yes',agent='".getagent($agent,$peer_id)."' WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
+              $curuid = mysql_fetch_assoc($resu);
+              quickQuery("UPDATE {$TABLE_PREFIX}history set active='yes',agent='".getagent($agent, $peer_id)."' WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
               // record is not present, create it (only if not seeder: original seeder don't exist in history table, other already exists)
-              if (mysql_affected_rows()==0 && $left>0)
+              if (mysql_affected_rows() == 0 && $left > 0)
                  quickQuery("INSERT INTO {$TABLE_PREFIX}history (uid,infohash,active,agent) VALUES (".$curuid["id"].",'$info_hash','yes','".getagent($agent,$peer_id)."')");
             }
           mysql_free_result($resu);
@@ -731,11 +731,11 @@ switch ($event)
        // begin history - if LIVESTAT, only the active/agent part
        if ($LOG_HISTORY)
          {
-          $resu=mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
+          $resu = mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
           // if found at least one user should be 1
-          if ($resu && mysql_num_rows($resu)==1)
+          if ($resu && mysql_num_rows($resu) == 1)
             {
-              $curuid=mysql_fetch_assoc($resu);
+              $curuid = mysql_fetch_assoc($resu);
               quickQuery("UPDATE {$TABLE_PREFIX}history set active='no',".($LIVESTATS?"":" uploaded=IFNULL(uploaded,0)+$uploaded, downloaded=IFNULL(downloaded,0)+$downloaded,")." agent='".getagent($agent,$peer_id)."' WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
             }
           mysql_free_result($resu);
