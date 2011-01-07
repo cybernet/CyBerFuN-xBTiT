@@ -30,12 +30,25 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
+// CyBerFuN .::. xList //
+// http://cyberfun-xbtit.co.cc/
+// http://www.cyberfun.ro/
+// http://xList.ro/
+// http://xDnS.ro/
+// Modified By cybernet2u
+
+// CyBerFuN xBTiT Fully MoDDeD v1.2
+
+
+// https://cyberfun-xbtit.svn.sourceforge.net/svnroot/cyberfun-xbtit
+// http://cyberfun-xbtit.svn.sourceforge.net/viewvc/cyberfun-xbtit/
+
 ignore_user_abort(1);
 
 $GLOBALS["peer_id"] = "";
 $summaryupdate = array();
 
-$BASEPATH=dirname(__FILE__);
+$BASEPATH = dirname(__FILE__);
 require("$BASEPATH/include/config.php");
 require("$BASEPATH/include/common.php");
 
@@ -58,8 +71,8 @@ if ($XBTT_USE)
 
     if (isset ($_GET["pid"])) {
        $pid = $_GET["pid"];
-       if (strpos($pid , "?")!==false)
-          $pid  = substr($pid , 0,strpos($pid , "?"));
+       if (strpos($pid , "?") !== false)
+          $pid = substr($pid , 0, strpos($pid , "?"));
        unset($_GET["pid"]);
     } else
        $pid = "";
@@ -67,10 +80,10 @@ if ($XBTT_USE)
     if (isset($_SERVER['QUERY_STRING']))
         $query_string = substr($_SERVER['QUERY_STRING'], strpos($_SERVER['QUERY_STRING'], "?")+1);
     else
-        $query_string=implode_with_keys("&", $_GET);
+        $query_string = implode_with_keys("&", $_GET);
 
 
-    if ($pid!="") // private announce
+    if ($pid != "") // private announce
     {
        header("Location: $XBTT_URL/$pid/announce?" . $query_string);
     }
@@ -107,7 +120,7 @@ function summaryAdd($column, $value, $abs = false)
 
 // connect to db
 if ($GLOBALS["persist"])
-    $conres=mysql_pconnect($dbhost, $dbuser, $dbpass) or show_error("Tracker error - mysql_connect: " . mysql_error());
+    $conres = mysql_pconnect($dbhost, $dbuser, $dbpass) or show_error("Tracker error - mysql_connect: " . mysql_error());
 else
     $conres=mysql_connect($dbhost, $dbuser, $dbpass) or show_error("Tracker error - mysql_connect: " . mysql_error());
 
@@ -200,8 +213,8 @@ if (mysql_num_rows($res) > 0)
 
 
 // only for internal tracked torrent!
-$res_tor =mysql_query("SELECT UNIX_TIMESTAMP(data) as data, uploader FROM {$TABLE_PREFIX}files WHERE external='no' AND info_hash='".$info_hash."'");
-if (mysql_num_rows($res_tor)==0)
+$res_tor = mysql_query("SELECT UNIX_TIMESTAMP(data) as data, uploader FROM {$TABLE_PREFIX}files WHERE external='no' AND info_hash='".$info_hash."'");
+if (mysql_num_rows($res_tor) == 0)
    show_error("Torrent is not authorized for use on this tracker.");
 
 
@@ -216,75 +229,75 @@ if ($PRIVATE_ANNOUNCE) {
 $pid = AddSlashes(StripSlashes($pid));
 
 // if PID empty string or not send by client
-if ($pid=="" || !$pid)
+if ($pid == "" || !$pid)
    show_error("Please redownload the torrent. PID system is active and pid was not found in the torrent");
 }
 
 // PID turned on
 if ($PRIVATE_ANNOUNCE) {
   $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE pid='".$pid."' LIMIT 1");
-  if (!$respid || mysql_num_rows($respid)!=1)
+  if (!$respid || mysql_num_rows($respid) != 1)
      show_error("Invalid PID (private announce): $pid. Please redownload torrent from $BASEURL.");
   else
       {
-      $rowpid=mysql_fetch_assoc($respid);
-      if ($rowpid["can_download"]!="yes" && $PRIVATE_ANNOUNCE)
+      $rowpid = mysql_fetch_assoc($respid);
+      if ($rowpid["can_download"] != "yes" && $PRIVATE_ANNOUNCE)
          show_error("Sorry your level ($rowpid[level]) is not allowed to download from $BASEURL.");
-      //waittime
-      elseif ($rowpid["WT"]>0) {
-        $wait=0;
-        if (intval($rowpid['downloaded'])>0)
-           $ratio=number_format($rowpid['uploaded']/$rowpid['downloaded'],2);
+// waittime
+      	elseif ( $rowpid["WT"] > 0 ) {
+        $wait = 0;
+        if (intval($rowpid['downloaded']) > 0)
+           $ratio = number_format ($rowpid['uploaded'] / $rowpid['downloaded'], 2);
         else
-            $ratio=0.0;
+           $ratio = 0.0;
 
-        $added=mysql_fetch_assoc($res_tor);
+        $added = mysql_fetch_assoc($res_tor);
         $vz = $added["data"];
         $timer = floor((time() - $vz) / 3600);
-        if($ratio<1.0 && $rowpid['id']!=$added["uploader"]){
-            $wait=$rowpid["WT"];
+        if($ratio < 1.0 && $rowpid['id'] != $added["uploader"]) {
+            $wait = $rowpid["WT"];
         }
-        $wait -=$timer;
-        if ($wait<=0)$wait=0;
-        elseif($wait!=0 && $left!=0){show_error($rowpid["username"]." your Waiting Time = ".$wait." h");}
+        $wait -= $timer;
+        if ($wait <= 0)$wait = 0;
+        elseif($wait != 0 && $left != 0) { show_error($rowpid["username"]." your Waiting Time = ".$wait." h"); }
       }
       //end
   }
 } else {
 // PID turned off
    $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE u.cip='$ip' LIMIT 1");
-   if (!$respid || mysql_num_rows($respid)!=1)
+   if (!$respid || mysql_num_rows($respid) != 1)
      // maybe it's guest with new query I must found at least guest user
     $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE u.id=1 LIMIT 1");
-    if (!$respid || mysql_num_rows($respid)!=1)
+    if (!$respid || mysql_num_rows($respid) != 1)
       {
         // do nothing but tracker is misconfigured!!!
         // guest user not found...
       }
     else
       {
-      $rowpid=mysql_fetch_assoc($respid);
-      if ($rowpid["can_download"]!="yes")
+      $rowpid = mysql_fetch_assoc($respid);
+      if ($rowpid["can_download"] != "yes")
          show_error("Sorry your level ($rowpid[level]) is not allowed to download from $BASEURL.");
       //waittime
-      elseif ($rowpid["WT"]>0) {
-        $wait=0;
-        if (intval($rowpid['downloaded'])>0)
-           $ratio=number_format($rowpid['uploaded']/$rowpid['downloaded'],2);
+      elseif ($rowpid["WT"] > 0) {
+        $wait = 0 ;
+        if (intval($rowpid['downloaded']) > 0)
+           $ratio = number_format($rowpid['uploaded'] / $rowpid['downloaded'], 2);
         else
-            $ratio=0.0;
+            $ratio = 0.0;
 
         $added=mysql_fetch_assoc($res_tor);
         $vz = $added["data"];
         $timer = floor((time() - $vz) / 3600);
-        if($ratio<1.0 && $rowpid['id']!=$added["uploader"]){
-            $wait=$rowpid["WT"];
+        if($ratio < 1.0 && $rowpid['id'] != $added["uploader"]){
+            $wait = $rowpid["WT"];
         }
-        $wait -=$timer;
-        if ($wait<=0)
-            $wait=0;
-        elseif($wait!=0 && $left!=0)
-            {show_error($rowpid["username"]." your Waiting Time = ".$wait." h");}
+        $wait -= $timer;
+        if ($wait <= 0)
+            $wait = 0;
+        elseif($wait != 0 && $left != 0)
+            { show_error($rowpid["username"]." your Waiting Time = ".$wait." h"); }
       }
       //end
     }
@@ -301,7 +314,7 @@ if (!isset($GLOBALS["ip_override"]))
 
 if (isset($_GET["numwant"]))
     if ($_GET["numwant"] < $GLOBALS["maxpeers"] && $_GET["numwant"] >= 0)
-        $GLOBALS["maxpeers"]=$_GET["numwant"];
+        $GLOBALS["maxpeers"] = $_GET["numwant"];
 
 if (isset($_GET["trackerid"]))
 {
@@ -621,14 +634,14 @@ $results = mysql_query("SELECT status, count(status) FROM {$TABLE_PREFIX}peers W
 $status = array();
 
 while ($resstat = mysql_fetch_row($results))
-  $status[$resstat[0]]=$resstat[1];
+  $status[$resstat[0]] = $resstat[1];
 
 if (!isset($status["leecher"]))
-    $status["leecher"]=0;
+    $status["leecher"] = 0;
 if (!isset($status["seeder"]))
-    $status["seeder"]=0;
+    $status["seeder"] = 0;
 
-if ($status["seeder"]>=$GLOBALS["maxseeds"] || $status["leecher"]>=$GLOBALS["maxleech"])
+if ($status["seeder"] >= $GLOBALS["maxseeds"] || $status["leecher"] >= $GLOBALS["maxleech"])
    show_error("Sorry max peers reached! Redownload torrent from $BASEURL");
 // end select
 
@@ -640,18 +653,18 @@ mysql_free_result($results);
 if ($LIVESTATS)
   {
      // changed peer_id with pid/ip 485
-     $resstat=mysql_query("SELECT uploaded, downloaded FROM {$TABLE_PREFIX}peers WHERE ".($PRIVATE_ANNOUNCE?"pid=\"$pid\"":"ip=\"$ip\"")." AND infohash=\"$info_hash\"");
-     if ($resstat && mysql_num_rows($resstat)>0)
+     $resstat = mysql_query("SELECT uploaded, downloaded FROM {$TABLE_PREFIX}peers WHERE ".($PRIVATE_ANNOUNCE?"pid=\"$pid\"":"ip=\"$ip\"")." AND infohash=\"$info_hash\"");
+     if ($resstat && mysql_num_rows($resstat) > 0)
          {
-         $livestat=mysql_fetch_assoc($resstat);
+         $livestat = mysql_fetch_assoc($resstat);
          // only if uploaded/downloaded are >= stored data in peer list
          //if ($uploaded>=$livestat["uploaded"])
-               $newup=max(0,($uploaded-$livestat["uploaded"]));
+               $newup = max(0,($uploaded-$livestat["uploaded"]));
          //else
          //      $newup=$uploaded;
 
          //if ($downloaded>=$livestat["downloaded"])
-               $newdown=max(0,($downloaded-$livestat["downloaded"]));
+               $newdown = max(0,($downloaded-$livestat["downloaded"]));
          //else
          //      $newdown=$downloaded;
          // rev 485
@@ -663,11 +676,11 @@ if ($LIVESTATS)
        // begin history - also this is registered live or not
        if ($LOG_HISTORY)
          {
-          $resu=mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
+          $resu = mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
           // if found at least one user should be 1
-          if ($resu && mysql_num_rows($resu)==1)
+          if ($resu && mysql_num_rows($resu) == 1)
             {
-              $curuid=mysql_fetch_assoc($resu);
+              $curuid = mysql_fetch_assoc($resu);
               quickQuery("UPDATE {$TABLE_PREFIX}history set uploaded=IFNULL(uploaded,0)+$newup, downloaded=IFNULL(downloaded,0)+$newdown WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
             }
           mysql_free_result($resu);
