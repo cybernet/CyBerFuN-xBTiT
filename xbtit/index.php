@@ -271,6 +271,69 @@ switch ($pageID) {
         $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->Statistics");
         break;
 
+// DT request hack start
+
+        case 'addrequest':
+        require("$THIS_BASEPATH/addrequest.php");
+        break;
+
+        case 'reqedit':
+        require("$THIS_BASEPATH/reqedit.php");
+        $tpl->set("main_content",set_block($language["RE"],"center",$reqedittpl->fetch(load_template("reqedit.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->reqedit");
+        break;
+
+        case 'reqreset':
+        require("$THIS_BASEPATH/reqreset.php");
+        break;
+
+        case 'takedelreq':
+        require("$THIS_BASEPATH/takedelreq.php");
+        break;
+
+        case 'takerequest':
+        require("$THIS_BASEPATH/takerequest.php");
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->takerequest");
+        break;
+
+        case 'votesview':
+        require("$THIS_BASEPATH/votesview.php");
+        $tpl->set("main_content",set_block($language["VV"],"center",$votesviewtpl->fetch(load_template("votesview.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->votesview");
+        break;
+
+        case 'reqdetails':
+        require("$THIS_BASEPATH/reqdetails.php");
+        $tpl->set("main_content",set_block($language["RD"],"center",$reqdetailstpl->fetch(load_template("reqdetails.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->reqdetails");
+        break;
+
+        case 'reqfilled':
+        require("$THIS_BASEPATH/reqfilled.php");
+        $tpl->set("main_content",set_block($language["RF"],"center",$reqfilledtpl->fetch(load_template("reqfilled.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->reqfilled");
+        break;
+
+        case 'requests':
+        require("$THIS_BASEPATH/requests.php");
+        $tpl->set("main_content",set_block($language["R"],"center",$requeststpl->fetch(load_template("requests.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->requests");
+        break;
+
+        case 'takereqedit':
+        require("$THIS_BASEPATH/takereqedit.php");
+        $tpl->set("main_content",set_block($language["TRE"],"center",$takereqedittpl->fetch(load_template("takereqedit.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->takereqedit");
+        break;
+
+        case 'viewrequests':
+        require("$THIS_BASEPATH/viewrequests.php");
+        $tpl->set("main_content",set_block($language["VR"],"center",$viewrequeststpl->fetch(load_template("viewrequests.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->viewrequests");
+        break;
+
+// DT request hack end
+
     case 'history':
     case 'torrent_history':
         require("$THIS_BASEPATH/torrent_history.php");

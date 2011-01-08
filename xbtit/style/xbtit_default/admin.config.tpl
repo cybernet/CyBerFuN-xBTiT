@@ -184,6 +184,48 @@
       <td class="header"><tag:language.SETTING_NUM_TOPTORRENTS /></td>
       <td class="lista"><input type="text" name="mostpoplimit" value="<tag:config.mostpoplimit />" size="3" maxlength="3" /></td>
     </tr>
+<tr>
+      <td class="header" align="center" colspan="4">Request Settings</td>
+      </tr>
+      <tr>
+      <td class="header">Request hack online</td>
+      <td class="lista">&nbsp;&nbsp;enable&nbsp;<input type="radio" name="req_onoff" value="true"<tag:config.req_onoffyes /> />&nbsp;&nbsp;disabled&nbsp;<input type="radio" name="req_onoff" value="false"<tag:config.req_onoffno /> /></td>
+      <td class="header">Requests in block</td>
+      <td class="lista"><input type="text" name="req_number" value="<tag:config.req_number />" size="4" /></td>
+      </tr>
+      <tr>
+      <td class="header">Days for prune filled requests</td>
+      <td class="lista"><input type="text" name="req_prune" value="<tag:config.req_prune />" size="4" /></td>
+      <td class="header">Requests per page</td>
+      <td class="lista"><input type="text" name="req_page" value="<tag:config.req_page />" size="4" /></td>
+      </tr>
+      <tr>
+      <td class="header">min ID level to post requests</td>
+      <td class="lista"><input type="text" name="req_post" value="<tag:config.req_post />" size="4" /></td>
+      <td class="header">Announce request in shoutbox</td>
+      <td class="lista">&nbsp;&nbsp;enable&nbsp;<input type="radio" name="req_shout" value="true"<tag:config.req_shoutyes /> />&nbsp;&nbsp;disabled&nbsp;<input type="radio" name="req_shout" value="false"<tag:config.req_shoutno /> /></td>
+      </tr>
+      <tr>
+      <td class="header">Max requests use</td>
+      <td class="lista">&nbsp;&nbsp;enable&nbsp;<input type="radio" name="req_maxon" value="true"<tag:config.req_maxonyes /> />&nbsp;&nbsp;disabled&nbsp;<input type="radio" name="req_maxon" value="false"<tag:config.req_maxonno /> /></td>
+      <td class="header">Max number of requests</td>
+      <td class="lista"><input type="text" name="req_max" value="<tag:config.req_max />" size="4" /></td>
+      </tr>
+      <tr>
+      <td class="header" align="center" colspan="4">Request Reward ( for furfill a request ) Settings</td>
+      </tr>
+      <tr>
+   	  <td class="header">Request reward sytem</td>
+      <td class="lista">&nbsp;&nbsp;enable&nbsp;<input type="radio" name="req_rwon" value="true"<tag:config.req_rwonyes /> />&nbsp;&nbsp;disabled&nbsp;<input type="radio" name="req_rwon" value="false"<tag:config.req_rwonno /> /></td>
+      <td class="header">Reward in upload or seedbonus</td>
+      <td class="lista">&nbsp;&nbsp;bytes&nbsp;<input type="radio" name="req_sbmb" value="true"<tag:config.req_sbmbyes /> />&nbsp;&nbsp;seedbonus&nbsp;<input type="radio" name="req_sbmb" value="false"<tag:config.req_sbmbno /> /></td>
+      </tr>
+      <tr>
+      <td class="header">Amount in bytes</td>
+      <td class="lista"><input type="text" name="req_mb" value="<tag:config.req_mb />" size="6" /></td>
+      <td class="header">Seedbonus points</td>
+      <td class="lista"><input type="text" name="req_sb" value="<tag:config.req_sb />" size="4" /></td>
+      </tr>
     <tr>
       <td align="center" class="header" colspan="2"><input type="submit" name="write" class="btn" value="<tag:language.FRM_CONFIRM />" /></td>
       <td align="center" class="header" colspan="2"><input type="submit" name="cancel" class="btn" value="<tag:language.FRM_CANCEL />" /></td>

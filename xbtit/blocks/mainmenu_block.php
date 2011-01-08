@@ -65,6 +65,9 @@ if ($CURUSER["view_torrents"]=="yes")
     {
     print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=torrents\">".$language["MNU_TORRENT"]."</a></td>\n");
     print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=extra-stats\">".$language["MNU_STATS"]."</a></td>\n");
+//request hack
+    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=viewrequests\">".$language["VR"]."</a></td>\n");
+//request hack
    }
 if ($CURUSER["can_upload"]=="yes")
    print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=upload\">".$language["MNU_UPLOAD"]."</a></td>\n");

@@ -441,5 +441,10 @@ $language['ADMIN_ACCESS']='Admin Access';
 $language['STAFF_ACCESS']='Staff';
 $language['UPLOAD_LINK']='Torrent Upload';
 # End
-
+$language['RF']='Request Filled';
+$language['VR']='Requests';
+$language['R']='Add Request';
+$language['VV']='View Votes';
+$language['RD']='Request Details';
+$language['RE']='Edit Request';
 ?>

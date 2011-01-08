@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jan 05, 2011 at 09:57 AM
+-- Generation Time: Jan 08, 2011 at 04:31 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.5
 
@@ -12,6 +12,25 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `xbtit`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}addedrequests`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}addedrequests` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `requestid` int(10) unsigned NOT NULL DEFAULT '0',
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `requestid` (`requestid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}addedrequests`
+--
+
 
 -- --------------------------------------------------------
 
@@ -911,6 +930,32 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}readposts` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `{$db_prefix}requests`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}requests` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  `request` varchar(225) DEFAULT NULL,
+  `descr` text NOT NULL,
+  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `fulfilled` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `hits` int(10) unsigned NOT NULL DEFAULT '0',
+  `cat` int(10) unsigned NOT NULL DEFAULT '0',
+  `filled` varchar(255) DEFAULT NULL,
+  `filledby` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `userid` (`userid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}requests`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `{$db_prefix}settings`
 --
 
@@ -970,7 +1015,19 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('xbtt_url', 'http://localhost:2710'),
 ('cache_duration', '0'),
 ('cut_name', '0'),
-('mail_type', 'php');
+('mail_type', 'php'),
+('req_prune', '30'),
+('req_page', '10'),
+('req_post', '1'),
+('req_sb', '10'),
+('req_mb', '10000'),
+('req_rwon', 'true'),
+('req_sbmb', 'true'),
+('req_shout', 'true'),
+('req_max', '100'),
+('req_onoff', 'true'),
+('req_number', '5'),
+('req_maxon', 'true');
 
 -- --------------------------------------------------------
 

@@ -90,6 +90,21 @@ switch ($action)
         $btit_settings["validation"]=$_POST["validation"];
         $btit_settings["imagecode"]=isset($_POST["imagecode"])?"true":"false";
         $btit_settings["forum"]=$_POST["f_link"];
+// request hack part 1
+                $btit_settings["req_prune"]=$_POST["req_prune"];
+                $btit_settings["req_page"]=$_POST["req_page"];
+                $btit_settings["req_post"]=$_POST["req_post"];
+                $btit_settings["req_shout"]=$_POST["req_shout"];
+                $btit_settings["req_max"]=$_POST["req_max"];
+                $btit_settings["req_maxon"]=$_POST["req_maxon"];
+                $btit_settings["req_onoff"]=$_POST["req_onoff"];
+                $btit_settings["req_number"]=$_POST["req_number"];
+      // request hack (reward)
+                $btit_settings["req_sb"]=$_POST["req_sb"];
+                $btit_settings["req_mb"]=$_POST["req_mb"];
+                $btit_settings["req_rwon"]=$_POST["req_rwon"];
+                $btit_settings["req_sbmb"]=$_POST["req_sbmb"];
+        //request hack part 1 + reward end
         $btit_settings["clocktype"]=$_POST["clocktype"];
         $btit_settings["forumblocktype"]=$_POST["forumblocktype"];
         $btit_settings["newslimit"]=$_POST["newslimit"];
@@ -242,6 +257,20 @@ switch ($action)
                 $btit_settings["forumblockposts"]=($btit_settings["forumblocktype"]?"checked=\"checked\"":"");
                 $btit_settings["forumblocktopics"]=(!$btit_settings["forumblocktype"]?"checked=\"checked\"":"");
         $btit_settings["xbtt_use"]=($btit_settings["xbtt_use"]=="true"?"checked=\"checked\"":"");
+// request hack part 2
+
+            $btit_settings["req_rwonyes"]=($btit_settings["req_rwon"]?"checked=\"checked\"":"");
+            $btit_settings["req_rwonno"]=(!$btit_settings["req_rwon"]?"checked=\"checked\"":"");
+            $btit_settings["req_sbmbyes"]=($btit_settings["req_sbmb"]?"checked=\"checked\"":"");
+            $btit_settings["req_sbmbno"]=(!$btit_settings["req_sbmb"]?"checked=\"checked\"":"");
+            $btit_settings["req_shoutyes"]=($btit_settings["req_shout"]?"checked=\"checked\"":"");
+            $btit_settings["req_shoutno"]=(!$btit_settings["req_shout"]?"checked=\"checked\"":"");
+            $btit_settings["req_onoffyes"]=($btit_settings["req_onoff"]?"checked=\"checked\"":"");
+            $btit_settings["req_onoffno"]=(!$btit_settings["req_onoff"]?"checked=\"checked\"":"");
+            $btit_settings["req_maxonyes"]=($btit_settings["req_maxon"]?"checked=\"checked\"":"");
+            $btit_settings["req_maxonno"]=(!$btit_settings["req_maxon"]?"checked=\"checked\"":"");
+
+             // request hack part 2 end
         // language dropdown
         $lres=language_list();
         $btit_settings["language_combo"]=("\n<select name=\"default_langue\" size=\"1\">");

@@ -32,7 +32,19 @@
 
 function do_sanity() {
 
-         global $PRIVATE_ANNOUNCE, $TORRENTSDIR, $CURRENTPATH,$LIVESTATS,$LOG_HISTORY, $TABLE_PREFIX;
+         global $btit_settings, $PRIVATE_ANNOUNCE, $TORRENTSDIR, $CURRENTPATH, $LIVESTATS, $LOG_HISTORY, $TABLE_PREFIX;
+
+// DT request hack start
+  	$reqprune = $btit_settings["req_prune"];
+	$request = mysql_query("SELECT id FROM {$TABLE_PREFIX}requests WHERE filledby > '0' AND fulfilled < DATE_SUB(NOW(), INTERVAL $reqprune DAY)");
+	$reqrow = mysql_fetch_assoc($request);
+	$reqid = $reqrow["id"];
+	if (mysql_num_rows($request) > 0)
+	{
+	mysql_query("DELETE FROM {$TABLE_PREFIX}requests WHERE filledby > 0 AND id = $reqid");
+	mysql_query("DELETE FROM {$TABLE_PREFIX}addedrequests WHERE requestid = $reqid");
+	}
+ // DT request hack end
 
          // SANITY FOR TORRENTS
          $results = do_sqlquery("SELECT info_hash, seeds, leechers, dlbytes, filename FROM {$TABLE_PREFIX}files WHERE external='no'");
@@ -41,7 +53,7 @@ function do_sanity() {
          {
              list($hash, $seeders, $leechers, $bytes, $filename) = $row;
 
-         $timeout=time()-(intval($GLOBALS["report_interval"]*2));
+         $timeout = time()-(intval($GLOBALS["report_interval"] * 2));
 
          // for testing purpose -- begin
          $resupd=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}peers where lastupdate < ".$timeout ." AND infohash='$hash'");
