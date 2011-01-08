@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}blocks` (
   `minclassview` int(11) NOT NULL DEFAULT '0',
   `maxclassview` int(11) NOT NULL DEFAULT '8',
   PRIMARY KEY (`blockid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
 
 --
 -- Dumping data for table `{$db_prefix}blocks`
@@ -96,7 +96,8 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 (18, 'seedwanted', 'c', 3, 1, 'BLOCK_SEEDWANTED', 'no', 3, 8),
 (19, 'paypal', 'r', 1, 1, 'BLOCK_PAYPAL', 'no', 3, 8),
 (20, 'ajax_shoutbox', 'c', 2, 1, 'BLOCK_SHOUTBOX', 'no', 3, 8),
-(21, 'dropdownmenu', 'd', 1, 1, 'BLOCK_DDMENU', 'no', 1, 8);
+(21, 'dropdownmenu', 'd', 1, 1, 'BLOCK_DDMENU', 'no', 1, 8),
+(22, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8);
 
 -- --------------------------------------------------------
 
