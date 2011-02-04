@@ -1,0 +1,471 @@
+<hack>
+  <title>Upload Multiplier</title>
+  <author>DiemThuy</author>
+  <version>1.0</version>
+  
+<!-- start Upload Multiplier Database stuffing-->
+    <file>
+    <name>"database"</name>
+    <operation>
+    <action>"sql"</action>
+    <data><![CDATA[ALTER TABLE {$db_prefix}files ADD multiplier ENUM( '1', '2', '3', '4', '5', '6', '7', '8', '9', '10' ) DEFAULT '1';]]></data>
+    </operation>
+
+		        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('multie', '6');]]></data>
+        </operation>
+
+    </file>
+    
+        <!-- Start announce.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/announce.php"</name>
+
+        <operation>
+      <search><![CDATA[if (!$GLOBALS["countbytes"])]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+    //Upload Multiplier
+    $sql=mysql_fetch_assoc(mysql_query("SELECT multiplier from {$TABLE_PREFIX}files WHERE info_hash ='".$info_hash."'"));
+    if($sql["multiplier"]>1) {
+       $uploaded=($uploaded * $sql["multiplier"]);
+    }
+          ]]></data>
+       <where>"before"</where>
+    </operation>
+            <operation>
+      <search><![CDATA[quickquery("UPDATE {$TABLE_PREFIX}users SET downloaded=IFNULL(downloaded,0)+$newdown, uploaded=IFNULL(uploaded,0)+$newup WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")."");]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+           //Upload Multiplier
+      $sql=mysql_fetch_assoc(mysql_query("SELECT multiplier from {$TABLE_PREFIX}files WHERE info_hash ='".$info_hash."'"));
+      if($sql["multiplier"]>1) {
+         $newup=($newup * $sql["multiplier"]);
+      }
+          ]]></data>
+       <where>"before"</where>
+    </operation
+                <operation>
+      <search><![CDATA[@mysql_query("UPDATE {$TABLE_PREFIX}users SET uploaded=IFNULL(uploaded,0)+$uploaded, downloaded=IFNULL(downloaded,0)+$downloaded WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")." AND id>1 LIMIT 1");]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+           //Upload Multiplier
+    $sql=mysql_fetch_assoc(mysql_query("SELECT multiplier from {$TABLE_PREFIX}files WHERE info_hash ='".$info_hash."'"));
+    if($sql["multiplier"]>1) {
+       $uploaded=($uploaded * $sql["multiplier"]);
+    }
+          ]]></data>
+       <where>"before"</where>
+    </operation
+                    <operation>
+      <search><![CDATA[quickQuery("UPDATE {$TABLE_PREFIX}peers SET bytes=0, status=\"seeder\", lastupdate=UNIX_TIMESTAMP(), downloaded=$downloaded, uploaded=$uploaded, pid=\"$pid\" WHERE sequence=\"".$GLOBALS["trackerid"]."\" AND infohash=\"$info_hash\"");]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+           //Upload Multiplier
+    $sql=mysql_fetch_assoc(mysql_query("SELECT multiplier from {$TABLE_PREFIX}files WHERE info_hash ='".$info_hash."'"));
+    if($sql["multiplier"]>1) {
+       $uploaded=($uploaded * $sql["multiplier"]);
+    }
+          ]]></data>
+       <where>"before"</where>
+    </operation
+  </file>
+  <!-- End announce.php -->
+    
+ <!-- start lasttorrents_block.php-->
+      <file>
+    <name>"$DEFAULT_ROOT/blocks/lasttorrents_block.php"</name>
+        <operation>
+      <search><![CDATA[if ($XBTT_USE)
+     $sql = "SELECT]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[ f.multiplier,]]></data>
+    </operation>
+            <operation>
+      <search><![CDATA[else
+     $sql]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[ f.multiplier,]]></data>
+    </operation>
+                <operation>
+      <search><![CDATA[$filename=cut_string($data["filename"],intval($btit_settings["cut_name"]));]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[
+      if($data['multiplier']>1) {
+    $mult = "<img alt=\"".$data['multiplier']."x Upload Multiplier\" src=\"images/".$data['multiplier']."x.gif\" />";
+   } else { $mult=""; }
+   ]]></data>
+    </operation>
+                    <operation>
+      <search><![CDATA[echo "\n\t<td width=\"55%\" class=\"lista\" style=\"padding-left:10px;\"><a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=" . $data['hash'] . "');\" title=\"" . $language["VIEW_DETAILS"] . ": " . $data["filename"] . "\">" . $filename . "</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[ ".$mult."]]></data>
+    </operation>
+                    <operation>
+      <search><![CDATA[echo "\n\t<td width=\"55%\" class=\"lista\" style=\"padding-left:10px;\"><a href=\"index.php?page=torrent-details&amp;id=" . $data['hash'] . "\" title=\"" . $language["VIEW_DETAILS"]. ": " . $data["filename"] . "\">" . $filename . "</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[ ".$mult."]]></data>
+    </operation>
+  </file>
+   <!-- end lasttorrents_block.php-->
+   
+            <!-- start torrents.php-->
+      <file>
+    <name>"$DEFAULT_ROOT/torrents.php"</name>
+        <operation>
+      <search><![CDATA[if ($SHOW_UPLOADER)
+        $query = "SELECT]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[ f.multiplier,]]></data>
+    </operation>
+            <operation>
+      <search><![CDATA[else
+        $query = "SELECT]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[ f.multiplier,]]></data>
+    </operation>
+                <operation>
+      <search><![CDATA[$filename=cut_string($data["filename"],intval($btit_settings["cut_name"]));]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[
+   if($data['multiplier']>1) {
+   $mult = "<img alt=\"".$data['multiplier']."x Upload Multiplier\" src=\"images/".$data['multiplier']."x.gif\" />";
+   } else { $mult=""; }
+   ]]></data>
+    </operation>
+                    <operation>
+      <search><![CDATA[$torrents[$i]["filename"]="<a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$data["hash"]."');\" title=\"".$language["VIEW_DETAILS"].": ".($data["filename"]!=""?$filename:$data["hash"])."\">".$data["filename"]."</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[ .$mult]]></data>
+    </operation>
+                    <operation>
+      <search><![CDATA[$torrents[$i]["filename"]="<a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" title=\"".$language["VIEW_DETAILS"].": ".$data["filename"]."\">".($data["filename"]!=""?$filename:$data["hash"])."</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[ .$mult]]></data>
+    </operation>
+  </file>
+   <!-- end  torrents.php-->
+   
+ <!-- start upload.tpl-->
+    <file>
+    <name>"$DEFAULT_STYLE_PATH/upload.tpl"</name>
+    <operation>
+              <search><![CDATA[<tr>
+      <td class="header" ><tag:language.FILE_NAME /></td>]]></search>
+          <action>"add"</action>
+          <data><![CDATA[
+     <tag:multie1 />
+     <tag:multie2 />
+     <tag:multie3 />
+     <tag:multie4 />
+        ]]></data>
+       <where>"before"</where>
+    </operation>
+    </file>
+     <!-- End upload.tpl -->
+     
+             <!-- start torrent.edit.tpl-->
+    <file>
+    <name>"$DEFAULT_STYLE_PATH/torrent.edit.tpl"</name>
+    <operation>
+              <search><![CDATA[</table>
+    <input type="hidden" name="info_hash" value="<tag:torrent.info_hash />" />]]></search>
+          <action>"add"</action>
+          <data><![CDATA[
+     <tag:multie1 />
+     <tag:multie2 />
+     <tag:multie3 />
+     <tag:multie4 />
+        ]]></data>
+       <where>"before"</where>
+    </operation>
+    </file>
+     <!-- End torrent.edit.tpl -->
+
+    <!-- start admin.config -->
+  <file>
+  <name>"$DEFAULT_ROOT/admin/admin.config.php"</name>
+  <operation>
+    <action>"add"</action>
+    <where>"after"</where>
+    <search><![CDATA[$btit_settings["forum"]=$_POST["f_link"];]]></search>
+    <data><![CDATA[
+ $btit_settings["multie"]=$_POST["multie"];
+]]></data>
+    </operation>
+</file>
+   <!-- end admin.config -->
+   
+   	<!-- start admin.config template -->
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/admin.config.tpl"</name>
+    <operation>
+    <action>"add"</action>
+    <where>"before"</where>
+    <search><![CDATA[<tr>
+      <td align="center" class="header" colspan="2"><input type="submit" name="write" class="btn" value="<tag:language.FRM_CONFIRM />" /></td>
+      <td align="center" class="header" colspan="2"><input type="submit" name="cancel" class="btn" value="<tag:language.FRM_CANCEL />" /></td>
+    </tr>]]></search>
+    <data><![CDATA[
+      <tr>
+      <td class="header" align="center" colspan="4">Upload Multiplier settings</td>
+      </tr>
+      <tr>
+      <td class="header">Min ID level to set</td>
+      <td class="lista"><input type="text" name="multie" value="<tag:config.multie />" size="4" /></td>
+      </tr>
+     ]]></data>
+    </operation>
+  </file>
+  	<!-- end admin.config template -->
+  	
+   <!-- start edit.php-->
+  	               
+      <file>
+        <name>"$DEFAULT_ROOT/edit.php"</name>
+                    <operation>
+      <search><![CDATA[$fname=htmlspecialchars(AddSlashes(unesc($_POST["name"])));]]></search>
+      <action>"add"</action>
+      <where>"before"</where>
+      <data><![CDATA[
+   //Upload Multiplier
+    $mult = $_POST["multiplier"];
+     //Upload Multiplier
+    ]]></data>
+    </operation>
+
+                <operation>
+      <search><![CDATA[do_sqlquery("UPDATE {$TABLE_PREFIX}files SET filename]]></search>
+      <action>"replace"</action>
+
+      <data><![CDATA[do_sqlquery("UPDATE {$TABLE_PREFIX}files SET multiplier='$mult', filename]]></data>
+    </operation>
+    
+  <operation>
+      <search><![CDATA[$query ="SELECT]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[ f.multiplier,]]></data>
+    </operation>
+
+        </operation>
+            <operation>
+      <search><![CDATA[$torrent=array();]]></search>
+      <action>"add"</action>
+      <where>"before"</where>
+      <data><![CDATA[
+      // Upload Multiplier
+
+               if ($CURUSER["id_level"] > $btit_settings["multie"])
+   {
+$row=mysql_fetch_row(mysql_query("SHOW COLUMNS FROM {$TABLE_PREFIX}files LIKE 'multiplier'"));
+$options=explode("','",preg_replace("/(enum|set)\('(.+?)'\)/","\\2",$row[1]));
+
+    $torrenttpl->set("multie1","<tr>\n\t<td align=right class=\"header\">Upload Multiplier</td>");
+   $torrenttpl->set("multie2","\n\t<td align=\"left\" class=\"lista\" colspan=2><select name=multiplier>");
+foreach($options as $multiplier)
+  {
+       $option .= "<option value=\"" . $multiplier. "\"";
+       if ($multiplier==$results["multiplier"])
+           $option.="selected=selected ";
+         $option .= ">" . unesc($multiplier) . "</option>\n";
+
+   $torrenttpl->set("multie3",$option);
+
+  }
+    $torrenttpl->set("multie4","</select></td>\n</tr>");
+    }
+ // Upload Multiplier
+ ]]></data>
+    </operation>
+  </file>
+   <!-- end edit.php-->
+   
+   <!-- start upload.php-->
+
+      <file>
+
+    <name>"$DEFAULT_ROOT/upload.php"</name>
+                    <operation>
+      <search><![CDATA[if (isset($_POST["info"]) && $_POST["info"]!="")]]></search>
+      <action>"add"</action>
+      <where>"before"</where>
+      <data><![CDATA[
+//Upload Multiplier
+if (isset($_POST["multiplier"]))
+   $multiplier = AddSlashes($_POST["multiplier"]);
+else
+    $multiplier = "1";
+
+//Upload Multiplier
+
+    ]]></data>
+    </operation>
+
+    <operation>
+      <search><![CDATA[do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash ON DUPLICATE KEY UPDATE flags=0",true);
+         $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, url, info, category, data, size, comment, uploader,anonymous, bin_hash) VALUES (]]></search>
+      <action>"add"</action>
+       <where>"after"</where>
+      <data><![CDATA[ \"$multiplier\", ]]]></data>
+    </operation>
+    
+                    <operation>
+      <search><![CDATA[$array["announce"]=$TRACKER_ANNOUNCEURLS[0];
+                   $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, url, info, category, data, size, comment, uploader,anonymous, bin_hash) VALUES (]]></search>
+      <action>"add"</action>
+       <where>"after"</where>
+      <data><![CDATA[ \"$multiplier\" ,]]></data>
+    </operation>
+    
+                    <operation>
+      <search><![CDATA[else
+                  $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, url, info, category, data, size, comment,external,announce_url, uploader,anonymous, bin_hash) VALUES (]]></search>
+      <action>"add"</action>
+       <where>"after"</where>
+      <data><![CDATA[ \"$multiplier\" ,]]></data>
+    </operation>
+
+    <operation>
+      <search><![CDATA[do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash ON DUPLICATE KEY UPDATE flags=0",true);
+         $query = "INSERT INTO {$TABLE_PREFIX}files (]]></search>
+      <action>"add"</action>
+       <where>"after"</where>
+      <data><![CDATA[ multiplier,]]></data>
+    </operation>
+    
+                    <operation>
+      <search><![CDATA[$array["announce"]=$TRACKER_ANNOUNCEURLS[0];
+                   $query = "INSERT INTO {$TABLE_PREFIX}files (]]></search>
+      <action>"add"</action>
+       <where>"after"</where>
+      <data><![CDATA[ multiplier,]]></data>
+    </operation>
+    
+                        <operation>
+      <search><![CDATA[else
+                  $query = "INSERT INTO {$TABLE_PREFIX}files (]]></search>
+      <action>"add"</action>
+       <where>"after"</where>
+      <data><![CDATA[ multiplier,]]></data>
+    </operation>
+
+        </operation>
+            <operation>
+      <search><![CDATA[$bbc= textbbcode("upload","info");]]></search>
+      <action>"add"</action>
+      <where>"before"</where>
+      <data><![CDATA[
+          // Upload Multiplier
+
+           if ($CURUSER["id_level"] > $btit_settings["multie"])
+   {
+$row=mysql_fetch_row(mysql_query("SHOW COLUMNS FROM {$TABLE_PREFIX}files LIKE 'multiplier'"));
+$options=explode("','",preg_replace("/(enum|set)\('(.+?)'\)/","\\2",$row[1]));
+
+   $uploadtpl->set("multie1","<tr>\n\t<td align=left class=\"header\">Upload Multiplier</td>");
+   $uploadtpl->set("multie2","\n\t<td align=\"left\" class=\"lista\" colspan=2><select name=multiplier>");
+foreach($options as $multiplier)
+  {
+         $option .= "<option value=\"" . $multiplier. "\"";
+       if ($multiplier==$results["multiplier"])
+           $option.="selected=selected ";
+         $option .= ">" . unesc($multiplier) . "</option>\n";
+
+   $uploadtpl->set("multie3",$option);
+
+  }
+    $uploadtpl->set("multie4","</select></td>\n</tr>");
+    }
+ // Upload Multiplier
+ ]]></data>
+    </operation>
+   </file>
+   <!-- end upload.php-->
+ 
+ <!-- Copy 9 pictures -->
+   <file>
+  <name>"$CURRENT_FOLDER/files/2x.gif"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/images"</where>
+      <data>"2x.gif"</data>
+    </operation>
+  </file>
+     <file>
+  <name>"$CURRENT_FOLDER/files/3x.gif"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/images"</where>
+      <data>"3x.gif"</data>
+    </operation>
+  </file>
+     <file>
+  <name>"$CURRENT_FOLDER/files/4x.gif"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/images"</where>
+      <data>"4x.gif"</data>
+    </operation>
+  </file>
+     <file>
+  <name>"$CURRENT_FOLDER/files/5x.gif"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/images"</where>
+      <data>"5x.gif"</data>
+    </operation>
+  </file>
+     <file>
+  <name>"$CURRENT_FOLDER/files/6x.gif"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/images"</where>
+      <data>"6x.gif"</data>
+    </operation>
+  </file>
+     <file>
+  <name>"$CURRENT_FOLDER/files/7x.gif"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/images"</where>
+      <data>"7x.gif"</data>
+    </operation>
+  </file>
+     <file>
+  <name>"$CURRENT_FOLDER/files/8x.gif"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/images"</where>
+      <data>"8x.gif"</data>
+    </operation>
+  </file>
+     <file>
+  <name>"$CURRENT_FOLDER/files/9x.gif"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/images"</where>
+      <data>"9x.gif"</data>
+    </operation>
+  </file>
+     <file>
+  <name>"$CURRENT_FOLDER/files/10x.gif"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/images"</where>
+      <data>"10x.gif"</data>
+    </operation>
+  </file>
+  <!-- end good , all good  -->
+</hack>

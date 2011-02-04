@@ -1,0 +1,305 @@
+<hack>
+
+  <title>Speed stats in peers with filename (colour coded) with XBTT Version</title>
+  <author>miskotes/Lupin</author>
+  <version>2.0</version>
+
+    <file>
+        <name>"database"</name>
+        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[ALTER TABLE `{$db_prefix}peers` ADD `announce_interval` INT( 10 ) NOT NULL;]]></data>
+        </operation>
+        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[ALTER TABLE `{$db_prefix}peers` ADD `upload_difference` BIGINT( 20 ) NOT NULL;]]></data>
+        </operation>
+        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[ALTER TABLE `{$db_prefix}peers` ADD `download_difference` BIGINT( 20 ) NOT NULL;]]></data>
+        </operation>
+
+        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[alter table `xbt_files_users`
+  add `down_rate` int(11) NOT NULL,
+  add `up_rate` int(11) NOT NULL,
+  add `peer_id` binary(8) NOT NULL;]]></data>
+        </operation>
+
+    </file>
+    
+    
+  <file>
+    <name>"$DEFAULT_ROOT/announce.php"</name>
+    
+    <operation>
+      <search><![CDATA[$peerid=$peer["peer_id"];]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data>
+
+    <![CDATA[
+
+    ################################################################################################
+    # Speed stats in peers with filename
+       
+    $row=mysql_fetch_assoc(mysql_query("SELECT lastupdate, uploaded, downloaded FROM {$TABLE_PREFIX}peers WHERE infohash=\"$hash\" AND " . (isset($GLOBALS["trackerid"]) ? "sequence=\"${GLOBALS["trackerid"]}\"" : "peer_id=\"$peerid\"")));    
+ 
+        $annint=time()-$row["lastupdate"];
+        $updiff=$uploaded-$row["uploaded"];
+        $dldiff=$downloaded-$row["downloaded"];
+        
+    # End       
+    ################################################################################################
+    
+
+    ]]>
+
+        </data>
+
+   </operation>
+    
+   <operation>
+      <search><![CDATA[quickQuery("UPDATE {$TABLE_PREFIX}peers SET lastupdate=UNIX_TIMESTAMP(), downloaded=$downloaded, uploaded=$uploaded, pid=\"$pid\" where infohash=\"$hash\" AND " . (isset($GLOBALS["trackerid"]) ? "sequence=\"${GLOBALS["trackerid"]}\"" : "peer_id=\"$peerid\""));]]></search>
+      <action>replace</action>
+      <data>
+
+    <![CDATA[
+
+    ################################################################################################
+    # Speed stats in peers with filename
+
+        quickQuery("UPDATE {$TABLE_PREFIX}peers SET lastupdate=UNIX_TIMESTAMP(), downloaded=$downloaded, uploaded=$uploaded, pid=\"$pid\", announce_interval=$annint, upload_difference=$updiff, download_difference=$dldiff where infohash=\"$hash\" AND " . (isset($GLOBALS["trackerid"]) ? "sequence=\"${GLOBALS["trackerid"]}\"" : "peer_id=\"$peerid\""));
+
+    # End       
+    ################################################################################################
+
+
+    ]]>
+
+    </data>
+   </operation>
+   
+   <operation>
+      <search><![CDATA[quickQuery("UPDATE {$TABLE_PREFIX}peers set " . (($diff != 0) ? "bytes=\"$left\"," : ""). " lastupdate=UNIX_TIMESTAMP(), downloaded=$downloaded, uploaded=$uploaded, pid=\"$pid\" where infohash=\"$hash\" AND " . (isset($GLOBALS["trackerid"]) ? "sequence=\"".$GLOBALS["trackerid"]."\"" : "peer_id=\"$peerid\""));]]></search>
+      <action>replace</action>
+      <data>
+
+    <![CDATA[
+
+    ################################################################################################
+    # Speed stats in peers with filename
+
+    quickQuery("UPDATE {$TABLE_PREFIX}peers set " . (($diff != 0) ? "bytes=\"$left\"," : ""). " lastupdate=UNIX_TIMESTAMP(), downloaded=$downloaded, uploaded=$uploaded, pid=\"$pid\", announce_interval=$annint, upload_difference=$updiff, download_difference=$dldiff where infohash=\"$hash\" AND " . (isset($GLOBALS["trackerid"]) ? "sequence=\"".$GLOBALS["trackerid"]."\"" : "peer_id=\"$peerid\""));
+
+    # End       
+    ################################################################################################
+
+
+    ]]>
+
+    </data>
+   </operation>
+   
+   
+  </file>   
+    
+
+  <file>
+    <name>"$DEFAULT_ROOT/peers.php"</name>
+
+   <operation>
+      <search><![CDATA[if ($XBTT_USE)
+   $res = mysql_query("SELECT]]></search>
+      <action>replace</action>
+      <data>
+
+    <![CDATA[if ($XBTT_USE)
+   $res = mysql_query("SELECT HEX(x.peer_id) as peer_id, x.down_rate, x.up_rate,]]>
+
+    </data>
+   </operation>   
+
+
+   <operation>
+      <search><![CDATA[$res = do_sqlquery("SELECT size FROM {$TABLE_PREFIX}files WHERE info_hash='$id'") or die(mysql_error());]]></search>
+      <action>replace</action>
+      <data>
+
+    <![CDATA[
+
+    ################################################################################################
+    # Speed stats in peers with filename
+
+$res = do_sqlquery("SELECT filename, size FROM {$TABLE_PREFIX}files WHERE info_hash='$id'") or die(mysql_error());
+
+    # End       
+    ################################################################################################
+
+
+    ]]>
+
+    </data>
+   </operation>   
+   
+    <operation>
+      <search><![CDATA[$tsize=0+$row["size"];]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data>
+
+    <![CDATA[
+
+    ################################################################################################
+    # Speed stats in peers with filename
+       
+      $peers["filename"] = $row["filename"];
+      $peers["size"] = makesize($row["size"]);      
+        
+    # End       
+    ################################################################################################
+    
+
+    ]]>
+
+        </data>
+
+   </operation>
+   
+   <operation>
+      <search><![CDATA[$peers[$i]["UPLOADED"]=$upld;]]></search>
+      <action>replace</action>
+      <data>
+
+    <![CDATA[
+
+    ################################################################################################
+    # Speed stats in peers with filename
+            
+            if ($row['status']=='seeder') $transferrateDL="<i>seeder</i>";
+              else if ($row['download_difference'] > '0' && $row['announce_interval'] > '0' && !$XBTT_USE)
+                $transferrateDL=round(round($row['download_difference']/$row['announce_interval'])/1000, 2)." KB/sec";
+              elseif ($row['down_rate'] > '0' && $XBTT_USE)
+                $transferrateDL=round($row['down_rate']/1000, 2)." KB/sec";
+                else $transferrateDL="0 KB/sec";
+              
+if ($transferrateDL >= 6.50) $color="green";
+else if ($transferrateDL >= 3.00) $color="orange";
+else if ($transferrateDL >= 0.01) $color="red";
+else if($row['status']=='seeder') $color="#00D900";
+else $color="";
+              $peers[$i]["DLSPEED"]="<font color=$color>$transferrateDL</font>";
+
+
+$peers[$i]["UPLOADED"]=$upld;
+
+
+            if ($row['upload_difference'] > '0' && $row['announce_interval'] > '0' && !XBTT_USE)
+              $transferrateUP=round(round($row['upload_difference']/$row['announce_interval'])/1000, 2)." KB/sec";
+              elseif ($row['up_rate'] > '0' && $XBTT_USE)
+                $transferrateUP=round($row['up_rate']/1000, 2)." KB/sec";
+              else $transferrateUP="0 KB/sec";
+              
+if ($transferrateUP >= 6.50) $color="green";
+else if ($transferrateUP >= 3.00) $color="orange";
+else if ($transferrateUP >= 0.01) $color="red";
+else $color="";
+              $peers[$i]["UPSPEED"]="<font color=$color>$transferrateUP</font>";
+
+    # End       
+    ################################################################################################
+
+
+    ]]>
+
+    </data>
+   </operation>   
+   
+  </file>
+
+  <file>
+    <name>"$DEFAULT_ROOT/style/xbtit_default/peers.tpl"</name>
+    
+    <operation>
+      <search><![CDATA[<if:NOPEERS>]]></search>
+      <action>"replace"</action>
+      <data>
+
+    <![CDATA[
+
+<!-- ################################################################################################
+     # Speed stats in peers with filename -->
+       
+<table width="100%" class="lista" border="0">
+       <tr>
+         <td align="center" class="header"><tag:peers.filename />&nbsp;&nbsp;&nbsp;&nbsp;<tag:peers.size /></td>
+       </tr>
+</table>
+
+<if:NOPEERS>
+        
+<!-- # End       
+     ############################################################################################ -->
+    
+
+    ]]>
+
+        </data>
+
+   </operation>
+
+   <operation>
+      <search><![CDATA[<td align="center" class="header"><tag:language.UPLOADED /></td>]]></search>
+      <action>replace</action>
+      <data>
+
+    <![CDATA[
+
+<!-- ################################################################################################
+     # Speed stats in peers with filename -->
+
+         <td align="center" class="header"><tag:language.SPEED /> <font color=red>&#9660</font></td>
+
+         <td align="center" class="header"><tag:language.UPLOADED /></td>
+         
+         <td align="center" class="header"><tag:language.SPEED /> <font color=green>&#9650</font></td>
+
+<!-- # End       
+     ############################################################################################ -->
+
+
+    ]]>
+
+    </data>
+   </operation>    
+  
+   <operation>
+      <search><![CDATA[<td align="center" class="lista"><tag:peers[].UPLOADED /></td>]]></search>
+      <action>replace</action>
+      <data>
+
+    <![CDATA[
+
+<!-- ################################################################################################
+     # Speed stats in peers with filename -->
+
+         <td align="center" class="lista"><tag:peers[].DLSPEED /></td>
+               
+         
+         <td align="center" class="lista"><tag:peers[].UPLOADED /></td>
+         
+         
+         <td align="center" class="lista"><tag:peers[].UPSPEED /></td>
+
+<!-- # End       
+     ############################################################################################ -->
+
+
+    ]]>
+
+    </data>
+   </operation>    
+  </file>
+
+</hack>

@@ -1,0 +1,67 @@
+<hack>
+  <title>Delete me</title>
+  <author>kvetinka</author>
+  <version>1.0</version> 
+<file>
+<name>"$DEFAULT_ROOT/user/usercp.profile.php"</name>
+<operation>
+<search><![CDATA[$profiletpl["frm_action"]="index.php?page=usercp&amp;do=user&amp;action=post&amp;uid=".$uid."";]]></search>
+<action>"add"</action>
+<where>"after"</where>
+<data><![CDATA[$profiletpl["delete_uid"]=$uid;]]></data>
+</operation>
+</file>
+<file>
+<name>"$DEFAULT_STYLE_PATH/usercp.profile.tpl"</name>
+<operation>
+<search><![CDATA[<td align="left" class="lista"><tag:profile.username />]]></search>
+<action>"add"</action>
+<where>"after"</where>
+<data><![CDATA[ [<a href="index.php?page=usercp&uid=<tag:profile.delete_uid />&do=deleteme&uid=<tag:profile.delete_uid />">Delete me</a>]]]></data>
+</operation>
+</file>
+       <file>
+    <name>"$DEFAULT_ROOT/user/usercp.index.php"</name>
+    <operation>
+      <search><![CDATA[    case 'user':
+    include("$USER_PATH/usercp.profile.php");
+    $tpl->set("main_content",set_block($language["ACCOUNT_EDIT"],"center",$usercptpl->fetch(load_template("usercp.profile.tpl"))));
+    break;]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[    case 'deleteme':
+    include("$USER_PATH/usercp.deleteme.php");
+    $tpl->set("main_content",set_block($language["DELETEME"],"center",$usercptpl->fetch(load_template("usercp.deleteme.tpl"))));
+    break;]]></data>
+    </operation>
+       </file>
+  <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_main.php"</name>
+    <operation>
+     <search><![CDATA[?>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+$language['DELETEI']='Image Code';
+$language['DELETEM']='Option';
+$language['DELETEME']='Delete me';
+]]></data>
+      <where>"before"</where>
+    </operation>
+  </file>
+      	<file>
+		<name>"$CURRENT_FOLDER/files/usercp.deleteme.php"</name>
+		<operation>
+			<action>"copy"</action>
+			<where>"$DEFAULT_ROOT/user/"</where>
+			<data>"usercp.deleteme.php"</data>
+		</operation>
+	</file>
+    <file>
+  <name>"$CURRENT_FOLDER/files/usercp.deleteme.tpl"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_STYLE_PATH"</where>
+      <data>"usercp.deleteme.tpl"</data>
+    </operation>
+  </file>
+</hack>
