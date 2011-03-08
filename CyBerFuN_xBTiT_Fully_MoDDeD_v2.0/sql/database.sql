@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.9
+-- version 3.3.9.2
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jan 08, 2011 at 04:31 AM
+-- Generation Time: Mar 08, 2011 at 08:14 PM
 -- Server version: 5.1.41
--- PHP Version: 5.3.2-1ubuntu4.5
+-- PHP Version: 5.3.2-1ubuntu4.7
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -478,6 +478,23 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
 
 --
 -- Dumping data for table `{$db_prefix}files`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}files_thanks`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}files_thanks` (
+  `infohash` char(40) NOT NULL DEFAULT '0',
+  `userid` int(11) NOT NULL DEFAULT '0',
+  KEY `infohash` (`infohash`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `{$db_prefix}files_thanks`
 --
 
 
