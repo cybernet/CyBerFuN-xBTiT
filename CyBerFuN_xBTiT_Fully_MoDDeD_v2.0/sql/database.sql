@@ -567,7 +567,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}language` (
   `language_url` varchar(100) CHARACTER SET latin1 NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `language_url` (`language_url`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `{$db_prefix}language`
@@ -590,7 +590,9 @@ INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES
 (14, 'Bulgarian', 'language/bulgarian'),
 (15, 'Spanish', 'language/spanish'),
 (16, 'Portuguese-BR', 'language/portuguese-BR'),
-(17, 'Portuguese-PT', 'language/portuguese-PT');
+(17, 'Portuguese-PT', 'language/portuguese-PT'),
+(18, 'Swedish', 'language/swedish'),
+(19, 'Arabic', 'language/arabic');
 
 -- --------------------------------------------------------
 
