@@ -30,7 +30,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-$BASEDIR=dirname(__FILE__);
+$BASEDIR = dirname(__FILE__);
 require_once $BASEDIR.'/BDecode.php';
 require_once $BASEDIR.'/config.php';
 require_once $BASEDIR.'/functions.php';
@@ -39,10 +39,10 @@ ignore_user_abort(true);
 
 function escapeURL($info) {
   $ret = '';
-  $i=0;
+  $i = 0;
   while (strlen($info) > $i) {
-    $ret.='%'.$info[$i].$info[$i+1];
-    $i+=2;
+    $ret .= '%'.$info[$i].$info[$i+1];
+    $i += 2;
   }
   return $ret;
 }
@@ -69,28 +69,28 @@ function stristr_reverse($haystack, $needle) {
   return substr($haystack, 0, strrpos($haystack, $needle));
 }
 
-function scrape($url,$infohash='') {
+function scrape($url, $infohash = '') {
   global $TABLE_PREFIX;
 
   if (isset($url)) {
-    $url_c=parse_url($url);
-    $extannunce = ($url_c['scheme']=='udp'?'http':$url_c['scheme']).'://'.$url_c['host'];
+    $url_c = parse_url($url);
+    $extannunce = ($url_c['scheme'] == 'udp' ? 'http':$url_c['scheme']).'://'.$url_c['host'];
     $extannunce.= (isset($url_c['port'])?':'.$url_c['port']:'');
-    $extannunce.= substr_replace($url_c['path'],'scrape',strbipos($url_c['path'],'announce')+1,8);
-    $extannunce.= (isset($url_c['query'])?'?'.$url_c['query']:'');
+    $extannunce.= substr_replace($url_c['path'],'scrape', strbipos($url_c['path'],'announce')+1,8);
+    $extannunce.= (isset($url_c['query']) ? '?'.$url_c['query']:'');
     //die($extannunce);
-    if ($infohash!='') {
-      $ihash=array();
-      $ihash=explode("','",$infohash);
-      $info_hash='';
+    if ($infohash != '') {
+      $ihash = array();
+      $ihash = explode("','",$infohash);
+      $info_hash = '';
       foreach($ihash as $myihash)
-        $info_hash.='&info_hash='.escapeURL($myihash);
-      $info_hash=substr($info_hash,1);
-      $stream=get_remote_file($extannunce.(substr_count($extannunce,'?')>0?'&':'?').$info_hash);
+        $info_hash .= '&info_hash='.escapeURL($myihash);
+      $info_hash = substr($info_hash, 1);
+      $stream = get_remote_file($extannunce.(substr_count($extannunce,'?')>0?'&':'?').$info_hash);
     } else
-      $stream=get_remote_file($extannunce);
-    //$stream=trim(stristr($stream,'d5:files'));
-    $stream=trim($stream);
+      $stream = get_remote_file($extannunce);
+      $stream=trim(stristr($stream,'d5:files'));
+    $stream = trim($stream);
     if (strpos($stream,'d5:files')===false) {
       $ret = do_sqlquery('UPDATE '.$TABLE_PREFIX.'files SET lastupdate=NOW() WHERE announce_url="'.$url.'"'.($infohash==''?'':' AND info_hash IN ("'.$infohash.'")'));
       write_log('FAILED update external torrent '.($infohash==''?'':'(infohash: '.$infohash.')').' from '.$url.' tracker (not connectable)','');
@@ -98,7 +98,7 @@ function scrape($url,$infohash='') {
     }
 
     $array = BDecode($stream);
-    if (!isset($array) || $array==false || !isset($array['files'])) {
+    if (!isset($array) || $array == false || !isset($array['files'])) {
       $ret = do_sqlquery('UPDATE '.$TABLE_PREFIX.'files SET lastupdate=NOW() WHERE announce_url="'.$url.'"'.($infohash==''?'':' AND info_hash IN ("'.$infohash.'")'));
       write_log('FAILED update external torrent '.($infohash==''?'':'(infohash: '.$infohash.')').' from '.$url.' tracker (not bencode data)','');
       return;
@@ -115,7 +115,7 @@ function scrape($url,$infohash='') {
       $seeders = $data['complete'];
       $leechers = $data['incomplete'];
             $completed = (isset($data['downloaded']))?$data['downloaded']:0;
-      $torrenthash=bin2hex(stripslashes($hash));
+      $torrenthash = bin2hex(stripslashes($hash));
       $ret = do_sqlquery('UPDATE '.$TABLE_PREFIX.'files SET lastupdate=NOW(), lastsuccess=NOW(), seeds='.$seeders.', leechers='.$leechers.', finished='.$completed.' WHERE announce_url = "'.$url.'"'.($hash==''?'':' AND info_hash="'.$torrenthash.'";'));
       if (mysql_affected_rows()==1)
         write_log('SUCCESS update external torrent from '.$url.' tracker (infohash: '.$torrenthash.')','');
