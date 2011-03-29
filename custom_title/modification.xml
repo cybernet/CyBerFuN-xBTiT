@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<hack>
+  <title>Custom title</title>
+  <author>Real_ptr</author>
+  <version>1.1(2.2.1)(r669)</version>
+  <file>
+    <name>"database"</name>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[ALTER TABLE `{$db_prefix}users` ADD `custom_title` VARCHAR( 50 ) NULL;]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/details.php"</name>
+    <operation>
+      <search><![CDATA[$subres = get_result("SELECT]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[$subres = get_result("SELECT u.custom_title, u.id_level,]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[$comments[$count]["user"]]]></search>
+      <action>"add"</action>
+      <where>"before"</where>
+      <data><![CDATA[
+       $level = do_sqlquery("SELECT level FROM {$TABLE_PREFIX}users_level WHERE id_level='$subrow[id_level]'");
+       $lvl = mysql_fetch_assoc($level);
+       if (!$subrow[uid])
+        $title = "orphaned";
+       elseif (!"$subrow[custom_title]")
+        $title = "".$lvl['level']."";
+       else
+        $title = unesc($subrow["custom_title"]);]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[$comments[$count]["date"]]]></search>
+      <action>"add"</action>
+      <where>"before"</where>
+      <data><![CDATA[$comments[$count]["user"].="</a> .::. ".$title;]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/userdetails.php"</name>
+    <operation>
+      <search><![CDATA[$res=get_result("SELECT]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[$res=get_result("SELECT u.custom_title,]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[$userdetailtpl -> set("userdetail_joined", ($row["joined"]==0 ? "N/A" : get_date_time($row["joined"])));]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[$userdetailtpl -> set("custom_title", (!$row["custom_title"] ? "" : unesc($row["custom_title"])));]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/userdetails.tpl"</name>
+    <operation>
+    <action>"add"</action>
+    <where>"after"</where>
+    <search><![CDATA[  </if:userdetail_edit_admin>]]>
+    </search>
+    <data><![CDATA[
+  <tr>
+
+    <td class="header"><tag:language.CUSTOM_TITLE /></td>
+
+    <td class="lista" colspan="2"><tag:custom_title /></td>
+
+  </tr>
+
+]]>
+    </data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/admin/admin.users.tools.php"</name>
+    <operation>
+    <action>"add"</action>
+    <where>"before"</where>
+    <search><![CDATA[# rank list]]>
+    </search>
+    <data><![CDATA[
+
+          $profile['custom_title']=unesc($curu['custom_title']);
+
+]]>
+    </data>
+    </operation>
+    <operation>
+    <action>"add"</action>
+    <where>"after"</where>
+    <search><![CDATA[# new level of the user]]>
+    </search>
+    <data><![CDATA[
+
+            $custom_title=unesc($_POST["custom_title"]);
+
+]]>
+    </data>
+    </operation>
+    <operation>
+    <action>"add"</action>
+    <where>"after"</where>
+    <search><![CDATA[            if ($time != $curu['time_offset'])
+                $set[]='time_offset='.$time;]]>
+    </search>
+    <data><![CDATA[
+            if ($custom_title != $curu['custom_title'])
+                $set[]='custom_title='.sqlesc(htmlspecialchars($custom_title));]]>
+    </data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/admin.users.tools.tpl"</name>
+    <operation>
+    <action>"add"</action>
+    <where>"after"</where>
+    <search><![CDATA[<td align="left" class="lista"><tag:rank_combo /></td>
+    </tr>]]>
+    </search>
+    <data><![CDATA[
+
+        <tr>
+          <td align="left" class="header"><tag:language.CUSTOM_TITLE />:</td>
+          <td align="left" class="lista"><input type="text" size="40" name="custom_title" maxlength="50" value="<tag:profile.custom_title />"/></td>
+        </tr>
+
+]]>
+    </data>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_ROOT/language/english/lang_main.php"</name>
+  <operation>
+    <action>"add"</action>
+    <where>"before"</where>
+    <search><![CDATA[?>]]></search>
+    <data><![CDATA[
+
+$language["CUSTOM_TITLE"]="Custom title";
+
+]]></data>
+  </operation>
+  </file>
+</hack>
