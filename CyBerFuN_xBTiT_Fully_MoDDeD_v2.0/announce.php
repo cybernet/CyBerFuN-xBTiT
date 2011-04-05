@@ -191,7 +191,7 @@ $agent = mysql_real_escape_string($_SERVER["HTTP_USER_AGENT"]);
 if (preg_match("/^Mozilla|^Opera|^Links|^Lynx/i", $agent))
 {
     header("HTTP/1.0 500 Bad Request");
-    die("This a a bittorrent application and can't be loaded into a browser");
+    die("CyBerFuN xBTiT - This a a bittorrent application and can't be loaded into a browser");
 }
 
 // check if al needed information is sent by the client
