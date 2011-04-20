@@ -26,4 +26,5 @@ $language['BLOCK_MAXCLASSVIEW']='Maximum rank that can view';
 $language['BLOCK_REQUEST'] = 'Most Voted Requests';
 // cybernet
 $language['BLOCK_CYBERNET_HEADER'] = 'Header';
+$language['BLOCK_LOGIN'] = 'Login Box';
 ?>

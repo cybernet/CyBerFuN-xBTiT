@@ -90,31 +90,6 @@ print("</select></td>");
 </tr>
 </table>
 </form>
-<?php
-}
-else
-    {
-    if (!isset($user)) $user = '';
-    ?>
-    <form action="index.php?page=login" name="login" method="post">
-    <table class="lista" border="0" width="100%" cellpadding="4" cellspacing="1">
-    <tr>
-    <td class="lista" align="left">
-      <table border="0" cellpadding="0" cellspacing="0">
-      <tr>
-      <td align="right" class="lista"><?php echo $language["USER_NAME"]?>:</td>
-      <td class="lista"><input type="text" size="15" name="uid" value="<?php $user ?>" maxlength="40" style="font-size:10px" /></td>
-      <td align="right" class="lista"><?php echo $language["USER_PWD"]?>:</td>
-      <td class="lista"><input type="password" size="15" name="pwd" maxlength="40" style="font-size:10px" /></td>
-      <td class="lista" align="center"><input type="submit" value="<?php echo $language["FRM_LOGIN"]?>" style="font-size:10px" /></td>
-      </tr>
-      </table>
-    </td>
-    <td class="lista" align="center"><a href="index.php?page=signup"><?php echo $language["ACCOUNT_CREATE"]?></a></td>
-    <td class="lista" align="center"><a href="index.php?page=recover"><?php echo $language["RECOVER_PWD"]?></a></td>
-    </tr>
-    </table>
-    </form>
     <?php
 }
 ?>

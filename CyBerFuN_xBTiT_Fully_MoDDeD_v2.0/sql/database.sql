@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 20, 2011 at 11:24 AM
+-- Generation Time: Apr 20, 2011 at 12:43 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.7
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}blocks` (
   `minclassview` int(11) NOT NULL DEFAULT '0',
   `maxclassview` int(11) NOT NULL DEFAULT '8',
   PRIMARY KEY (`blockid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `{$db_prefix}blocks`
@@ -89,8 +89,8 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 (11, 'lasttorrents', 'c', 4, 1, 'BLOCK_LASTTORRENTS', 'no', 3, 8),
 (12, 'news', 'c', 1, 1, 'BLOCK_NEWS', 'no', 1, 8),
 (13, 'mainmenu', 'e', 1, 1, 'BLOCK_MENU', 'no', 1, 8),
-(14, 'maintrackertoolbar', 't', 2, 1, 'BLOCK_MAINTRACKERTOOLBAR', 'no', 3, 8),
-(15, 'mainusertoolbar', 't', 2, 1, 'BLOCK_MAINUSERTOOLBAR', 'no', 1, 8),
+(14, 'maintrackertoolbar', 't', 2, 1, 'BLOCK_MAINTRACKERTOOLBAR', 'no', 1, 8),
+(15, 'mainusertoolbar', 't', 2, 1, 'BLOCK_MAINUSERTOOLBAR', 'no', 3, 8),
 (16, 'serverload', 'c', 8, 0, 'BLOCK_SERVERLOAD', 'no', 8, 8),
 (17, 'poller', 'l', 3, 1, 'BLOCK_POLL', 'no', 3, 8),
 (18, 'seedwanted', 'c', 3, 1, 'BLOCK_SEEDWANTED', 'no', 3, 8),
@@ -98,7 +98,8 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 (20, 'ajax_shoutbox', 'c', 2, 1, 'BLOCK_SHOUTBOX', 'no', 3, 8),
 (21, 'dropdownmenu', 'd', 1, 0, 'BLOCK_DDMENU', 'no', 1, 8),
 (22, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8),
-(23, 'header', 't', 1, 1, 'BLOCK_CYBERNET_HEADER', 'no', 1, 8);
+(23, 'header', 't', 1, 1, 'BLOCK_CYBERNET_HEADER', 'no', 1, 8),
+(24, 'login', 'c', 0, 1, 'BLOCK_LOGIN', 'no', 1, 1);
 
 -- --------------------------------------------------------
 

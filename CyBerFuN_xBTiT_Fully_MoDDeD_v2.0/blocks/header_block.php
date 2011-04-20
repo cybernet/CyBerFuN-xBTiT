@@ -40,12 +40,24 @@ print("<td style=\"text-align:center;\" align=\"center\"><a href='index.php'>".$
 if ($CURUSER["uid"]==1 || !$CURUSER)
 {
     print("<td class=\"green\" align=\"center\"><a href='index.php?page=login'>".$language["LOGIN"]."</a>\n");
+    print("<td class=\"green\" align=\"center\"><a href='index.php?page=signup'>".$language["ACCOUNT_CREATE"]."</a>\n");
+    print("<td class=\"green\" align=\"center\"><a href='index.php?page=recover'>".$language["RECOVER_PWD"]."</a>\n");
 }
 if($CURUSER["view_torrents"]=="yes") 
 {
-print("</td><td class=\"red\" align=\"center\"><a href=\"index.php?page=torrents\">".$language["MNU_TORRENT"]."</a>");
-print("</td><td class=\"red\" align=\"center\"><a href=\"index.php?page=viewrequests\">".$language["VR"]."</a>");
+print("</td><td class=\"red\" align=\"center\"><a href=\"index.php?page=torrents\">".$language["MNU_TORRENT"]."</a></td>");
+print("<td class=\"red\" align=\"center\"><a href=\"index.php?page=viewrequests\">".$language["VR"]."</a></td>");
+print("<td class=\"red\" align=\"center\"><a href='index.php?page=extra-stats'>".$language["MNU_STATS"]."</a></td>");
 }
+if ($CURUSER["view_forum"]=="yes")
+      {
+        if ($GLOBALS["FORUMLINK"]=="" || $GLOBALS["FORUMLINK"]=="internal" || $GLOBALS["FORUMLINK"]=="smf")
+           print("<td style=\"text-align:center;\" align=\"center\"><a href=\"index.php?page=forum\">".$language["MNU_FORUM"]."</a></td>\n");
+        elseif ($GLOBALS["FORUMLINK"]=="smf")
+           print("<td style=\"text-align:center;\" align=\"center\"><a href=\"".$GLOBALS["FORUMLINK"]."\">".$language["MNU_FORUM"]."</a></td>\n");
+        else
+            print("<td style=\"text-align:center;\" align=\"center\"><a href=\"".$GLOBALS["FORUMLINK"]."\">".$language["MNU_FORUM"]."</a></td>\n");
+      }
 if ($CURUSER["can_upload"]=="yes")                
 {
 print("<td class=\"green\" align=\"center\"><a href='index.php?page=upload'>".$language["MNU_UPLOAD"]."</a></td>\n");
@@ -58,6 +70,10 @@ if ($CURUSER["view_news"]=="yes")
 		{    
     print("<td style=\"text-align:center;\" align=\"center\"><a href='index.php?page=users'>".$language["MNU_MEMBERS"]."</a></td>\n");
     }
+if ($CURUSER["uid"] > 1) 
+{
+       print("<td class=\"red\" align=\"center\"><a href=\"logout.php\">".$language["LOGOUT"]."</a></td>\n");
+}
 ?>
 </tr>
 </table>
