@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.9.2
+-- version 3.3.10
 -- http://www.phpmyadmin.net
 --
--- Host: localhost:3306
--- Generation Time: Mar 08, 2011 at 08:14 PM
+-- Host: localhost
+-- Generation Time: Apr 20, 2011 at 11:24 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.7
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}blocks` (
   `minclassview` int(11) NOT NULL DEFAULT '0',
   `maxclassview` int(11) NOT NULL DEFAULT '8',
   PRIMARY KEY (`blockid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
 
 --
 -- Dumping data for table `{$db_prefix}blocks`
@@ -96,8 +96,9 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 (18, 'seedwanted', 'c', 3, 1, 'BLOCK_SEEDWANTED', 'no', 3, 8),
 (19, 'paypal', 'r', 1, 1, 'BLOCK_PAYPAL', 'no', 3, 8),
 (20, 'ajax_shoutbox', 'c', 2, 1, 'BLOCK_SHOUTBOX', 'no', 3, 8),
-(21, 'dropdownmenu', 'd', 1, 1, 'BLOCK_DDMENU', 'no', 1, 8),
-(22, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8);
+(21, 'dropdownmenu', 'd', 1, 0, 'BLOCK_DDMENU', 'no', 1, 8),
+(22, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8),
+(23, 'header', 't', 1, 1, 'BLOCK_CYBERNET_HEADER', 'no', 1, 8);
 
 -- --------------------------------------------------------
 
@@ -600,7 +601,7 @@ INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES
 (7, 'Russian', 'language/russian'),
 (8, 'German', 'language/german'),
 (9, 'Hungarian', 'language/hungarian'),
-(10, 'Français', 'language/french'),
+(10, 'FranÃ§ais', 'language/french'),
 (11, 'Finnish', 'language/finnish'),
 (12, 'Vietnamese', 'language/vietnamese'),
 (13, 'Greek', 'language/greek'),
