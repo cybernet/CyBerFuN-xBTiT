@@ -350,6 +350,9 @@ function userlogin() {
   unset($row);
 }
 
+function rank_expiration_dt($timestamp = 0)
+{return gmdate('Y-m-d H:i:s', $timestamp);}
+
 function dbconn($do_clean=false) {
   global $dbhost, $dbuser, $dbpass, $database, $language;
 

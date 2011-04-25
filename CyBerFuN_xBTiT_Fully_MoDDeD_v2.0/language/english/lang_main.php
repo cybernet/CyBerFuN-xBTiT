@@ -447,4 +447,7 @@ $language['R']='Add Request';
 $language['VV']='View Votes';
 $language['RD']='Request Details';
 $language['RE']='Edit Request';
+// [Hack] Advanced Auto Donation System by DiemThuy
+$language['DONATE'] = 'Make a Donation';
+// end
 ?>

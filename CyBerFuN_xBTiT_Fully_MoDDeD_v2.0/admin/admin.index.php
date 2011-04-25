@@ -199,6 +199,10 @@ switch ($do)
       $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.users.tools.tpl"))));
       break;
 
+    case 'donate':
+      include("$ADMIN_PATH/admin.donate.php");
+      $tpl->set("main_content",set_block($language["ACP_DONATE"],"center",$admintpl->fetch(load_template("admin.donate.tpl"))));
+      break;
 
     case 'sanity':
       require_once("$THIS_BASEPATH/include/sanity.php");

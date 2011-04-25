@@ -230,7 +230,13 @@ switch ($pageID) {
         $tpl->set("main_content",set_block($language["MNU_TORRENT"],"center",$torrenttpl->fetch(load_template("torrent.list.tpl"))));
         $tpl->set("main_title","Index->Torrents");
         break;
-                
+
+    case 'donate':
+        require("$THIS_BASEPATH/pp.php");
+        $tpl->set("main_content",set_block($language["DONATE"],"center",$pptpl->fetch(load_template("pp.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->Donate");
+        break;       
+     
 // shouthistory
     case 'allshout':
         ob_start();

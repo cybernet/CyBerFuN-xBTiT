@@ -294,4 +294,7 @@ $language['MHI_IT'] = 'it';
 $language['MHI_REPLACE'] = 'Replace with';
 $language['MHI_COPY'] = 'Copy';
 $language['MHI_AS'] = 'as';
+// [Hack] Advanced Auto Donation System by DiemThuy
+$language['ACP_DONATE'] = 'VIP & Donate Settings';
+// end
 ?>

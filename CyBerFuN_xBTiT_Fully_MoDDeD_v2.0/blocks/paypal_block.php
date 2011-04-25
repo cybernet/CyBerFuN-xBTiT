@@ -2,9 +2,11 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2011  Btiteam
+// Copyright (C) 2004 - 2009  Btiteam
 //
 //    This file is part of xbtit.
+//
+//    Advanced Auto Donation System by DiemThuy ( sept 2009 )
 //
 // Redistribution and use in source and binary forms, with or without modification,
 // are permitted provided that the following conditions are met:
@@ -31,14 +33,85 @@
 ////////////////////////////////////////////////////////////////////////////////////
 
 block_begin("Donate");
-?>
-<table width="100%" align="center" border="0" cellspacing="1" cellpadding="4">
-<tr>
-  <td align="center" valign="top">
-  <img src="images/makedonation.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" />
-  </td>
-</tr>
-</table>
-<?php
+
+
+$zap_usr = mysql_query("SELECT * FROM {$TABLE_PREFIX}paypal_settings WHERE id ='1'");
+$settings = mysql_fetch_array($zap_usr);
+
+if ($settings["donation_block"] == "true" )
+{
+echo  "<marquee onmouseover=this.stop() onmouseout=this.start()  scrollAmount=2 direction=left >";
+echo "<font color = red size = 2><b>", $settings["scrol_tekst"];
+echo "</marquee>";
+}
+
+$date_time = $settings["due_date"];
+$funds_so_far = $settings["received"];
+$totalneeded = $settings["needed"];
+$funds_difference = $totalneeded - $funds_so_far;
+$Progress_so_far = $funds_so_far / $totalneeded * 100;
+if($Progress_so_far >= 100)
+$funds_img = "./images/progress-5.gif";
+elseif($Progress_so_far >= 76)
+$funds_img = "./images/progress-4.gif";
+elseif($Progress_so_far >= 51)
+$funds_img = "./images/progress-3.gif";
+elseif($Progress_so_far >= 26)
+$funds_img = "./images/progress-2.gif";
+elseif($Progress_so_far >= 1)
+$funds_img = "./images/progress-1.gif";
+else
+$funds_img = "./images/progress-0.gif";
+if($totalneeded >= $funds_so_far)
+$monthly_goal = "[ ".round($Progress_so_far)."% ]";
+else
+$monthly_goal = "[ Monthly goal met! ]";
+if ($settings["units"]=="true")
+{
+
+$sign = "&#8364;";
+$currency ="EUR";
+}
+Else
+{
+
+$sign = "&#36;";
+$currency ="USD";
+}
+echo"<table><tr><td align=center><a href=index.php?page=donate><img src=images/donate.gif border=0></a></td></tr><tr><td align=center>Donations this month: <font color=steelblue><b> ".round($Progress_so_far)."%</b></td></tr><tr><td width=198 hight=15><center><img title=\"".round($Progress_so_far)."% (".$funds_so_far." of ".$totalneeded." ".$sign.")\" src=$funds_img align=center valign=middle><br>Goal : <font color=blue><b>".$sign." $totalneeded</font></b><br>Due: <font color=red><b>$date_time</font></b></center></td></tr> <TR><TD align=center class=header>Last Donators</TD></TR></table>";
+
+echo "<TABLE width=100% border=0 cellspacing=1 cellpadding=1 class=forumline>
+<TR>
+<TD class=lista>Donator :</TD>
+<TD class=lists>Date :</TD>
+</TR>";
+$pp=$settings["num_block"];
+$donor = mysql_query("SELECT * FROM {$TABLE_PREFIX}donors ORDER BY date DESC LIMIT $pp") or die(mysql_error());
+
+ while ($fetch=mysql_fetch_assoc($donor))
+{
+if ($fetch["userid"]  == "0")
+{}
+else
+{
+ $r2 = mysql_query("SELECT id_level FROM {$TABLE_PREFIX}users WHERE id=$fetch[userid]") or die(mysql_error());
+ $a2 = mysql_fetch_assoc($r2);
+ $r3 = mysql_query("SELECT prefixcolor,suffixcolor FROM {$TABLE_PREFIX}users_level WHERE id=$a2[id_level]") or die(mysql_error());
+ $a3 = mysql_fetch_assoc($r3);
+ 
+if ($fetch["first_name"] == "anonymous")
+{
+$un="anonymous";
+$link="";
+}
+else
+{
+$un=$a3["prefixcolor"].$fetch["first_name"].$a3["suffixcolor"];
+$link="<a href=index.php?page=userdetails&id=" . $fetch["userid"] . ">";
+}
+echo"<TR align=left><TD>".$link."".$un."</a></TD><TD>".date('d/m/Y',strtotime($fetch["date"]))."</TD></TR>";
+}}
+print("</td></tr></table>");
 block_end();
+
 ?>
