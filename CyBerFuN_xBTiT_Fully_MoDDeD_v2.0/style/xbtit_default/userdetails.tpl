@@ -54,10 +54,6 @@
 
   </if:userdetail_edit_admin>
 
-  <tag:timed_rank_header /></td>
-
-  <tag:timed_rank_title /></td>
-
   <tr>
 
     <td class="header"><tag:language.USER_JOINED /></td>

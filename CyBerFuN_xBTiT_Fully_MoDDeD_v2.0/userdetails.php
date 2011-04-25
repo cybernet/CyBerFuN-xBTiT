@@ -49,9 +49,9 @@ if ($CURUSER["view_users"]!="yes")
        die();
    }
 
-if ($id == 1)
+if ($id==1)
    { // trying to view guest details?
-       err_msg($language["ERROR"], $language["GUEST_DETAILS"]);
+       err_msg($language["ERROR"],$language["GUEST_DETAILS"]);
        stdfoot();
        die();
    }
@@ -79,21 +79,21 @@ else
 
 
 if ($id>1) {
-   $res=get_result("SELECT u.rank_switch, u.avatar, u.email, u.cip, u.username, $udownloaded as downloaded,$uuploaded as uploaded, UNIX_TIMESTAMP(u.joined) as joined, UNIX_TIMESTAMP(u.lastconnect) as lastconnect, ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id", true, $btit_settings['cache_duration']);
-   $num = count($res);
-   if ($num == 0)
+   $res=get_result("SELECT u.avatar,u.email,u.cip,u.username,$udownloaded as downloaded,$uuploaded as uploaded,UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id",true,$btit_settings['cache_duration']);
+   $num=count($res);
+   if ($num==0)
       {
-       err_msg($language["ERROR"], $language["BAD_ID"]);
+       err_msg($language["ERROR"],$language["BAD_ID"]);
        stdfoot();
        die();
        }
    else {
-        $row = $res[0];
+        $row=$res[0];
       }
 }
 else
       {
-       err_msg($language["ERROR"], $language["BAD_ID"]);
+       err_msg($language["ERROR"],$language["BAD_ID"]);
        stdfoot();
        die();
        }
@@ -101,9 +101,9 @@ else
 include("include/offset.php");
 
 // user's ratio
-if (intval($row["downloaded"]) > 0)
+if (intval($row["downloaded"])>0)
  {
-   $sr = $row["uploaded"] / $row["downloaded"];
+   $sr = $row["uploaded"]/$row["downloaded"];
    if ($sr >= 4)
      $s = "images/smilies/thumbsup.gif";
    else if ($sr >= 2)
@@ -151,8 +151,6 @@ $userdetailtpl-> set("userdetail_level", ($row["level"]));
 $userdetailtpl-> set("userdetail_colspan", "0");
 }
 $userdetailtpl -> set("userdetail_joined", ($row["joined"]==0 ? "N/A" : get_date_time($row["joined"])));
-$userdetailtpl -> set("timed_rank_header", ($row["rank_switch"]=="no" ? "" : "<tr><td class=header>Timed Rank Expire")); // need language translation
-$userdetailtpl -> set("timed_rank_title", ($row["rank_switch"]=="no" ? "" : "<td class=lista colspan=2 ><font color = red><b>".unesc($row["timed_rank"]."</b></font></tr>")));
 $userdetailtpl -> set("userdetail_lastaccess", ($row["lastconnect"]==0 ? "N/A" : get_date_time($row["lastconnect"])));
 $userdetailtpl -> set("userdetail_country", ($row["flag"]==0 ? "":unesc($row['name']))."&nbsp;&nbsp;<img src=\"images/flag/".(!$row["flagpic"] || $row["flagpic"]==""?"unknown.gif":$row["flagpic"])."\" alt=\"".($row["flag"]==0 ? "unknown":unesc($row['name']))."\" />");
 $userdetailtpl -> set("userdetail_local_time", (date("d/m/Y H:i:s",time()-$offset)."&nbsp;(GMT".($row["time_offset"]>0?" +".$row["time_offset"]:($row["time_offset"]==0?"":" ".$row["time_offset"])).")"));

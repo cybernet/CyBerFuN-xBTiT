@@ -127,13 +127,10 @@ else
             "menu"=>array(0=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=dbutil" ,
                     "description"=>$language["ACP_DBUTILS"]),
-			  1=>array(
-                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=donate" ,
-                    "description"=>$language["ACP_DONATE"]) ,
-                          2=>array(
+                          1=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=mysql_stats" ,
                     "description"=>$language["ACP_MYSQL_STATS"]),
-                          3=>array(
+                          2=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=logview" ,
                     "description"=>$language["ACP_SITE_LOG"])
                     )
