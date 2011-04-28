@@ -41,16 +41,21 @@ if (!isset($id) || !$id)
     die("Error ID");
 
 if ($XBTT_USE)
-   $res = do_sqlquery("SELECT f.info_hash, f.uploader, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, c.name as cat_name, f.seeds+ ifnull(x.seeders,0) as seeds, f.leechers+ ifnull(x.leechers,0) as leechers, f.finished+ ifnull(x.completed,0) as finished, f.speed FROM {$TABLE_PREFIX}files f LEFT JOIN xbt_files x ON x.info_hash=f.bin_hash LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category WHERE f.info_hash ='" . $id . "'",true);
+   $res = do_sqlquery("SELECT f.screen1, f.screen2, f.screen3, f.info_hash, f.uploader, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, c.name as cat_name, f.seeds+ ifnull(x.seeders,0) as seeds, f.leechers+ ifnull(x.leechers,0) as leechers, f.finished+ ifnull(x.completed,0) as finished, f.speed FROM {$TABLE_PREFIX}files f LEFT JOIN xbt_files x ON x.info_hash=f.bin_hash LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category WHERE f.info_hash ='" . $id . "'",true);
 else
-    $res = do_sqlquery("SELECT f.info_hash, f.uploader, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, c.name as cat_name, f.seeds, f.leechers, f.finished, f.speed FROM {$TABLE_PREFIX}files f LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category WHERE f.info_hash ='" . $id . "'",true);
+    $res = do_sqlquery("SELECT f.screen1, f.screen2, f.screen3, f.info_hash, f.uploader, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, c.name as cat_name, f.seeds, f.leechers, f.finished, f.speed FROM {$TABLE_PREFIX}files f LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category WHERE f.info_hash ='" . $id . "'",true);
 
 $row = mysql_fetch_assoc($res);
+// image upload v1.2
+      $image_drop = "" . $row["image"]. "";
+      $image_drop1 = "" . $row["screen1"]. "";
+      $image_drop2 = "" . $row["screen2"]. "";
+      $image_drop3 = "" . $row["screen3"]. "";
+// end
 
-
-if (!$CURUSER || $CURUSER["uid"]<2 || ($CURUSER["delete_torrents"]!="yes" && $CURUSER["uid"]!=$row["uploader"]))
+if (!$CURUSER || $CURUSER["uid"] < 2 || ($CURUSER["delete_torrents"] != "yes" && $CURUSER["uid"] != $row["uploader"]))
    {
-   stderr($language["SORRY"],$language["CANT_DELETE_TORRENT"]);
+   stderr($language["SORRY"], $language["CANT_DELETE_TORRENT"]);
 }
 
 $scriptname = htmlspecialchars($_SERVER["PHP_SELF"]);
@@ -65,7 +70,7 @@ if (isset($_POST["action"])) {
 
    if ($_POST["action"]==$language["FRM_DELETE"]) {
 
-      $ris = do_sqlquery("SELECT info_hash,filename,url FROM {$TABLE_PREFIX}files WHERE info_hash=\"$hash\"",true);
+      $ris = do_sqlquery("SELECT info_hash, filename, url FROM {$TABLE_PREFIX}files WHERE info_hash=\"$hash\"", true);
       if (mysql_num_rows($ris)==0)
             {
             stderr("Sorry!", "torrent $hash not found.");
@@ -74,7 +79,17 @@ if (isset($_POST["action"])) {
             {
             list($torhash,$torname,$torurl)=mysql_fetch_array($ris);
             }
-      write_log("Deleted torrent $torname ($torhash)","delete");
+// image upload v1.2
+      if (!empty($image_drop))
+        @unlink("".$GLOBALS["uploaddir"]."$image_drop");
+      if (!empty($image_drop1))
+        @unlink("".$GLOBALS["uploaddir"]."$image_drop1");
+      if (!empty($image_drop2))
+        @unlink("".$GLOBALS["uploaddir"]."$image_drop2");
+      if (!empty($image_drop3))
+        @unlink("".$GLOBALS["uploaddir"]."$image_drop3");
+// end
+      write_log("Deleted torrent $torname ($torhash)", "delete");
 
       @mysql_query("DELETE FROM {$TABLE_PREFIX}files WHERE info_hash=\"$hash\"");
       @mysql_query("DELETE FROM {$TABLE_PREFIX}timestamps WHERE info_hash=\"$hash\"");

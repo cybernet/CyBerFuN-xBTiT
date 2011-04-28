@@ -62,6 +62,10 @@ function show_wait()
 }
 
 </script>
+<script type="text/javascript" src="jscript/prototype.js"></script>
+<script type="text/javascript" src="jscript/scriptaculous.js?load=effects"></script>
+<script type="text/javascript" src="jscript/lightbox.js"></script>
+<link rel="stylesheet" href="jscript/lightbox.css" type="text/css" media="screen" />
     <div align="center">
       <table width="100%" class="lista" border="0" cellspacing="5" cellpadding="5">
         <tr>
@@ -80,6 +84,12 @@ function show_wait()
           <td align="right" class="header"><tag:language.INFO_HASH /></td>
           <td class="lista" align="center" style="text-align:left;" valign="top"><tag:torrent.info_hash /></td>
         </tr>
+<if:IMAGEIS>
+        <tr>
+          <td align="right" class="header" valign="top"><tag:language.IMAGE /></td>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.image />" title="view image" rel="lightbox"><img src="<tag:uploaddir /><tag:torrent.image />" width=<tag:width />></a></td>
+        </tr>
+        </if:IMAGEIS>
 		<tr>
 		<td align="right" class="header" valign="top"><tag:language.THANKS_USERS /></td>
           <td class="lista" align="center">
@@ -95,6 +105,22 @@ function show_wait()
           <td align="right" class="header" valign="top"><tag:language.DESCRIPTION /></td>
           <td class="lista" align="center" style="text-align:left;" valign="top"><tag:torrent.description /></td>
         </tr>
+<tr>
+      <td align="right" class="header" valign="top"><tag:language.SCREEN /></td>
+      <td class="lista">
+      <table class="lista" border="0" cellspacing="0" cellpadding="0">
+        <if:SCREENIS1>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen1 />" title="view image" rel="lightbox"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen1 />"></a></td>
+        </if:SCREENIS1>
+        <if:SCREENIS2>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen2 />" title="view image" rel="lightbox"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen2 />"></a></td>
+        </if:SCREENIS2>
+        <if:SCREENIS3>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen3 />" title="view image" rel="lightbox"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen3 />"></a></td>
+        </if:SCREENIS3>
+      </table>
+      </td>
+      </tr>
         <tr>
           <td align="right" class="header"><tag:language.CATEGORY_FULL /></td>
           <td class="lista" align="center" style="text-align:left;" valign="top"><tag:torrent.cat_name /></td>

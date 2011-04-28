@@ -839,7 +839,17 @@ function block_begin($title='-',$colspan=1,$calign='justify') {
 
 function block_end($colspan=1) {
 }
-
+// image upload v1.2
+function makesize1($bytes) {
+  if (abs($bytes) < 1000 * 1024)
+    return number_format($bytes / 1024, 2) . "";
+  if (abs($bytes) < 1000 * 1048576)
+    return number_format($bytes / 1048576, 2) . "";
+  if (abs($bytes) < 1000 * 1073741824)
+    return number_format($bytes / 1073741824, 2) . "";
+  return number_format($bytes / 1099511627776, 2) . "";
+}
+// end - image upload v1.2
 function makesize($bytes) {
   if (abs($bytes) < 1024000)
     return number_format($bytes / 1024, 2).' KB';

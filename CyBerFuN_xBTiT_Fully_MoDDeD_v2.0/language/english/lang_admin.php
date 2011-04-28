@@ -294,4 +294,11 @@ $language['MHI_IT'] = 'it';
 $language['MHI_REPLACE'] = 'Replace with';
 $language['MHI_COPY'] = 'Copy';
 $language['MHI_AS'] = 'as';
+// iMAGE upLoaD hack
+$language["IMAGE_SETTING"]="Image Settings";
+$language["ALLOW_IMAGE_UPLOAD"]="Allow image upload";
+$language["ALLOW_SCREEN_UPLOAD"]="Allow screens upload";
+$language["IMAGE_UPLOAD_DIR"]="Image upload dir";
+$language["FILE_SIZELIMIT"]="Image size limit";
+// iMAGE upLoaD hack - end
 ?>

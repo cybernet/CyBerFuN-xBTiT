@@ -111,7 +111,12 @@ switch ($action)
         $btit_settings["forumlimit"]=$_POST["forumlimit"];
         $btit_settings["last10limit"]=$_POST["last10limit"];
         $btit_settings["mostpoplimit"]=$_POST["mostpoplimit"];
-
+// image upload v1.2
+	$btit_settings["imageon"]=$_POST["imageon"];
+        $btit_settings["screenon"]=$_POST["screenon"];
+        $btit_settings["uploaddir"]=$_POST["uploaddir"];
+        $btit_settings["file_limit"]=$_POST["file_limit"];
+// end
         if (isset($_POST["xbtt_use"]))
           {
           // check base xbtt url
@@ -254,9 +259,15 @@ switch ($action)
         $btit_settings["imagecode"]=($btit_settings["imagecode"]=="true"?"checked=\"checked\"":"");
         $btit_settings["clockanalog"]=($btit_settings["clocktype"]?"checked=\"checked\"":"");
         $btit_settings["clockdigital"]=(!$btit_settings["clocktype"]?"checked=\"checked\"":"");
-                $btit_settings["forumblockposts"]=($btit_settings["forumblocktype"]?"checked=\"checked\"":"");
-                $btit_settings["forumblocktopics"]=(!$btit_settings["forumblocktype"]?"checked=\"checked\"":"");
+        $btit_settings["forumblockposts"]=($btit_settings["forumblocktype"]?"checked=\"checked\"":"");
+        $btit_settings["forumblocktopics"]=(!$btit_settings["forumblocktype"]?"checked=\"checked\"":"");
         $btit_settings["xbtt_use"]=($btit_settings["xbtt_use"]=="true"?"checked=\"checked\"":"");
+// image upload v1.2
+	$btit_settings["imageonyes"]=($btit_settings["imageon"]?"checked=\"checked\"":"");
+        $btit_settings["imageonno"]=(!$btit_settings["imageon"]?"checked=\"checked\"":"");
+        $btit_settings["screenonyes"]=($btit_settings["screenon"]?"checked=\"checked\"":"");
+        $btit_settings["screenonno"]=(!$btit_settings["screenon"]?"checked=\"checked\"":"");
+// end
 // request hack part 2
 
             $btit_settings["req_rwonyes"]=($btit_settings["req_rwon"]?"checked=\"checked\"":"");
