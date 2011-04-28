@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 20, 2011 at 12:43 PM
+-- Generation Time: Apr 28, 2011 at 11:22 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.7
 
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}addedrequests` (
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   UNIQUE KEY `id` (`id`),
   UNIQUE KEY `requestid` (`requestid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}addedrequests`
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}bannedip` (
   `last` bigint(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `first_last` (`first`,`last`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}bannedip`
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}blocks` (
   `minclassview` int(11) NOT NULL DEFAULT '0',
   `maxclassview` int(11) NOT NULL DEFAULT '8',
   PRIMARY KEY (`blockid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `{$db_prefix}blocks`
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}categories` (
   `name` varchar(30) NOT NULL DEFAULT '',
   `sub` int(10) NOT NULL DEFAULT '0',
   `sort_index` int(10) unsigned NOT NULL DEFAULT '0',
-  `image` varchar(255) CHARACTER SET latin1 NOT NULL DEFAULT '',
+  `image` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `image` (`image`),
   KEY `sort_index` (`sort_index`),
@@ -171,7 +171,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}comments` (
   `info_hash` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `info_hash` (`info_hash`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}comments`
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}countries` (
   `flagpic` varchar(50) DEFAULT NULL,
   `domain` char(3) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=245 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=245 ;
 
 --
 -- Dumping data for table `{$db_prefix}countries`
@@ -449,19 +449,19 @@ INSERT INTO `{$db_prefix}countries` (`id`, `name`, `flagpic`, `domain`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
-  `info_hash` varchar(40) CHARACTER SET latin1 NOT NULL DEFAULT '',
-  `filename` varchar(250) CHARACTER SET latin1 NOT NULL DEFAULT '',
-  `url` varchar(250) CHARACTER SET latin1 NOT NULL DEFAULT '',
-  `info` varchar(250) CHARACTER SET latin1 NOT NULL DEFAULT '',
+  `info_hash` varchar(40) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `filename` varchar(250) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `url` varchar(250) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `info` varchar(250) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `data` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `size` bigint(20) NOT NULL DEFAULT '0',
   `comment` text,
   `category` int(10) unsigned NOT NULL DEFAULT '6',
-  `external` enum('yes','no') CHARACTER SET latin1 NOT NULL DEFAULT 'no',
-  `announce_url` varchar(100) CHARACTER SET latin1 NOT NULL DEFAULT '',
+  `external` enum('yes','no') CHARACTER SET utf8 NOT NULL DEFAULT 'no',
+  `announce_url` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `uploader` int(10) NOT NULL DEFAULT '1',
   `lastupdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `anonymous` enum('true','false') CHARACTER SET latin1 NOT NULL DEFAULT 'false',
+  `anonymous` enum('true','false') CHARACTER SET utf8 NOT NULL DEFAULT 'false',
   `lastsuccess` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `dlbytes` bigint(20) unsigned NOT NULL DEFAULT '0',
   `seeds` int(10) unsigned NOT NULL DEFAULT '0',
@@ -471,11 +471,19 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
   `lastSpeedCycle` int(10) unsigned NOT NULL DEFAULT '0',
   `speed` bigint(20) unsigned NOT NULL DEFAULT '0',
   `bin_hash` blob NOT NULL,
+  `image` varchar(255) NOT NULL DEFAULT '',
+  `screen1` varchar(255) NOT NULL DEFAULT '',
+  `screen2` varchar(255) NOT NULL DEFAULT '',
+  `screen3` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`info_hash`),
   KEY `filename` (`filename`),
   KEY `category` (`category`),
   KEY `uploader` (`uploader`),
-  KEY `bin_hash` (`bin_hash`(20))
+  KEY `bin_hash` (`bin_hash`(20)),
+  KEY `image` (`image`),
+  KEY `screen1` (`screen1`),
+  KEY `screen2` (`screen2`),
+  KEY `screen3` (`screen3`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -520,7 +528,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}forums` (
   PRIMARY KEY (`id`),
   KEY `sort` (`sort`),
   KEY `id_parent` (`id_parent`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}forums`
@@ -541,7 +549,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}hacks` (
   `added` int(11) NOT NULL,
   `folder` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}hacks`
@@ -556,7 +564,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}hacks` (
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}history` (
   `uid` int(10) DEFAULT NULL,
-  `infohash` varchar(40) CHARACTER SET latin1 NOT NULL DEFAULT '',
+  `infohash` varchar(40) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `date` int(10) DEFAULT NULL,
   `uploaded` bigint(20) NOT NULL DEFAULT '0',
   `downloaded` bigint(20) NOT NULL DEFAULT '0',
@@ -583,7 +591,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}history` (
 CREATE TABLE IF NOT EXISTS `{$db_prefix}language` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `language` varchar(20) NOT NULL DEFAULT '',
-  `language_url` varchar(100) CHARACTER SET latin1 NOT NULL DEFAULT '',
+  `language_url` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `language_url` (`language_url`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
@@ -627,7 +635,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}logs` (
   `user` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `added` (`added`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}logs`
@@ -646,8 +654,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}messages` (
   `receiver` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) DEFAULT NULL,
   `subject` varchar(50) NOT NULL COMMENT 'reason for making my database bigger',
-  `msg` text CHARACTER SET latin1,
-  `readed` enum('yes','no') CHARACTER SET latin1 NOT NULL DEFAULT 'no',
+  `msg` text CHARACTER SET utf8,
+  `readed` enum('yes','no') CHARACTER SET utf8 NOT NULL DEFAULT 'no',
   `deletedBySender` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `receiver` (`receiver`),
@@ -668,8 +676,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}messages` (
 CREATE TABLE IF NOT EXISTS `{$db_prefix}modules` (
   `id` mediumint(3) NOT NULL AUTO_INCREMENT,
   `name` varchar(40) NOT NULL DEFAULT '',
-  `activated` enum('yes','no') CHARACTER SET latin1 NOT NULL DEFAULT 'yes',
-  `type` enum('staff','misc','torrent','style') CHARACTER SET latin1 NOT NULL DEFAULT 'misc',
+  `activated` enum('yes','no') CHARACTER SET utf8 NOT NULL DEFAULT 'yes',
+  `type` enum('staff','misc','torrent','style') CHARACTER SET utf8 NOT NULL DEFAULT 'misc',
   `changed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
@@ -713,15 +721,15 @@ INSERT INTO `{$db_prefix}news` (`id`, `news`, `user_id`, `date`, `title`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}online` (
-  `session_id` varchar(40) CHARACTER SET latin1 NOT NULL,
+  `session_id` varchar(40) CHARACTER SET utf8 NOT NULL,
   `user_id` int(10) NOT NULL,
-  `user_ip` varchar(15) CHARACTER SET latin1 NOT NULL,
+  `user_ip` varchar(15) CHARACTER SET utf8 NOT NULL,
   `location` varchar(20) NOT NULL,
   `lastaction` int(10) NOT NULL,
   `user_name` varchar(40) NOT NULL,
   `user_group` varchar(50) NOT NULL,
-  `prefixcolor` varchar(200) CHARACTER SET latin1 NOT NULL,
-  `suffixcolor` varchar(200) CHARACTER SET latin1 NOT NULL,
+  `prefixcolor` varchar(200) CHARACTER SET utf8 NOT NULL,
+  `suffixcolor` varchar(200) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`session_id`),
   KEY `user_id` (`user_id`),
   KEY `prefixcolor` (`prefixcolor`),
@@ -761,7 +769,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}peers` (
   UNIQUE KEY `sequence` (`sequence`),
   KEY `pid` (`pid`),
   KEY `ip` (`ip`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}peers`
@@ -782,7 +790,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}poller` (
   `starterID` mediumint(8) NOT NULL DEFAULT '0',
   `active` enum('yes','no') NOT NULL DEFAULT 'no',
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `{$db_prefix}poller`
@@ -804,7 +812,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}poller_option` (
   `pollerOrder` int(11) DEFAULT NULL,
   `defaultChecked` char(1) DEFAULT '0',
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `{$db_prefix}poller_option`
@@ -831,7 +839,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}poller_vote` (
   `voteDate` int(10) NOT NULL DEFAULT '0',
   `memberID` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}poller_vote`
@@ -856,7 +864,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}polls` (
   KEY `poll_question` (`poll_question`),
   KEY `votes` (`votes`),
   KEY `status` (`status`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}polls`
@@ -877,7 +885,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}poll_voters` (
   `memberid` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`vid`),
   KEY `pid` (`pid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}poll_voters`
@@ -921,7 +929,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}ratings` (
   `rating` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
   KEY `infohash` (`infohash`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `{$db_prefix}ratings`
@@ -942,7 +950,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}readposts` (
   PRIMARY KEY (`id`),
   KEY `topicid` (`topicid`),
   KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}readposts`
@@ -968,7 +976,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}requests` (
   `filledby` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}requests`
@@ -984,8 +992,9 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}requests` (
 CREATE TABLE IF NOT EXISTS `{$db_prefix}settings` (
   `key` varchar(41) NOT NULL,
   `value` varchar(200) NOT NULL,
-  PRIMARY KEY (`key`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`key`),
+  KEY `value` (`value`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `{$db_prefix}settings`
@@ -1049,7 +1058,11 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('req_max', '100'),
 ('req_onoff', 'true'),
 ('req_number', '5'),
-('req_maxon', 'true');
+('req_maxon', 'true'),
+('imageon', 'true'),
+('uploaddir', 'cyberfun_img/'),
+('file_limit', '15'),
+('screenon', 'true');
 
 -- --------------------------------------------------------
 
@@ -1088,7 +1101,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}tasks` (
   `task` varchar(20) NOT NULL DEFAULT '',
   `last_time` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`task`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `{$db_prefix}tasks`
@@ -1111,7 +1124,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}timestamps` (
   `delta` smallint(5) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`sequence`),
   KEY `sorting` (`info_hash`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}timestamps`
@@ -1128,7 +1141,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}timezone` (
   `difference` varchar(4) NOT NULL DEFAULT '0',
   `timezone` text NOT NULL,
   PRIMARY KEY (`difference`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `{$db_prefix}timezone`
@@ -1228,7 +1241,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
   KEY `pid` (`pid`),
   KEY `cip` (`cip`),
   KEY `smf_fid` (`smf_fid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `{$db_prefix}users`
@@ -1269,7 +1282,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users_level` (
   `WT` int(11) NOT NULL DEFAULT '0',
   UNIQUE KEY `base` (`id`),
   KEY `id_level` (`id_level`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `{$db_prefix}users_level`

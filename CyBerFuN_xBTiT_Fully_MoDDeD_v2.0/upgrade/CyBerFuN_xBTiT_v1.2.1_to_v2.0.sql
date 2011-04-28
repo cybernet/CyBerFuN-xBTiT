@@ -14,3 +14,9 @@ INSERT INTO `{$db_prefix}language` (
 VALUES (
 NULL ,  'Arabic',  'language/arabic'
 );
+
+ALTER TABLE  `{$db_prefix}files` ADD INDEX (  `image` );
+ALTER TABLE  `{$db_prefix}files` ADD INDEX (  `screen1` );
+ALTER TABLE  `{$db_prefix}files` ADD INDEX (  `screen2` );
+ALTER TABLE  `{$db_prefix}files` ADD INDEX (  `screen3` );
+ALTER TABLE  `{$db_prefix}settings` ADD INDEX (  `value` );
