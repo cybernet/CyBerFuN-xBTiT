@@ -1,0 +1,646 @@
+<hack>
+    <title>Invitation System</title>
+    <author>dodge</author>
+    <version>RC1(2.2.1)(669)</version>
+   
+    <!-- database -->
+    <file>
+        <name>"database"</name>
+        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[CREATE TABLE `{$db_prefix}invitations` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `inviter` int(10) unsigned NOT NULL default '0',
+  `invitee` varchar(80)  NOT NULL default '',
+  `hash` varchar(32)  NOT NULL default '',
+  `time_invited` datetime NOT NULL default '0000-00-00 00:00:00',
+  `confirmed` enum('true','false') NOT NULL default 'false',
+  PRIMARY KEY  (`id`),
+  KEY `inviter` (`id`) 
+) TYPE=MYISAM;]]></data>
+        </operation>
+        
+        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[ALTER TABLE `{$db_prefix}users` 
+ADD `invitations` int(10) NOT NULL default '0',
+ADD `invited_by` int(10) NOT NULL default '0',
+ADD `invitedate` datetime NOT NULL default '0000-00-00 00:00:00';]]></data>
+        </operation>
+        
+        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[DELETE FROM `{$db_prefix}settings`
+WHERE `key` LIKE 'invitation_%']]></data>
+        </operation>
+        
+        <operation>
+            <action>"sql"</action>
+            <data><![CDATA[INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES 
+('invitation_only', 'true'), 
+('invitation_reqvalid', 'false'),
+('invitation_expires', '7');]]></data>
+        </operation>
+    </file> 
+
+    <!-- account.php -->
+   <file>
+      <name>"$DEFAULT_ROOT/account.php"</name>
+      <operation>
+         <search><![CDATA[// already logged?]]></search>
+         <action>"add"</action>
+         <where>"before"</where>
+         <data><![CDATA[//start Invitation System by dodge
+if(!$_POST["conferma"] && $INVITATIONSON)
+{
+    if ($act == "invite")
+    {
+
+        $code = mysql_real_escape_string($_GET["invitationnumber"]);
+        $res = do_sqlquery("SELECT inviter, confirmed FROM {$TABLE_PREFIX}invitations WHERE hash = '" .
+            $code . "'", true);
+        @$inv = mysql_fetch_assoc($res);
+        $inviter = $inv["inviter"];
+        $confirmed = $inv["confirmed"];
+        if (!$inv || $confirmed == "true")
+            stderr($language["ERROR"], $code . "<br>" . $language["INVALID_INVITATION"] .
+                "<br>" . $language["ERR_INVITATION"]);
+    }
+    else
+        stderr($language["ERROR"], $language["INVITATION_ONLY"]);
+}   
+//end Invitation System
+    ]]></data>
+      </operation>
+      
+      <operation>
+         <search><![CDATA[&& $MAX_USERS!=0 && $numusers>=$MAX_USERS]]></search>
+         <action>"add"</action>
+         <where>"after"</where>
+         <data><![CDATA[ && !$INVITATIONSON]]></data>
+      </operation>
+      
+      <operation>
+         <search><![CDATA[if ($_POST["conferma"]) {
+    if ($act=="signup"]]></search>
+         <action>"add"</action>
+         <where>"after"</where>
+         <data><![CDATA[ || $act == "invite"]]></data>
+      </operation>
+      
+      <operation>
+         <search><![CDATA[$ret=aggiungiutente();
+       if ($ret==0)
+          {]]></search>
+         <action>"add"</action>
+         <where>"after"</where>
+         <data><![CDATA[
+            if ($INVITATIONSON == "true")
+            {
+                if ($VALID_INV == "true")
+                {
+                    success_msg($language["ACCOUNT_CREATED"], $language["INVITE_EMAIL_SENT1"] . " (" .
+                        htmlspecialchars($email) . "). " . $language["INVITE_EMAIL_SENT2"]);
+                    stdfoot();
+                    exit();
+                }
+                else
+                {
+                    success_msg($language["ACCOUNT_CREATED"], $language["INVITE_EMAIL_SENT3"] . " (" .
+                        htmlspecialchars($email) . "). " . $language["INVITE_EMAIL_SENT4"]);
+                    stdfoot();
+                    exit();
+                }
+            }
+            else
+        ]]></data>
+      </operation>
+      
+      <operation>
+         <search><![CDATA[function tabella($action,$dati=array()) {
+
+   global ]]></search>
+         <action>"add"</action>
+         <where>"after"</where>
+         <data><![CDATA[$SITENAME, $INVITATIONSON, $code, $inviter, ]]></data>
+      </operation>
+      
+      <operation>
+         <search><![CDATA[if ($action=="signup")
+     {
+          $dati["username"]="";]]></search>
+         <action>"replace"</action>
+         <data><![CDATA[if ($action=="signup" || $action == "invite")
+     {
+          $tpl_account->set("BY_INVITATION", false, true);
+          $dati["username"]="";]]></data>
+      </operation>
+      
+      <operation>
+         <search><![CDATA[$tpl_account->set("DISPLAY_FULL",$action=="signup",true);]]></search>
+         <action>"replace"</action>
+         <data><![CDATA[$tpl_account->set("DISPLAY_FULL", $action == "signup" || $action == "invite",true);]]></data>
+      </operation>
+      
+      <operation>
+         <search><![CDATA[if ($action=="del")
+      $tpl_account->set("account_from_delete_confirm"]]></search>
+         <action>"add"</action>
+         <where>"before"</where>
+         <data><![CDATA[
+    //begin invitation system by dodge
+    if ($INVITATIONSON)
+    {
+        $tpl_account->set("BY_INVITATION", true, true);
+        $tpl_account->set("account_IDcode", $code);
+        $tpl_account->set("account_IDinviter", $inviter);
+    }
+    //end invitation system
+    ]]></data>
+      </operation>
+      
+      <operation>
+         <search><![CDATA[function aggiungiutente() {
+
+global ]]></search>
+         <action>"add"</action>
+         <where>"after"</where>
+         <data><![CDATA[$INVITATIONSON, $VALID_INV, ]]></data>
+      </operation>
+      
+      <operation>
+         <search><![CDATA[# Create Random number]]></search>
+         <action>"add"</action>
+         <where>"before"</where>
+         <data><![CDATA[    //begin invitation system by dodge
+    if ($INVITATIONSON == "true")
+    {
+        if ($VALID_INV == "true")
+            $idlevel = 2;
+        else
+            $idlevel = 3;
+    }
+    //end invitation system
+    ]]></data>
+      </operation>
+      
+      <operation>
+         <search><![CDATA[$newuid=mysql_insert_id();]]></search>
+         <action>"add"</action>
+         <where>"after"</where>
+         <data><![CDATA[
+//begin invitation system by dodge
+if ($INVITATIONSON == "true")
+{
+    $inviter = 0 + $_POST["inviter"];
+    $code = unesc($_POST["code"]);
+    $res = do_sqlquery("SELECT username FROM {$TABLE_PREFIX}users WHERE id = $inviter", true);
+    $arr = mysql_fetch_assoc($res);
+    $invusername = $arr["username"];
+    do_sqlquery("UPDATE {$TABLE_PREFIX}users SET invited_by='" . $inviter .
+        "' WHERE id='" . $newuid . "'", true);
+    do_sqlquery("UPDATE {$TABLE_PREFIX}invitations SET confirmed='true' WHERE hash='$code'", true);
+    $msg = sqlesc($language["WELCOME MESSAGE"]);
+}
+//end invitation system
+    ]]></data>
+      </operation>
+      
+      <operation>
+         <search><![CDATA[if ($VALIDATION=="user")
+   {
+   ini_set("sendmail_from","");]]></search>
+         <action>"add"</action>
+         <where>"before"</where>
+         <data><![CDATA[
+    if ($INVITATIONSON == "true")
+    {
+        send_pm('2', $newuid, '" . $language["WELCOME"] . "', $msg);
+        if ($VALID_INV == "true")
+        {
+            send_mail($email, "$SITENAME " . $language["REG_CONFIRM"] . "", $language["INVIT_MSGINFO"] .
+                "$email" . $language["INVIT_MSGINFO1"] . " $utente\n" . $language["INVIT_MSGINFO2"] .
+                " $pwd\n\n" . $language["INVIT_MSGINFO3"], "From: $SITENAME <$SITEEMAIL>");
+        }
+        else
+            send_mail($email, "$SITENAME " . $language["REG_CONFIRM"] . "", $language["INVIT_MSGINFO"] .
+                "$email" . $language["INVIT_MSGINFO1"] . " $utente\n" . $language["INVIT_MSGINFO2"] .
+                " $pwd\n\n\n" . $language["INVIT_MSG_AUTOCONFIRM3"], "From: $SITENAME <$SITEEMAIL>");
+
+        write_log("Signup new user $utente ($email)", "add");
+    }
+    else
+    ]]></data>
+      </operation>
+   </file>
+   
+   <!-- mainusertoolbar_block.php -->
+   <file>
+      <name>"$DEFAULT_ROOT/blocks/mainusertoolbar_block.php"</name>
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[global ]]></search>
+         <where>"after"</where>
+         <data><![CDATA[$INVITATIONSON, ]]></data>
+      </operation>
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[<a href=\"index.php?page=usercp&amp;uid=".$CURUSER["uid"]."\">".$language["USER_CP"]."</a></td>\n");]]></search>
+         <where>"after"</where>
+         <data><![CDATA[
+if($INVITATIONSON)
+{
+    require(load_language("lang_usercp.php"));
+    $resinvs=do_sqlquery("SELECT invitations FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"]);
+    $arrinvs=mysql_fetch_row($resinvs);
+    $invs=$arrinvs[0];
+    print("<td style=\"text-align:center;\" align=\"center\"><a href=\"index.php?page=usercp&do=invite&action=read&uid=".$CURUSER["uid"]."\">".$language["INVITATIONS"]." ".($invs>0?"(".$invs.")":"")."</a></td>\n");
+}]]></data>
+      </operation>
+    </file>
+   
+   <!-- account.tpl -->
+   <file>
+      <name>"$DEFAULT_STYLE_PATH/account.tpl"</name>
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[<table width="60%" border="0" class="lista">]]></search>
+         <where>"after"</where>
+         <data><![CDATA[
+  <if:BY_INVITATION>
+  <input type="hidden" name="code" value="<tag:account_IDcode />" />
+  <input type="hidden" name="inviter" value="<tag:account_IDinviter />" />
+    <tr>
+      <td class="lista" colspan="2"><div style="text-align:center; padding:10px;"><tag:language.WELCOME_INVITE /></div></td>
+    </tr>
+  </if:BY_INVITATION>
+  ]]></data>
+      </operation>
+    </file>
+   
+   <!-- usercp.menu.php -->
+   <file>
+      <name>"$DEFAULT_ROOT/user/usercp.menu.php"</name>
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[);
+?>]]></search>
+         <where>"before"</where>
+         <data><![CDATA[
+  3=>array(
+        "title"=>$language["MNU_UCP_TOOLS"],
+        "menu"=>array(0=>array(
+                "url"=>"index.php?page=usercp&amp;do=invite&amp;action=read&amp;uid=".$uid."" ,
+                "description"=>$language["MNU_UCP_INVITATIONS"]), 
+                             )),
+  ]]></data>
+      </operation>
+    </file>
+    
+    <!-- config.php -->
+    <file>
+    <name>"$DEFAULT_ROOT/include/config.php"</name>
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[if (!array_key_exists('ajax_poller',$btit_settings)) $btit_settings['ajax_poller']=true;]]></search>
+         <where>"after"</where>
+         <data><![CDATA[
+    if (!array_key_exists('invitation_only',$btit_settings)) $btit_settings['invitation_only']=false;
+    if (!array_key_exists('invitation_reqvalid',$btit_settings)) $btit_settings['invitation_reqvalid']=false;
+    ]]></data>
+      </operation>
+      
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[?>]]></search>
+         <where>"before"</where>
+         <data><![CDATA[
+//begin invitation system by dodge
+$INVITATIONSON=$btit_settings['invitation_only'];
+$VALID_INV=$btit_settings['invitation_reqvalid'];
+$INV_EXPIRES=$btit_settings['invitation_expires'];
+//end invitation system
+        ]]></data>
+      </operation>
+    </file>
+    
+    <!-- lang_userdetails.php -->
+    <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_userdetails.php"</name> 
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[?>]]></search>
+         <where>"before"</where>
+         <data><![CDATA[// INVITATION SYSTEM
+$language['USER_INVITATIONS']   = 'Invitations';
+$language['USER_INVITED_BY']    = 'Invited By';
+        ]]></data>
+      </operation>
+    </file>
+    
+    <!-- userdetails.php -->
+    <file>
+    <name>"$DEFAULT_ROOT/userdetails.php"</name>
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[if ($id>1) {
+   $res=get_result("SELECT]]></search>
+         <where>"after"</where>
+         <data><![CDATA[ u.invited_by, u.invitations,]]></data>
+      </operation>
+      
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[$userdetailtpl-> set("userdetail_colspan", "0");
+}]]></search>
+         <where>"after"</where>
+         <data><![CDATA[
+//begin invitation system by dodge
+$userdetailtpl->set("userdetail_invs", ($row["invitations"]));
+if ($row["invited_by"] > 0)
+{
+    $res2 = do_sqlquery("SELECT id, username FROM {$TABLE_PREFIX}users WHERE id='" . $row["invited_by"] . "'", true);
+    if ($res2)
+    {
+        $userdetailtpl->set("was_invited", true, true);
+        $invite = mysql_fetch_row($res2);
+        $userdetailtpl->set("userdetail_invby", "<a href=index.php?page=userdetails&amp;id=" . $invite[0] . ">" . $invite[1] . "</a>");
+    }
+}
+else
+    $userdetailtpl->set("was_invited", false, true);
+//end invitation system
+    ]]></data>
+      </operation>
+    </file>
+    
+    <!-- userdetails.tpl -->
+    <file>
+    <name>"$DEFAULT_STYLE_PATH/userdetails.tpl"</name>
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[</if:userdetail_edit_admin>]]></search>
+         <where>"after"</where>
+         <data><![CDATA[
+         
+  <tr>
+
+    <td class="header"><tag:language.USER_INVITATIONS /></td>
+
+    <td class="lista"><tag:userdetail_invs /></td>
+
+  </tr>
+
+  <if:was_invited>
+
+  <tr>
+
+    <td class="header"><tag:language.USER_INVITED_BY /></td>
+
+    <td class="lista"><tag:userdetail_invby /></td>
+
+  </tr>
+
+  </if:was_invited>
+
+    ]]></data>
+      </operation>
+    </file>
+    
+    <!-- admin.index.php -->
+    <file>
+    <name>"$DEFAULT_ROOT/admin/admin.index.php"</name>    
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[switch ($do)
+    {]]></search>
+         <where>"after"</where>
+         <data><![CDATA[
+    case 'invitations':
+      include("$ADMIN_PATH/admin.invitations.php");
+      $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.invitations.tpl"))));
+      break;
+      ]]></data>
+      </operation>
+    </file>    
+
+    <!-- admin.menu.php -->
+    <file>
+    <name>"$DEFAULT_ROOT/admin/admin.menu.php"</name>    
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[2=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=logview" ,
+                    "description"=>$language["ACP_SITE_LOG"])]]></search>
+         <where>"after"</where>
+         <data><![CDATA[,
+                          3=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=invitations" ,
+                    "description"=>$language["ACP_INVITATIONS"])]]></data>
+      </operation>
+    </file>
+    
+    <!-- lang_admin.php -->
+    <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_admin.php"</name>     
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[?>]]></search>
+         <where>"before"</where>
+         <data><![CDATA[//INVITATION SYSTEM
+$language['ACP_INVITATION_SYSTEM']='Invitation System';
+$language['ACTIVE_INVITATIONS']='Activate Invitation System:';
+$language['PRIVATE_TRACKER']='Private Tracker';
+$language['PRIVATE_TRACKER_INFO']='For improved security, when setting the tracker to "Private",<br />"Max users" will also be changed to "1".';
+$language['ACP_INVITATIONS']='Invitations';
+$language['VALID_INV_MODE']='Inviter Confirmation Required';
+$language['INVITE_TIMEOUT']='Dead time for invitations<br />( on days )';
+$language['INVITED_BY']='Invited by';
+$language['SENT_TO']='Sent to';
+$language['DATE_SENT']='Date Sent';
+$language['INV_WELCOME']='Welcome to Invitation System Panel.<br />Activating this option will prevent users from<br />signing up without an invitation code.';
+$language['HASH']='Hash';
+$language['VALID_INV_MODE']='Confirmation needed';
+$language['VALID_INV_EXPL']='<i>Inviter will have to confirm invited user account</i>';
+$language['INVITE_TIMEOUT']='Dead time for invitations<br />( on days )';
+$language['GIVE_INVITES_TO']='Give Invitations';
+$language['NUM_INVITES']='Number of Invitations';
+$language['INVITES_SETTINGS']='Settings';
+$language['INVITES_LIST']='Invitation List';
+$language['SENDINV_CONFIRM']='Are you sure you want to send this invitation?';
+$language['ERR_SENDINVS']='Please, choose username or user level.';
+$language['SENDINV_EXPL']='If username is not inserted, rank will be chosen instead.';
+$language['RECYCLE_DATE']='Recycle period';
+$language['RECYCLE_EXPL']='<i>Period in <u>days</u> after which invitations will be recycled</i>';
+        ]]></data>
+      </operation>
+    </file>
+
+    <!-- lang_usercp.php -->
+    <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_usercp.php"</name>  
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[?>]]></search>
+         <where>"before"</where>
+         <data><![CDATA[//INVITATION SYSTEM
+$language['ACCOUNT_CONFIRMED']='Account Confirmed';
+$language['CONFIRMED']='Confirmed';
+$language['DATE_SENT']='Date Sent';
+$language['ERR_EMAIL_ALREADY_EXISTS']='This e-mail address already exists in our database.';
+$language['ERR_INVITATIONS_OFF']='Sorry, invitation system is deactivated.';
+$language['ERR_MISSING_DATA']='Missing information!<br />Please, fill all necessary fields.';
+$language['INSERT_EMAIL']='Empty e-mail address field!';
+$language['INSERT_MESSAGE']='Empty personal message field!';
+$language['INVIT_CONFIRM']='Invitation Confirmed';
+$language['INVIT_MSG']='Hello,<br /><br />You have been invited to join the '.$SITENAME.' community by';
+$language['INVIT_MSG1']='<br />If you want to accept this invitation, you\'ll need to click this link:<br /><br />';
+$language['INVIT_MSG2']='<br /><br />You\'ll need to accept the invitation within 24 hours, or else the link will become inactive.<br />We on '.$SITENAME.' hope that you\'ll accept the invitation and join our great community!<br /><br />Personal message from';
+$language['INVIT_MSG3']='<br /><br />----------------<br />If you do not know the person who has invited you, please forward this email to '.$SITEEMAIL;
+$language['INVIT_MSGCONFIRM']='Hello,<br />Your account has been confirmed. You can now visit<br /><br />'.$BASEURL.'/login.php<br /><br />and use your login information to login in. We hope you\'ll read the FAQ\'s and Rules before you start sharing files.<br /><br />Good luck and have fun on '.$SITENAME.'!<br /><br /><br />----------------<br />If you did not register for '.$SITENAME.', please forward this email to '.$SITEEMAIL;
+$language['INVITATIONS']='Invitations';
+$language['INVITE_SOMEONE_TO']='Send Invitation';
+$language['MEMBERS_INVITED_BY']='Members Invited By You';
+$language['MESSAGE']='Message';
+$language['MNU_UCP_INVITATIONS']='Invitations';
+$language["MNU_UCP_TOOLS"]='Tools';
+$language['NO_INV']='No invitations left.';
+$language['NO_INVITATIONS_OUT']='No invitations sent.';
+$language['NO_NEED_CONFIRM_YET']='No invitations to confirm.';
+$language['PENDING']='Pending';
+$language['REMAINING']='Remaining';
+$language['SENT_INVITATIONS']='Sent Invitations';
+$language['STATUS']='Status';
+$language['WELCOME_UCP_INVITE']='Welcome to your Invitation Panel.<br />Here you may send invitations, so your friends can register in '.$SITENAME.'.<br />';
+        ]]></data>
+      </operation>
+    </file>
+
+    <!-- lang_account.php -->
+    <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_account.php"</name> 
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[?>]]></search>
+         <where>"before"</where>
+         <data><![CDATA[//INVITATION SYSTEM
+$language['INVIT_MSGINFO']='You have requested a new account on '.$SITENAME.' and you have\nspecified this address (';
+$language['INVIT_MSGINFO1']=') as user contact.<br /><br />Your account is awaiting confirmation from your inviter.'.
+                            '<br />As long as your account isn\'t confirmed, you can\'t login to the site.<br /><br />Account info:\nUsername:';
+$language['INVIT_MSGINFO2']='Password:';
+$language['INVIT_MSGINFO3']='If you don\'t confirm your account within 24 hours, it will be deleted.'.
+                            '<br />----------------<br />If you did not register for '.$SITENAME.', please forward this email to '.$SITEEMAIL;
+$language['INVIT_MSG_AUTOCONFIRM3']='----------------<br />You can now visit<br /><br />'.$BASEURL.'/login.php'.
+                                    '<br /><br />and use your login information to login in.<br /><br />'.
+                                    'Good luck and have fun on '.$SITENAME.'!<br /><br /><br />----------------<br />'.
+                                    'If you did not register for '.$SITENAME.', please forward this email to '.$SITEEMAIL;
+$language['REG_CONFIRM']='Account Confirmation';
+$language['INVITATION_ONLY']='Sorry, but registrations are closed.<br>You need an invitation in order to signup.';
+$language['WELCOME_INVITE']='Welcome! You have accepted an invitation from one of our users.<br />You may now sign-up.';
+$language['INVITE_EMAIL_SENT1']='A confirmation e-mail has been sent to the address you specified';
+$language['INVITE_EMAIL_SENT2']='<br />You will need to wait until your inviter confirms your account.';
+$language['INVITE_EMAIL_SENT3']='An e-mail has been sent to the address you specified';
+$language['INVITE_EMAIL_SENT4']='<br />You may now <a href="index.php?page=login">LOGIN</a>. Good luck and have fun on '.$SITENAME.'!';
+$language['INVALID_INVITATION']='Your invitation code is invalid.';
+$language['ERR_INVITATION']='<br />Request a new invitation from your inviter.';
+        ]]></data>
+      </operation>
+    </file>
+    
+    <!-- index.php -->
+    <file>
+    <name>"$DEFAULT_ROOT/index.php"</name>     
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[case 'account':
+    case 'signup':]]></search>
+         <where>"after"</where>
+         <data><![CDATA[
+    case 'invite':]]></data>
+      </operation>
+   </file>
+
+    <!-- usercp.index.php -->   
+    <file>
+    <name>"$DEFAULT_ROOT/user/usercp.index.php"</name>     
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[case 'pid_c':
+    include("$USER_PATH/usercp.pidchange.php");
+    $tpl->set("main_content",set_block($language["CHANGE_PID"],"center",$usercptpl->fetch(load_template("usercp.pidchange.tpl"))));
+    break;]]></search>
+         <where>"after"</where>
+         <data><![CDATA[
+    case 'invite':
+    include("$USER_PATH/usercp.invitations.php");
+    $tpl->set("main_content",set_block($language["MNU_UCP_INVITATIONS"],"center",$usercptpl->fetch(load_template("usercp.invitations.tpl"))));
+    break;]]></data>
+      </operation>
+   </file>
+    
+    <!-- sanity.php -->
+    <file>
+    <name>"$DEFAULT_ROOT/include/sanity.php"</name>     
+      <operation>
+         <action>"add"</action>
+         <search><![CDATA[}
+?>]]></search>
+         <where>"before"</where>
+         <data><![CDATA[
+//begin invitation system by dodge
+global $INV_EXPIRES;
+$deadtime = $INV_EXPIRES * 86400;
+$user = do_sqlquery("SELECT inviter FROM {$TABLE_PREFIX}invitations WHERE time_invited < DATE_SUB(NOW(), INTERVAL $deadtime SECOND)");
+@$arr = mysql_fetch_assoc($user);
+if (mysql_num_rows($user) > 0)
+{
+    mysql_query("UPDATE {$TABLE_PREFIX}users SET invitations=invitations+1 WHERE id = '" .
+        $arr["inviter"] . "'");
+    mysql_query("DELETE FROM {$TABLE_PREFIX}invitations WHERE inviter = '" . $arr["inviter"] .
+        "' AND time_invited < DATE_SUB(NOW(), INTERVAL $deadtime SECOND)");
+}
+//end invitation system
+    ]]></data>
+      </operation>
+   </file>
+
+    <!-- usercp.invitations.php -->   
+   <file>
+   <name>"$CURRENT_FOLDER/toCopy/user/usercp.invitations.php"</name>
+      <operation>
+        <action>"copy"</action>
+        <data>"usercp.invitations.php"</data>
+        <where>"$DEFAULT_ROOT/user"</where>
+      </operation>
+    </file>
+
+    <!-- admin.invitations.php -->   
+   <file>
+   <name>"$CURRENT_FOLDER/toCopy/admin/admin.invitations.php"</name>
+      <operation>
+        <action>"copy"</action>
+        <data>"admin.invitations.php"</data>
+        <where>"$DEFAULT_ROOT/admin"</where>
+      </operation>
+    </file>
+
+    <!-- usercp.invitations.tpl -->   
+   <file>
+   <name>"$CURRENT_FOLDER/toCopy/style/xbtit_default/usercp.invitations.tpl"</name>
+      <operation>
+        <action>"copy"</action>
+        <data>"usercp.invitations.tpl"</data>
+        <where>"$DEFAULT_STYLE_PATH"</where>
+      </operation>
+    </file>
+
+    <!-- admin.invitations.tpl -->   
+   <file>
+   <name>"$CURRENT_FOLDER/toCopy/style/xbtit_default/admin.invitations.tpl"</name>
+      <operation>
+        <action>"copy"</action>
+        <data>"admin.invitations.tpl"</data>
+        <where>"$DEFAULT_STYLE_PATH"</where>
+      </operation>
+    </file>
+</hack>
