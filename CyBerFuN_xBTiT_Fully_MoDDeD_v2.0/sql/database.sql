@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 03, 2011 at 07:50 PM
+-- Generation Time: May 03, 2011 at 10:12 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.8
 
@@ -566,21 +566,38 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}hacks` (
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}history` (
   `uid` int(10) DEFAULT NULL,
-  `infohash` varchar(40) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `infohash` varchar(40) NOT NULL DEFAULT '',
   `date` int(10) DEFAULT NULL,
   `uploaded` bigint(20) NOT NULL DEFAULT '0',
   `downloaded` bigint(20) NOT NULL DEFAULT '0',
   `active` enum('yes','no') NOT NULL DEFAULT 'no',
   `agent` varchar(30) NOT NULL DEFAULT '',
-  UNIQUE KEY `uid` (`uid`,`infohash`),
-  KEY `agent` (`agent`),
-  KEY `active` (`active`),
-  KEY `uploaded` (`uploaded`),
-  KEY `downloaded` (`downloaded`)
+  UNIQUE KEY `uid` (`uid`,`infohash`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `{$db_prefix}history`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}invitations`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}invitations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `inviter` int(10) unsigned NOT NULL DEFAULT '0',
+  `invitee` varchar(80) NOT NULL DEFAULT '',
+  `hash` varchar(32) NOT NULL DEFAULT '',
+  `time_invited` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `confirmed` enum('true','false') NOT NULL DEFAULT 'false',
+  KEY `inviter` (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}invitations`
 --
 
 
@@ -1003,7 +1020,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}settings` (
 --
 
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
-('name', 'CyBerFuN xBTiT'),
+('name', 'BTI-Tracker'),
 ('url', 'http://127.0.0.1/dev'),
 ('announce', 'a:2:{i:0;s:30:"http://localhost/announce.php\r";i:1;s:30:"http://localhost:2710/announce";}'),
 ('email', 'admin@localhost'),
@@ -1049,6 +1066,10 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('cache_duration', '0'),
 ('cut_name', '0'),
 ('mail_type', 'php'),
+('imageon', 'true'),
+('uploaddir', 'cyberfun_img/'),
+('file_limit', '2048'),
+('screenon', 'true'),
 ('req_prune', '30'),
 ('req_page', '10'),
 ('req_post', '1'),
@@ -1061,10 +1082,9 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('req_onoff', 'true'),
 ('req_number', '5'),
 ('req_maxon', 'true'),
-('imageon', 'true'),
-('uploaddir', 'cyberfun_img/'),
-('file_limit', '2048'),
-('screenon', 'true');
+('invitation_only', 'true'),
+('invitation_reqvalid', 'false'),
+('invitation_expires', '7');
 
 -- --------------------------------------------------------
 
@@ -1257,20 +1277,24 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
   `time_offset` varchar(4) NOT NULL DEFAULT '0',
   `temp_email` varchar(50) NOT NULL DEFAULT '',
   `smf_fid` int(10) NOT NULL DEFAULT '0',
+  `invitations` int(10) NOT NULL DEFAULT '0',
+  `invited_by` int(10) NOT NULL DEFAULT '0',
+  `invitedate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `id_level` (`id_level`),
   KEY `pid` (`pid`),
   KEY `cip` (`cip`),
-  KEY `smf_fid` (`smf_fid`)
+  KEY `smf_fid` (`smf_fid`),
+  KEY `invitations` (`invitations`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `{$db_prefix}users`
 --
 
-INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`) VALUES
-(1, 'Guest', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0);
+INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`, `invitations`, `invited_by`, `invitedate`) VALUES
+(1, 'Guest', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0, 0, NOW());
 
 -- --------------------------------------------------------
 

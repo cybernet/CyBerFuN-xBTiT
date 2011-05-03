@@ -53,7 +53,25 @@
   </tr>
 
   </if:userdetail_edit_admin>
+<tr>
 
+    <td class="header"><tag:language.USER_INVITATIONS /></td>
+
+    <td class="lista"><tag:userdetail_invs /></td>
+
+  </tr>
+
+  <if:was_invited>
+
+  <tr>
+
+    <td class="header"><tag:language.USER_INVITED_BY /></td>
+
+    <td class="lista"><tag:userdetail_invby /></td>
+
+  </tr>
+
+  </if:was_invited>
   <tr>
 
     <td class="header"><tag:language.USER_JOINED /></td>

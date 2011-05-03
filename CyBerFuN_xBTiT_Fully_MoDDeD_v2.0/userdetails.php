@@ -78,9 +78,9 @@ else
     }
 
 
-if ($id>1) {
-   $res=get_result("SELECT u.avatar,u.email,u.cip,u.username,$udownloaded as downloaded,$uuploaded as uploaded,UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id",true,$btit_settings['cache_duration']);
-   $num=count($res);
+if ($id > 1) {
+   $res = get_result("SELECT u.invited_by, u.invitations, u.avatar,u.email,u.cip,u.username,$udownloaded as downloaded,$uuploaded as uploaded,UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id",true,$btit_settings['cache_duration']);
+   $num = count($res);
    if ($num==0)
       {
        err_msg($language["ERROR"],$language["BAD_ID"]);
@@ -150,6 +150,21 @@ else
 $userdetailtpl-> set("userdetail_level", ($row["level"]));
 $userdetailtpl-> set("userdetail_colspan", "0");
 }
+// begin invitation system by dodge
+$userdetailtpl->set("userdetail_invs", ($row["invitations"]));
+if ($row["invited_by"] > 0)
+{
+    $res2 = do_sqlquery("SELECT id, username FROM {$TABLE_PREFIX}users WHERE id='" . $row["invited_by"] . "'", true);
+    if ($res2)
+    {
+        $userdetailtpl->set("was_invited", true, true);
+        $invite = mysql_fetch_row($res2);
+        $userdetailtpl->set("userdetail_invby", "<a href=index.php?page=userdetails&amp;id=" . $invite[0] . ">" . $invite[1] . "</a>");
+    }
+}
+else
+    $userdetailtpl->set("was_invited", false, true);
+// end invitation system
 $userdetailtpl -> set("userdetail_joined", ($row["joined"]==0 ? "N/A" : get_date_time($row["joined"])));
 $userdetailtpl -> set("userdetail_lastaccess", ($row["lastconnect"]==0 ? "N/A" : get_date_time($row["lastconnect"])));
 $userdetailtpl -> set("userdetail_country", ($row["flag"]==0 ? "":unesc($row['name']))."&nbsp;&nbsp;<img src=\"images/flag/".(!$row["flagpic"] || $row["flagpic"]==""?"unknown.gif":$row["flagpic"])."\" alt=\"".($row["flag"]==0 ? "unknown":unesc($row['name']))."\" />");

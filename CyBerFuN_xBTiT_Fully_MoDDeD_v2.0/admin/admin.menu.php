@@ -135,7 +135,10 @@ else
                     "description"=>$language["ACP_MYSQL_STATS"]),
                           2=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=logview" ,
-                    "description"=>$language["ACP_SITE_LOG"])
+                    "description"=>$language["ACP_SITE_LOG"]),
+                          3=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=invitations" ,
+                    "description"=>$language["ACP_INVITATIONS"])
                     )
             ),
             

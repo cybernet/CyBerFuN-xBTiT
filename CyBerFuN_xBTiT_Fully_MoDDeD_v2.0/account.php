@@ -63,6 +63,26 @@ if (isset($_POST["act"])) $act=$_POST["act"];
  else $act="";
   }
 
+// start Invitation System by dodge
+if(!$_POST["conferma"] && $INVITATIONSON)
+{
+    if ($act == "invite")
+    {
+
+        $code = mysql_real_escape_string($_GET["invitationnumber"]);
+        $res = do_sqlquery("SELECT inviter, confirmed FROM {$TABLE_PREFIX}invitations WHERE hash = '" .
+            $code . "'", true);
+        @$inv = mysql_fetch_assoc($res);
+        $inviter = $inv["inviter"];
+        $confirmed = $inv["confirmed"];
+        if (!$inv || $confirmed == "true")
+            stderr($language["ERROR"], $code . "<br>" . $language["INVALID_INVITATION"] .
+                "<br>" . $language["ERR_INVITATION"]);
+    }
+    else
+        stderr($language["ERROR"], $language["INVITATION_ONLY"]);
+}   
+// end Invitation System
 
 // already logged?
 if ($act=="signup" && isset($CURUSER["uid"]) && $CURUSER["uid"]!=1) {
@@ -74,7 +94,7 @@ if ($act=="signup" && isset($CURUSER["uid"]) && $CURUSER["uid"]!=1) {
 $nusers=get_result("SELECT count(*) as tu FROM {$TABLE_PREFIX}users WHERE id>1",true,$btit_settings['cache_duration']);
 $numusers=$nusers[0]['tu'];
 
-if ($act=="signup" && $MAX_USERS!=0 && $numusers>=$MAX_USERS)
+if ($act=="signup" && $MAX_USERS!=0 && $numusers>=$MAX_USERS && !$INVITATIONSON)
    {
    stderr($language["ERROR"],$language["REACHED_MAX_USERS"]);
 }
@@ -101,10 +121,28 @@ if ($act=="confirm") {
 }
 
 if ($_POST["conferma"]) {
-    if ($act=="signup") {
+    if ($act=="signup" || $act == "invite") {
        $ret=aggiungiutente();
        if ($ret==0)
           {
+		  if ($INVITATIONSON == "true")
+            {
+                if ($VALID_INV == "true")
+                {
+                    success_msg($language["ACCOUNT_CREATED"], $language["INVITE_EMAIL_SENT1"] . " (" .
+                        htmlspecialchars($email) . "). " . $language["INVITE_EMAIL_SENT2"]);
+                    stdfoot();
+                    exit();
+                }
+                else
+                {
+                    success_msg($language["ACCOUNT_CREATED"], $language["INVITE_EMAIL_SENT3"] . " (" .
+                        htmlspecialchars($email) . "). " . $language["INVITE_EMAIL_SENT4"]);
+                    stdfoot();
+                    exit();
+                }
+            }
+            else
           if ($VALIDATION=="user")
              {
                success_msg($language["ACCOUNT_CREATED"],$language["EMAIL_SENT"]);
@@ -151,11 +189,12 @@ else {
 
 function tabella($action,$dati=array()) {
 
-   global $idflag,$link, $idlangue, $idstyle, $CURUSER,$USE_IMAGECODE, $TABLE_PREFIX, $language, $tpl_account,$THIS_BASEPATH;
+   global $idflag, $link, $idlangue, $idstyle, $SITENAME, $INVITATIONSON, $code, $inviter, $CURUSER, $USE_IMAGECODE, $TABLE_PREFIX, $language, $tpl_account, $THIS_BASEPATH;
 
 
-   if ($action=="signup")
+   if ($action == "signup" || $action == "invite")
      {
+          $tpl_account->set("BY_INVITATION", false, true);
           $dati["username"]="";
           $dati["email"]="";
           $dati["language"]=$idlangue;
@@ -182,8 +221,15 @@ function tabella($action,$dati=array()) {
    $tpl_account->set("account_username",$dati["username"]);
    $tpl_account->set("dati",$dati);
    $tpl_account->set("DEL",$action=="delete",true);
-   $tpl_account->set("DISPLAY_FULL",$action=="signup",true);
-
+   $tpl_account->set("DISPLAY_FULL", $action == "signup" || $action == "invite", true);
+//begin invitation system by dodge
+    if ($INVITATIONSON)
+    {
+        $tpl_account->set("BY_INVITATION", true, true);
+        $tpl_account->set("account_IDcode", $code);
+        $tpl_account->set("account_IDinviter", $inviter);
+    }
+    //end invitation system
    if ($action=="del")
       $tpl_account->set("account_from_delete_confirm","<input type=\"submit\" name=\"elimina\" value=\"".$language["FRM_DELETE"]."\" />&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"submit\" name=\"elimina\" value=\"".$language["FRM_CANCEL"]."\" />");
    else
@@ -318,7 +364,7 @@ elseif ($action!="mod")
 
 function aggiungiutente() {
 
-global $SITENAME,$SITEEMAIL,$BASEURL,$VALIDATION,$USERLANG,$USE_IMAGECODE, $TABLE_PREFIX, $XBTT_USE, $language,$THIS_BASEPATH, $FORUMLINK, $db_prefix;
+global $SITENAME, $SITEEMAIL, $INVITATIONSON, $VALID_INV, $BASEURL, $VALIDATION, $USERLANG, $USE_IMAGECODE, $TABLE_PREFIX, $XBTT_USE, $language, $THIS_BASEPATH, $FORUMLINK, $db_prefix;
 
 $utente=mysql_real_escape_string($_POST["user"]);
 $pwd=mysql_real_escape_string($_POST["pwd"]);
@@ -345,6 +391,16 @@ if ($VALIDATION=="none")
    $idlevel=3;
 else
    $idlevel=2;
+
+// begin invitation system by dodge
+    if ($INVITATIONSON == "true")
+    {
+        if ($VALID_INV == "true")
+            $idlevel = 2;
+        else
+            $idlevel = 3;
+    }
+// end invitation system
 # Create Random number
 $floor = 100000;
 $ceiling = 999999;
@@ -465,6 +521,21 @@ do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_le
 
 $newuid=mysql_insert_id();
 
+// begin invitation system by dodge
+if ($INVITATIONSON == "true")
+{
+    $inviter = 0 + $_POST["inviter"];
+    $code = unesc($_POST["code"]);
+    $res = do_sqlquery("SELECT username FROM {$TABLE_PREFIX}users WHERE id = $inviter", true);
+    $arr = mysql_fetch_assoc($res);
+    $invusername = $arr["username"];
+    do_sqlquery("UPDATE {$TABLE_PREFIX}users SET invited_by='" . $inviter .
+        "' WHERE id='" . $newuid . "'", true);
+    do_sqlquery("UPDATE {$TABLE_PREFIX}invitations SET confirmed='true' WHERE hash='$code'", true);
+    $msg = sqlesc($language["WELCOME MESSAGE"]);
+}
+// end invitation system
+
 // Continue to create smf members if they disable smf mode
 // $test=do_sqlquery("SELECT COUNT(*) FROM {$db_prefix}members");
 $test=do_sqlquery("SHOW TABLES LIKE '{$db_prefix}members'",true);
@@ -488,6 +559,23 @@ if ($XBTT_USE)
    {
    $resin=do_sqlquery("INSERT INTO xbt_users (uid, torrent_pass) VALUES ($newuid,'$pid')",true);
    }
+if ($INVITATIONSON == "true")
+    {
+        send_pm('2', $newuid, '" . $language["WELCOME"] . "', $msg);
+        if ($VALID_INV == "true")
+        {
+            send_mail($email, "$SITENAME " . $language["REG_CONFIRM"] . "", $language["INVIT_MSGINFO"] .
+                "$email" . $language["INVIT_MSGINFO1"] . " $utente\n" . $language["INVIT_MSGINFO2"] .
+                " $pwd\n\n" . $language["INVIT_MSGINFO3"], "From: $SITENAME <$SITEEMAIL>");
+        }
+        else
+            send_mail($email, "$SITENAME " . $language["REG_CONFIRM"] . "", $language["INVIT_MSGINFO"] .
+                "$email" . $language["INVIT_MSGINFO1"] . " $utente\n" . $language["INVIT_MSGINFO2"] .
+                " $pwd\n\n\n" . $language["INVIT_MSG_AUTOCONFIRM3"], "From: $SITENAME <$SITEEMAIL>");
+
+        write_log("Signup new user $utente ($email)", "add");
+    }
+    else
 if ($VALIDATION=="user")
    {
    ini_set("sendmail_from","");

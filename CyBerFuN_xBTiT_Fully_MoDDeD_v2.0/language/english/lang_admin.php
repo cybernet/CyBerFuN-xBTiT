@@ -307,4 +307,30 @@ $language["STICKY_SETTINGS"]="Sticky settings";
 $language["COLOR"]="Color";
 $language["LEVEL_STICKY"]="Who can add sticky torrents? (default: Uploader)";
 // STiCKy Torrent - end
+// INVITATION SYSTEM
+$language['ACP_INVITATION_SYSTEM']='Invitation System';
+$language['ACTIVE_INVITATIONS']='Activate Invitation System:';
+$language['PRIVATE_TRACKER']='Private Tracker';
+$language['PRIVATE_TRACKER_INFO']='For improved security, when setting the tracker to "Private",<br />"Max users" will also be changed to "1".';
+$language['ACP_INVITATIONS']='Invitations';
+$language['VALID_INV_MODE']='Inviter Confirmation Required';
+$language['INVITE_TIMEOUT']='Dead time for invitations<br />( on days )';
+$language['INVITED_BY']='Invited by';
+$language['SENT_TO']='Sent to';
+$language['DATE_SENT']='Date Sent';
+$language['INV_WELCOME']='Welcome to Invitation System Panel.<br />Activating this option will prevent users from<br />signing up without an invitation code.';
+$language['HASH']='Hash';
+$language['VALID_INV_MODE']='Confirmation needed';
+$language['VALID_INV_EXPL']='<i>Inviter will have to confirm invited user account</i>';
+$language['INVITE_TIMEOUT']='Dead time for invitations<br />( on days )';
+$language['GIVE_INVITES_TO']='Give Invitations';
+$language['NUM_INVITES']='Number of Invitations';
+$language['INVITES_SETTINGS']='Settings';
+$language['INVITES_LIST']='Invitation List';
+$language['SENDINV_CONFIRM']='Are you sure you want to send this invitation?';
+$language['ERR_SENDINVS']='Please, choose username or user level.';
+$language['SENDINV_EXPL']='If username is not inserted, rank will be chosen instead.';
+$language['RECYCLE_DATE']='Recycle period';
+$language['RECYCLE_EXPL']='<i>Period in <u>days</u> after which invitations will be recycled</i>';
+// INVITATION SYSTEM - end
 ?>

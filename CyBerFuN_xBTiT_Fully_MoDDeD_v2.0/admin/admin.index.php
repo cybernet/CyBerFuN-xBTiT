@@ -116,6 +116,11 @@ switch ($do)
       include("$ADMIN_PATH/admin.forums.php");
       $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.forums.tpl"))));
       break;
+	  
+	case 'invitations':
+      include("$ADMIN_PATH/admin.invitations.php");
+      $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.invitations.tpl"))));
+      break;
 
     case 'masspm':
       include("$ADMIN_PATH/admin.masspm.php");

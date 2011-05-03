@@ -107,6 +107,13 @@ function form_control()
   <input type="hidden" name="flag" value="<tag:account_IDcountry />" />
   <input type="hidden" name="username" value="<tag:account_username />"/>
   <table width="60%" border="0" class="lista">
+  <if:BY_INVITATION>
+  <input type="hidden" name="code" value="<tag:account_IDcode />" />
+  <input type="hidden" name="inviter" value="<tag:account_IDinviter />" />
+    <tr>
+      <td class="lista" colspan="2"><div style="text-align:center; padding:10px;"><tag:language.WELCOME_INVITE /></div></td>
+    </tr>
+  </if:BY_INVITATION>
     <tr>
        <td align="left" class="header"><tag:language.USER_NAME />:</td>
        <td align="left" class="lista">

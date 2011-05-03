@@ -123,6 +123,18 @@ function do_sanity() {
                }
             @closedir($dir);
          }
-
+// begin invitation system by dodge
+global $INV_EXPIRES;
+$deadtime = $INV_EXPIRES * 86400;
+$user = do_sqlquery("SELECT inviter FROM {$TABLE_PREFIX}invitations WHERE time_invited < DATE_SUB(NOW(), INTERVAL $deadtime SECOND)");
+@$arr = mysql_fetch_assoc($user);
+if (mysql_num_rows($user) > 0)
+{
+    mysql_query("UPDATE {$TABLE_PREFIX}users SET invitations=invitations+1 WHERE id = '" .
+        $arr["inviter"] . "'");
+    mysql_query("DELETE FROM {$TABLE_PREFIX}invitations WHERE inviter = '" . $arr["inviter"] .
+        "' AND time_invited < DATE_SUB(NOW(), INTERVAL $deadtime SECOND)");
+}
+// end invitation system by dodge
 }
 ?>

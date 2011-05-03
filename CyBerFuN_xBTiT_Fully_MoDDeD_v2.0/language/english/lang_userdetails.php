@@ -34,4 +34,8 @@ $language['PM']                 = 'PM';
 $language['BACK']               = 'Back';
 $language['NO_HISTORY']         = 'No history to display...';
 $language['GUEST_DETAILS']      = 'You can\'t view the details for the Guest account!';
+// INVITATION SYSTEM
+$language['USER_INVITATIONS']   = 'Invitations';
+$language['USER_INVITED_BY']    = 'Invited By';
+// INVITATION SYSTEM - end
 ?>

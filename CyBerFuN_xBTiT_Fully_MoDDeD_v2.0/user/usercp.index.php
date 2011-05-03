@@ -96,6 +96,11 @@ switch ($do)
     include("$USER_PATH/usercp.pidchange.php");
     $tpl->set("main_content",set_block($language["CHANGE_PID"],"center",$usercptpl->fetch(load_template("usercp.pidchange.tpl"))));
     break;
+	
+	case 'invite':
+    include("$USER_PATH/usercp.invitations.php");
+    $tpl->set("main_content",set_block($language["MNU_UCP_INVITATIONS"],"center",$usercptpl->fetch(load_template("usercp.invitations.tpl"))));
+    break;
 
     default:
     include("$USER_PATH/usercp.main.php");

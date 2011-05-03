@@ -124,6 +124,8 @@ function apply_default_settings() {
     if (!array_key_exists('cache_duration',$btit_settings)) $btit_settings['cache_duration']=0;
     if (!array_key_exists('mail_type',$btit_settings)) $btit_settings['mail_type']='php';
     if (!array_key_exists('ajax_poller',$btit_settings)) $btit_settings['ajax_poller']=true;
+	if (!array_key_exists('invitation_only',$btit_settings)) $btit_settings['invitation_only']=false;
+    if (!array_key_exists('invitation_reqvalid',$btit_settings)) $btit_settings['invitation_reqvalid']=false;
 }
 
 $btit_settings=get_cached_config('SELECT `key`,`value` FROM '.$TABLE_PREFIX.'settings',$reload_cfg_interval);
@@ -191,14 +193,14 @@ for($i=0,$count=count($TRACKER_ANNOUNCE_URL); $i<$count; $i++)
   if (trim($TRACKER_ANNOUNCE_URL[$i])!='')
      $TRACKER_ANNOUNCEURLS[]=trim($TRACKER_ANNOUNCE_URL[$i]);
 }
-//Tracker's email (owner email)
+// Tracker's email (owner email)
 $SITEEMAIL=$btit_settings['email'];
-//Torrent's DIR
+// Torrent's DIR
 $TORRENTSDIR=$btit_settings['torrentdir'];
 //validation type (must be none, user or admin
 //none=validate immediatly, user=validate by email, admin=manually validate
 $VALIDATION=$btit_settings['validation'];
-//Use or not the image code for new users' registration
+// Use or not the image code for new users' registration
 $USE_IMAGECODE=$btit_settings['imagecode'];
 // interval for sanity check (good = 10 minutes)
 $clean_interval=$btit_settings['sanity_update'];
@@ -218,7 +220,7 @@ $DHT_PRIVATE=$btit_settings['disable_dht'];
 $LIVESTATS=$btit_settings['livestat'];
 // Enable/disable Site log
 $LOG_ACTIVE=$btit_settings['logactive'];
-//Enable Basic History (torrents/users)
+// Enable Basic History (torrents/users)
 $LOG_HISTORY=$btit_settings['loghistory'];
 // Default language (used for guest)
 $DEFAULT_LANGUAGE=$btit_settings['default_language'];
@@ -228,13 +230,13 @@ $GLOBALS['charset']=$btit_settings['default_charset'];
 $DEFAULT_STYLE=$btit_settings['default_style'];
 // Maximum number of users (0 = no limits)
 $MAX_USERS=$btit_settings['max_users'];
-//torrents per page
+// torrents per page
 $ntorrents=$btit_settings['max_torrents_per_page'];
-//private announce (true/false), if set to true don't allow non register user to download
+// private announce (true/false), if set to true don't allow non register user to download
 $PRIVATE_ANNOUNCE=$btit_settings['p_announce'];
-//private scrape (true/false), if set to true don't allow non register user to scrape (for stats)
+// private scrape (true/false), if set to true don't allow non register user to scrape (for stats)
 $PRIVATE_SCRAPE=$btit_settings['p_scrape'];
-//Show uploaders nick on torrent listing
+// Show uploaders nick on torrent listing
 $SHOW_UPLOADER=$btit_settings['show_uploader'];
 $GLOBALS['block_newslimit'] = $btit_settings['newslimit'];
 $GLOBALS['block_forumlimit'] = $btit_settings['forumlimit'];
@@ -249,12 +251,12 @@ $XBTT_URL=$btit_settings['xbtt_url'];
 // this is the interval between which the cache must be updated (if 0 cache is disable)
 $CACHE_DURATION=$btit_settings['cache_duration'];
 
-//ajax polling system hack
-//if set to false then the default btit polling system will be used
+// ajax polling system hack
+// if set to false then the default btit polling system will be used
 $GLOBALS['ajax_poller']=true;
-//if set to true the script will perform an IP check to see if the IP has already voted
+// if set to true the script will perform an IP check to see if the IP has already voted
 $GLOBALS['ipcheck_poller']=false;
-//number of votes per page listed in admincp
+// number of votes per page listed in admincp
 $votesppage=25;
 // image upload v1.2
 $GLOBALS["imageon"] = $btit_settings["imageon"];
@@ -262,6 +264,11 @@ $GLOBALS["screenon"] = $btit_settings["screenon"];
 $GLOBALS["uploaddir"] = $btit_settings["uploaddir"];
 $GLOBALS["file_limit"] = $btit_settings["file_limit"];
 // end
+// begin invitation system by dodge
+$INVITATIONSON=$btit_settings['invitation_only'];
+$VALID_INV=$btit_settings['invitation_reqvalid'];
+$INV_EXPIRES=$btit_settings['invitation_expires'];
+// end invitation system
 // inits
 $cached_querys=0;
 $num_querys=0;

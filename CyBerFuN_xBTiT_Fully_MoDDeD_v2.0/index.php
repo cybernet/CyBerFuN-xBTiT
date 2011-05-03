@@ -374,6 +374,7 @@ switch ($pageID) {
 
     case 'account':
     case 'signup':
+	case 'invite':
         require("$THIS_BASEPATH/account.php");
         $tpl->set("more_css","<link rel=\"stylesheet\" type=\"text/css\" href=\"$BASEURL/jscript/passwdcheck.css\" />");
         $tpl->set("main_content",set_block($language["ACCOUNT_CREATE"],"center",$tpl_account->fetch(load_template("account.tpl"))));
