@@ -21,6 +21,20 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}requests` (
   KEY `userid` (`userid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_prune', '30');
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_page', '10');
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_post', '1');
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_sb', '10');
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_mb', '10000');
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_rwon', 'true');
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_sbmb', 'true');
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_shout', 'true');
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_max', '100');
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_onoff', 'true');
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_number', '5');
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_maxon', 'true');
+INSERT INTO `{$db_prefix}blocks` VALUES ('', 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8)
+
 ALTER TABLE  `{$db_prefix}files` ADD `sticky` ENUM( '0', '1' ) NOT NULL DEFAULT '0';
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}sticky` (
@@ -46,6 +60,11 @@ ALTER TABLE  `{$db_prefix}files` ADD INDEX (  `screen1` );
 ALTER TABLE  `{$db_prefix}files` ADD INDEX (  `screen2` );
 ALTER TABLE  `{$db_prefix}files` ADD INDEX (  `screen3` );
 ALTER TABLE  `{$db_prefix}settings` ADD INDEX (  `value` );
+
+INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('imageon', 'true');
+INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('uploaddir', 'cyberfun_img/');
+INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('file_limit', '2048');
+INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('screenon', 'true');
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}files_thanks` (
   `infohash` char(40) NOT NULL DEFAULT '0',
