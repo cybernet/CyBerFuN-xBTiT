@@ -1,0 +1,488 @@
+<hack>
+  <title>Sticky Torrent</title>
+  <author>Losmi</author>
+  <version>1.2(r669)</version>
+  <!-- First we add sticky row in files table -->
+  <file>
+    <name>"database"</name>
+    <operation>
+          <action>"sql"</action>
+          <data><![CDATA[ALTER TABLE `{$db_prefix}files` ADD `sticky` ENUM( '0', '1' ) NOT NULL DEFAULT '0';]]></data>
+    </operation>
+    <operation>
+          <action>"sql"</action>
+          <data><![CDATA[CREATE TABLE `{$db_prefix}sticky` (`id` INT NOT NULL ,`color` VARCHAR( 255 ) NOT NULL DEFAULT '#bce1ac;',`level` INT NOT NULL DEFAULT '3',PRIMARY KEY ( `id` )) ENGINE = MYISAM ;]]></data>
+    </operation>
+    <operation>
+            <action>"sql"</action>
+            <data><![CDATA[INSERT INTO `{$db_prefix}sticky` (`id` ,`color`, `level`) VALUES ('1', '#bce1ac;','3');]]></data>
+     </operation>
+  </file>
+  <!-- End with sql -->
+  
+  <!-- We are adding some POST vars in upload.php file -->
+  <file>
+    <name>"$DEFAULT_ROOT/upload.php"</name>
+    <operation>
+              <search><![CDATA[else $url = 0;]]></search>
+          <action>"add"</action>
+          <data><![CDATA[
+    /*Mod by losmi - sticky mod
+    Operation #1*/
+    if (isset($_POST["sticky"]) && $_POST["sticky"] == 'on')
+       $sticky =  mysql_real_escape_string(1);
+    else { 
+           $sticky = mysql_real_escape_string(0);
+      }
+    /*End mod by losmi - sticky mod
+    End Operation #1*/]]></data>
+          <where>"after"</where>
+    </operation>
+    <operation>
+      <search><![CDATA[ $status = do_sqlquery($query); //makeTorrent($hash, true);]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+      /*
+Operation #2
+Mod by losmi -sticky torrent
+*/
+if($sticky!=0)
+            {
+            updateSticky($hash,$sticky);
+            }
+/*
+End operation #2
+Mod by losmi -sticky torrent
+*/]]></data>
+      <where>"after"</where>
+    </operation>
+    <operation>
+      <search><![CDATA[$uploadtpl=new bTemplate();]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+      /*
+Mod by losmi -sticky torrent
+*/
+
+    $query = "SELECT * FROM {$TABLE_PREFIX}sticky";
+    $rez = do_sqlquery($query,true);
+    $rez = mysql_fetch_assoc($rez);
+    $rez_level = $rez['level'];
+    $current_level = getLevel($CURUSER['id_level']);
+    $level_ok = false;
+    
+if ($CURUSER["uid"]>1 && $current_level>=$rez_level && $CURUSER['can_upload']=='yes')
+   {
+    $uploadtpl->set("LEVEL_OK",true,FALSE);
+   }
+else
+   {
+    $uploadtpl->set("LEVEL_OK",false,TRUE);
+   }
+   unset($rez);
+/*
+Mod by losmi -sticky torrent
+*/]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <!-- End with editing upload.php -->
+  <!-- Start edit functions.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/include/functions.php"</name>
+    <operation>
+      <search><![CDATA[function load_css($css_name)]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+/*Mod by losmi - sticky mod
+Operation #3*/
+function updateSticky($hash,$sticky)
+{
+    global $TABLE_PREFIX;
+    $query = "UPDATE {$TABLE_PREFIX}files 
+                   SET sticky='$sticky'
+                   WHERE info_hash ='$hash'";
+    do_sqlquery($query,true);
+   
+}
+/*End mod by losmi - sticky mod
+End Operation #3*/
+]]></data>
+      <where>"before"</where>
+    </operation>
+    <operation>
+      <search><![CDATA[function load_css($css_name)]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+/*Mod by losmi - sticky mod*/
+function getLevel($cur_level)
+{
+    global $TABLE_PREFIX;
+    $query = "SELECT id, id_level FROM {$TABLE_PREFIX}users_level";
+    $rez = do_sqlquery($query,true);
+    
+    while($row = mysql_fetch_assoc($rez))
+    {
+        if($row['id'] == $cur_level)
+        {
+            return $row['id_level'];
+        }
+    }
+    return 0;
+}
+/*End mod by losmi - sticky mod*/
+]]></data>
+      <where>"before"</where>
+    </operation>
+  </file>
+  <!-- End edit functions.php -->
+  
+  <!--Start edit torrents.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/torrents.php"</name>
+    <operation>
+     <search><![CDATA[    $by_param=2;
+    if (isset($_GET["by"]))
+      {
+        $by_param=(int)$_GET["by"];
+        $by=($by_param==1?"ASC":"DESC");
+    }
+    else
+        $by="DESC";]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+/*Mod by losmi - sticky mod
+Operation #4*/
+]]></data>
+      <where>"before"</where>
+      <operation>
+              <search><![CDATA[if ($SHOW_UPLOADER)
+        $query = "SELECT]]></search>
+              <action>"replace"</action>
+              <data><![CDATA[if ($SHOW_UPLOADER)
+        $query = "SELECT f.sticky as sticky,]]></data>
+              <where>"after"</where>
+     </operation>
+     <operation>
+                  <search><![CDATA[ORDER BY $qry_order $by]]></search>
+                  <action>"replace"</action>
+                  <data><![CDATA[GROUP BY f.sticky,$qry_order $by ORDER BY f.sticky $by]]></data>
+    </operation>
+     <operation>
+              <search><![CDATA[else
+        $query = "SELECT ]]></search>
+              <action>"replace"</action>
+              <data><![CDATA[else
+        $query = "SELECT f.sticky as sticky,]]></data>
+                <where>"after"</where>
+    </operation>
+     <operation>
+                  <search><![CDATA[$where ORDER BY $qry_order $by $limit";]]></search>
+                  <action>"replace"</action>
+                  <data><![CDATA[$where GROUP BY f.sticky,$qry_order $by ORDER BY f.sticky $by $limit";]]></data>
+    </operation>
+    <operation>
+              <search><![CDATA[$mark="&nbsp;&darr;";]]></search>
+              <action>"add"</action>
+              <data><![CDATA[
+        /*Mod by losmi - sticky mod
+        End Operation #4*/
+        ]]></data>
+              <where>"before"</where>
+    </operation>
+    <operation>
+          <search><![CDATA[$torrenttpl->set("WT1",intval($CURUSER["WT"])>0,TRUE);]]></search>
+          <action>"add"</action>
+          <data><![CDATA[
+    /*Mod by losmi - sticky mod
+    Start Operation #5*/
+    $sticky_color=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}sticky ORDER BY id",true);
+    if(mysql_num_rows($sticky_color)>0)
+    {
+    $st=mysql_fetch_assoc($sticky_color);
+    $s_c = $st['color'];
+    }
+    else
+    {
+    /*Default value some green #bce1ac;*/
+    $s_c ='#bce1ac;';
+    }
+    $torrents[$i]["color"] ='';
+        if($data['sticky']==1)
+        {
+            $torrents[$i]["color"] = 'background:'.$s_c;
+        }
+    /*Mod by losmi - sticky mod
+    End Operation #5*/
+    ]]></data>
+          <where>"after"</where>
+      
+      
+      
+    </operation>
+  </file>
+  <!-- End edit torrents.php -->
+  <!-- Start edit torrent.list.php -->
+  
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/torrent.list.tpl"</name>
+    <operation>
+     <search><![CDATA["><tag:torrents[].category /></td>]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[<tag:torrents[].color />"><tag:torrents[].category /></td>]]></data>
+    </operation>
+    <operation>
+     <search><![CDATA["><tag:torrents[].filename />]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[<tag:torrents[].color />"><tag:torrents[].filename />]]></data>
+    </operation>
+    <operation>
+     <search><![CDATA["><tag:torrents[].waiting /></td>]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[<tag:torrents[].color />"><tag:torrents[].waiting /></td>]]></data>
+    </operation>  
+    <operation>
+     <search><![CDATA["><tag:torrents[].download /></td>]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[<tag:torrents[].color />"><tag:torrents[].download /></td>]]></data>
+    </operation> 
+    <operation>
+     <search><![CDATA["><tag:torrents[].added /></td>]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[<tag:torrents[].color />"><tag:torrents[].added /></td>]]></data>
+    </operation> 
+    <operation>
+     <search><![CDATA["><tag:torrents[].seeds /></td>]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[<tag:torrents[].color />"><tag:torrents[].seeds /></td>]]></data>
+    </operation>
+    <operation>
+     <search><![CDATA["><tag:torrents[].leechers /></td>]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[<tag:torrents[].color />"><tag:torrents[].leechers /></td>]]></data>
+    </operation> 
+    <operation>
+     <search><![CDATA["><tag:torrents[].complete /></td>]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[<tag:torrents[].color />"><tag:torrents[].complete /></td>]]></data>
+    </operation>
+    <operation>
+     <search><![CDATA["><tag:torrents[].speed /></td>]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[<tag:torrents[].color />"><tag:torrents[].speed /></td>]]></data>
+    </operation> 
+    <operation>
+     <search><![CDATA["><tag:torrents[].average /></td>]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[<tag:torrents[].color />"><tag:torrents[].average /></td>]]></data>
+    </operation>
+  </file>
+  <!-- End edit torrent.list.php -->
+  
+   <!-- Start edit upload.tpl -->
+  
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/upload.tpl"</name>
+    <operation>
+     <search><![CDATA[<tr>
+      <td class="header" ><tag:language.FILE_NAME /></td>
+      <td class="lista" align="left"><input type="text" name="filename" size="50" maxlength="200" /></td>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+
+   <if:LEVEL_OK>
+   <tr>
+      <td class="header" ><tag:language.STICKY_TORRENT /></td>
+      <td class="lista" align="left">
+      <input type="checkbox" name="sticky"> - <tag:language.STICKY_TORRENT_EXPLAIN />
+      </td>
+   </tr>
+   </if:LEVEL_OK>
+
+]]></data>
+      <where>"before"</where>
+    </operation>
+  </file>
+  <!-- End edit upload.tpl -->
+  
+  <!-- Start edit lang_main.tpl -->
+  
+  <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_main.php"</name>
+    <operation>
+     <search><![CDATA[?>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+
+$language["DOB"]="Date of Birth";
+$language["STICKY_TORRENT"]="<b>Sticky</b>";
+$language["STICKY_TORRENT_EXPLAIN"]="(Always on top of the torrent list)";
+
+]]></data>
+      <where>"before"</where>
+    </operation>
+  </file>
+  <!-- End edit lang_mainphp -->
+  
+  <!-- Start edit edit.php -->
+  
+  <file>
+    <name>"$DEFAULT_ROOT/edit.php"</name>
+    <operation>
+     <search><![CDATA[if ($_POST["comment"]=='')
+        {
+        stderr("Error!","You must specify description.");
+   }]]></search>
+      <action>"add"</action>
+      <data><![CDATA[ /*Mod by losmi -sticky start*/
+      $sticky = 0;
+   if($_POST["sticky"] == 'on')
+   {
+    $sticky = 1;
+   }
+   /*Mod by losmi -sticky end*/]]></data>
+      <where>"after"</where>
+      </operation>
+      <operation>
+          <search><![CDATA[ WHERE info_hash='" . $torhash . "'",true);]]></search>
+          <action>"add"</action>
+          <data><![CDATA[, sticky = '" . $sticky . "']]></data>
+          <where>"before"</where>
+      </operation>
+      <operation>
+          <search><![CDATA[f.info_hash, f.filename,]]></search>
+          <action>"add"</action>
+          <data><![CDATA[f.sticky,]]></data>
+          <where>"after"</where>
+      </operation>
+      <operation>
+              <search><![CDATA[$torrent=array();]]></search>
+              <action>"add"</action>
+              <data><![CDATA[
+              /*Start sticky by losmi*/
+              $query = "SELECT * FROM {$TABLE_PREFIX}sticky";
+              $rez = do_sqlquery($query,true);
+              $rez = mysql_fetch_assoc($rez);
+              $rez_level = $rez['level'];
+              $current_level = getLevel($CURUSER['id_level']);
+              $level_ok = false;
+              
+              if ($CURUSER["uid"]>1 && $current_level>=$rez_level)
+                 {
+                  $torrenttpl->set("LEVEL_OK",true,FALSE);
+                 }
+              else
+                 {
+                  $torrenttpl->set("LEVEL_OK",false,TRUE);
+                 }
+             unset($rez);
+
+            if($results["sticky"] == 1)
+            {
+             $torrent["sticky"] = "<input type='checkbox' name='sticky' checked>" ;
+            }
+            else 
+            {
+                $torrent["sticky"] = "<input type='checkbox' name='sticky'>" ;
+            }
+            /*End sticky by losmi*/
+            ]]></data>
+              <where>"after"</where>
+        </operation>
+        
+  </file>
+  <!-- End edit edit.php -->
+  
+  <!-- Start edit lang_main.tpl -->
+  
+  <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_admin.php"</name>
+    <operation>
+     <search><![CDATA[?>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+
+$language["ACP_STICKY_TORRENTS"]="Sticky settings";
+$language["STICKY_SETTINGS"]="Sticky settings";
+$language["COLOR"]="Color";
+$language["LEVEL_STICKY"]="Who can add sticky torrents? (default: Uploader)";
+
+]]></data>
+      <where>"before"</where>
+    </operation>
+  </file>
+  <!-- End edit lang_mainphp -->
+  
+  <!-- Start edit lang_main.tpl -->
+  
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/torrent.edit.tpl"</name>
+    <operation>
+     <search><![CDATA[<td class="lista"><tag:torrent.cat_combo /></td>
+      </tr>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+      <if:LEVEL_OK>
+      <tr>
+        <td align="right" class="header"><tag:language.STICKY /></td>
+        <td class="lista"><tag:torrent.sticky /></td>
+      </tr>
+      </if:LEVEL_OK>
+]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <!-- End edit lang_mainphp -->
+  
+  <!-- Start edit admin.menu.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/admin/admin.menu.php"</name>
+    <operation>
+     <search><![CDATA[0=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=prunet" ,
+                    "description"=>$language["ACP_PRUNE_TORRENTS"])]]></search>
+      <action>"add"</action>
+      <data><![CDATA[,
+                    1=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=sticky" ,
+                    "description"=>$language["ACP_STICKY_TORRENTS"])]]></data>
+    </operation>
+    <where>"after"</where>
+  </file>
+  <!-- End edit edit.php -->
+   <!-- Start edit admin.menu.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/admin/admin.index.php"</name>
+    <operation>
+     <search><![CDATA[switch ($do)
+    {]]></search>
+      <action>"add"</action>
+      <data><![CDATA[ case 'sticky':
+      include("$ADMIN_PATH/admin.sticky.php");
+      $tpl->set("main_content",set_block($language["STICKY_SETTINGS"],"center",$admintpl->fetch(load_template("admin.sticky.tpl"))));
+      break;
+]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  
+  <!-- End edit edit.php -->
+    <!-- Copy some admin files-->
+   <file>
+  <name>"$CURRENT_FOLDER/tocopy/admin.sticky.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/admin"</where>
+      <data>"admin.sticky.php"</data>
+    </operation>
+  </file>
+  <file>
+  <name>"$CURRENT_FOLDER/tocopy/admin.sticky.tpl"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_STYLE_PATH"</where>
+      <data>"admin.sticky.tpl"</data>
+    </operation>
+  </file>
+  
+</hack>
