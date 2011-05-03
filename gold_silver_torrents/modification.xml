@@ -1,0 +1,624 @@
+<hack>
+  <title>Gold/Silver Torrent</title>
+  <author>Losmi ver 1.2(rev 669)</author>
+  <version>1.2</version>
+  <file>
+    <name>"database"</name>
+    <operation>
+          <action>"sql"</action>
+          <data><![CDATA[ALTER TABLE `{$db_prefix}files` ADD `gold` ENUM( '0', '1', '2' ) NOT NULL DEFAULT '0';]]></data>
+    </operation>
+    <operation>
+          <action>"sql"</action>
+          <data><![CDATA[CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
+  `id` int(11) NOT NULL auto_increment,
+  `level` int(11) NOT NULL default '4',
+  `gold_picture` varchar(255) NOT NULL default 'gold.gif',
+  `silver_picture` varchar(255) NOT NULL default 'silver.gif',
+  `active` enum('-1','0','1') NOT NULL default '1',
+  `date` date NOT NULL default '0000-00-00',
+  `gold_description` text NOT NULL,
+  `silver_description` text NOT NULL,
+  `classic_description` text NOT NULL,
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM;]]></data>
+    </operation>
+    <operation>
+          <action>"sql"</action>
+          <data><![CDATA[INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`, `active`, `date`, `gold_description`, `silver_description`, `classic_description`) VALUES
+(1, 3, 'gold.gif', 'silver.gif', '1', '0000-00-00', 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');]]></data>
+    </operation>
+  </file>
+  <!-- End with sql -->
+  <!-- We are adding some POST vars in upload.php file -->
+  <file>
+    <name>"$DEFAULT_ROOT/upload.php"</name>
+    <operation>
+              <search><![CDATA[else $url = 0;]]></search>
+          <action>"add"</action>
+          <data><![CDATA[
+    //mod gold
+$gold = mysql_escape_string(0);
+//setting gold post var
+if (isset($_POST["gold"]) && $_POST["gold"] != '')
+{
+   $gold = mysql_escape_string($_POST["gold"]);
+}
+//end gold mod
+]]></data>
+          <where>"after"</where>
+    </operation>
+    <operation>
+      <search><![CDATA[@chmod($TORRENTSDIR . "/" . $hash . ".btf",0766);]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[
+      
+      // gold/silver torrent
+      do_sqlquery("UPDATE {$TABLE_PREFIX}files SET gold='$gold' WHERE info_hash=\"$hash\"");
+
+]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[$combo_categories=categories( $category[0] );]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+       $gold_level='';
+       $res=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+            foreach ($res as $key=>$value)
+            {
+                $gold_level = $value["level"];
+                
+            } 
+            
+            if($gold_level>$CURUSER['id_level'])
+            {
+                 $uploadtpl->set("upload_gold_level",false,true);
+            }
+            else 
+            {
+                 $uploadtpl->set("upload_gold_level",true,true);
+            }
+      $gold_select_box = createGoldCategories();
+      $uploadtpl->set("upload_gold_combo",$gold_select_box);
+      ]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <!-- End with editing upload.php -->
+  <!-- Start edit functions.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/include/functions.php"</name>
+    <operation>
+      <search><![CDATA[function load_css($css_name)]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+
+//gold mod
+function getStatus($gold=0)
+{
+    if($gold == 0)
+    {
+        return 'Classic';
+    }
+    if($gold == 1)
+    {
+        return 'Silver';
+    }if($gold == 2)
+    {
+        return 'Gold';
+    }
+    return 'none';
+}
+function createUsersLevelCombo($selected=0)
+     {
+
+     global $TABLE_PREFIX;
+
+    $ret = array();
+    $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users_level ORDER BY id");
+
+    while ($row = mysql_fetch_assoc($res))
+        $ret[] = $row;
+
+    unset($row);
+    mysql_free_result($res);
+
+    $gold_select_box = "
+      <select name='level' >";
+      foreach ($ret as $key=>$value)
+      {
+        $s='';
+        if($value['id_level']==$selected)
+        {
+            $s='selected';
+        }
+        $gold_select_box .="<option value='".$value['id_level']."' ".$s.">".$value['level']."</option>";
+        
+      }
+      $gold_select_box .='</select><div id="description"></div>';
+      
+      return $gold_select_box;
+}
+
+function createGoldCategories($selected='')
+{
+        global $TABLE_PREFIX;
+      $gold_categories = array(
+                0=>'Classic (0% free leach)',
+                1=>'Silver (50% free leach)',
+                2=>'Gold (100% free leach)'
+      );
+      $g_desc = '';
+      $s_desc = '';
+      $c_desc = '';
+        $res=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+            foreach ($res as $key=>$value)
+            {
+                $g_desc = $value["gold_description"];
+                $s_desc = $value["silver_description"];
+                $c_desc = $value["classic_description"];
+            }
+      $gold_select_box = "
+      <select name='gold' onchange=\"function ajde(val,c_desc,s_desc,g_desc)
+      {
+            var div = document.getElementById('description');
+            if(val==0)
+            {
+            div.innerHTML = 'Note: $c_desc';
+            }
+            if(val==1)
+            {
+            div.innerHTML = 'Note: $s_desc';
+            }
+            if(val==2)
+            {
+            div.innerHTML = 'Note: $g_desc';
+            }
+      }
+      ajde(this.value)\">";
+      foreach ($gold_categories as $key=>$value)
+      {
+        $s='';
+        if($key==$selected)
+        {
+            $s='selected';
+        }
+        $gold_select_box .="<option value='".$key."' ".$s.">".$value."</option>";
+        
+      }
+      $gold_select_box .='</select><div id="description"></div>';
+      return $gold_select_box;
+}
+//end gold
+
+]]></data>
+      <where>"before"</where>
+    </operation>
+  </file>
+  <!-- End edit functions.php -->
+  
+  <!--Start edit torrents.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/torrents.php"</name>
+    <operation>
+     <search><![CDATA[    if (isset($_GET["by"]))
+      {
+        $by_param=(int)$_GET["by"];
+        $by=($by_param==1?"ASC":"DESC");
+    }
+    else
+        $by="DESC";]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+/*Mod by losmi - gold mod*/
+]]></data>
+      <where>"before"</where>
+      <operation>
+              <search><![CDATA[if ($SHOW_UPLOADER)
+        $query = "SELECT]]></search>
+              <action>"replace"</action>
+              <data><![CDATA[if ($SHOW_UPLOADER)
+        $query = "SELECT f.gold as gold,]]></data>
+     </operation>
+     <operation>
+              <search><![CDATA[else
+        $query = "SELECT]]></search>
+              <action>"replace"</action>
+              <data><![CDATA[else
+        $query = "SELECT f.gold as gold,]]></data>
+    </operation>
+    <operation>
+              <search><![CDATA[if (intval($CURUSER["WT"])>0)]]></search>
+              <action>"add"</action>
+              <data><![CDATA[
+    //gold mod
+    $silver_picture='';
+    $gold_picture ='';
+     $res=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+            foreach ($res as $key=>$value)
+            {
+                $silver_picture = $value["silver_picture"];
+                $gold_picture = $value["gold_picture"];
+            }
+       
+    $torrents[$i]["gold"]='';
+    if($data['gold'] == 1)
+    {
+    $torrents[$i]["gold"] = '<img src="gold/'.$silver_picture.'" alt="silver"/>';
+    }
+    if($data['gold'] == 2)
+    {
+    $torrents[$i]["gold"] = '<img src="gold/'.$gold_picture.'" alt="gold"/>';
+    }
+        ]]></data>
+              <where>"before"</where>
+    </operation>
+  </file>
+  <!-- End edit upload.php -->
+  <!-- Start edit torrent.list.php -->
+  
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/torrent.list.tpl"</name>
+    <operation>
+     <search><![CDATA[<tag:torrents[].filename />]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[<tag:torrents[].filename /><tag:torrents[].gold />]]></data>
+    </operation>
+  </file>
+  <!-- End edit torrent.list.php -->
+  
+   <!-- Start edit upload.tpl -->
+  
+  <file>
+    <name>"$DEFAULT_ROOT/blocks/lasttorrents_block.php"</name>
+      <operation>
+     <search><![CDATA[if ($XBTT_USE)
+     $sql = "SELECT]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[//gold mod
+   if ($XBTT_USE)
+     $sql = "SELECT f.gold as gold, ]]></data>
+    </operation>
+    <operation>
+     <search><![CDATA[else
+     $sql = "SELECT]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[//gold mod
+    else
+     $sql = "SELECT f.gold as gold, ]]></data>
+    </operation>
+    <operation>
+     <search><![CDATA[$filename . "</a>".($data["external"]]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[$filename . "</a>".$gold.($data["external"]]]></data>
+    </operation>
+    <operation>
+     <search><![CDATA[$filename . "</a>".($data["external"]]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[$filename . "</a>".$gold.($data["external"]]]></data>
+    </operation>
+    <operation>
+     <search><![CDATA[$filename=cut_string($data["filename"],intval($btit_settings["cut_name"]));]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+      //gold mod
+     $silver_picture='';
+     $gold_picture ='';
+     $res=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+            foreach ($res as $key=>$value)
+            {
+                $silver_picture = $value["silver_picture"];
+                $gold_picture = $value["gold_picture"];
+            }
+        $gold ='';
+        if($data['gold'] == 1)
+        {
+        $gold = '<img src="gold/'.$silver_picture.'" alt="silver"/>';
+        }
+        if($data['gold'] == 2)
+        {
+        $gold = '<img src="gold/'.$gold_picture.'" alt="gold"/>';
+        }
+        //end gold mod
+        ]]></data>
+        <where>"after"</where>
+    </operation> 
+   
+  </file>
+  <!-- End edit torrent.list.php -->
+  
+   <!-- Start edit upload.tpl -->
+  
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/upload.tpl"</name>
+   <operation>
+          <search><![CDATA[<tr>
+      <td class="header" ><tag:language.CATEGORY_FULL /></td>
+      <td class="lista" align="left"><tag:upload_categories_combo /></td>
+    </tr>]]></search>
+          <action>"add"</action>
+          <data><![CDATA[
+    <if:upload_gold_level>
+    <tr>
+      <td class="header" ><tag:language.GOLD_TYPE /></td>
+      <td class="lista" align="left"><tag:upload_gold_combo /></td>
+    </tr>
+     </if:upload_gold_level>
+    ]]></data>
+          <where>"after"</where>
+    </operation>
+  </file>
+  <!-- End edit upload.tpl -->
+  
+  <!-- Start edit lang_main.tpl -->
+  
+  <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_main.php"</name>
+    <operation>
+     <search><![CDATA[?>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+//GOLD
+$language["GOLD_TYPE"]="Torrent type";
+$language["GOLD_PICTURE"]="Gold picture";
+$language["SILVER_PICTURE"]="Silver picture";
+$language["GOLD_DESCRIPTION"]="Gold description";
+$language["SILVER_DESCRIPTION"]="Silver description";
+$language["CLASSIC_DESCRIPTION"]="Classic description";
+$language["GOLD_LEVEL"]="Who can add gold/silver torrents";
+
+]]></data>
+      <where>"before"</where>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_admin.php"</name>
+    <operation>
+     <search><![CDATA[?>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+//GOLD
+$language["ACP_GOLD"]="Gold torrents settings";
+
+]]></data>
+      <where>"before"</where>
+    </operation>
+  </file>
+  <!-- End edit lang_mainphp -->
+  
+  <!-- Start edit edit.php -->
+  
+  <file>
+    <name>"$DEFAULT_ROOT/edit.php"</name>
+    <operation>
+     <search><![CDATA[if ($_POST["comment"]=='')
+        {
+        stderr("Error!","You must specify description.");
+   }]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+    //gold mod
+    $golden = 0;
+   if($_POST["gold"]!='' && isset($_POST["gold"]))
+   {
+    $golden = mysql_escape_string($_POST["gold"]);
+   }
+   ]]></data>
+      <where>"after"</where>
+      </operation>
+      <operation>
+          <search><![CDATA[write_log("Modified torrent $fname ($torhash)","modify");]]></search>
+          <action>"add"</action>
+          <data><![CDATA[
+          if($golden!='' && isset($golden))
+              do_sqlquery("UPDATE {$TABLE_PREFIX}files SET gold='$golden' WHERE info_hash='" . $torhash . "'",true);
+
+          ]]></data> 
+          <where>"after"</where>
+      </operation>
+      <operation>
+          <search><![CDATA[$query ="SELECT]]></search>
+          <action>"replace"</action>
+          <data><![CDATA[$query ="SELECT f.gold,]]></data>
+          <where>"after"</where>
+      </operation>
+      <operation>
+              <search><![CDATA[$torrent=array();]]></search>
+              <action>"add"</action>
+              <data><![CDATA[
+    /*Start gold mod by losmi*/
+    $gold_level='';
+    $resg=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+    foreach ($resg as $key=>$value)
+        $gold_level = $value["level"];
+
+    unset($resg);
+
+    if($gold_level>$CURUSER['id_level'])
+         $torrenttpl->set("edit_gold_level",false,true);
+    else
+         $torrenttpl->set("edit_gold_level",true,true);
+
+    $torrent["gold"]=createGoldCategories($results["gold"]);
+    /*End gold mod by losmi*/
+]]></data>
+              <where>"after"</where>
+        </operation>
+        
+  </file>
+  <!-- End edit edit.php -->
+  
+  <!-- Start edit admin.menu.php -->
+ <file>
+    <name>"$DEFAULT_ROOT/admin/admin.menu.php"</name>
+    <operation>
+     <search><![CDATA["description"=>$language["ACP_PRUNE_TORRENTS"])]]></search>
+      <action>"replace"</action>
+      <data><![CDATA["description"=>$language["ACP_PRUNE_TORRENTS"]),
+                    array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=gold" ,
+                    "description"=>$language["ACP_GOLD"])]]></data>
+    </operation>
+  </file>
+  <!-- End edit edit.php -->
+   <!-- Start edit admin.menu.php -->
+ <file>
+    <name>"$DEFAULT_ROOT/admin/admin.index.php"</name>
+    <operation>
+     <search><![CDATA[switch ($do)
+    {]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+      case 'gold':
+          include("$ADMIN_PATH/admin.gold.php");
+          $tpl->set("main_content",set_block($language["ACP_GOLD"],"center",$admintpl->fetch(load_template("admin.gold.tpl"))));
+          break;
+]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  
+  
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/torrent.edit.tpl"</name>
+    <operation>
+     <search><![CDATA[</table>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+    <if:edit_gold_level>
+      <tr>
+        <td align="right" class="header"><tag:language.GOLD_TYPE /></td>
+        <td class="lista"><tag:torrent.gold /></td>
+      </tr>
+    </if:edit_gold_level>
+]]></data>
+      <where>"before"</where>
+    </operation>
+  </file>
+  <!-- End edit lang_mainphp -->
+  <!-- Start edit announce.php -->
+  
+  <file>
+    <name>"$DEFAULT_ROOT/announce.php"</name>
+    <operation>
+     <search><![CDATA[function collectBytes($peer, $hash, $left, $downloaded=0, $uploaded=0, $pid="")]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+/*mod gold - Gold method checks is torrent set to gold silver or classic*/
+function checkGold($info_hash,$downloaded)
+{
+    global $TABLE_PREFIX;
+     $re=mysql_query("SELECT gold FROM {$TABLE_PREFIX}files 
+                           WHERE info_hash=\"$info_hash\"");
+     $gold=mysql_fetch_assoc($re);
+
+    if ($gold['gold']==1) // silver torrent go go leach
+     {
+        $downloaded = (int)$downloaded/2;
+     }
+     else if($gold['gold'] == 2) // gold torrent go go leach
+     {
+        $downloaded = 0;
+     }
+     else 
+     {
+        // classic torrent
+     }
+     return $downloaded;
+}
+//end mod gold
+]]></data>
+      <where>"before"</where>
+    </operation>
+    <operation>
+     <search><![CDATA[$peerid=$peer["peer_id"];]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+     //gold mod
+     $downloaded = checkGold($info_hash,$downloaded);
+     //end gold mod
+     ]]></data>
+      <where>"after"</where>
+    </operation>
+    <operation>
+     <search><![CDATA[quickquery("UPDATE {$TABLE_PREFIX}users SET downloaded=]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+
+     //gold mod
+     $newdown = checkGold($info_hash,$newdown);
+     //end gold mod
+
+]]></data>
+      <where>"before"</where>
+    </operation>
+    <operation>
+     <search><![CDATA[@mysql_query("UPDATE {$TABLE_PREFIX}users SET uploaded=IFNULL]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+      {
+        //gold mod
+        $downloaded = checkGold($info_hash,$downloaded);
+        ]]></data>
+      <where>"before"</where>
+    </operation> 
+    <operation>
+     <search><![CDATA[// begin history - if LIVESTAT, only the active/agent part
+       if ($LOG_HISTORY)]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+      }
+      //end gold mod
+
+]]></data>
+      <where>"before"</where>
+    </operation> 
+    <operation>
+     <search><![CDATA[quickQuery("UPDATE {$TABLE_PREFIX}peers SET bytes=0, status=\"seeder\", lastupdate=UNIX_TIMESTAMP(), downloaded=$downloaded, uploaded=$uploaded, pid=\"$pid\" WHERE sequence=\"".$GLOBALS["trackerid"]."\" AND infohash=\"$info_hash\"");]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+            //gold mod
+            $downloaded = checkGold($info_hash,$downloaded);
+            //end gold mod
+            ]]></data>
+      <where>"before"</where>
+    </operation>
+  </file>
+  <!-- End edit announce.php -->
+  
+
+    <!-- Copy some admin files-->
+   <file>
+  <name>"$CURRENT_FOLDER/tocopy/admin.gold.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/admin"</where>
+      <data>"admin.gold.php"</data>
+    </operation>
+  </file>
+  <file>
+  <name>"$CURRENT_FOLDER/tocopy/admin.gold.tpl"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_STYLE_PATH"</where>
+      <data>"admin.gold.tpl"</data>
+    </operation>
+  </file> 
+  <file>
+  <name>"$CURRENT_FOLDER/tocopy/gold.gif"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/gold"</where>
+      <data>"gold.gif"</data>
+    </operation>
+  </file> 
+  <file>
+  <name>"$CURRENT_FOLDER/tocopy/silver.gif"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/gold"</where>
+      <data>"silver.gif"</data>
+    </operation>
+  </file> 
+</hack>
