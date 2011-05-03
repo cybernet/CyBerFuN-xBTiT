@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 02, 2011 at 06:29 PM
+-- Generation Time: May 03, 2011 at 09:14 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.8
 
@@ -1001,7 +1001,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}settings` (
 --
 
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
-('name', 'BTI-Tracker'),
+('name', 'CyBerFuN xBTiT'),
 ('url', 'http://127.0.0.1/dev'),
 ('announce', 'a:2:{i:0;s:30:"http://localhost/announce.php\r";i:1;s:30:"http://localhost:2710/announce";}'),
 ('email', 'admin@localhost'),
@@ -1061,7 +1061,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('req_maxon', 'true'),
 ('imageon', 'true'),
 ('uploaddir', 'cyberfun_img/'),
-('file_limit', '15'),
+('file_limit', '2048'),
 ('screenon', 'true');
 
 -- --------------------------------------------------------
