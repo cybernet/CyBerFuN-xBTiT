@@ -53,22 +53,22 @@
         </tr>      
         <loop:torrents>
         <tr>
-          <td align="center" width="45" class="lista" style="text-align: center;"><tag:torrents[].category /></td>
-          <td class="lista" valign="middle" onMouseOver="this.className='post'" onMouseOut="this.className='lista'" style="padding-left:10px;overflow:auto;"><tag:torrents[].filename /></td>
+          <td align="center" width="45" class="lista" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].category /></td>
+          <td class="lista" valign="middle" onMouseOver="this.className='post'" onMouseOut="this.className='lista'" style="padding-left:10px;overflow:auto;<tag:torrents[].color />"><tag:torrents[].filename />
           <if:WT1>
-          <td align="center" width="20" class="lista" style="text-align: center;"><tag:torrents[].waiting /></td>
+          <td align="center" width="20" class="lista" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].waiting /></td>
           <else:WT1>
           </if:WT1>
-          <td align="center" width="20" class="lista" style="text-align: center;"><tag:torrents[].download /></td>
-          <td align="center" width="85" class="lista" style="white-space:wrap; text-align:center;"><tag:torrents[].added /></td>
-          <td align="center" width="30" class="<tag:torrents[].classe_seeds />" style="text-align: center;"><tag:torrents[].seeds /></td>
-          <td align="center" width="30" class="<tag:torrents[].classe_leechers />" style="text-align: center;"><tag:torrents[].leechers /></td>
-          <td align="center" width="30" class="lista" style="text-align: center;"><tag:torrents[].complete /></td>
+          <td align="center" width="20" class="lista" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].download /></td>
+          <td align="center" width="85" class="lista" style="white-space:wrap; text-align:center;<tag:torrents[].color />"><tag:torrents[].added /></td>
+          <td align="center" width="30" class="<tag:torrents[].classe_seeds />" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].seeds /></td>
+          <td align="center" width="30" class="<tag:torrents[].classe_leechers />" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].leechers /></td>
+          <td align="center" width="30" class="lista" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].complete /></td>
          <if:XBTT1>
           <else:XBTT1>
-          <td align="center" width="45" class="lista" style="text-align: center;"><tag:torrents[].speed /></td>
+          <td align="center" width="45" class="lista" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].speed /></td>
           </if:XBTT1>
-          <td align="center" width="45" class="lista" style="text-align: center;"><tag:torrents[].average /></td>
+          <td align="center" width="45" class="lista" style="text-align: center;<tag:torrents[].color />"><tag:torrents[].average /></td>
         </tr>
         </loop:torrents>
       </table>

@@ -65,6 +65,14 @@ function CheckForm()
       <td class="header" ><tag:language.CATEGORY_FULL /></td>
       <td class="lista" align="left"><tag:upload_categories_combo /></td>
     </tr>
+ <if:LEVEL_OK>
+    <tr>
+      <td class="header" ><tag:language.STICKY_TORRENT /></td>
+      <td class="lista" align="left">
+      <input type="checkbox" name="sticky"> - <tag:language.STICKY_TORRENT_EXPLAIN />
+      </td>
+    </tr>
+ </if:LEVEL_OK>
     <tr>
       <td class="header" ><tag:language.FILE_NAME /></td>
       <td class="lista" align="left"><input type="text" name="filename" size="50" maxlength="200" /></td>

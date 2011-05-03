@@ -20,3 +20,4 @@ ALTER TABLE  `{$db_prefix}files` ADD INDEX (  `screen1` );
 ALTER TABLE  `{$db_prefix}files` ADD INDEX (  `screen2` );
 ALTER TABLE  `{$db_prefix}files` ADD INDEX (  `screen3` );
 ALTER TABLE  `{$db_prefix}settings` ADD INDEX (  `value` );
+ALTER TABLE  `{$db_prefix}files` ADD INDEX (  `sticky` );

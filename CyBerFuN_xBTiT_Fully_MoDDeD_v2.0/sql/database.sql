@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 03, 2011 at 09:14 AM
+-- Generation Time: May 03, 2011 at 07:50 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.8
 
@@ -449,19 +449,19 @@ INSERT INTO `{$db_prefix}countries` (`id`, `name`, `flagpic`, `domain`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
-  `info_hash` varchar(40) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `filename` varchar(250) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `url` varchar(250) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `info` varchar(250) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `info_hash` varchar(40) NOT NULL DEFAULT '',
+  `filename` varchar(250) NOT NULL DEFAULT '',
+  `url` varchar(250) NOT NULL DEFAULT '',
+  `info` varchar(250) NOT NULL DEFAULT '',
   `data` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `size` bigint(20) NOT NULL DEFAULT '0',
   `comment` text,
   `category` int(10) unsigned NOT NULL DEFAULT '6',
-  `external` enum('yes','no') CHARACTER SET utf8 NOT NULL DEFAULT 'no',
-  `announce_url` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `external` enum('yes','no') NOT NULL DEFAULT 'no',
+  `announce_url` varchar(100) NOT NULL DEFAULT '',
   `uploader` int(10) NOT NULL DEFAULT '1',
   `lastupdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `anonymous` enum('true','false') CHARACTER SET utf8 NOT NULL DEFAULT 'false',
+  `anonymous` enum('true','false') NOT NULL DEFAULT 'false',
   `lastsuccess` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `dlbytes` bigint(20) unsigned NOT NULL DEFAULT '0',
   `seeds` int(10) unsigned NOT NULL DEFAULT '0',
@@ -475,6 +475,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
   `screen1` varchar(255) NOT NULL DEFAULT '',
   `screen2` varchar(255) NOT NULL DEFAULT '',
   `screen3` varchar(255) NOT NULL DEFAULT '',
+  `sticky` enum('0','1') NOT NULL DEFAULT '0',
   PRIMARY KEY (`info_hash`),
   KEY `filename` (`filename`),
   KEY `category` (`category`),
@@ -483,7 +484,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
   KEY `image` (`image`),
   KEY `screen1` (`screen1`),
   KEY `screen2` (`screen2`),
-  KEY `screen3` (`screen3`)
+  KEY `screen3` (`screen3`),
+  KEY `sticky` (`sticky`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -1063,6 +1065,26 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('uploaddir', 'cyberfun_img/'),
 ('file_limit', '2048'),
 ('screenon', 'true');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}sticky`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}sticky` (
+  `id` int(11) NOT NULL,
+  `color` varchar(255) NOT NULL DEFAULT '#bce1ac;',
+  `level` int(11) NOT NULL DEFAULT '3',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `{$db_prefix}sticky`
+--
+
+INSERT INTO `{$db_prefix}sticky` (`id`, `color`, `level`) VALUES
+(1, '#bce1ac;', 3);
 
 -- --------------------------------------------------------
 

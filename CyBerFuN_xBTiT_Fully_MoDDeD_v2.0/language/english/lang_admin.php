@@ -301,4 +301,10 @@ $language["ALLOW_SCREEN_UPLOAD"]="Allow screens upload";
 $language["IMAGE_UPLOAD_DIR"]="Image upload dir";
 $language["FILE_SIZELIMIT"]="Image size limit";
 // iMAGE upLoaD hack - end
+// STiCKy Torrent
+$language["ACP_STICKY_TORRENTS"]="Sticky settings";
+$language["STICKY_SETTINGS"]="Sticky settings";
+$language["COLOR"]="Color";
+$language["LEVEL_STICKY"]="Who can add sticky torrents? (default: Uploader)";
+// STiCKy Torrent - end
 ?>

@@ -456,4 +456,8 @@ $language["ILEGAL_UPLOAD"]="Ilegal upload!! This is not a image<br>Please press 
 $language["IMAGE"]="Image";
 $language["SCREEN"]="Screenshots";
 // iMAGE upLoaD hack - end
+// STiCKy Torrent
+$language["STICKY_TORRENT"]="<b>Sticky</b>";
+$language["STICKY_TORRENT_EXPLAIN"]="(Always on top of the torrent list)";
+// STiCKy Torrent - end
 ?>

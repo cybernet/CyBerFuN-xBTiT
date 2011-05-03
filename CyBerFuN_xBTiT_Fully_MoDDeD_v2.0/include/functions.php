@@ -85,10 +85,39 @@ require_once $CURRENTPATH.'/class.captcha.php';
 require_once $CURRENTPATH.'/class.ajaxpoll.php';
 
 if (!isset($TRACKER_ANNOUNCEURLS)) {
-  $TRACKER_ANNOUNCEURLS=array();
-  $TRACKER_ANNOUNCEURLS[]=$BASEURL.'/announce.php';
+  $TRACKER_ANNOUNCEURLS = array();
+  $TRACKER_ANNOUNCEURLS[] = $BASEURL.'/announce.php';
 }
-
+/*Mod by losmi - sticky mod
+Operation #3*/
+function updateSticky($hash, $sticky)
+{
+    global $TABLE_PREFIX;
+    $query = "UPDATE {$TABLE_PREFIX}files 
+                   SET sticky = '$sticky'
+                   WHERE info_hash = '$hash'";
+    do_sqlquery($query, true);
+   
+}
+/*End mod by losmi - sticky mod
+End Operation #3*/
+/*Mod by losmi - sticky mod*/
+function getLevel($cur_level)
+{
+    global $TABLE_PREFIX;
+    $query = "SELECT id, id_level FROM {$TABLE_PREFIX}users_level";
+    $rez = do_sqlquery($query, true);
+    
+    while($row = mysql_fetch_assoc($rez))
+    {
+        if($row['id'] == $cur_level)
+        {
+            return $row['id_level'];
+        }
+    }
+    return 0;
+}
+/*End mod by losmi - sticky mod*/
 function load_css($css_name) {
   // control if input template name exist in current user's stylepath, else return default
   global $BASEURL, $STYLEPATH, $STYLEURL;

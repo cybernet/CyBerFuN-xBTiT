@@ -106,6 +106,11 @@ switch ($do)
       include("$ADMIN_PATH/admin.search_diff.php");
       $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.search_diff.tpl"))));
       break;
+	  
+	case 'sticky':
+      include("$ADMIN_PATH/admin.sticky.php");
+      $tpl->set("main_content",set_block($language["STICKY_SETTINGS"],"center",$admintpl->fetch(load_template("admin.sticky.tpl"))));
+      break;  
 
     case 'forum':
       include("$ADMIN_PATH/admin.forums.php");

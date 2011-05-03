@@ -98,6 +98,15 @@ else
 
 if (isset($hash) && $hash) $url = $TORRENTSDIR . "/" . $hash . ".btf";
 else $url = 0;
+/*Mod by losmi - sticky mod
+    Operation #1*/
+    if (isset($_POST["sticky"]) && $_POST["sticky"] == 'on')
+       $sticky =  mysql_real_escape_string(1);
+    else { 
+           $sticky = mysql_real_escape_string(0);
+      }
+    /*End mod by losmi - sticky mod
+    End Operation #1*/
 
 if (isset($_POST["info"]) && $_POST["info"]!="")
    $comment = mysql_real_escape_string($_POST["info"]);
@@ -448,7 +457,19 @@ if (!isset($array["announce"]))
                   $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, url, info, category, data, size, comment,external,announce_url, uploader,anonymous, bin_hash) VALUES (\"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",\"yes\",\"$announce\",$curuid,$anonyme,0x$hash)";
         }
       //echo $query;
-      $status = do_sqlquery($query); //makeTorrent($hash, true);
+      $status = do_sqlquery($query); // makeTorrent($hash, true);
+	  /*
+Operation #2
+Mod by losmi -sticky torrent
+*/
+if($sticky != 0)
+            {
+            updateSticky($hash, $sticky);
+            }
+/*
+End operation #2
+Mod by losmi -sticky torrent
+*/
       if ($status)
          {
          $mf=@move_uploaded_file($_FILES["torrent"]["tmp_name"] , $TORRENTSDIR . "/" . $hash . ".btf");
@@ -498,9 +519,32 @@ do_sqlquery("UPDATE {$TABLE_PREFIX}files set image='$file_name', screen1='$file_
 $status=0;
 }
 
-$uploadtpl=new bTemplate();
-$uploadtpl->set("language",$language);
-$uploadtpl->set("upload_script","index.php");
+$uploadtpl = new bTemplate();
+/*
+Mod by losmi -sticky torrent
+*/
+
+    $query = "SELECT * FROM {$TABLE_PREFIX}sticky";
+    $rez = do_sqlquery($query,true);
+    $rez = mysql_fetch_assoc($rez);
+    $rez_level = $rez['level'];
+    $current_level = getLevel($CURUSER['id_level']);
+    $level_ok = false;
+    
+if ($CURUSER["uid"] > 1 && $current_level >= $rez_level && $CURUSER['can_upload'] == 'yes')
+   {
+    $uploadtpl->set("LEVEL_OK", true, FALSE);
+   }
+else
+   {
+    $uploadtpl->set("LEVEL_OK", false, TRUE);
+   }
+   unset($rez);
+/*
+Mod by losmi -sticky torrent
+*/
+$uploadtpl->set("language", $language);
+$uploadtpl->set("upload_script", "index.php");
 
 switch ($status) {
 case 0:

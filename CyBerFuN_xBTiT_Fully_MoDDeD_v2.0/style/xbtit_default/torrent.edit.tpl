@@ -37,6 +37,12 @@
         <td class="header" ><tag:language.CATEGORY_FULL /></td>
         <td class="lista"><tag:torrent.cat_combo /></td>
       </tr>
+	  <if:LEVEL_OK>
+      <tr>
+        <td align="right" class="header"><tag:language.STICKY /></td>
+        <td class="lista"><tag:torrent.sticky /></td>
+      </tr>
+      </if:LEVEL_OK>
       <tr>
         <td align=right class="header"><tag:language.SIZE /></td>
         <td class="lista" ><tag:torrent.size /></td>
