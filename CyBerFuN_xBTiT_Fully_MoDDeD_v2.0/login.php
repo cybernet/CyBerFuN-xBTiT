@@ -142,7 +142,7 @@ if (isset($_POST["uid"]) && isset($_POST["pwd"]))
           $logintpl->set("FALSE_PASSWORD",false,true);
 // Invalid Login System Hack
 		if (!$results)
-			mysql_query("INSERT INTO {$TABLE_PREFIX}invalid_logins SET ip='".sprintf("%u", ip2long($ip))."', userid='".$row['id']."', username='".$row['username']."', failed=failed+1, remaining=$attempts-1") or die(mysql_error());
+			mysql_query("INSERT INTO {$TABLE_PREFIX}invalid_logins SET ip='".sprintf("%u", ip2long($ip))."', userid='".$row['id']."', username='".AddSlashes($user)."', failed=failed+1, remaining=$attempts-1") or die(mysql_error());
 		elseif ($results["failed"] < "$attempts")
 			mysql_query("UPDATE {$TABLE_PREFIX}invalid_logins SET ip='".sprintf("%u", ip2long($ip))."', failed=failed+1, remaining=$attempts-failed WHERE ip='".sprintf("%u", ip2long($ip))."'") or die(mysql_error());
 		elseif ($results["failed"] == "$attempts" && $results["remaining"] == "0")
@@ -167,7 +167,7 @@ if (isset($_POST["uid"]) && isset($_POST["pwd"]))
           $logintpl->set("FALSE_PASSWORD",true,true);
 // Invalid Login System Hack Start
 		if (!$results)
-			mysql_query("INSERT INTO {$TABLE_PREFIX}invalid_logins SET ip='".sprintf("%u", ip2long($ip))."', userid='".$row['id']."', username='".$row['username']."', failed=failed+1, remaining=$attempts-1") or die(mysql_error());
+			mysql_query("INSERT INTO {$TABLE_PREFIX}invalid_logins SET ip='".sprintf("%u", ip2long($ip))."', userid='".$row['id']."', username='".AddSlashes($user)."', failed=failed+1, remaining=$attempts-1") or die(mysql_error());
 		elseif ($results["failed"] < "$attempts" && $results["remaining"] != "0")
 			mysql_query("UPDATE {$TABLE_PREFIX}invalid_logins SET ip='".sprintf("%u", ip2long($ip))."', failed=failed+1, remaining=$attempts-failed WHERE ip='".sprintf("%u", ip2long($ip))."'") or die(mysql_error());
 		elseif ($results["failed"] == "$attempts" && $results["remaining"] == "0")
