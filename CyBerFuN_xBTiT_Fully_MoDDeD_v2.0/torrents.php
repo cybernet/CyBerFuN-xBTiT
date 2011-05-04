@@ -198,6 +198,7 @@ if ($count>0) {
 /*Mod by losmi - sticky mod
 Operation #4*/
     $by_param=2;
+/*Mod by losmi - gold mod*/
     if (isset($_GET["by"]))
       {
         $by_param=(int)$_GET["by"];
@@ -211,13 +212,13 @@ Operation #4*/
 
     // Do the query with the uploader nickname
     if ($SHOW_UPLOADER)
-        $query = "SELECT f.sticky as sticky, f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.anonymous, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader as upname, u.username as uploader, prefixcolor, suffixcolor FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id $where GROUP BY f.sticky, $qry_order $by ORDER BY f.sticky $by $limit";
+        $query = "SELECT f.gold as gold, f.sticky as sticky, f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.anonymous, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader as upname, u.username as uploader, prefixcolor, suffixcolor FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id $where GROUP BY f.sticky, $qry_order $by ORDER BY f.sticky $by $limit";
 
     // Do the query without the uploader nickname
     else
-        $query = "SELECT f.sticky as sticky, f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where GROUP BY f.sticky, $qry_order $by ORDER BY f.sticky $by $limit";
+        $query = "SELECT f.gold as gold, f.sticky as sticky, f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where GROUP BY f.sticky, $qry_order $by ORDER BY f.sticky $by $limit";
     // End the queries
-       $results = get_result($query,true,$btit_settings['cache_duration']);
+       $results = get_result($query, true, $btit_settings['cache_duration']);
 }
 
 
@@ -356,23 +357,42 @@ if ($count>0) {
    // commented out to lower unsed queries (standard template)
    $torrents[$i]["rating"]=$language["NA"];
 
-
+// gold mod
+    $silver_picture='';
+    $gold_picture ='';
+     $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+            foreach ($res as $key=>$value)
+            {
+                $silver_picture = $value["silver_picture"];
+                $gold_picture = $value["gold_picture"];
+            }
+       
+    $torrents[$i]["gold"]='';
+    if($data['gold'] == 1)
+    {
+    $torrents[$i]["gold"] = '<img src="gold/'.$silver_picture.'" alt="silver"/>';
+    }
+    if($data['gold'] == 2)
+    {
+    $torrents[$i]["gold"] = '<img src="gold/'.$gold_picture.'" alt="gold"/>';
+    }
+   
    //waitingtime
    // display only if the curuser have some WT restriction
-   if (intval($CURUSER["WT"])>0)
+   if (intval($CURUSER["WT"]) > 0)
       {
-      $wait=0;
-      //$resuser=get_result("SELECT * FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"],true,$CACHE_DURATION);
-      //$rowuser=$resuser[0];
-      $wait=0;
-      if (intval($CURUSER['downloaded'])>0) $ratio=number_format($CURUSER['uploaded']/$CURUSER['downloaded'],2);
+      $wait = 0;
+      // $resuser=get_result("SELECT * FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"],true,$CACHE_DURATION);
+      // $rowuser=$resuser[0];
+      $wait = 0;
+      if (intval($CURUSER['downloaded']) > 0) $ratio = number_format($CURUSER['uploaded'] / $CURUSER['downloaded'], 2);
       else $ratio=0.0;
       $vz = $data["added"];
       $timer = floor((time() - $vz) / 3600);
-      if($ratio<1.0 && $CURUSER['uid']!=$data["uploader"]){
-          $wait=$CURUSER["WT"];
+      if($ratio < 1.0 && $CURUSER['uid'] != $data["uploader"]){
+          $wait = $CURUSER["WT"];
       }
-      $wait -=$timer;
+      $wait -= $timer;
 
       if ($wait<=0)$wait=0;
      if (strlen($data["hash"]) > 0)

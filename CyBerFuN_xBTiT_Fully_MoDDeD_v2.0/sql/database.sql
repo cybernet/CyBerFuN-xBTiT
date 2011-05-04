@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 03, 2011 at 10:12 PM
+-- Generation Time: May 04, 2011 at 11:36 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.8
 
@@ -471,11 +471,12 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
   `lastSpeedCycle` int(10) unsigned NOT NULL DEFAULT '0',
   `speed` bigint(20) unsigned NOT NULL DEFAULT '0',
   `bin_hash` blob NOT NULL,
+  `sticky` enum('0','1') NOT NULL DEFAULT '0',
   `image` varchar(255) NOT NULL DEFAULT '',
   `screen1` varchar(255) NOT NULL DEFAULT '',
   `screen2` varchar(255) NOT NULL DEFAULT '',
   `screen3` varchar(255) NOT NULL DEFAULT '',
-  `sticky` enum('0','1') NOT NULL DEFAULT '0',
+  `gold` enum('0','1','2') NOT NULL DEFAULT '0',
   PRIMARY KEY (`info_hash`),
   KEY `filename` (`filename`),
   KEY `category` (`category`),
@@ -485,7 +486,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
   KEY `screen1` (`screen1`),
   KEY `screen2` (`screen2`),
   KEY `screen3` (`screen3`),
-  KEY `sticky` (`sticky`)
+  KEY `sticky` (`sticky`),
+  KEY `gold` (`gold`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -535,6 +537,32 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}forums` (
 --
 -- Dumping data for table `{$db_prefix}forums`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}gold`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `level` int(11) NOT NULL DEFAULT '4',
+  `gold_picture` varchar(255) NOT NULL DEFAULT 'gold.gif',
+  `silver_picture` varchar(255) NOT NULL DEFAULT 'silver.gif',
+  `active` enum('-1','0','1') NOT NULL DEFAULT '1',
+  `date` date NOT NULL DEFAULT '0000-00-00',
+  `gold_description` text NOT NULL,
+  `silver_description` text NOT NULL,
+  `classic_description` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `{$db_prefix}gold`
+--
+
+INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`, `active`, `date`, `gold_description`, `silver_description`, `classic_description`) VALUES
+(1, 3, 'gold.gif', 'silver.gif', '1', '0000-00-00', 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
 
 
 -- --------------------------------------------------------

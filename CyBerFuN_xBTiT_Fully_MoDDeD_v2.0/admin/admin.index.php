@@ -117,6 +117,11 @@ switch ($do)
       $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.forums.tpl"))));
       break;
 	  
+	case 'gold':
+      include("$ADMIN_PATH/admin.gold.php");
+      $tpl->set("main_content",set_block($language["ACP_GOLD"],"center",$admintpl->fetch(load_template("admin.gold.tpl"))));
+      break;  
+	  
 	case 'invitations':
       include("$ADMIN_PATH/admin.invitations.php");
       $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.invitations.tpl"))));

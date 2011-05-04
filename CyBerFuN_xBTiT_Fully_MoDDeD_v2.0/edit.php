@@ -55,17 +55,26 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
         {
         stderr("Error!","You must specify description.");
    }
-/* Mod by losmi -sticky start */
+// gold mod
+    $golden = 0;
+   if($_POST["gold"]!='' && isset($_POST["gold"]))
+   {
+    $golden = mysql_real_escape_string($_POST["gold"]);
+   }
+// gold mod - end
+/* Mod by losmi - sticky start */
     $sticky = 0;
    if($_POST["sticky"] == 'on')
    {
     $sticky = 1;
    }
 /* Mod by losmi -sticky end */
-   $fname=htmlspecialchars(AddSlashes(unesc($_POST["name"])));
-   $torhash=AddSlashes($_POST["info_hash"]);
+   $fname = htmlspecialchars(AddSlashes(unesc($_POST["name"])));
+   $torhash = AddSlashes($_POST["info_hash"]);
    write_log("Modified torrent $fname ($torhash)","modify");
-$userfile = $_FILES["userfile"];
+   if($golden != '' && isset($golden))
+     do_sqlquery("UPDATE {$TABLE_PREFIX}files SET gold='$golden' WHERE info_hash='" . $torhash . "'", true);
+		$userfile = $_FILES["userfile"];
         $screen1 = $_FILES["screen1"];
         $screen2 = $_FILES["screen2"];
         $screen3 = $_FILES["screen3"];
@@ -343,16 +352,16 @@ if (isset($_GET["info_hash"])) {
        $ttables="{$TABLE_PREFIX}files f";
        }
 
-  $query ="SELECT f.sticky, f.image, f.screen1, f.screen2, f.screen3, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
-  $res = do_sqlquery($query,true);
+  $query ="SELECT f.gold, f.sticky, f.image, f.screen1, f.screen2, f.screen3, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
+  $res = do_sqlquery($query, true);
   $results = mysql_fetch_assoc($res);
 
-  if (!$results || mysql_num_rows($res)==0)
+  if (!$results || mysql_num_rows($res) == 0)
      err_msg($language["ERROR"],$language["TORRENT_EDIT_ERROR"]);
 
   else {
 
-    if (!$CURUSER || $CURUSER["uid"]<2 || ($CURUSER["edit_torrents"]=="no" && $CURUSER["uid"]!=$results["uploader"]))
+    if (!$CURUSER || $CURUSER["uid"] < 2 || ($CURUSER["edit_torrents"]=="no" && $CURUSER["uid"]!=$results["uploader"]))
        {
            stderr($language["ERROR"],$language["CANT_EDIT_TORR"]);
        }
@@ -378,6 +387,21 @@ $row = $res[0];
 */
 
     $torrent=array();
+	/*Start gold mod by losmi*/
+    $gold_level = '';
+    $resg = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+    foreach ($resg as $key=>$value)
+        $gold_level = $value["level"];
+
+    unset($resg);
+
+    if($gold_level > $CURUSER['id_level'])
+         $torrenttpl->set("edit_gold_level",false,true);
+    else
+         $torrenttpl->set("edit_gold_level",true,true);
+
+    $torrent["gold"] = createGoldCategories($results["gold"]);
+    /*End gold mod by losmi*/
 	/*Start sticky by losmi*/
               $query = "SELECT * FROM {$TABLE_PREFIX}sticky";
               $rez = do_sqlquery($query,true);

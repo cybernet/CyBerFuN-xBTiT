@@ -333,4 +333,7 @@ $language['SENDINV_EXPL']='If username is not inserted, rank will be chosen inst
 $language['RECYCLE_DATE']='Recycle period';
 $language['RECYCLE_EXPL']='<i>Period in <u>days</u> after which invitations will be recycled</i>';
 // INVITATION SYSTEM - end
+// GOLD
+$language["ACP_GOLD"] = "Gold torrents settings";
+// GOLD - end
 ?>
