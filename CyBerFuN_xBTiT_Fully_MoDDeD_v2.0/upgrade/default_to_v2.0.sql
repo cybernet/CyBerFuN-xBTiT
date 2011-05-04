@@ -1,3 +1,5 @@
+--- request hack
+
 CREATE TABLE IF NOT EXISTS `{$db_prefix}addedrequests` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `requestid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -35,8 +37,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_number', '5');
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_maxon', 'true');
 INSERT INTO `{$db_prefix}blocks` VALUES ('', 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8);
 
-ALTER TABLE `{$db_prefix}files` ADD `sticky` ENUM( '0', '1' ) NOT NULL DEFAULT '0';
-ALTER TABLE `{$db_prefix}files` ADD INDEX ( `sticky` );
+--- sticky hack
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}sticky` (
   `id` int(11) NOT NULL,
@@ -45,12 +46,13 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}sticky` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `{$db_prefix}sticky`
---
-
 INSERT INTO `{$db_prefix}sticky` (`id`, `color`, `level`) VALUES
 (1, '#bce1ac;', 3);
+
+ALTER TABLE `{$db_prefix}files` ADD `sticky` ENUM( '0', '1' ) NOT NULL DEFAULT '0';
+ALTER TABLE `{$db_prefix}files` ADD INDEX ( `sticky` );
+
+--- image upload hack
 
 ALTER TABLE `{$db_prefix}files` ADD `image` VARCHAR( 255 ) NOT NULL DEFAULT '',
       ADD `screen1` VARCHAR( 255 ) NOT NULL DEFAULT '',
@@ -67,11 +69,15 @@ INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('uploaddir', 'cyb
 INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('file_limit', '2048');
 INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('screenon', 'true');
 
+--- torrent thanks ajax hack
+
 CREATE TABLE IF NOT EXISTS `{$db_prefix}files_thanks` (
   `infohash` char(40) NOT NULL DEFAULT '0',
   `userid` int(11) NOT NULL DEFAULT '0',
   KEY `infohash` (`infohash`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--- Invitations hack
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}invitations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -97,8 +103,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('invitation_reqvalid', 'false'),
 ('invitation_expires', '7');
 
-ALTER TABLE `{$db_prefix}files` ADD `gold` ENUM( '0', '1', '2' ) NOT NULL DEFAULT '0';
-ALTER TABLE `{$db_prefix}files` ADD INDEX ( `gold` )
+--- gold / silver torrents hack
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
   `id` int(11) NOT NULL auto_increment,
@@ -115,3 +120,6 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
 
 INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`, `active`, `date`, `gold_description`, `silver_description`, `classic_description`) VALUES
 (1, 3, 'gold.gif', 'silver.gif', '1', '0000-00-00', 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
+
+ALTER TABLE `{$db_prefix}files` ADD `gold` ENUM( '0', '1', '2' ) NOT NULL DEFAULT '0';
+ALTER TABLE `{$db_prefix}files` ADD INDEX ( `gold` );
