@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 04, 2011 at 11:36 AM
+-- Generation Time: May 04, 2011 at 10:19 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.8
 
@@ -607,6 +607,25 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}history` (
 -- Dumping data for table `{$db_prefix}history`
 --
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}invalid_logins`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}invalid_logins` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ip` bigint(11) DEFAULT '0',
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(40) NOT NULL DEFAULT '',
+  `failed` int(3) unsigned NOT NULL DEFAULT '0',
+  `remaining` int(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}invalid_logins`
+--
 
 -- --------------------------------------------------------
 
@@ -1048,7 +1067,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}settings` (
 --
 
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
-('name', 'BTI-Tracker'),
+('name', 'CyBerFuN xBTiT'),
 ('url', 'http://127.0.0.1/dev'),
 ('announce', 'a:2:{i:0;s:30:"http://localhost/announce.php\r";i:1;s:30:"http://localhost:2710/announce";}'),
 ('email', 'admin@localhost'),
@@ -1112,7 +1131,9 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('req_maxon', 'true'),
 ('invitation_only', 'true'),
 ('invitation_reqvalid', 'false'),
-('invitation_expires', '7');
+('invitation_expires', '7'),
+('inv_login', 'false'),
+('att_login', '99');
 
 -- --------------------------------------------------------
 

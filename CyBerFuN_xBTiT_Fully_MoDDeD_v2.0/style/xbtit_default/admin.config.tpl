@@ -241,6 +241,15 @@
       <td class="header">Seedbonus points</td>
       <td class="lista"><input type="text" name="req_sb" value="<tag:config.req_sb />" size="4" /></td>
       </tr>
+	  <tr>
+      <td class="header" align="center" colspan="4">Invalid Login System Check</td>
+    </tr>
+    <tr>
+      <td class="header">Allowed login attempts</td>
+      <td class="lista"><input type="text" name="att_login" value="<tag:config.att_login />" size="4" /></td>
+          <td class="header">Enable invalid login check</td>
+     <td class="lista">&nbsp;&nbsp;enable&nbsp;<input type="radio" name="inv_login" value="true"<tag:config.inv_loginyes /> />&nbsp;&nbsp;disabled&nbsp;<input type="radio" name="inv_login" value="false"<tag:config.inv_loginno /> /></td>
+     </tr>
     <tr>
       <td align="center" class="header" colspan="2"><input type="submit" name="write" class="btn" value="<tag:language.FRM_CONFIRM />" /></td>
       <td align="center" class="header" colspan="2"><input type="submit" name="cancel" class="btn" value="<tag:language.FRM_CANCEL />" /></td>

@@ -44,8 +44,10 @@ function do_sanity() {
 	mysql_query("DELETE FROM {$TABLE_PREFIX}requests WHERE filledby > 0 AND id = $reqid");
 	mysql_query("DELETE FROM {$TABLE_PREFIX}addedrequests WHERE requestid = $reqid");
 	}
- // DT request hack end
-
+// DT request hack end
+// Invalid Login System Hack Start
+mysql_query("DELETE FROM {$TABLE_PREFIX}bannedip WHERE comment='max_number_of_invalid_logins_reached'");
+// invalid Login System Hack Stop
          // SANITY FOR TORRENTS
          $results = do_sqlquery("SELECT info_hash, seeds, leechers, dlbytes, filename FROM {$TABLE_PREFIX}files WHERE external='no'");
          $i = 0;

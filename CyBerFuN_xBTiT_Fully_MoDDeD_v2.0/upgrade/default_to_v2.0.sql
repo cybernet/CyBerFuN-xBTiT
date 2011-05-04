@@ -123,3 +123,18 @@ INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`,
 
 ALTER TABLE `{$db_prefix}files` ADD `gold` ENUM( '0', '1', '2' ) NOT NULL DEFAULT '0';
 ALTER TABLE `{$db_prefix}files` ADD INDEX ( `gold` );
+
+--- Invalid Login System hack
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}invalid_logins` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ip` bigint(11) DEFAULT '0',
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(40) NOT NULL DEFAULT '',
+  `failed` int(3) unsigned NOT NULL DEFAULT '0',
+  `remaining` int(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+INSERT INTO `{$db_prefix}settings` SET `key`='inv_login', `value`='false';
+INSERT INTO `{$db_prefix}settings` SET `key`='att_login', `value`='99';
