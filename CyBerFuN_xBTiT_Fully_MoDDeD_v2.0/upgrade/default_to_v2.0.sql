@@ -138,3 +138,10 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}invalid_logins` (
 
 INSERT INTO `{$db_prefix}settings` SET `key`='inv_login', `value`='false';
 INSERT INTO `{$db_prefix}settings` SET `key`='att_login', `value`='99';
+
+--- Blocks
+
+INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `status`, `title`, `cache`, `minclassview`, `maxclassview`) VALUES
+(NULL, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8),
+(NULL, 'header', 't', 1, 1, 'BLOCK_CYBERNET_HEADER', 'no', 1, 8),
+(NULL, 'login', 'c', 0, 1, 'BLOCK_LOGIN', 'no', 1, 1);
