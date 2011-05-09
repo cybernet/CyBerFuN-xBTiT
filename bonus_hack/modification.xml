@@ -1,0 +1,317 @@
+﻿<hack>
+  <title>Bonus system</title>
+  <author>Real_ptr</author>
+  <version>1.3 (2.2.1)(r669)</version>
+  <file>
+    <name>"database"</name>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[INSERT INTO `{$db_prefix}modules` ( id , name , activated , type , changed , created )
+VALUES (NULL , 'seedbonus', 'yes', 'misc', UNIX_TIMESTAMP(), UNIX_TIMESTAMP());]]></data>
+    </operation>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[INSERT INTO `{$db_prefix}settings` SET `key`='bonus', `value`='1']]></data>
+    </operation>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[INSERT INTO `{$db_prefix}settings` SET `key`='price_vip', `value`='750']]></data>
+    </operation>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[INSERT INTO `{$db_prefix}settings` SET `key`='price_ct', `value`='200']]></data>
+    </operation>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[INSERT INTO `{$db_prefix}settings` SET `key`='price_name', `value`='500']]></data>
+    </operation>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[ALTER TABLE `{$db_prefix}users` ADD `seedbonus` DECIMAL( 12,6 ) NOT NULL DEFAULT '0';]]></data>
+    </operation>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[CREATE TABLE `{$db_prefix}bonus` (
+  `id` int(5) NOT NULL auto_increment,
+  `name` varchar(50) NOT NULL default '',
+  `points` decimal(4,1) NOT NULL default '000.0',
+  `traffic` bigint(20) unsigned NOT NULL default '0',
+  `gb` int(9) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM;]]></data>
+    </operation>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[INSERT INTO `{$db_prefix}bonus` (`id`, `name`, `points`, `traffic`, `gb`) VALUES (3, '1', 030.0, 1073741824, 1),
+(4, '2', 050.0, 2147483648, 2),
+(5, '3', 100.0, 5368709120, 5);]]></data>
+    </operation>
+  </file>
+
+
+  <file>
+  <name>"$DEFAULT_ROOT/include/functions.php"</name>
+  <operation>
+    <action>"replace"</action>
+	<search><![CDATA[$id = (!isset($_COOKIE['uid']))?1:max(1, (int)$_COOKIE['uid']);
+
+  $res = get_result("SELECT]]></search>
+    <data><![CDATA[$id = (!isset($_COOKIE['uid']))?1:max(1, (int)$_COOKIE['uid']);
+
+  $res = get_result("SELECT u.seedbonus,]]></data>
+  </operation>
+  <operation>
+    <action>"replace"</action>
+    <search><![CDATA[if (!$row) {
+    $id=1;
+    $res = get_result("SELECT]]></search>
+    <data><![CDATA[if (!$row) {
+    $id=1;
+    $res = get_result("SELECT u.seedbonus,]]></data>
+  </operation>
+  <operation>
+    <action>"replace"</action>
+    <search><![CDATA[if (($_COOKIE['pass']!=md5($row['random'].$row['password'].$row['random'])) && $id!=1) {
+    $id=1;
+    $res = get_result("SELECT]]></search>
+    <data><![CDATA[if (($_COOKIE['pass']!=md5($row['random'].$row['password'].$row['random'])) && $id!=1) {
+    $id=1;
+    $res = get_result("SELECT u.seedbonus,]]></data>
+  </operation>
+  </file>
+
+
+
+  <file>
+  <name>"$DEFAULT_ROOT/include/sanity.php"</name>
+  <operation>
+    <action>"add"</action>
+    <where>"before"</where>
+    <search><![CDATA[$PRIVATE_ANNOUNCE,]]></search>
+    <data><![CDATA[ $clean_interval, $XBTT_USE, ]]></data>
+  </operation>
+    <operation>
+    <action>"add"</action>
+    <where>"before"</where>
+    <search><![CDATA[// SANITY FOR TORRENTS]]></search>
+    <data><![CDATA[
+if ($XBTT_USE) {
+ $res = do_sqlquery("SELECT uid FROM xbt_files_users as u INNER JOIN xbt_files as x ON u.fid=x.fid WHERE u.left = '0' AND x.flags='0' AND u.active='1'");
+   if (mysql_num_rows($res) > 0)
+   {
+       while ($arr = mysql_fetch_assoc($res))
+       {
+       $x=$arr["uid"];
+       quickQuery("UPDATE {$TABLE_PREFIX}users SET seedbonus = seedbonus+".$GLOBALS["bonus"]."*".$clean_interval."/3600 WHERE id = '$x'");
+       }
+   } }else
+   {
+ $res = do_sqlquery("SELECT pid FROM {$TABLE_PREFIX}peers WHERE status = 'seeder'");
+   if (mysql_num_rows($res) > 0)
+   {
+       while ($arr = mysql_fetch_assoc($res))
+       {
+       $x=$arr['pid'];
+       quickQuery("UPDATE {$TABLE_PREFIX}users SET seedbonus = seedbonus+".$GLOBALS["bonus"]."*".$clean_interval."/3600 WHERE pid = '$x'");
+       }
+   } }
+   ]]></data>
+  </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_ROOT/include/config.php"</name>
+  <operation>
+    <action>"add"</action>
+    <where>"after"</where>
+    <search><![CDATA[$votesppage=25;]]></search>
+    <data><![CDATA[
+
+$GLOBALS["bonus"] = $btit_settings["bonus"];
+$GLOBALS["price_vip"] = $btit_settings["price_vip"];
+$GLOBALS["price_ct"] = $btit_settings["price_ct"];
+$GLOBALS["price_name"] = $btit_settings["price_name"];
+
+    ]]></data>
+  </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_ROOT/admin/admin.index.php"</name>
+    <operation>
+      <search><![CDATA[case 'sanity']]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+          case 'seedbonus':
+      include("$ADMIN_PATH/admin.bonus.php");
+      $tpl->set("main_content",set_block($language["ACP_SEEDBONUS"],"center",$admintpl->fetch(load_template("admin.bonus.tpl"))));
+      break;
+      ]]></data>
+      <where>"before"</where>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_ROOT/admin/admin.menu.php"</name>
+    <operation>
+      <search><![CDATA[["ACP_STYLES"])]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[,
+                          4=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=seedbonus" ,
+                    "description"=>$language["ACP_SEEDBONUS"])
+                    ]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/blocks/mainusertoolbar_block.php"</name>
+    <operation>
+      <search><![CDATA["---").")</td>\n");]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[
+      print("<td class=\"green\" align=\"center\"><a href=index.php?page=modules&module=seedbonus>(BON ".($CURUSER['seedbonus']>0?number_format($CURUSER['seedbonus'],2):"---").")</a></td>\n");
+      ]]></data>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_LANGUAGE_PATH/lang_main.php"</name>
+  <operation>
+    <action>"add"</action>
+    <where>"before"</where>
+    <search><![CDATA[?>]]></search>
+    <data><![CDATA[
+
+$language["BONUS_INFO1"]="Here you can exchange your Seeder-Bonus (current ";
+$language["BONUS_INFO2"]="(If the buttons are deactivated, you do not have enough to trade!)";
+$language["BONUS_INFO3"]="What do I get points for?<br>For every hour the system registers you as seeder you receive ";
+$language["BONUS_INFO4"]=" points per torrent.";
+$language["WHAT_ABOUT"]="What is this about?";
+$language["POINTS"]="Points";
+$language["EXCHANGE"]="Exchange";
+$language["GB_UPLOAD"]=" GB Upload";
+$language["CHANGE_CUSTOM_TITLE"]="Change custom title (price - ";
+$language["NO_CUSTOM_TITLE"]="none";
+$language["UP_TO_VIP"]="Upgrade rank to VIP";
+$language["NEED_MORE_POINTS"]="[need more points]";
+$language["CHANGE_USERNAME"]="Change username (price - ";
+
+]]></data>
+  </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_LANGUAGE_PATH/lang_admin.php"</name>
+    <operation>
+      <search><![CDATA[?>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+
+$language["ACP_SEEDBONUS"]="SeedBonus Settings";
+$language["BONUS"]="Points per torrent in hour";
+$language["PRICE_VIP"]="Price for rank VIP";
+$language["PRICE_CT"]="Price for CustomTitle";
+$language["PRICE_NAME"]="Price for change username";
+$language["PRICE_GB"]="Price for GB";
+$language["POINTS"]="Points";
+$language["SEEDBONUS_UPDATED"]="SeedBonus settings updated";
+
+]]></data>
+      <where>"before"</where>
+    </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_ROOT/userdetails.php"</name>
+  <operation>
+    <action>"add"</action>
+    <where>"after"</where>
+    <search><![CDATA[$res=get_result("SELECT]]></search>
+    <data><![CDATA[ u.seedbonus,]]></data>
+  </operation>
+  <operation>
+    <action>"add"</action>
+    <where>"after"</where>
+    <search><![CDATA[($ratio));]]></search>
+    <data><![CDATA[
+    $userdetailtpl -> set("userdetail_bonus", (number_format($row["seedbonus"],2)));
+    ]]></data>
+  </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_STYLE_PATH/userdetails.tpl"</name>
+  <operation>
+    <action>"add"</action>
+    <where>"after"</where>
+    <search><![CDATA[<tag:userdetail_ratio /></td>
+
+  </tr>]]></search>
+    <data><![CDATA[
+
+    <tr>
+
+    <td class="header"><tag:language.POINTS /></td>
+
+    <td class="lista" colspan="2"><tag:userdetail_bonus /></td>
+
+  </tr>
+
+  ]]></data>
+  </operation>
+  </file>
+  <file>
+  <name>"$DEFAULT_LANGUAGE_PATH/lang_userdetails.php"</name>
+    <operation>
+      <search><![CDATA[?>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+      $language["POINTS"]             = "Points";
+      ]]></data>
+      <where>"before"</where>
+    </operation>
+  </file>
+  <file>
+  <name>"$CURRENT_FOLDER/files/admin.bonus.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/admin"</where>
+      <data>"admin.bonus.php"</data>
+    </operation>
+  </file>
+  <file>
+  <name>"$CURRENT_FOLDER/files/admin.bonus.tpl"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_STYLE_PATH"</where>
+      <data>"admin.bonus.tpl"</data>
+    </operation>
+  </file>
+  <file>
+    <name>"$CURRENT_FOLDER/files/title2.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/"</where>
+      <data>"title2.php"</data>
+    </operation>
+  </file>
+  <file>
+    <name>"$CURRENT_FOLDER/files/index.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/modules/seedbonus/"</where>
+      <data>"index.php"</data>
+    </operation>
+  </file>
+  <file>
+    <name>"$CURRENT_FOLDER/files/seedbonus_exchange.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/"</where>
+      <data>"seedbonus_exchange.php"</data>
+    </operation>
+  </file>
+  <file>
+    <name>"$CURRENT_FOLDER/files/username.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/"</where>
+      <data>"username.php"</data>
+    </operation>
+  </file>  
+</hack>
