@@ -55,6 +55,13 @@
   </if:userdetail_edit_admin>
 <tr>
 
+    <td class="header"><tag:language.CUSTOM_TITLE /></td>
+
+    <td class="lista" colspan="2"><tag:custom_title /></td>
+
+  </tr>
+<tr>
+
     <td class="header"><tag:language.USER_INVITATIONS /></td>
 
     <td class="lista"><tag:userdetail_invs /></td>

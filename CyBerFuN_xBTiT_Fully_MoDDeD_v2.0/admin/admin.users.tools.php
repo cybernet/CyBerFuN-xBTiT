@@ -131,6 +131,7 @@ switch ($action) {
         $opts['id']='id';
         $opts['value']='level';
         $opts['default']=$curu['id_level'];
+	$profile['custom_title']=unesc($curu['custom_title']);
         # rank list
         $ranks=rank_list();
         $admintpl->set('rank_combo',get_combo($ranks, $opts));
@@ -203,6 +204,7 @@ switch ($action) {
             $pass=$_POST['pass'];
             $chpass=(isset($_POST['chpass']) && $pass!='');
             # new level of the user
+	    $custom_title=unesc($_POST["custom_title"]);
             $rlev=do_sqlquery('SELECT id_level as base_level, level as name FROM '.$TABLE_PREFIX.'users_level WHERE id='.$level.' LIMIT 1;');
             $reslev=mysql_fetch_assoc($rlev);
             if ( ($CURUSER['id_level'] < $reslev['base_level']))
@@ -229,6 +231,8 @@ switch ($action) {
             }
             if ($time != $curu['time_offset'])
                 $set[]='time_offset='.$time;
+	    if ($custom_title != $curu['custom_title'])
+                $set[]='custom_title='.sqlesc(htmlspecialchars($custom_title));
             if ($email != $curu['email'])
                 $set[]='email='.sqlesc($email);
             if ($avatar != $curu['avatar'])

@@ -145,3 +145,7 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 (NULL, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8),
 (NULL, 'header', 't', 1, 1, 'BLOCK_CYBERNET_HEADER', 'no', 1, 8),
 (NULL, 'login', 'c', 0, 1, 'BLOCK_LOGIN', 'no', 1, 1);
+
+--- Custom Title
+
+ALTER TABLE `{$db_prefix}users` ADD `custom_title` VARCHAR( 100 ) NULL;

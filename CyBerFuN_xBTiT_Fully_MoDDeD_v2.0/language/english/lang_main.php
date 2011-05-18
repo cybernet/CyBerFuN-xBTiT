@@ -469,4 +469,7 @@ $language["SILVER_DESCRIPTION"]="Silver description";
 $language["CLASSIC_DESCRIPTION"]="Classic description";
 $language["GOLD_LEVEL"]="Who can add gold/silver torrents";
 // GOLD - end
+// Custom Title
+$language["CUSTOM_TITLE"]="Custom title";
+// Custom Title - end
 ?>

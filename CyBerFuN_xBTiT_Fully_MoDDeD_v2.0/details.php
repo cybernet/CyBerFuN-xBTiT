@@ -323,9 +323,9 @@ else
    $torrenttpl->set("EXTERNAL",false,TRUE);
 
 // comments...
-$subres = get_result("SELECT c.id, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC",true,$btit_settings['cache_duration']);
+$subres = get_result("SELECT u.custom_title,  u.id_level, c.id, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC",true,$btit_settings['cache_duration']);
 if (!$subres || count($subres)==0) {
-     if($CURUSER["uid"]>1)
+     if($CURUSER["uid"] > 1)
        $torrenttpl->set("INSERT_COMMENT",TRUE,TRUE);
      else
        $torrenttpl->set("INSERT_COMMENT",false,TRUE);
@@ -343,7 +343,17 @@ else {
      $comments=array();
      $count=0;
      foreach ($subres as $subrow) {
-       $comments[$count]["user"]="<a href=\"index.php?page=userdetails&amp;id=".$subrow["uid"]."\">" . unesc($subrow["user"]);
+// need $
+$level = do_sqlquery("SELECT level FROM {$TABLE_PREFIX}users_level WHERE id_level='$subrow[id_level]'");
+       $lvl = mysql_fetch_assoc($level);
+       if (!$subrow[uid])
+        $title = "orphaned";
+       elseif (!"$subrow[custom_title]")
+        $title = "".$lvl['level']."";
+       else
+        $title = unesc($subrow["custom_title"]);
+        $comments[$count]["user"]="<a href=\"index.php?page=userdetails&amp;id=".$subrow["uid"]."\">" . unesc($subrow["user"]);
+	$comments[$count]["user"].="</a> .::. ".$title;
        $comments[$count]["date"]=date("d/m/Y H.i.s",$subrow["data"]-$offset);
        // only users able to delete torrents can delete comments...
        if ($CURUSER["delete_torrents"]=="yes")
