@@ -84,12 +84,12 @@ if ($topics!=0) {
         # format posts
         foreach($lastPosts as $post) {
             # get username
-            $user=get_result('SELECT ul.prefixcolor, u.username, ul.suffixcolor FROM '.$TABLE_PREFIX.'users_level as ul LEFT JOIN '.$TABLE_PREFIX.'users as u ON u.id_level=ul.id WHERE u.id='.$post['userid'].' LIMIT 1;',true,$btit_settings['cache_duration']);
+            $user=get_result('SELECT ul.prefixcolor, u.username, u.warn, ul.suffixcolor FROM '.$TABLE_PREFIX.'users_level as ul LEFT JOIN '.$TABLE_PREFIX.'users as u ON u.id_level=ul.id WHERE u.id='.$post['userid'].' LIMIT 1;',true,$btit_settings['cache_duration']);
             if (isset($user[0])) {
                 $user=$user[0];
                 $post['username']=unesc($user['prefixcolor'].$user['username'].$user['suffixcolor']);
             } else $post['username']='[DELETED USER]';
-            $postsList.='<tr><td class="lista"><b><a href="'.$btit_settings['url'].'/index.php?page=forum&amp;action=viewtopic&amp;topicid='.$post['tid'].'&amp;msg='.$post['pid'].'#'.$post['pid'].'">'.htmlspecialchars(unesc($post['subject'])).'</a></b><br />'.$language['LAST_POST_BY'].' <a href="'.$btit_settings['url'].'/index.php?page=userdetails&amp;id='.$post['userid'].'">'.$post['username'].'</a><br />On '.get_date_time($post['added']).'</td></tr>';
+            $postsList.='<tr><td class="lista"><b><a href="'.$btit_settings['url'].'/index.php?page=forum&amp;action=viewtopic&amp;topicid='.$post['tid'].'&amp;msg='.$post['pid'].'#'.$post['pid'].'">'.htmlspecialchars(unesc($post['subject'])).'</a></b><br />'.$language['LAST_POST_BY'].' <a href="'.$btit_settings['url'].'/index.php?page=userdetails&amp;id='.$post['userid'].'">'.$post['username'].warn($user).'</a><br />On '.get_date_time($post['added']).'</td></tr>';
         }
     }
 } else $postsList='<tr><td class="lista">'.$language['NO_TOPIC'].'</td></tr>';

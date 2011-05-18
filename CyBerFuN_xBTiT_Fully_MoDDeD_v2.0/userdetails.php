@@ -79,7 +79,7 @@ else
 
 
 if ($id > 1) {
-   $res = get_result("SELECT u.custom_title, u.invited_by, u.invitations, u.avatar, u.email, u.cip, u.username, $udownloaded as downloaded, $uuploaded as uploaded, UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id", true, $btit_settings['cache_duration']);
+   $res = get_result("SELECT u.custom_title, u.invited_by, u.invitations, u.warn, u.warnreason, u.warns, u.warnadded, u.warnaddedby, u.avatar, u.email, u.cip, u.username, $udownloaded as downloaded, $uuploaded as uploaded, UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id", true, $btit_settings['cache_duration']);
    $num = count($res);
    if ($num==0)
       {
@@ -125,7 +125,7 @@ $utorrents = intval($CURUSER["torrentsperpage"]);
 
 $userdetailtpl= new bTemplate();
 $userdetailtpl-> set("language",$language);
-$userdetailtpl-> set("userdetail_username", unesc($row["username"]));
+$userdetailtpl-> set("userdetail_username", unesc($row["username"]). warn($row, true));
 //$userdetailtpl-> set("userdetail_no_guest", $CURUSER["uid"]>1, TRUE);
 if ($CURUSER["uid"]>1 && $id!=$CURUSER["uid"])
     $userdetailtpl -> set("userdetail_send_pm", "&nbsp;&nbsp;&nbsp;<a href=\"index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=".$CURUSER["uid"]."&amp;what=new&amp;to=".urlencode(unesc($row["username"]))."\">".image_or_link("$STYLEPATH/images/pm.png","",$language["PM"])."</a>");
@@ -194,8 +194,19 @@ elseif ($GLOBALS["FORUMLINK"]=="smf")
    $userdetailtpl-> set("userdetail_forum_posts", $forum["posts"] . " &nbsp; [" . sprintf($language["POSTS_PER_DAY"], $posts_per_day) . "]");
    unset($forum);
 }
-
-$resuploaded = get_result("SELECT count(*) as tf FROM {$TABLE_PREFIX}files f WHERE uploader=$id AND f.anonymous = \"false\" ORDER BY data DESC",true,$btit_settings['cache_duration']);
+$userdetailtpl-> set("warn_access", (($row["warn"]=="yes")?TRUE:FALSE), TRUE);
+$userdetailtpl-> set("warnreason", (!$row["warnreason"] ? "" : unesc($row["warnreason"])));   
+$userdetailtpl-> set("warnadded", (!$row["warnadded"] ? "" : unesc($row["warnadded"])));
+$userdetailtpl-> set("warnaddedby", (!$row["warnaddedby"] ? "" : unesc($row["warnaddedby"])));
+$userdetailtpl-> set("warns", (!$row["warns"] ? "" : unesc($row["warns"])));   
+$userdetailtpl-> set("rewarn_access", (($row["warn"]=="yes")?TRUE:FALSE), TRUE);
+$userdetailtpl-> set("adminwarn_access", (($CURUSER["edit_torrents"]=="yes" || $CURUSER["edit_users"]=="yes")?TRUE:FALSE), TRUE);
+$userdetailtpl-> set("nowarn_access", (($CURUSER["edit_torrents"]=="yes" || $CURUSER["edit_users"]=="yes")?TRUE:FALSE), TRUE);
+$userdetailtpl-> set("warns_access", (($row["warn"]=="no")?TRUE:FALSE), TRUE);
+$userdetailtpl-> set("warn", ($row["warn"]="yes"?"checked=\"checked\"":""));
+$userdetailtpl-> set("warnreason", $row["warnreason"]);
+$userdetailtpl-> set("id", $id);
+$resuploaded = get_result("SELECT count(*) as tf FROM {$TABLE_PREFIX}files f WHERE uploader=$id AND f.anonymous = \"false\" ORDER BY data DESC", true, $btit_settings['cache_duration']);
 $numtorrent=$resuploaded[0]['tf'];
 unset($resuploaded);
 $userdetailtpl->set("pagertop","");

@@ -52,7 +52,7 @@ elseif ($CURUSER["uid"]==1)
     }
 else
     {
-    print("<td class=\"lista\" align=\"center\" style=\"text-align:center;\">".$language["WELCOME_BACK"]." " . $CURUSER["username"] ." \n");
+    print("<td class=\"lista\" align=\"center\" style=\"text-align:center;\">".$language["WELCOME_BACK"]." " . $CURUSER["username"] . warn($CURUSER) ." \n");
     print("<a href=\"logout.php\">(".$language["LOGOUT"].")</a></td></tr></table>\n");
     }
 ?>

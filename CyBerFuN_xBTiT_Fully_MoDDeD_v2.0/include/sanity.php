@@ -138,5 +138,19 @@ if (mysql_num_rows($user) > 0)
         "' AND time_invited < DATE_SUB(NOW(), INTERVAL $deadtime SECOND)");
 }
 // end invitation system by dodge
+// warn system
+$query = do_sqlquery("SELECT * FROM `{$TABLE_PREFIX}users` WHERE warn='yes'");
+$conf = mysql_fetch_array($query);
+$expire_dat = $conf['warnadded'];
+$expire2 = strtotime ($expire_dat);
+$nown = strtotime("now");
+if ($nown >= $expire2 )
+{
+$subj = sqlesc("Your Warning time is expired !!");
+$msg = sqlesc("You are not longer Warned , please be carefull to not make the same mistake again !!");
+mysql_query("INSERT INTO {$TABLE_PREFIX}messages (sender, receiver, added, msg, subject) VALUES(0,'$conf[id]',UNIX_TIMESTAMP(),$msg,$subj)") or sqlerr(__FILE__, __LINE__);  
+mysql_query("UPDATE {$TABLE_PREFIX}users SET warn='no' WHERE id='$conf[id]'") or sqlerr();
+}
+// warn system - end
 }
 ?>

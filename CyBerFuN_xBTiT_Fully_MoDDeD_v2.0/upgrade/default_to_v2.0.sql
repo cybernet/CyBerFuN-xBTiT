@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}invalid_logins` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 INSERT INTO `{$db_prefix}settings` SET `key`='inv_login', `value`='false';
-INSERT INTO `{$db_prefix}settings` SET `key`='att_login', `value`='99';
+INSERT INTO `{$db_prefix}settings` SET `key`='att_login', `value`='5';
 
 --- Blocks
 
@@ -149,3 +149,14 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 --- Custom Title
 
 ALTER TABLE `{$db_prefix}users` ADD `custom_title` VARCHAR( 100 ) NULL;
+
+--- Warn System
+
+ALTER TABLE `{$db_prefix}online` ADD `warn` enum('yes','no') NOT NULL default 'no';
+ALTER TABLE `{$db_prefix}users` ADD `warn` enum('yes','no') NOT NULL default 'no';
+ALTER TABLE `{$db_prefix}users` ADD `warnreason` varchar(255) NOT NULL;
+ALTER TABLE `{$db_prefix}users` ADD `warnadded` datetime NOT NULL default '0000-00-00 00:00:00';
+ALTER TABLE `{$db_prefix}users` ADD `warns` bigint(20) default '0';
+ALTER TABLE `{$db_prefix}users` ADD `warnaddedby` varchar(255) NOT NULL;
+ALTER TABLE `{$db_prefix}online` ADD INDEX ( `warn` );
+ALTER TABLE `{$db_prefix}users` ADD INDEX ( `warn` );

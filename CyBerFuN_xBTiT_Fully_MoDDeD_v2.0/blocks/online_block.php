@@ -43,7 +43,7 @@ else
 
      $u_online=array();
      $group=array();
-     $u_online=get_result("SELECT * FROM {$TABLE_PREFIX}online ol",true,$btit_settings['cache_duration']);
+     $u_online=get_result("SELECT * FROM {$TABLE_PREFIX}online ol", true, $btit_settings['cache_duration']);
 
      $total_online=count($u_online);
      $uo=array();
@@ -55,7 +55,7 @@ else
                $group[unesc(ucfirst($users_online["user_group"]))]=1;
             if ($users_online["user_id"]>1)
                 $uo[]="<a href=\"index.php?page=userdetails&amp;id=".$users_online["user_id"]."\" title=\"".unesc(ucfirst($users_online["location"]))."\">".
-                       unesc($users_online["prefixcolor"]).unesc($users_online["user_name"]).unesc($users_online["suffixcolor"])."</a>";
+                       unesc($users_online["prefixcolor"]).unesc($users_online["user_name"]). warn($users_online) . unesc($users_online["suffixcolor"])."</a>";
 
      }
 

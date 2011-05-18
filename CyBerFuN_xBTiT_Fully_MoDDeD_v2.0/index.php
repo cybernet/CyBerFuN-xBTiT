@@ -332,6 +332,14 @@ switch ($pageID) {
         $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->viewrequests");
         break;
 
+	case 'warn':
+        require("$THIS_BASEPATH/warn.php");
+        break;
+
+        case 'rewarn':
+        require("$THIS_BASEPATH/rewarn.php");
+        break;        
+
 // DT request hack end
 
     case 'history':

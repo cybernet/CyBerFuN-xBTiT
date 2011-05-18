@@ -103,7 +103,10 @@ else
                     "description"=>$language["ACP_PRUNE_USERS"]),
                           3=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=searchdiff" ,
-                    "description"=>$language["ACP_SEARCH_DIFF"])
+                    "description"=>$language["ACP_SEARCH_DIFF"]),
+                          4=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=warned_users" ,
+                    "description"=>"Warned users")
                     )
             ),
 

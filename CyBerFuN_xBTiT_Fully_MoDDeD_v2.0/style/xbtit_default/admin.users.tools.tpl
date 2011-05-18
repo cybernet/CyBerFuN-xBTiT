@@ -58,7 +58,7 @@ function convert() {
 
 	<tr>
           <td align="left" class="header"><tag:language.CUSTOM_TITLE />:</td>
-          <td align="left" class="lista"><input type="text" size="40" name="custom_title" maxlength="50" value="<tag:profile.custom_title />"/></td>
+          <td align="left" class="lista"><input type="text" size="40" name="custom_title" maxlength="100" value="<tag:profile.custom_title />"/></td>
         </tr>
 
     <tr>

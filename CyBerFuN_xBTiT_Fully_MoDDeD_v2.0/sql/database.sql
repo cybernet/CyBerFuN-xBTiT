@@ -787,21 +787,22 @@ INSERT INTO `{$db_prefix}news` (`id`, `news`, `user_id`, `date`, `title`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}online` (
-  `session_id` varchar(40) CHARACTER SET utf8 NOT NULL,
+  `session_id` varchar(40) NOT NULL,
   `user_id` int(10) NOT NULL,
-  `user_ip` varchar(15) CHARACTER SET utf8 NOT NULL,
+  `user_ip` varchar(15) NOT NULL,
   `location` varchar(20) NOT NULL,
   `lastaction` int(10) NOT NULL,
   `user_name` varchar(40) NOT NULL,
   `user_group` varchar(50) NOT NULL,
-  `prefixcolor` varchar(200) CHARACTER SET utf8 NOT NULL,
-  `suffixcolor` varchar(200) CHARACTER SET utf8 NOT NULL,
+  `prefixcolor` varchar(200) NOT NULL,
+  `suffixcolor` varchar(200) NOT NULL,
+  `warn` enum('yes','no') NOT NULL DEFAULT 'no',
   PRIMARY KEY (`session_id`),
   KEY `user_id` (`user_id`),
   KEY `prefixcolor` (`prefixcolor`),
-  KEY `location` (`location`)
+  KEY `location` (`location`),
+  KEY `warn` (`warn`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 --
 -- Dumping data for table `{$db_prefix}online`
 --
@@ -1303,48 +1304,54 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}topics` (
 --
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `username` varchar(40) NOT NULL default '',
-  `password` varchar(40) NOT NULL default '',
-  `id_level` int(10) NOT NULL default '1',
-  `random` int(10) default '0',
-  `email` varchar(50) NOT NULL default '',
-  `language` tinyint(4) NOT NULL default '1',
-  `style` tinyint(4) NOT NULL default '1',
-  `joined` datetime NOT NULL default '0000-00-00 00:00:00',
-  `lastconnect` datetime NOT NULL default '0000-00-00 00:00:00',
-  `lip` bigint(11) default '0',
-  `downloaded` bigint(20) default '0',
-  `uploaded` bigint(20) default '0',
-  `avatar` varchar(200) default NULL,
-  `pid` varchar(32) NOT NULL default '',
-  `flag` tinyint(1) unsigned NOT NULL default '0',
-  `topicsperpage` tinyint(3) unsigned NOT NULL default '15',
-  `postsperpage` tinyint(3) unsigned NOT NULL default '15',
-  `torrentsperpage` tinyint(3) unsigned NOT NULL default '15',
-  `cip` varchar(15) default NULL,
-  `time_offset` varchar(4) NOT NULL default '0',
-  `temp_email` varchar(50) NOT NULL default '',
-  `smf_fid` int(10) NOT NULL default '0',
-  `invitations` int(10) NOT NULL default '0',
-  `invited_by` int(10) NOT NULL default '0',
-  `invitedate` datetime NOT NULL default '0000-00-00 00:00:00',
-  `custom_title` varchar(100) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(40) NOT NULL DEFAULT '',
+  `password` varchar(40) NOT NULL DEFAULT '',
+  `id_level` int(10) NOT NULL DEFAULT '1',
+  `random` int(10) DEFAULT '0',
+  `email` varchar(50) NOT NULL DEFAULT '',
+  `language` tinyint(4) NOT NULL DEFAULT '1',
+  `style` tinyint(4) NOT NULL DEFAULT '1',
+  `joined` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `lastconnect` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `lip` bigint(11) DEFAULT '0',
+  `downloaded` bigint(20) DEFAULT '0',
+  `uploaded` bigint(20) DEFAULT '0',
+  `avatar` varchar(200) DEFAULT NULL,
+  `pid` varchar(32) NOT NULL DEFAULT '',
+  `flag` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `topicsperpage` tinyint(3) unsigned NOT NULL DEFAULT '15',
+  `postsperpage` tinyint(3) unsigned NOT NULL DEFAULT '15',
+  `torrentsperpage` tinyint(3) unsigned NOT NULL DEFAULT '15',
+  `cip` varchar(15) DEFAULT NULL,
+  `time_offset` varchar(4) NOT NULL DEFAULT '0',
+  `temp_email` varchar(50) NOT NULL DEFAULT '',
+  `smf_fid` int(10) NOT NULL DEFAULT '0',
+  `invitations` int(10) NOT NULL DEFAULT '0',
+  `invited_by` int(10) NOT NULL DEFAULT '0',
+  `invitedate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `custom_title` varchar(100) DEFAULT NULL,
+  `warn` enum('yes','no') NOT NULL DEFAULT 'no',
+  `warnreason` varchar(255) NOT NULL,
+  `warnadded` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `warns` bigint(20) DEFAULT '0',
+  `warnaddedby` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `id_level` (`id_level`),
   KEY `pid` (`pid`),
   KEY `cip` (`cip`),
   KEY `smf_fid` (`smf_fid`),
-  KEY `invitations` (`invitations`)
+  KEY `invitations` (`invitations`),
+  KEY `warn` (`warn`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}users`
 --
 
-INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `custom_title`) VALUES
-(1, 'Guest', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0, 0, NOW(), NULL);
+INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `custom_title`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`) VALUES
+(1, 'Guest', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0, 0, NOW(), NULL, 'no', '', NOW(), 0, '');
 
 
 -- --------------------------------------------------------

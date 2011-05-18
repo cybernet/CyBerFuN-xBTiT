@@ -93,7 +93,7 @@ if(!$CURUSER || $CURUSER["view_torrents"]!="yes")
 }
 
 
-$res = get_result("SELECT f.screen1, f.screen2, f.screen3, f.image, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'",true, $btit_settings['cache_duration']);
+$res = get_result("SELECT f.screen1, f.screen2, f.screen3, f.image, f.info_hash, f.filename, f.url, u.warn, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'", true, $btit_settings['cache_duration']);
 
 if ( count ( $res ) < 1 )
    stderr($language["ERROR"], "Bad ID!", $GLOBALS["usepopup"]);
@@ -280,7 +280,7 @@ if ($row["anonymous"]=="true")
       $uploader=$language["TORRENT_ANONYMOUS"];
    }
 else
-    $uploader="<a href=\"index.php?page=userdetails&amp;id=".$row['uploader']."\">".$row["username"]."</a>";
+    $uploader="<a href=\"index.php?page=userdetails&amp;id=".$row['uploader']."\">".$row["username"].warn($row) ."</a>";
 
 $row["uploader"]=$uploader;
 
@@ -323,7 +323,7 @@ else
    $torrenttpl->set("EXTERNAL",false,TRUE);
 
 // comments...
-$subres = get_result("SELECT u.custom_title,  u.id_level, c.id, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC",true,$btit_settings['cache_duration']);
+$subres = get_result("SELECT u.custom_title, u.warn, u.id_level, c.id, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC",true,$btit_settings['cache_duration']);
 if (!$subres || count($subres)==0) {
      if($CURUSER["uid"] > 1)
        $torrenttpl->set("INSERT_COMMENT",TRUE,TRUE);
@@ -352,7 +352,7 @@ $level = do_sqlquery("SELECT level FROM {$TABLE_PREFIX}users_level WHERE id_leve
         $title = "".$lvl['level']."";
        else
         $title = unesc($subrow["custom_title"]);
-        $comments[$count]["user"]="<a href=\"index.php?page=userdetails&amp;id=".$subrow["uid"]."\">" . unesc($subrow["user"]);
+        $comments[$count]["user"]="<a href=\"index.php?page=userdetails&amp;id=".$subrow["uid"]."\">" . unesc($subrow["user"]).warn($row);
 	$comments[$count]["user"].="</a> .::. ".$title;
        $comments[$count]["date"]=date("d/m/Y H.i.s",$subrow["data"]-$offset);
        // only users able to delete torrents can delete comments...

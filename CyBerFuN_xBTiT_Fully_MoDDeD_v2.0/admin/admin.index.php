@@ -107,7 +107,7 @@ switch ($do)
       $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.search_diff.tpl"))));
       break;
 	  
-	case 'sticky':
+    case 'sticky':
       include("$ADMIN_PATH/admin.sticky.php");
       $tpl->set("main_content",set_block($language["STICKY_SETTINGS"],"center",$admintpl->fetch(load_template("admin.sticky.tpl"))));
       break;  
@@ -125,6 +125,11 @@ switch ($do)
 	case 'invitations':
       include("$ADMIN_PATH/admin.invitations.php");
       $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.invitations.tpl"))));
+      break;
+
+	case 'warned_users':
+      include("$ADMIN_PATH/admin.warned_users.php");
+      $tpl->set("main_content",set_block("Warned users","center",$admintpl->fetch(load_template("admin.warned_users.tpl"))));
       break;
 
     case 'masspm':

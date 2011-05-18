@@ -302,6 +302,11 @@ function getData($lastID) {
         $time = $row[time];
         $name = $row[name];
         $text = $row[text];
+
+$rd=mysql_fetch_row(mysql_query("SELECT warn FROM {$TABLE_PREFIX}users WHERE id=$uid"));
+$row["warn"]=$rd[0];
+unset($rd);
+$name = $name . warn($row);
         
         # if no name is present somehow, $name and $text are set to the strings under
         # we assume all must be ok, othervise no post will be made by javascript check

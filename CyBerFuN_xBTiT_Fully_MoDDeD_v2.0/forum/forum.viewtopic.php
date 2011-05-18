@@ -135,20 +135,20 @@ if ($page=="last")
 list($pagertop, $pagerbottom,$limit)=forum_pager($postsperpage,$postcount, "index.php?page=forum&amp;action=viewtopic&amp;topicid=$topicid&amp;");
 
 if ($XBTT_USE)
-   $query = "SELECT p.*, u.username, IFNULL(ul.level,'".$language['UNKNOWN']."') as user_group, u.avatar, u.uploaded+IFNULL(x.uploaded,0) as uploaded".
+   $query = "SELECT p.*, u.warn, u.username, IFNULL(ul.level,'".$language['UNKNOWN']."') as user_group, u.avatar, u.uploaded+IFNULL(x.uploaded,0) as uploaded".
             ", u.downloaded+IFNULL(x.downloaded,0) as downloaded, c.name as name, ue.username as editor, flagpic FROM {$TABLE_PREFIX}posts p".
             " LEFT JOIN {$TABLE_PREFIX}users u ON p.userid=u.id LEFT JOIN xbt_users x ON x.uid=u.id LEFT JOIN {$TABLE_PREFIX}users_level ul".
             " ON u.id_level=ul.id LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag = c.id LEFT JOIN {$TABLE_PREFIX}users ue ON p.editedby=ue.id".
             " WHERE topicid=$topicid ORDER BY id $limit";
 else
-   $query = "SELECT p.*, u.username,IFNULL(ul.level,'".$language['UNKNOWN']."') as user_group, u.avatar, u.uploaded".
+   $query = "SELECT p.*, u.warn, u.username,IFNULL(ul.level,'".$language['UNKNOWN']."') as user_group, u.avatar, u.uploaded".
             ", u.downloaded, c.name as name, ue.username as editor, flagpic FROM {$TABLE_PREFIX}posts p".
             " LEFT JOIN {$TABLE_PREFIX}users u ON p.userid=u.id LEFT JOIN {$TABLE_PREFIX}users_level ul".
             " ON u.id_level=ul.id LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag = c.id LEFT JOIN {$TABLE_PREFIX}users ue ON p.editedby=ue.id".
             " WHERE topicid=$topicid ORDER BY id $limit";
 
 
-$res = get_result($query,true);
+$res = get_result($query, true);
 $pc = count($res);
 
 $pn = 0;
@@ -160,7 +160,7 @@ foreach($res as $id=>$arr)
   $posterid=$arr["userid"];
 
   if ($arr["username"])
-    $posts[$pn]["username"]=($arr["userid"]>1?"<a href=\"index.php?page=userdetails&amp;id=".$arr["userid"]."\">".unesc($arr["username"])."</a>":unesc($arr["username"]));
+    $posts[$pn]["username"]=($arr["userid"]>1?"<a href=\"index.php?page=userdetails&amp;id=".$arr["userid"]."\">".unesc($arr["username"])."</a>":unesc($arr["username"])).warn($arr);
   else
     $posts[$pn]["username"]=$language["MEMBER"]."[".$arr["userid"]."]";
 
