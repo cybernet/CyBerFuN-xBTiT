@@ -1,0 +1,230 @@
+<hack>
+  <title>Timed Ranks</title>
+  <author>DiemThuy</author>
+  <version>1.0</version>
+
+  <!-- start SQL-->
+
+  <file>
+    <name>"database"</name>
+    <operation>
+	      <action>"sql"</action>
+	      <data><![CDATA[ALTER TABLE `{$db_prefix}users` ADD `rank_switch` ENUM( 'yes', 'no' ) NOT NULL DEFAULT 'no';]]></data>
+    </operation>
+    <operation>
+	      <action>"sql"</action>
+       <data><![CDATA[ALTER TABLE `{$db_prefix}users` ADD `old_rank` varchar(12) NOT NULL DEFAULT '3';]]></data>
+    </operation>
+            <operation>
+      <action>"sql"</action>
+      <data><![CDATA[ALTER TABLE `{$db_prefix}users` ADD `timed_rank` datetime NOT NULL default '0000-00-00 00:00:00';]]></data>
+    </operation>
+</file>
+
+  <!-- End SQL -->
+  
+  <!-- Start index.php file -->
+  
+  <file>
+    <name>"$DEFAULT_ROOT/index.php"</name>
+    
+        <operation>
+		      <search><![CDATA[case 'extra-stats':
+        require("$THIS_BASEPATH/extra-stats.php");
+        $tpl->set("main_content",set_block($language["MNU_STATS"],"center",$out));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->Statistics");
+        break;]]></search>
+	      <action>"add"</action>
+	      <data><![CDATA[
+       case 'timedrank':
+        require("$THIS_BASEPATH/timedrank.php");
+        break;
+        ]]></data>
+	      <where>"after"</where>
+
+    </operation>
+  </file>
+  
+  <!-- End index.php -->
+  
+    <!-- Start functions.php file -->
+
+  <file>
+    <name>"$DEFAULT_ROOT/include/functions.php"</name>
+
+        <operation>
+		      <search><![CDATA[function success_msg($heading="Success!",$string,$close=false)]]></search>
+	      <action>"add"</action>
+	      <data><![CDATA[
+function get_combodt($select, $opts=array()) {
+  $name=(isset($opts['name']))?' name="'.$opts['name'].'"':'';
+  $complete=(isset($opts['complete']))?(bool)$opts['complete']:false;
+  $default=(isset($opts['default']))?$opts['default']:NULL;
+  $id=(isset($opts['id']))?$opts['id']:'id';
+  $value=(isset($opts['value']))?$opts['value']:'value';
+  $combo='';
+
+  if ($complete)
+    $combo.='<select'.$name.'>';
+
+  foreach ($select as $option) {
+    $combo.="\n".'<option ';
+    if ( (!is_null($default)) && ($option[$id]==$default) )
+      $combo.='selected="selected" ';
+    $combo.='value="'.$option[$id].'">'.unesc($option[$value]).'</option>';
+  }
+
+  if ($complete)
+    $combo.='</select>';
+
+  return $combo;
+}
+        ]]></data>
+	      <where>"before"</where>
+
+    </operation>
+  </file>
+
+  <!-- End functions.php -->
+
+  
+  <!--Start sanity.php -->
+  
+  <file>
+    <name>"$DEFAULT_ROOT/include/sanity.php"</name>
+
+      <operation>
+		      <search><![CDATA[@closedir($dir);
+    }]]></search>
+		      <action>"add"</action>
+		      <data><![CDATA[
+              //timed rank
+
+    $datetimedt = date("Y-m-d H:i:s");
+    $rankstats = mysql_query("SELECT * FROM {$TABLE_PREFIX}users WHERE timed_rank < '$datetimedt' AND rank_switch='yes'");
+      while ($arrdt = mysql_fetch_assoc($rankstats))
+    {
+	  if (mysql_num_rows($rankstats) > 0)
+	  {
+$res6 = mysql_query("SELECT level FROM {$TABLE_PREFIX}users_level WHERE id ='$arrdt[old_rank]'");
+$arr6 = mysql_fetch_assoc($res6);
+$oldrank = $arr6[level];
+
+$subj = sqlesc("Your timed rank is expired !");
+$msg = sqlesc("Your timed rank is expired !\n\n Your rank did changed back to ".$oldrank."\n\n [color=red]This is a automatic system message , so DO NOT reply ![/color]");
+
+   send_pm(0,$arrdt["id"],$subj,$msg);
+   mysql_query("UPDATE {$TABLE_PREFIX}users SET rank_switch='no', id_level = old_rank WHERE id='$arrdt[id]'") or sqlerr();
+   }
+ }
+
+//timed rank end
+]]></data>
+		      <where>"after"</where>
+     </operation>
+</file>
+
+  <!-- End sanity.php -->
+  
+
+   <!-- Start userdetails.tpl -->
+  
+  <file>
+    <name>"$DEFAULT_STYLE_PATH/userdetails.tpl"</name>
+    <operation>
+     <search><![CDATA[<td class="lista"><tag:userdetail_last_ip /></td>
+
+  </tr>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+     <form method="post" action="index.php?page=timedrank&amp;id=<tag:id />">
+     <input type="hidden" name="returnto" value="index.php?page=userdetails&amp;id=<tag:id />">
+     <tr>
+     <td class="header" colspan="3" text align="center"><b>Timed Rank Settings</b></td>
+     </tr>
+
+          <tr>
+     <td class="header">New Rank</td>
+     <td class="lista"><tag:rank_combo /></td>
+     </tr>
+
+               <tr>
+     <td class="header">Old Rank</td>
+     <td class="lista"><tag:old_rank /></td>
+     </tr>
+
+
+     <tr>
+     <td class="header">Time to expire</td>
+      <td class="lista"><select name="t_days">
+      <option value="7">1 Week</option>
+      <option value="14">5 Weeks</option>
+      <option value="70">10 Weeks</option>
+      <option value="140">20 Weeks</option>
+      <option value="210">30 Weeks</option>
+      <option value="280">40 Weeks</option>
+      <option value="350">50 Weeks</option>
+       <option value="31">One Month</option>
+      <option value="182">Half Year</option>
+      <option value="365">One Year</option>
+      <option value="730">Two Years</option>
+      </select></td>
+
+      <td class="lista" valign="middle"><center><input type="submit" class="btn" value="<tag:language.UPDATE />"></center></td></tr>
+        </form>
+    ]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <!-- End userdetails.tpl -->
+  
+
+   <!-- Start userdetails.php -->
+  
+  <file>
+    <name>"$DEFAULT_ROOT/userdetails.php"</name>
+          <operation>
+	      <search><![CDATA[$res=do_sqlquery("SELECT]]></search>
+	      <action>"add"</action>
+	      <data><![CDATA[ u.id_level,u.old_rank, u.timed_rank,]]></data>
+	      <where>"after"</where>
+      </operation>
+    <operation>
+     <search><![CDATA[$userdetailtpl= new bTemplate();]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+//  timed Rank by DT start
+$res4 = mysql_query("SELECT level, prefixcolor, suffixcolor FROM {$TABLE_PREFIX}users_level WHERE id ='$row[old_rank]'");
+$arr4 = mysql_fetch_assoc($res4);
+$oldrank = $arr4[prefixcolor].$arr4[level].$arr4[sufixcolor];
+$userdetailtpl-> set("old_rank",$oldrank);
+
+
+		$opts['name']='level';
+		$opts['complete']=true;
+		$opts['id']='id';
+		$opts['value']='level';
+		$opts['default']=$row['id_level'];
+$ranks=rank_list();
+$userdetailtpl->set('rank_combo',get_combodt($ranks, $opts));
+$userdetailtpl-> set("id", $id);
+//  timed Rank by DT end
+   ]]></data>
+      <where>"after"</where>
+      </operation>
+</file>
+  
+  <!-- End userdetails.php -->
+  
+  <!-- copy the file -->
+  	
+  	      <file>
+  <name>"$CURRENT_FOLDER/timedrank.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT"</where>
+      <data>"timedrank.php"</data>
+    </operation>
+  </file>
+    	<!-- end copy the file / end hack-->
+  </hack>
