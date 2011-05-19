@@ -106,20 +106,20 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 --- gold / silver torrents hack
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
-  `id` int(11) NOT NULL auto_increment,
-  `level` int(11) NOT NULL default '4',
-  `gold_picture` varchar(255) NOT NULL default 'gold.gif',
-  `silver_picture` varchar(255) NOT NULL default 'silver.gif',
-  `active` enum('-1','0','1') NOT NULL default '1',
-  `date` date NOT NULL default '0000-00-00',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `level` int(11) NOT NULL DEFAULT '4',
+  `gold_picture` varchar(255) NOT NULL DEFAULT 'gold.gif',
+  `silver_picture` varchar(255) NOT NULL DEFAULT 'silver.gif',
+  `active` enum('-1','0','1') NOT NULL DEFAULT '1',
+  `date` date NOT NULL DEFAULT '0000-00-00',
   `gold_description` text NOT NULL,
   `silver_description` text NOT NULL,
   `classic_description` text NOT NULL,
-  PRIMARY KEY  (`id`)
-) TYPE=MyISAM;
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`, `active`, `date`, `gold_description`, `silver_description`, `classic_description`) VALUES
-(1, 3, 'gold.gif', 'silver.gif', '1', '0000-00-00', 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
+(NULL, 3, 'gold.gif', 'silver.gif', '1', '0000-00-00', 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
 
 ALTER TABLE `{$db_prefix}files` ADD `gold` ENUM( '0', '1', '2' ) NOT NULL DEFAULT '0';
 ALTER TABLE `{$db_prefix}files` ADD INDEX ( `gold` );
@@ -160,3 +160,28 @@ ALTER TABLE `{$db_prefix}users` ADD `warns` bigint(20) default '0';
 ALTER TABLE `{$db_prefix}users` ADD `warnaddedby` varchar(255) NOT NULL;
 ALTER TABLE `{$db_prefix}online` ADD INDEX ( `warn` );
 ALTER TABLE `{$db_prefix}users` ADD INDEX ( `warn` );
+
+--- SeedBonux System
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}bonus` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `points` decimal(4,1) NOT NULL DEFAULT '0.0',
+  `traffic` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `gb` int(9) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+INSERT INTO `{$db_prefix}bonus` (`id`, `name`, `points`, `traffic`, `gb`) VALUES
+(NULL, '1', '30.0', 1073741824, 1),
+(NULL, '2', '50.0', 2147483648, 2),
+(NULL, '3', '100.0', 5368709120, 5);
+
+INSERT INTO `{$db_prefix}modules` (`id`, `name`, `activated`, `type`, `changed`, `created`) VALUES
+(NULL, 'seedbonus', 'yes', 'misc', NOW(), NOW());
+
+INSERT INTO `{$db_prefix}settings` SET `key`='bonus', `value`='1';
+INSERT INTO `{$db_prefix}settings` SET `key`='price_vip', `value`='750';
+INSERT INTO `{$db_prefix}settings` SET `key`='price_ct', `value`='200';
+INSERT INTO `{$db_prefix}settings` SET `key`='price_name', `value`='500';
+ALTER TABLE `{$db_prefix}users` ADD `seedbonus` DECIMAL( 12,6 ) NOT NULL DEFAULT '0';

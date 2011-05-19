@@ -117,19 +117,24 @@ switch ($do)
       $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.forums.tpl"))));
       break;
 	  
-	case 'gold':
+    case 'gold':
       include("$ADMIN_PATH/admin.gold.php");
       $tpl->set("main_content",set_block($language["ACP_GOLD"],"center",$admintpl->fetch(load_template("admin.gold.tpl"))));
       break;  
 	  
-	case 'invitations':
+    case 'invitations':
       include("$ADMIN_PATH/admin.invitations.php");
       $tpl->set("main_content",set_block($block_title,"center",$admintpl->fetch(load_template("admin.invitations.tpl"))));
       break;
 
-	case 'warned_users':
+    case 'warned_users':
       include("$ADMIN_PATH/admin.warned_users.php");
       $tpl->set("main_content",set_block("Warned users","center",$admintpl->fetch(load_template("admin.warned_users.tpl"))));
+      break;
+
+    case 'seedbonus':
+      include("$ADMIN_PATH/admin.bonus.php");
+      $tpl->set("main_content",set_block($language["ACP_SEEDBONUS"],"center",$admintpl->fetch(load_template("admin.bonus.tpl"))));
       break;
 
     case 'masspm':

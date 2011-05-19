@@ -26,3 +26,4 @@ ALTER TABLE `{$db_prefix}files` ADD INDEX ( `gold` );
 ALTER TABLE `{$db_prefix}users` CHANGE  `custom_title`  `custom_title` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 ALTER TABLE `{$db_prefix}online` ADD INDEX ( `warn` );
 ALTER TABLE `{$db_prefix}users` ADD INDEX ( `warn` );
+ALTER TABLE `{$db_prefix}bonus` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;

@@ -38,4 +38,7 @@ $language['GUEST_DETAILS']      = 'You can\'t view the details for the Guest acc
 $language['USER_INVITATIONS']   = 'Invitations';
 $language['USER_INVITED_BY']    = 'Invited By';
 // INVITATION SYSTEM - end
+// Bonus system
+$language["POINTS"] = "Points";
+// Bonus system - end
 ?>

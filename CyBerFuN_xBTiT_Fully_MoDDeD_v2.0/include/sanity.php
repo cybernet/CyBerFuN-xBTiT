@@ -32,7 +32,7 @@
 
 function do_sanity() {
 
-         global $btit_settings, $PRIVATE_ANNOUNCE, $TORRENTSDIR, $CURRENTPATH, $LIVESTATS, $LOG_HISTORY, $TABLE_PREFIX;
+         global $btit_settings, $PRIVATE_ANNOUNCE, $clean_interval, $XBTT_USE, $TORRENTSDIR, $CURRENTPATH, $LIVESTATS, $LOG_HISTORY, $TABLE_PREFIX;
 
 // DT request hack start
   	$reqprune = $btit_settings["req_prune"];
@@ -48,6 +48,28 @@ function do_sanity() {
 // Invalid Login System Hack Start
 mysql_query("DELETE FROM {$TABLE_PREFIX}bannedip WHERE comment='max_number_of_invalid_logins_reached'");
 // invalid Login System Hack Stop
+// Bonus system
+if ($XBTT_USE) {
+ $res = do_sqlquery("SELECT uid FROM xbt_files_users as u INNER JOIN xbt_files as x ON u.fid=x.fid WHERE u.left = '0' AND x.flags='0' AND u.active='1'");
+   if (mysql_num_rows($res) > 0)
+   {
+       while ($arr = mysql_fetch_assoc($res))
+       {
+       $x=$arr["uid"];
+       quickQuery("UPDATE {$TABLE_PREFIX}users SET seedbonus = seedbonus+".$GLOBALS["bonus"]."*".$clean_interval."/3600 WHERE id = '$x'");
+       }
+   } }else
+   {
+ $res = do_sqlquery("SELECT pid FROM {$TABLE_PREFIX}peers WHERE status = 'seeder'");
+   if (mysql_num_rows($res) > 0)
+   {
+       while ($arr = mysql_fetch_assoc($res))
+       {
+       $x=$arr['pid'];
+       quickQuery("UPDATE {$TABLE_PREFIX}users SET seedbonus = seedbonus+".$GLOBALS["bonus"]."*".$clean_interval."/3600 WHERE pid = '$x'");
+       }
+   } }
+// Bonus system - end
          // SANITY FOR TORRENTS
          $results = do_sqlquery("SELECT info_hash, seeds, leechers, dlbytes, filename FROM {$TABLE_PREFIX}files WHERE external='no'");
          $i = 0;

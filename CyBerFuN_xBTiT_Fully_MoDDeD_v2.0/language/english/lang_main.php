@@ -472,4 +472,19 @@ $language["GOLD_LEVEL"]="Who can add gold/silver torrents";
 // Custom Title
 $language["CUSTOM_TITLE"]="Custom title";
 // Custom Title - end
+// Bonus system
+$language["BONUS_INFO1"]="Here you can exchange your Seeder-Bonus (current ";
+$language["BONUS_INFO2"]="(If the buttons are deactivated, you do not have enough to trade!)";
+$language["BONUS_INFO3"]="What do I get points for?<br>For every hour the system registers you as seeder you receive ";
+$language["BONUS_INFO4"]=" points per torrent.";
+$language["WHAT_ABOUT"]="What is this about?";
+$language["POINTS"]="Points";
+$language["EXCHANGE"]="Exchange";
+$language["GB_UPLOAD"]=" GB Upload";
+$language["CHANGE_CUSTOM_TITLE"]="Change custom title (price - ";
+$language["NO_CUSTOM_TITLE"]="none";
+$language["UP_TO_VIP"]="Upgrade rank to VIP";
+$language["NEED_MORE_POINTS"]="[need more points]";
+$language["CHANGE_USERNAME"]="Change username (price - ";
+// Bonus system - end
 ?>

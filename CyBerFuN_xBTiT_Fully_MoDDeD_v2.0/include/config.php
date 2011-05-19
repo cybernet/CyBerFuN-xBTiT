@@ -245,19 +245,19 @@ $GLOBALS['block_mostpoplimit'] =$btit_settings['mostpoplimit'];
 $GLOBALS['clocktype'] = $btit_settings['clocktype'];
 $GLOBALS['usepopup'] = $btit_settings['usepopup'];
 // Is xbtt used as backend?
-$XBTT_USE=$btit_settings['xbtt_use'];
+$XBTT_USE = $btit_settings['xbtt_use'];
 // If used as backend, then we should have the 'xbt url'
-$XBTT_URL=$btit_settings['xbtt_url'];
+$XBTT_URL = $btit_settings['xbtt_url'];
 // this is the interval between which the cache must be updated (if 0 cache is disable)
-$CACHE_DURATION=$btit_settings['cache_duration'];
+$CACHE_DURATION = $btit_settings['cache_duration'];
 
 // ajax polling system hack
 // if set to false then the default btit polling system will be used
-$GLOBALS['ajax_poller']=true;
+$GLOBALS['ajax_poller'] = true;
 // if set to true the script will perform an IP check to see if the IP has already voted
-$GLOBALS['ipcheck_poller']=false;
+$GLOBALS['ipcheck_poller'] = false;
 // number of votes per page listed in admincp
-$votesppage=25;
+$votesppage = 25;
 // image upload v1.2
 $GLOBALS["imageon"] = $btit_settings["imageon"];
 $GLOBALS["screenon"] = $btit_settings["screenon"];
@@ -265,12 +265,18 @@ $GLOBALS["uploaddir"] = $btit_settings["uploaddir"];
 $GLOBALS["file_limit"] = $btit_settings["file_limit"];
 // end
 // begin invitation system by dodge
-$INVITATIONSON=$btit_settings['invitation_only'];
-$VALID_INV=$btit_settings['invitation_reqvalid'];
-$INV_EXPIRES=$btit_settings['invitation_expires'];
+$INVITATIONSON = $btit_settings['invitation_only'];
+$VALID_INV = $btit_settings['invitation_reqvalid'];
+$INV_EXPIRES = $btit_settings['invitation_expires'];
 // end invitation system
+// Bonus system
+$GLOBALS["bonus"] = $btit_settings["bonus"];
+$GLOBALS["price_vip"] = $btit_settings["price_vip"];
+$GLOBALS["price_ct"] = $btit_settings["price_ct"];
+$GLOBALS["price_name"] = $btit_settings["price_name"];
+// Bonus system - end
 // inits
-$cached_querys=0;
-$num_querys=0;
+$cached_querys = 0;
+$num_querys = 0;
 
 ?>

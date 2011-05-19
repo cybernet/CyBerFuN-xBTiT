@@ -336,4 +336,14 @@ $language['RECYCLE_EXPL']='<i>Period in <u>days</u> after which invitations will
 // GOLD
 $language["ACP_GOLD"] = "Gold torrents settings";
 // GOLD - end
+// Bonus system
+$language["ACP_SEEDBONUS"]="SeedBonus Settings";
+$language["BONUS"]="Points per torrent in hour";
+$language["PRICE_VIP"]="Price for rank VIP";
+$language["PRICE_CT"]="Price for CustomTitle";
+$language["PRICE_NAME"]="Price for change username";
+$language["PRICE_GB"]="Price for GB";
+$language["POINTS"]="Points";
+$language["SEEDBONUS_UPDATED"]="SeedBonus settings updated";
+// Bonus system - end
 ?>

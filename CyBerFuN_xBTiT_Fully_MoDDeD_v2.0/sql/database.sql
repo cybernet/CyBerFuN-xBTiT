@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 18, 2011 at 11:28 AM
+-- Generation Time: May 19, 2011 at 12:13 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.9
 
@@ -100,6 +100,30 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 (22, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8),
 (23, 'header', 't', 1, 1, 'BLOCK_CYBERNET_HEADER', 'no', 1, 8),
 (24, 'login', 'c', 0, 1, 'BLOCK_LOGIN', 'no', 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}bonus`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}bonus` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `points` decimal(4,1) NOT NULL DEFAULT '0.0',
+  `traffic` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `gb` int(9) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+--
+-- Dumping data for table `{$db_prefix}bonus`
+--
+
+INSERT INTO `{$db_prefix}bonus` (`id`, `name`, `points`, `traffic`, `gb`) VALUES
+(NULL, '1', '30.0', 1073741824, 1),
+(NULL, '2', '50.0', 2147483648, 2),
+(NULL, '3', '100.0', 5368709120, 5);
 
 -- --------------------------------------------------------
 
@@ -555,14 +579,14 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
   `silver_description` text NOT NULL,
   `classic_description` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}gold`
 --
 
 INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`, `active`, `date`, `gold_description`, `silver_description`, `classic_description`) VALUES
-(1, 3, 'gold.gif', 'silver.gif', '1', '0000-00-00', 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
+(NULL, 3, 'gold.gif', 'silver.gif', '1', '0000-00-00', 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
 
 
 -- --------------------------------------------------------
@@ -742,18 +766,21 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}messages` (
 CREATE TABLE IF NOT EXISTS `{$db_prefix}modules` (
   `id` mediumint(3) NOT NULL AUTO_INCREMENT,
   `name` varchar(40) NOT NULL DEFAULT '',
-  `activated` enum('yes','no') CHARACTER SET utf8 NOT NULL DEFAULT 'yes',
-  `type` enum('staff','misc','torrent','style') CHARACTER SET utf8 NOT NULL DEFAULT 'misc',
+  `activated` enum('yes','no') NOT NULL DEFAULT 'yes',
+  `type` enum('staff','misc','torrent','style') NOT NULL DEFAULT 'misc',
   `changed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `activated` (`activated`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}modules`
 --
+
+INSERT INTO `{$db_prefix}modules` (`id`, `name`, `activated`, `type`, `changed`, `created`) VALUES
+(NULL, 'seedbonus', 'yes', 'misc', NOW(), NOW());
 
 
 -- --------------------------------------------------------
@@ -771,14 +798,14 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}news` (
   UNIQUE KEY `id` (`id`),
   KEY `title` (`title`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}news`
 --
 
 INSERT INTO `{$db_prefix}news` (`id`, `news`, `user_id`, `date`, `title`) VALUES
-(1, 0x496620796f752063616e20726561642074686973207468656e20796f75722073657420757020776173206120737563636573732e0d0a596f752077696c6c2077616e7420746f2064656c657465207468697320706f73742e200d0a546563686e6963616c20737570706f72742063616e20626520666f756e64206f6e2074686520786274697420666f72756d73205b75726c5d687474703a2f2f7777772e6274697465616d2e6f72672f736d662f5b2f75726c5d, 2, NOW(), 'Welcome ;)');
+(NULL, 0x496620796f752063616e20726561642074686973207468656e20796f75722073657420757020776173206120737563636573732e0d0a596f752077696c6c2077616e7420746f2064656c657465207468697320706f73742e200d0a546563686e6963616c20737570706f72742063616e20626520666f756e64206f6e2074686520786274697420666f72756d73205b75726c5d687474703a2f2f7777772e6274697465616d2e6f72672f736d662f5b2f75726c5d, NULL, NOW(), 'Welcome ;)');
 
 -- --------------------------------------------------------
 
@@ -857,14 +884,14 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}poller` (
   `starterID` mediumint(8) NOT NULL DEFAULT '0',
   `active` enum('yes','no') NOT NULL DEFAULT 'no',
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}poller`
 --
 
 INSERT INTO `{$db_prefix}poller` (`ID`, `startDate`, `endDate`, `pollerTitle`, `starterID`, `active`) VALUES
-(1, 1294215436, 0, 'How would you rate this script?', 2, 'yes');
+(NULL, 1294215436, 0, 'How would you rate this script?', 2, 'yes');
 
 -- --------------------------------------------------------
 
@@ -1134,7 +1161,11 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('invitation_reqvalid', 'false'),
 ('invitation_expires', '7'),
 ('inv_login', 'false'),
-('att_login', '99');
+('att_login', '99'),
+('bonus', '1'),
+('price_vip', '750'),
+('price_ct', '200'),
+('price_name', '500');
 
 -- --------------------------------------------------------
 
@@ -1336,6 +1367,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
   `warnadded` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `warns` bigint(20) DEFAULT '0',
   `warnaddedby` varchar(255) NOT NULL,
+  `seedbonus` decimal(12,6) NOT NULL DEFAULT '0.000000',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `id_level` (`id_level`),
@@ -1350,8 +1382,9 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
 -- Dumping data for table `{$db_prefix}users`
 --
 
-INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `custom_title`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`) VALUES
-(1, 'Guest', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0, 0, NOW(), NULL, 'no', '', NOW(), 0, '');
+INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `custom_title`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`, `seedbonus`) VALUES
+(NULL, 'Guest', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0, 0, NOW(), NULL, 'no', '', '0000-00-00 00:00:00', 0, '', '0.000000');
+
 
 
 -- --------------------------------------------------------
