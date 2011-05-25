@@ -1,0 +1,202 @@
+<hack>
+  <title>Torrent Genre</title>
+  <author>Yupy/MrFix</author>
+  <version>1.1(r642)</version>
+<!-- database -->
+  <file>
+    <name>"database"</name>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[ALTER TABLE `xbtit_files` ADD `gen` VARCHAR( 32 ) NOT NULL;]]></data>
+    </operation>
+
+</file>
+  <!-- upload.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/upload.php"</name>
+    <operation>
+      <search><![CDATA[// filename not writen by user, we get info directly from torrent.
+if (strlen($filename) == 0 && isset($array["info"]["name"]))
+   $filename = mysql_real_escape_string(htmlspecialchars($array["info"]["name"]));]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[if (isset($array["gen"]))
+   $gen = mysql_escape_string(htmlspecialchars($array["gen"]));
+else
+    $gen = "";]]></data>
+    </operation>
+
+<operation>
+      <search><![CDATA[$categoria = intval(0+$_POST["category"]);
+      $anonyme=sqlesc($_POST["anonymous"]);
+      $curuid=intval($CURUSER["uid"]);]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[$gen = strip_tags($_POST["gen"]);]]></data>
+    </operation>
+
+<operation>
+    <action>"replace"</action>
+    <search><![CDATA[if ($XBTT_USE)
+              do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash, ctime=UNIX_TIMESTAMP() ON DUPLICATE KEY UPDATE flags=0",true);
+         $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, url, info, category, data, size, comment, uploader,anonymous, bin_hash) VALUES (\"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$curuid,$anonyme,0x$hash)";]]></search>
+    <data><![CDATA[if ($XBTT_USE)
+              do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash, ctime=UNIX_TIMESTAMP() ON DUPLICATE KEY UPDATE flags=0",true);
+         $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, gen,url, info, category, data, size, comment, uploader,anonymous, bin_hash) VALUES (\"$hash\", \"$filename\", \"$gen\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$curuid,$anonyme,0x$hash)";]]></data>
+  </operation>
+
+<operation>
+    <action>"replace"</action>
+    <search><![CDATA[// ok, we found our announce, so it's internal and we will set our announce as main
+                   $array["announce"]=$TRACKER_ANNOUNCEURLS[0];
+                   $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, url, info, category, data, size, comment, uploader,anonymous, bin_hash) VALUES (\"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$curuid,$anonyme,0x$hash)";
+                   if ($XBTT_USE)
+                        do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash, ctime=UNIX_TIMESTAMP() ON DUPLICATE KEY UPDATE flags=0",true);
+                }
+              else
+                  $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, url, info, category, data, size, comment,external,announce_url, uploader,anonymous, bin_hash) VALUES (\"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",\"yes\",\"$announce\",$curuid,$anonyme,0x$hash)";]]></search>
+    <data><![CDATA[// ok, we found our announce, so it's internal and we will set our announce as main
+                   $array["announce"]=$TRACKER_ANNOUNCEURLS[0];
+                   $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, gen, url, info, category, data, size, comment, uploader,anonymous, bin_hash) VALUES (\"$hash\", \"$filename\", \"$gen\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$curuid,$anonyme,0x$hash)";
+                   if ($XBTT_USE)
+                        do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash, ctime=UNIX_TIMESTAMP() ON DUPLICATE KEY UPDATE flags=0",true);
+                }
+              else
+                  $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, gen, url, info, category, data, size, comment,external,announce_url, uploader,anonymous, bin_hash) VALUES (\"$hash\", \"$filename\", \"$gen\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",\"yes\",\"$announce\",$curuid,$anonyme,0x$hash)";]]></data>
+  </operation>
+
+
+<!-- style upload.tpl -->
+  <file>
+    <name>"$DEFAULT_ROOT/style/xbtit_default/upload.tpl"</name>
+    <operation>
+      <search><![CDATA[<tr>
+      <td class="header" ><tag:language.CATEGORY_FULL /></td>
+      <td class="lista" align="left"><tag:upload_categories_combo /></td>
+    </tr>
+    <tr>
+      <td class="header" ><tag:language.FILE_NAME /></td>
+      <td class="lista" align="left"><input type="text" name="filename" size="50" maxlength="200" /></td>
+    </tr>]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[<tr>
+   <td class="header" ><tag:language.Genre /></td>
+   <td class="lista" align="left"><input type="text" name="gen" size="50" maxlength="200" /></td>
+   </tr>]]></data>
+   </operation>
+</file>
+
+  <!-- language lang_upload.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/language/english/lang_upload.php"</name>
+    <operation>
+      <search><![CDATA[$language['MSG_UP_SUCCESS']='Upload successful! The torrent has been added.';]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[$language['Genre']='Genre';]]></data>
+    </operation>
+</file>
+
+<!-- torrents.php -->
+  <file>
+    <name>"$DEFAULT_ROOT/torrents.php"</name>
+    <operation>
+    <action>"replace"</action>
+    <search><![CDATA[// Do the query with the uploader nickname
+    if ($SHOW_UPLOADER)
+        $query = "SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename,]]></search>
+    <data><![CDATA[// Do the query with the uploader nickname
+    if ($SHOW_UPLOADER)
+        $query = "SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.gen,]]></data>
+  </operation>
+
+<operation>
+    <action>"replace"</action>
+    <search><![CDATA[// Do the query without the uploader nickname
+    else
+        $query = "SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename,]]></search>
+    <data><![CDATA[// Do the query without the uploader nickname
+    else
+        $query = "SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.gen,]]></data>
+  </operation>
+
+<operation>
+    <action>"replace"</action>
+    <search><![CDATA[$torrents[$i]["category"]="<a href=\"index.php?page=torrents&amp;category=$data[catid]\">".image_or_link(($data["image"]==""?"":"$STYLEPATH/images/categories/" . $data["image"]),"",$data["cname"])."</a>";
+   if ($GLOBALS["usepopup"])
+       $torrents[$i]["filename"]="<a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$data["hash"]."');\" title=\"".$language["VIEW_DETAILS"].": ".($data["filename"]!=""?$filename:$data["hash"])."\">".$data["filename"]."</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)");
+   else
+       $torrents[$i]["filename"]="<a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" title=\"".$language["VIEW_DETAILS"].": ".$data["filename"]."\">".($data["filename"]!=""?$filename:$data["hash"])."</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)");]]></search>
+    <data><![CDATA[$torrents[$i]["category"]="<a href=\"index.php?page=torrents&amp;category=$data[catid]\">".image_or_link(($data["image"]==""?"":"$STYLEPATH/images/categories/" . $data["image"]),"",$data["cname"])."</a>";
+   if ($GLOBALS["usepopup"])
+       $torrents[$i]["filename"]="<a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=".$data["hash"]."');\" title=\"".$language["VIEW_DETAILS"].": ".($data["filename"]!=""?$filename:$data["hash"])."\">".$data["filename"]."</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."<br><span style='color: #000000 ' >".$data["gen"]."</span></td>";
+   else
+       $torrents[$i]["filename"]="<a href=\"index.php?page=torrent-details&amp;id=".$data["hash"]."\" title=\"".$language["VIEW_DETAILS"].": ".$data["filename"]."\">".($data["filename"]!=""?$filename:$data["hash"])."</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."<br><span style='color: #000000 ' >".$data["gen"]."</span></td>";]]></data>
+  </operation>
+</file>
+<!-- edit.php -->
+<file>
+<name>"$DEFAULT_ROOT/edit.php"</name>
+<operation>
+      <search><![CDATA[do_sqlquery("UPDATE {$TABLE_PREFIX}files SET filename='$fname', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . " WHERE info_hash='" . $torhash . "'",true);]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[$gen = $_FILES["gen"];]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[$query ="SELECT ]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[f.gen,]]></data>
+    </operation>
+        <operation>
+      <search><![CDATA[$torrent["filename"]=$results["filename"];]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[$torrent["gen"]=$results["gen"];]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[$fname=htmlspecialchars(AddSlashes(unesc($_POST["name"])));]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[$fgen=AddSlashes($_POST["gen"]);]]></data>
+    </operation>
+        <operation>
+      <search><![CDATA[do_sqlquery("UPDATE {$TABLE_PREFIX}files SET filename='$fname',]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[gen='$fgen',]]></data>
+    </operation>
+ </file>
+ <!-- torrentedit.tpl -->
+ <file>
+ <name>"$DEFAULT_STYLE_PATH/torrent.edit.tpl"</name>
+ <operation>
+ <search><![CDATA[<tr>
+        <td align="right" class="header"><tag:language.DESCRIPTION /></td>
+        <td class="lista"><tag:torrent.description /></td>
+      </tr>]]></search>
+	  <action>"add"</action>
+	  <where>"after"</where>
+	  <data><![CDATA[<tr>
+   <td class="header" ><tag:language.GENRE /></td>
+   <td class="lista" align="left"><input type="text" name="gen" size="50" maxlength="200" /></td>
+   </tr>]]></data>
+   </operation>
+   </file>
+   <!-- lang_main.php -->
+   <file>
+   <name>"$DEFAULT_LANGUAGE_PATH/lang_main.php"</name>
+   <operation>
+   <search><![CDATA[$language['FRM_CLEAN']='Clean';]]></search>
+   <action>"add"</action>
+   <where>"after"</where>
+   <data><![CDATA[$language['GENRE']='Genre';]]></data>
+   </operation>
+   </file>
+</hack>
+
+
+
+
