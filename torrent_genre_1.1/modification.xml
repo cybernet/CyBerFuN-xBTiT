@@ -181,7 +181,7 @@ else
 	  <where>"after"</where>
 	  <data><![CDATA[<tr>
    <td class="header" ><tag:language.GENRE /></td>
-   <input type="text" name="gen" value="<tag:torrent.gen />" size="50" maxlength="200" /></td>
+   <td class="lista"><input type="text" name="gen" value="<tag:torrent.gen />" size="50" maxlength="200" /></td>
    </tr>]]></data>
    </operation>
    </file>
