@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 27, 2011 at 09:22 AM
+-- Generation Time: May 27, 2011 at 01:41 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.9
 
@@ -1369,6 +1369,9 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
   `warns` bigint(20) DEFAULT '0',
   `warnaddedby` varchar(255) NOT NULL,
   `seedbonus` decimal(12,6) NOT NULL DEFAULT '0.000000',
+  `rank_switch` enum('yes','no') NOT NULL DEFAULT 'no',
+  `old_rank` varchar(12) NOT NULL DEFAULT '3',
+  `timed_rank` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `id_level` (`id_level`),
@@ -1383,10 +1386,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
 -- Dumping data for table `{$db_prefix}users`
 --
 
-INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `custom_title`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`, `seedbonus`) VALUES
-(NULL, 'Guest', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0, 0, NOW(), NULL, 'no', '', '0000-00-00 00:00:00', 0, '', '0.000000');
-
-
+INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `custom_title`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`, `seedbonus`, `rank_switch`, `old_rank`, `timed_rank`) VALUES
+(1, 'Guest', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0, 0, NOW(), NULL, 'no', '', '0000-00-00 00:00:00', 0, '', '0.000000', 'no', '3', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 

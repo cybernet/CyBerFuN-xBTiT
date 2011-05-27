@@ -79,7 +79,7 @@ else
 
 
 if ($id > 1) {
-   $res = get_result("SELECT u.custom_title, u.seedbonus, u.invited_by, u.invitations, u.warn, u.warnreason, u.warns, u.warnadded, u.warnaddedby, u.avatar, u.email, u.cip, u.username, $udownloaded as downloaded, $uuploaded as uploaded, UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id", true, $btit_settings['cache_duration']);
+   $res = get_result("SELECT u.id_level, u.old_rank, u.timed_rank, u.custom_title, u.seedbonus, u.invited_by, u.invitations, u.warn, u.warnreason, u.warns, u.warnadded, u.warnaddedby, u.avatar, u.email, u.cip, u.username, $udownloaded as downloaded, $uuploaded as uploaded, UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id", true, $btit_settings['cache_duration']);
    $num = count($res);
    if ($num==0)
       {
@@ -124,6 +124,20 @@ else
 $utorrents = intval($CURUSER["torrentsperpage"]);
 
 $userdetailtpl= new bTemplate();
+//  timed Rank by DT start
+$res4 = mysql_query("SELECT level, prefixcolor, suffixcolor FROM {$TABLE_PREFIX}users_level WHERE id ='$row[old_rank]'");
+$arr4 = mysql_fetch_assoc($res4);
+$oldrank = $arr4[prefixcolor].$arr4[level].$arr4[sufixcolor];
+$userdetailtpl-> set("old_rank",$oldrank);
+	$opts['name']='level';
+	$opts['complete']=true;
+	$opts['id']='id';
+	$opts['value']='level';
+	$opts['default']=$row['id_level'];
+$ranks=rank_list();
+$userdetailtpl->set('rank_combo',get_combodt($ranks, $opts));
+$userdetailtpl-> set("id", $id);
+//  timed Rank by DT end
 $userdetailtpl-> set("language",$language);
 $userdetailtpl-> set("userdetail_username", unesc($row["username"]). warn($row, true));
 //$userdetailtpl-> set("userdetail_no_guest", $CURUSER["uid"]>1, TRUE);

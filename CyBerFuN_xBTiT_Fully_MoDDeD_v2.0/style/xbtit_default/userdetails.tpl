@@ -33,7 +33,41 @@
     <td class="lista"><tag:userdetail_last_ip /></td>
 
   </tr>
+<form method="post" action="index.php?page=timedrank&amp;id=<tag:id />">
+     <input type="hidden" name="returnto" value="index.php?page=userdetails&amp;id=<tag:id />">
+     <tr>
+     <td class="header" colspan="3" text align="center"><b>Timed Rank Settings</b></td>
+     </tr>
 
+          <tr>
+     <td class="header">New Rank</td>
+     <td class="lista"><tag:rank_combo /></td>
+     </tr>
+
+               <tr>
+     <td class="header">Old Rank</td>
+     <td class="lista"><tag:old_rank /></td>
+     </tr>
+
+
+     <tr>
+     <td class="header">Time to expire</td>
+      <td class="lista"><select name="t_days">
+      <option value="7">1 Week</option>
+      <option value="14">5 Weeks</option>
+      <option value="70">10 Weeks</option>
+      <option value="140">20 Weeks</option>
+      <option value="210">30 Weeks</option>
+      <option value="280">40 Weeks</option>
+      <option value="350">50 Weeks</option>
+       <option value="31">One Month</option>
+      <option value="182">Half Year</option>
+      <option value="365">One Year</option>
+      <option value="730">Two Years</option>
+      </select></td>
+
+      <td class="lista" valign="middle"><center><input type="submit" class="btn" value="<tag:language.UPDATE />"></center></td></tr>
+        </form>
   <tr>
 
     <td class="header"><tag:language.USER_LEVEL /></td>

@@ -271,6 +271,10 @@ switch ($pageID) {
         $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->Statistics");
         break;
 
+    case 'timedrank':
+        require("$THIS_BASEPATH/timedrank.php");
+        break;
+
 // DT request hack start
 
         case 'addrequest':

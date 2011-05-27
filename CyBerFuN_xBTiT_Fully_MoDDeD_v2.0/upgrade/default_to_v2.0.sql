@@ -189,3 +189,9 @@ ALTER TABLE `{$db_prefix}users` ADD `seedbonus` DECIMAL( 12,6 ) NOT NULL DEFAULT
 --- Torrent Genre v1.1
 
 ALTER TABLE `{$db_prefix}files` ADD `gen` VARCHAR( 32 ) NOT NULL;
+
+--- TimeD ranks
+
+ALTER TABLE `{$db_prefix}users` ADD `rank_switch` ENUM( 'yes', 'no' ) NOT NULL DEFAULT 'no';
+ALTER TABLE `{$db_prefix}users` ADD `old_rank` varchar(12) NOT NULL DEFAULT '3';
+ALTER TABLE `{$db_prefix}users` ADD `timed_rank` datetime NOT NULL default '0000-00-00 00:00:00';

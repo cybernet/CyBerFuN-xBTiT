@@ -864,6 +864,34 @@ function image_or_link($image,$pers_style='',$link='') {
   return '<img src="'.str_replace($STYLEPATH,$STYLEURL,$image).'" border="0" '.$pers_style.' alt="'.$link.'"/>';
 }
 
+// TimeD ranks
+
+function get_combodt($select, $opts=array()) {
+  $name=(isset($opts['name']))?' name="'.$opts['name'].'"':'';
+  $complete=(isset($opts['complete']))?(bool)$opts['complete']:false;
+  $default=(isset($opts['default']))?$opts['default']:NULL;
+  $id=(isset($opts['id']))?$opts['id']:'id';
+  $value=(isset($opts['value']))?$opts['value']:'value';
+  $combo='';
+
+  if ($complete)
+    $combo.='<select'.$name.'>';
+
+  foreach ($select as $option) {
+    $combo.="\n".'<option ';
+    if ( (!is_null($default)) && ($option[$id]==$default) )
+      $combo.='selected="selected" ';
+    $combo.='value="'.$option[$id].'">'.unesc($option[$value]).'</option>';
+  }
+
+  if ($complete)
+    $combo.='</select>';
+
+  return $combo;
+}
+
+// TimeD ranks - end
+
 function success_msg($heading='Success!',$string,$close=false) {
   global $language,$STYLEPATH, $tpl, $page, $STYLEURL;
 

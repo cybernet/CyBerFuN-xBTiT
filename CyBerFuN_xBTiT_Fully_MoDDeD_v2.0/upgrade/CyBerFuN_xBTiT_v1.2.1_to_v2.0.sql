@@ -28,3 +28,6 @@ ALTER TABLE `{$db_prefix}online` ADD INDEX ( `warn` );
 ALTER TABLE `{$db_prefix}users` ADD INDEX ( `warn` );
 ALTER TABLE `{$db_prefix}bonus` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE `{$db_prefix}files` ADD `gen` VARCHAR( 32 ) NOT NULL;
+ALTER TABLE `{$db_prefix}users` ADD `rank_switch` ENUM( 'yes', 'no' ) NOT NULL DEFAULT 'no';
+ALTER TABLE `{$db_prefix}users` ADD `old_rank` varchar(12) NOT NULL DEFAULT '3';
+ALTER TABLE `{$db_prefix}users` ADD `timed_rank` datetime NOT NULL default '0000-00-00 00:00:00';

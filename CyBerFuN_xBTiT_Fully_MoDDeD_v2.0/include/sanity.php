@@ -147,6 +147,27 @@ if ($XBTT_USE) {
                }
             @closedir($dir);
          }
+// TimeD ranks
+
+    $datetimedt = date("Y-m-d H:i:s");
+    $rankstats = mysql_query("SELECT * FROM {$TABLE_PREFIX}users WHERE timed_rank < '$datetimedt' AND rank_switch='yes'");
+      while ($arrdt = mysql_fetch_assoc($rankstats))
+    {
+	  if (mysql_num_rows($rankstats) > 0)
+	  {
+$res6 = mysql_query("SELECT level FROM {$TABLE_PREFIX}users_level WHERE id ='$arrdt[old_rank]'");
+$arr6 = mysql_fetch_assoc($res6);
+$oldrank = $arr6[level];
+
+$subj = sqlesc("Your timed rank is expired !");
+$msg = sqlesc("Your timed rank is expired !\n\n Your rank did changed back to ".$oldrank."\n\n [color=red]This is a automatic system message , so DO NOT reply ![/color]");
+
+   send_pm(0,$arrdt["id"],$subj,$msg);
+   mysql_query("UPDATE {$TABLE_PREFIX}users SET rank_switch='no', id_level = old_rank WHERE id='$arrdt[id]'") or sqlerr();
+   }
+ }
+
+// TimeD ranks - end
 // begin invitation system by dodge
 global $INV_EXPIRES;
 $deadtime = $INV_EXPIRES * 86400;
