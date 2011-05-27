@@ -184,7 +184,7 @@ $msg = sqlesc("Your timed rank is expired !\n\n Your rank did changed back to ".
   <file>
     <name>"$DEFAULT_ROOT/userdetails.php"</name>
           <operation>
-	      <search><![CDATA[$res=do_sqlquery("SELECT]]></search>
+	      <search><![CDATA[$res=get_result("SELECT]]></search>
 	      <action>"add"</action>
 	      <data><![CDATA[ u.id_level,u.old_rank, u.timed_rank,]]></data>
 	      <where>"after"</where>
