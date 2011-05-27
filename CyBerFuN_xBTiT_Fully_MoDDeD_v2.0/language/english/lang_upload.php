@@ -34,4 +34,7 @@ $language["ILEGAL_UPLOAD"]="Ilegal upload!! This is not a image<br>Please press 
 $language["IMAGE"]="Image";
 $language["SCREEN"]="Screenshots";
 // iMAGE upLoaD hack - end
+// Torrent Genre v1.1
+$language['Genre'] = 'Genre';
+// Torrent Genre v1.1 - end
 ?>

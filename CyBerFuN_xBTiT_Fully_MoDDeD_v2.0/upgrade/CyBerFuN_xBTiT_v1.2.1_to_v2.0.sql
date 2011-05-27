@@ -27,3 +27,4 @@ ALTER TABLE `{$db_prefix}users` CHANGE  `custom_title`  `custom_title` VARCHAR( 
 ALTER TABLE `{$db_prefix}online` ADD INDEX ( `warn` );
 ALTER TABLE `{$db_prefix}users` ADD INDEX ( `warn` );
 ALTER TABLE `{$db_prefix}bonus` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE `{$db_prefix}files` ADD `gen` VARCHAR( 32 ) NOT NULL;

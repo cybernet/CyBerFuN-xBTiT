@@ -19,6 +19,10 @@
         <td align="right" class="header"><tag:language.DESCRIPTION /></td>
         <td class="lista"><tag:torrent.description /></td>
       </tr>
+<tr>
+   <td class="header" ><tag:language.GENRE /></td>
+   <input type="text" name="gen" value="<tag:torrent.gen />" size="50" maxlength="200" /></td>
+   </tr>
 <if:screenon>
       <tr>
       <td class="header" ><tag:language.SCREEN /> (<tag:language.FACOLTATIVE />):<input type="hidden" name="userfileold1" value="<tag:torrent.screen1 />" /></td>

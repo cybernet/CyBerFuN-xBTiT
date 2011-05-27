@@ -185,3 +185,7 @@ INSERT INTO `{$db_prefix}settings` SET `key`='price_vip', `value`='750';
 INSERT INTO `{$db_prefix}settings` SET `key`='price_ct', `value`='200';
 INSERT INTO `{$db_prefix}settings` SET `key`='price_name', `value`='500';
 ALTER TABLE `{$db_prefix}users` ADD `seedbonus` DECIMAL( 12,6 ) NOT NULL DEFAULT '0';
+
+--- Torrent Genre v1.1
+
+ALTER TABLE `{$db_prefix}files` ADD `gen` VARCHAR( 32 ) NOT NULL;

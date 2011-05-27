@@ -129,6 +129,15 @@ else { // description is now required (same as for edit.php)
 if (strlen($filename) == 0 && isset($array["info"]["name"]))
    $filename = mysql_real_escape_string(htmlspecialchars($array["info"]["name"]));
 
+// Torrent Genre v1.1
+
+if (isset($array["gen"]))
+   $gen = mysql_real_escape_string(htmlspecialchars($array["gen"]));
+else
+    $gen = "";
+
+// Torrent Genre v1.1 - end
+
 // description not writen by user, we get info directly from torrent.
 if (isset($array["comment"]))
    $info = mysql_real_escape_string(htmlspecialchars($array["comment"]));
@@ -163,14 +172,15 @@ if (!isset($array["announce"]))
 }
 
       $categoria = intval(0+$_POST["category"]);
-      $anonyme=sqlesc($_POST["anonymous"]);
-      $curuid=intval($CURUSER["uid"]);
+      $anonyme = sqlesc($_POST["anonymous"]);
+      $curuid = intval($CURUSER["uid"]);
+      $gen = strip_tags($_POST["gen"]);
 
       // category check
-      $rc=do_sqlquery("SELECT id FROM {$TABLE_PREFIX}categories WHERE id=$categoria",true);
-      if (mysql_num_rows($rc)==0)
+      $rc = do_sqlquery("SELECT id FROM {$TABLE_PREFIX}categories WHERE id=$categoria", true);
+      if (mysql_num_rows($rc) == 0)
          {
-             err_msg($language["ERROR"],$language["WRITE_CATEGORY"]);
+             err_msg($language["ERROR"], $language["WRITE_CATEGORY"]);
              stdfoot();
              exit();
       }
@@ -433,15 +443,15 @@ if (!isset($array["announce"]))
 //      if ($announce!=$BASEURL."/announce.php")
         
       if (in_array($announce,$TRACKER_ANNOUNCEURLS)){
-         $internal=true;
+         $internal = true;
          // inserting into xbtt table
          if ($XBTT_USE)
-              do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash, ctime=UNIX_TIMESTAMP() ON DUPLICATE KEY UPDATE flags=0",true);
-         $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, url, info, category, data, size, comment, uploader,anonymous, bin_hash) VALUES (\"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$curuid,$anonyme,0x$hash)";
+              do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash, ctime=UNIX_TIMESTAMP() ON DUPLICATE KEY UPDATE flags=0", true);
+         $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, gen, url, info, category, data, size, comment, uploader, anonymous, bin_hash) VALUES (\"$hash\", \"$filename\", \"$gen\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$curuid,$anonyme,0x$hash)";
       }else
           {
           // maybe we find our announce in announce list??
-             $internal=false;
+             $internal = false;
              if (isset($array["announce-list"]) && is_array($array["announce-list"]))
                 {
                 for ($i=0;$i<count($array["announce-list"]);$i++)
@@ -456,13 +466,13 @@ if (!isset($array["announce"]))
               if ($internal)
                 {
                 // ok, we found our announce, so it's internal and we will set our announce as main
-                   $array["announce"]=$TRACKER_ANNOUNCEURLS[0];
-                   $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, url, info, category, data, size, comment, uploader,anonymous, bin_hash) VALUES (\"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$curuid,$anonyme,0x$hash)";
+                   $array["announce"] = $TRACKER_ANNOUNCEURLS[0];
+                   $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, gen, url, info, category, data, size, comment, uploader,anonymous, bin_hash) VALUES (\"$hash\", \"$filename\", \"$gen\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",$curuid,$anonyme,0x$hash)";
                    if ($XBTT_USE)
-                        do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash, ctime=UNIX_TIMESTAMP() ON DUPLICATE KEY UPDATE flags=0",true);
+                        do_sqlquery("INSERT INTO xbt_files SET info_hash=0x$hash, ctime=UNIX_TIMESTAMP() ON DUPLICATE KEY UPDATE flags=0", true);
                 }
               else
-                  $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, url, info, category, data, size, comment,external,announce_url, uploader,anonymous, bin_hash) VALUES (\"$hash\", \"$filename\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",\"yes\",\"$announce\",$curuid,$anonyme,0x$hash)";
+                  $query = "INSERT INTO {$TABLE_PREFIX}files (info_hash, filename, gen, url, info, category, data, size, comment, external, announce_url, uploader, anonymous, bin_hash) VALUES (\"$hash\", \"$filename\", \"$gen\", \"$url\", \"$info\",0 + $categoria,NOW(), \"$size\", \"$comment\",\"yes\",\"$announce\",$curuid,$anonyme,0x$hash)";
         }
       //echo $query;
       $status = do_sqlquery($query); // makeTorrent($hash, true);

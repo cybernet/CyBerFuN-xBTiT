@@ -487,4 +487,7 @@ $language["UP_TO_VIP"]="Upgrade rank to VIP";
 $language["NEED_MORE_POINTS"]="[need more points]";
 $language["CHANGE_USERNAME"]="Change username (price - ";
 // Bonus system - end
+// Torrent Genre v1.1
+$language['GENRE']='Genre';
+// Torrent Genre v1.1 - end
 ?>

@@ -71,6 +71,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
 /* Mod by losmi -sticky end */
    $fname = htmlspecialchars(AddSlashes(unesc($_POST["name"])));
    $torhash = AddSlashes($_POST["info_hash"]);
+   $fgen=AddSlashes($_POST["gen"]);
    write_log("Modified torrent $fname ($torhash)","modify");
    if($golden != '' && isset($golden))
      do_sqlquery("UPDATE {$TABLE_PREFIX}files SET gold='$golden' WHERE info_hash='" . $torhash . "'", true);
@@ -323,7 +324,8 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
                 }
             }
         }
-   do_sqlquery("UPDATE {$TABLE_PREFIX}files SET filename='$fname', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . ", sticky = '" . $sticky . "' WHERE info_hash='" . $torhash . "'",true);
+   do_sqlquery("UPDATE {$TABLE_PREFIX}files SET filename='$fname', gen='$fgen', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . ", sticky = '" . $sticky . "' WHERE info_hash='" . $torhash . "'", true);
+$gen = $_FILES["gen"];
    redirect($link);
    exit();
    }
@@ -352,7 +354,7 @@ if (isset($_GET["info_hash"])) {
        $ttables="{$TABLE_PREFIX}files f";
        }
 
-  $query ="SELECT f.gold, f.sticky, f.image, f.screen1, f.screen2, f.screen3, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
+  $query ="SELECT f.gold, f.sticky, f.image, f.screen1, f.screen2, f.screen3, f.gen, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
   $res = do_sqlquery($query, true);
   $results = mysql_fetch_assoc($res);
 
@@ -422,6 +424,7 @@ $row = $res[0];
 
             if($results["sticky"] == 1)
             {
+
              $torrent["sticky"] = "<input type='checkbox' name='sticky' checked>" ;
             }
             else 
@@ -431,6 +434,7 @@ $row = $res[0];
             /*End sticky by losmi*/
     $torrent["link"]="index.php?page=edit&info_hash=".$results["info_hash"]."&returnto=".urlencode($link);
     $torrent["filename"]=$results["filename"];
+    $torrent["gen"]=$results["gen"];
     $torrent["info_hash"]=$results["info_hash"];
     $torrent["description"]=textbbcode("edit","comment",unesc($results["comment"]));
     $torrent["size"]=makesize($results["size"]);

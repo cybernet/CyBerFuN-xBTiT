@@ -91,25 +91,27 @@ switch ($action)
         $btit_settings["imagecode"]=isset($_POST["imagecode"])?"true":"false";
         $btit_settings["forum"]=$_POST["f_link"];
 // request hack part 1
-                $btit_settings["req_prune"]=$_POST["req_prune"];
-                $btit_settings["req_page"]=$_POST["req_page"];
-                $btit_settings["req_post"]=$_POST["req_post"];
-                $btit_settings["req_shout"]=$_POST["req_shout"];
-                $btit_settings["req_max"]=$_POST["req_max"];
-                $btit_settings["req_maxon"]=$_POST["req_maxon"];
-                $btit_settings["req_onoff"]=$_POST["req_onoff"];
-                $btit_settings["req_number"]=$_POST["req_number"];
-      // request hack (reward)
-                $btit_settings["req_sb"]=$_POST["req_sb"];
-                $btit_settings["req_mb"]=$_POST["req_mb"];
-                $btit_settings["req_rwon"]=$_POST["req_rwon"];
-                $btit_settings["req_sbmb"]=$_POST["req_sbmb"];
-        //request hack part 1 + reward end
+        $btit_settings["req_prune"]=$_POST["req_prune"];
+        $btit_settings["req_page"]=$_POST["req_page"];
+        $btit_settings["req_post"]=$_POST["req_post"];
+        $btit_settings["req_shout"]=$_POST["req_shout"];
+        $btit_settings["req_max"]=$_POST["req_max"];
+        $btit_settings["req_maxon"]=$_POST["req_maxon"];
+        $btit_settings["req_onoff"]=$_POST["req_onoff"];
+        $btit_settings["req_number"]=$_POST["req_number"];
+// request hack (reward)
+        $btit_settings["req_sb"]=$_POST["req_sb"];
+        $btit_settings["req_mb"]=$_POST["req_mb"];
+        $btit_settings["req_rwon"]=$_POST["req_rwon"];
+        $btit_settings["req_sbmb"]=$_POST["req_sbmb"];
+// request hack part 1 + reward end
         $btit_settings["clocktype"]=$_POST["clocktype"];
         $btit_settings["forumblocktype"]=$_POST["forumblocktype"];
         $btit_settings["newslimit"]=$_POST["newslimit"];
-		$btit_settings["inv_login"]=$_POST["inv_login"];
+// iNVALiD LoGiN
+	$btit_settings["inv_login"]=$_POST["inv_login"];
         $btit_settings["att_login"]=$_POST["att_login"];
+// iNVALiD LoGiN - end
         $btit_settings["forumlimit"]=$_POST["forumlimit"];
         $btit_settings["last10limit"]=$_POST["last10limit"];
         $btit_settings["mostpoplimit"]=$_POST["mostpoplimit"];
@@ -169,12 +171,12 @@ switch ($action)
                         $tpv_present=true;
               }
               if (!$tp_present)
-                 do_sqlquery("ALTER TABLE xbt_users ADD torrent_pass CHAR(32) NOT NULL, ADD torrent_pass_secret bigint unsigned not null;",true);
+                 do_sqlquery("ALTER TABLE xbt_users ADD torrent_pass CHAR(32) NOT NULL, ADD torrent_pass_secret bigint unsigned not null;", true);
               if ($tpv_present)
-                 do_sqlquery("ALTER TABLE `xbt_users` CHANGE `torrent_pass_version` `torrent_pass_version` INT(11) NOT NULL DEFAULT '0'",true);
+                 do_sqlquery("ALTER TABLE `xbt_users` CHANGE `torrent_pass_version` `torrent_pass_version` INT(11) NOT NULL DEFAULT '0'", true);
 
               // insert missed users in xbt_users
-              do_sqlquery("INSERT INTO xbt_users (uid, torrent_pass) SELECT id,pid FROM {$TABLE_PREFIX}users WHERE id NOT IN (SELECT uid FROM xbt_users)",true);
+              do_sqlquery("INSERT INTO xbt_users (uid, torrent_pass) SELECT id,pid FROM {$TABLE_PREFIX}users WHERE id NOT IN (SELECT uid FROM xbt_users)", true);
             }
           }
           else
@@ -186,19 +188,19 @@ switch ($action)
         }
         else
         {
-            $btit_settings["xbtt_use"]="false";
+        $btit_settings["xbtt_use"]="false";
         }
         $btit_settings["xbtt_url"]=$_POST["xbtt_url"];
         $btit_settings["cache_duration"]=$_POST["cache_duration"];
         $btit_settings["cut_name"]=intval($_POST["cut_name"]);
         
         $btit_settings["mail_type"]=$_POST["mail_type"];
-        if ($btit_settings["mail_type"]=="smtp")
+    if ($btit_settings["mail_type"]=="smtp")
           {
-          $btit_settings["smtp_server"]=$_POST["smtp_server"];
-          $btit_settings["smtp_port"]=$_POST["smtp_port"];
-          $btit_settings["smtp_username"]=$_POST["smtp_username"];
-          $btit_settings["smtp_password"]=$_POST["smtp_password"];
+        $btit_settings["smtp_server"]=$_POST["smtp_server"];
+        $btit_settings["smtp_port"]=$_POST["smtp_port"];
+        $btit_settings["smtp_username"]=$_POST["smtp_username"];
+        $btit_settings["smtp_password"]=$_POST["smtp_password"];
         }
 
         foreach($btit_settings as $key=>$value)
@@ -264,8 +266,10 @@ switch ($action)
         $btit_settings["forumblockposts"]=($btit_settings["forumblocktype"]?"checked=\"checked\"":"");
         $btit_settings["forumblocktopics"]=(!$btit_settings["forumblocktype"]?"checked=\"checked\"":"");
         $btit_settings["xbtt_use"]=($btit_settings["xbtt_use"]=="true"?"checked=\"checked\"":"");
-		$btit_settings["inv_loginyes"]=($btit_settings["inv_login"]?"checked=\"checked\"":"");
+// iNVALiD LoGiN
+	$btit_settings["inv_loginyes"]=($btit_settings["inv_login"]?"checked=\"checked\"":"");
         $btit_settings["inv_loginno"]=(!$btit_settings["inv_login"]?"checked=\"checked\"":"");
+// iNVALiD LoGiN - end
 // image upload v1.2
 	$btit_settings["imageonyes"]=($btit_settings["imageon"]?"checked=\"checked\"":"");
         $btit_settings["imageonno"]=(!$btit_settings["imageon"]?"checked=\"checked\"":"");
@@ -274,19 +278,19 @@ switch ($action)
 // end
 // request hack part 2
 
-            $btit_settings["req_rwonyes"]=($btit_settings["req_rwon"]?"checked=\"checked\"":"");
-            $btit_settings["req_rwonno"]=(!$btit_settings["req_rwon"]?"checked=\"checked\"":"");
-            $btit_settings["req_sbmbyes"]=($btit_settings["req_sbmb"]?"checked=\"checked\"":"");
-            $btit_settings["req_sbmbno"]=(!$btit_settings["req_sbmb"]?"checked=\"checked\"":"");
-            $btit_settings["req_shoutyes"]=($btit_settings["req_shout"]?"checked=\"checked\"":"");
-            $btit_settings["req_shoutno"]=(!$btit_settings["req_shout"]?"checked=\"checked\"":"");
-            $btit_settings["req_onoffyes"]=($btit_settings["req_onoff"]?"checked=\"checked\"":"");
-            $btit_settings["req_onoffno"]=(!$btit_settings["req_onoff"]?"checked=\"checked\"":"");
-            $btit_settings["req_maxonyes"]=($btit_settings["req_maxon"]?"checked=\"checked\"":"");
-            $btit_settings["req_maxonno"]=(!$btit_settings["req_maxon"]?"checked=\"checked\"":"");
+        $btit_settings["req_rwonyes"]=($btit_settings["req_rwon"]?"checked=\"checked\"":"");
+        $btit_settings["req_rwonno"]=(!$btit_settings["req_rwon"]?"checked=\"checked\"":"");
+        $btit_settings["req_sbmbyes"]=($btit_settings["req_sbmb"]?"checked=\"checked\"":"");
+        $btit_settings["req_sbmbno"]=(!$btit_settings["req_sbmb"]?"checked=\"checked\"":"");
+        $btit_settings["req_shoutyes"]=($btit_settings["req_shout"]?"checked=\"checked\"":"");
+        $btit_settings["req_shoutno"]=(!$btit_settings["req_shout"]?"checked=\"checked\"":"");
+        $btit_settings["req_onoffyes"]=($btit_settings["req_onoff"]?"checked=\"checked\"":"");
+        $btit_settings["req_onoffno"]=(!$btit_settings["req_onoff"]?"checked=\"checked\"":"");
+        $btit_settings["req_maxonyes"]=($btit_settings["req_maxon"]?"checked=\"checked\"":"");
+        $btit_settings["req_maxonno"]=(!$btit_settings["req_maxon"]?"checked=\"checked\"":"");
 
-             // request hack part 2 end
-        // language dropdown
+// request hack part 2 end
+// language dropdown
         $lres=language_list();
         $btit_settings["language_combo"]=("\n<select name=\"default_langue\" size=\"1\">");
         foreach($lres as $langue)
