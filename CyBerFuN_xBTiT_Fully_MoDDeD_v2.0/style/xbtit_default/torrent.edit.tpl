@@ -9,6 +9,12 @@
         <td align="right" class="header"><tag:language.INFO_HASH /></td>
         <td class="lista"><tag:torrent.info_hash /></td>
       </tr>
+<if:edit_gold_level>
+      <tr>
+        <td align="right" class="header"><tag:language.GOLD_TYPE /></td>
+        <td class="lista"><tag:torrent.gold /></td>
+      </tr>
+    </if:edit_gold_level>
 <if:imageon>
       <tr>
       <td class="header" ><tag:language.IMAGE /> (<tag:language.FACOLTATIVE />):<input type="hidden" name="userfileold" value="<tag:torrent.image />" /></td>
@@ -21,7 +27,7 @@
       </tr>
 <tr>
    <td class="header" ><tag:language.GENRE /></td>
-   <input type="text" name="gen" value="<tag:torrent.gen />" size="50" maxlength="200" /></td>
+   <td class="lista"><input type="text" name="gen" value="<tag:torrent.gen />" size="50" maxlength="200" /></td>
    </tr>
 <if:screenon>
       <tr>
@@ -33,12 +39,6 @@
       <td class="lista" align="left"><input type="file" name="screen2" size="5" /></td>
       <td class="lista" align="left"><input type="file" name="screen3" size="5" /></td>
       </tr>
-	  <if:edit_gold_level>
-      <tr>
-        <td align="right" class="header"><tag:language.GOLD_TYPE /></td>
-        <td class="lista"><tag:torrent.gold /></td>
-      </tr>
-    </if:edit_gold_level>
       </table>
       </td>
       </tr>
