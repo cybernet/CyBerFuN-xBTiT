@@ -275,6 +275,20 @@ switch ($pageID) {
         require("$THIS_BASEPATH/timedrank.php");
         break;
 
+    case 'staff':
+        require("$THIS_BASEPATH/staff.php");
+        $tpl->set("main_content",set_block($SITENAME . " " . $language["STAFF"],"center",$stafftpl->fetch(load_template("staff.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->Staff");
+        break;
+
+    case 'warn':
+        require("$THIS_BASEPATH/warn.php");
+        break;
+
+    case 'rewarn':
+        require("$THIS_BASEPATH/rewarn.php");
+        break;        
+
 // DT request hack start
 
         case 'addrequest':
@@ -335,14 +349,6 @@ switch ($pageID) {
         $tpl->set("main_content",set_block($language["VR"],"center",$viewrequeststpl->fetch(load_template("viewrequests.tpl"))));
         $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->viewrequests");
         break;
-
-	case 'warn':
-        require("$THIS_BASEPATH/warn.php");
-        break;
-
-        case 'rewarn':
-        require("$THIS_BASEPATH/rewarn.php");
-        break;        
 
 // DT request hack end
 

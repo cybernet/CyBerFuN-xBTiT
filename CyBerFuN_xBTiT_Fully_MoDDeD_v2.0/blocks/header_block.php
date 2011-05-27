@@ -69,6 +69,7 @@ if ($CURUSER["view_news"]=="yes")
 		if ($CURUSER["view_users"]=="yes")
 		{    
     print("<td style=\"text-align:center;\" align=\"center\"><a href='index.php?page=users'>".$language["MNU_MEMBERS"]."</a></td>\n");
+    print("<td style=\"text-align:center;\" align=\"center\"><a href='index.php?page=staff'>".$language["STAFF"]."</a></td>\n");
     }
 if ($CURUSER["uid"] > 1) 
 {

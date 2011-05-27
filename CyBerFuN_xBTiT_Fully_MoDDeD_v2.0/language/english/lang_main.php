@@ -490,4 +490,7 @@ $language["CHANGE_USERNAME"]="Change username (price - ";
 // Torrent Genre v1.1
 $language['GENRE']='Genre';
 // Torrent Genre v1.1 - end
+// Staff
+$language["STAFF"]="Staff";
+// Staff - end
 ?>
