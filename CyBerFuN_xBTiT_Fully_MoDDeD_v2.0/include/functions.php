@@ -169,14 +169,14 @@ function createGoldCategories($selected='')
 {
         global $TABLE_PREFIX;
       $gold_categories = array(
-                0=>'Classic (0% free leach)',
-                1=>'Silver (50% free leach)',
-                2=>'Gold (100% free leach)'
+                0=>'Classic ( 0% free leech )',
+                1=>'Silver ( 50% free leech )',
+                2=>'Gold ( 100% free leech )'
       );
       $g_desc = '';
       $s_desc = '';
       $c_desc = '';
-        $res=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+        $res=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true);
             foreach ($res as $key=>$value)
             {
                 $g_desc = $value["gold_description"];
@@ -306,9 +306,10 @@ function print_debug($level=3, $key=' - ') {
 }
 
 function print_version() {
+include($CURRENTPATH.'/CyBerFuN_xBTiT_version.php');
   global $tracker_version;
 
-  return '[&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">Btiteam</a>&nbsp;]';
+  return '[&nbsp;&nbsp;<u>CyBerFuN xBTiT ' . $CyBerFuN_xBTiT_version . ' By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">Btiteam</a>&nbsp;]';
 }
 
 function print_designer() {

@@ -1,45 +1,53 @@
 <?php
-
-// CyBerFuN.ro & xList.ro
-
-// CyBerFuN .::. Functions
-// http://tracker.cyberfun.ro/
-// http://www.cyberfun.ro/
-// http://xList.ro/
-// http://xDnS.ro/
-// http://yDnS.ro/
-// Modified By cybernet2u
-
-// CyBerFuN xBTiT Fully MoDDeD v1.2
-
-
-// https://cyberfun-xbtit.svn.sourceforge.net/svnroot/cyberfun-xbtit
+/////////////////////////////////////////////////////////////////////////////////////
+// xbtit - Bittorrent tracker/frontend
+//
+// Copyright (C) 2004 - 2011  Btiteam
+//
+//    This file is part of xbtit.
+//
+// Redistribution and use in source and binary forms, with or without modification,
+// are permitted provided that the following conditions are met:
+//
+//   1. Redistributions of source code must retain the above copyright notice,
+//      this list of conditions and the following disclaimer.
+//   2. Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
+//   3. The name of the author may not be used to endorse or promote products
+//      derived from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+////////////////////////////////////////////////////////////////////////////////////
 
 error_reporting(E_ALL ^ E_NOTICE);
 
 #
 // Emulate register_globals off
 #
-
-
-// Check for safe mode
-if (ini_get('safe_mode')) {
-// Do it the safe mode way
-}
-else
+$php_version=explode(".",phpversion());
+if($php_version[0]<=5 && $php_version[1]<=2)
 {
-ini_set("memory_limit", "-1");
-set_time_limit(0);
-}
-$tpl = new bTemplate();
-if (@ini_get('register_globals')) {
-  $superglobals = array($_SERVER, $_ENV, $_FILES, $_COOKIE, $_POST, $_GET);
-  if (isset($_SESSION))
-    array_unshift($superglobals, $_SESSION);
-  foreach ($superglobals as $superglobal)
-    foreach ($superglobal as $global => $value)
-      unset($GLOBALS[$global]);
-  @ini_set('register_globals', false);
+    if (@ini_get('register_globals'))
+    {
+        $superglobals = array($_SERVER, $_ENV,$_FILES, $_COOKIE, $_POST, $_GET);
+        if (isset($_SESSION))
+            array_unshift($superglobals, $_SESSION);
+        foreach ($superglobals as $superglobal)
+            foreach ($superglobal as $global => $value)
+                unset($GLOBALS[$global]);
+        @ini_set('register_globals', false);
+    }
 }
 
 // control if magic_quote_gpc = on
@@ -50,7 +58,7 @@ if(get_magic_quotes_gpc()){
       if(is_array($val))
         remove_magic_quotes($array[$key]);
       elseif (is_string($val))
-        $array[$key] = str_replace(array('\\\\', '\\\"', "\'"), array('\\', '\"', "'"),$val);
+        $array[$key] = str_replace(array('\\\\','\\\"',"\'"),array('\\','\"',"'"),$val);
   }
 
   remove_magic_quotes($_POST);
@@ -81,6 +89,19 @@ if (!isset($TRACKER_ANNOUNCEURLS)) {
   $TRACKER_ANNOUNCEURLS = array();
   $TRACKER_ANNOUNCEURLS[] = $BASEURL.'/announce.php';
 }
+/*Mod by losmi - sticky mod
+Operation #3*/
+function updateSticky($hash, $sticky)
+{
+    global $TABLE_PREFIX;
+    $query = "UPDATE {$TABLE_PREFIX}files 
+                   SET sticky = '$sticky'
+                   WHERE info_hash = '$hash'";
+    do_sqlquery($query, true);
+   
+}
+/*End mod by losmi - sticky mod
+End Operation #3*/
 /*Mod by losmi - sticky mod*/
 function getLevel($cur_level)
 {
@@ -98,39 +119,8 @@ function getLevel($cur_level)
     return 0;
 }
 /*End mod by losmi - sticky mod*/
-/*Mod by losmi - sticky mod
-Operation #3*/
-function updateSticky($hash, $sticky)
-{
-    global $TABLE_PREFIX;
-    $query = "UPDATE {$TABLE_PREFIX}files 
-                   SET sticky='$sticky'
-                   WHERE info_hash ='$hash'";
-    do_sqlquery($query, true);
-   
-}
-/*End mod by losmi - sticky mod
-End Operation #3*/
-/*Mod by losmi - faq mod */
-function genrelistfaq($append = '',$table = 'faq')
-     {
-
-     global $TABLE_PREFIX;
-
-    $ret = array();
-    $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}$table WHERE active != '-1' ".$append." ORDER BY id");
-
-    while ($row = mysql_fetch_assoc($res))
-        $ret[] = $row;
-
-    unset($row);
-    mysql_free_result($res);
-
-    return $ret;
-}
-/*End mod by losmi - faq mod*/
 // gold mod
-function getStatus($gold = 0)
+function getStatus($gold=0)
 {
     if($gold == 0)
     {
@@ -145,7 +135,7 @@ function getStatus($gold = 0)
     }
     return 'none';
 }
-function createUsersLevelCombo($selected = 0)
+function createUsersLevelCombo($selected=0)
      {
 
      global $TABLE_PREFIX;
@@ -163,20 +153,20 @@ function createUsersLevelCombo($selected = 0)
       <select name='level' >";
       foreach ($ret as $key=>$value)
       {
-        $s = '';
-        if($value['id_level'] == $selected)
+        $s='';
+        if($value['id_level']==$selected)
         {
-            $s = 'selected';
+            $s='selected';
         }
-        $gold_select_box .= "<option value='".$value['id_level']."' ".$s.">".$value['level']."</option>";
+        $gold_select_box .="<option value='".$value['id_level']."' ".$s.">".$value['level']."</option>";
         
       }
-      $gold_select_box .= '</select><div id="description"></div>';
+      $gold_select_box .='</select><div id="description"></div>';
       
       return $gold_select_box;
 }
 
-function createGoldCategories($selected = '')
+function createGoldCategories($selected='')
 {
         global $TABLE_PREFIX;
       $gold_categories = array(
@@ -187,7 +177,7 @@ function createGoldCategories($selected = '')
       $g_desc = '';
       $s_desc = '';
       $c_desc = '';
-        $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true);
+        $res=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
             foreach ($res as $key=>$value)
             {
                 $g_desc = $value["gold_description"];
@@ -214,115 +204,26 @@ function createGoldCategories($selected = '')
       ajde(this.value)\">";
       foreach ($gold_categories as $key=>$value)
       {
-        $s = '';
-        if($key == $selected)
+        $s='';
+        if($key==$selected)
         {
-            $s = 'selected';
+            $s='selected';
         }
-        $gold_select_box .= "<option value='".$key."' ".$s.">".$value."</option>";
+        $gold_select_box .="<option value='".$key."' ".$s.">".$value."</option>";
         
       }
-      $gold_select_box .= '</select><div id="description"></div>';
+      $gold_select_box .='</select><div id="description"></div>';
       return $gold_select_box;
 }
 // end gold
-
-function updatemoder($prefix, $moder, $id)
-  {
-    do_sqlquery("UPDATE {$prefix}files SET moder = '$moder' WHERE info_hash = '".$id."'");
-  }
-  
-  function getmoderdetails($mod,$hash)
-  {
-    global $CURUSER;
-    if ($CURUSER["edit_torrents"]=="yes" && $CURUSER['moderate_trusted']=='yes') {
-                        $link="<a title=\"".$mod."\" href=\"index.php?page=edit&info_hash=".$hash."\"><img alt=\"".$mod."\" src=\"images/mod/".$mod.".png\"></a>";
-                        }
-                        else {
-                        $link="<img alt=\"".$mod."\" src=\"images/mod/".$mod.".png\">";
-                        }
-                        $resend='';
-                    if($mod=='bad')
-                    {
-                        $resend = '<br/>(Edit your torret to resend torrent for validation)';
-                    }
-
-                    return $link.$resend;
-  }
-  function genrelistreasons()
-     {
-
-     global $TABLE_PREFIX;
-
-    $ret = array();
-    $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}warn_reasons ORDER BY id");
-
-    while ($row = mysql_fetch_assoc($res))
-        $ret[] = $row;
-
-    unset($row);
-    mysql_free_result($res);
-
-    return $ret;
-}
-  function updatemoderbyhash($moder,$torhash)
-  {
-    global $TABLE_PREFIX;
-    do_sqlquery("UPDATE {$TABLE_PREFIX}files SET moder = '$moder' WHERE info_hash = '" . $torhash . "'",true);
-  }
-  function getmoderstatusbyhash($hash)
-  {
-    global $TABLE_PREFIX;
-    $query ="SELECT moder FROM {$TABLE_PREFIX}files  WHERE info_hash ='" . $hash . "'";
-
-
-    $res = do_sqlquery($query,true);
-    $results = mysql_fetch_assoc($res);
-
-    return $results['moder'];
-  }
-
 function load_css($css_name) {
-// control if input template name exist in current user's stylepath, else return default
+  // control if input template name exist in current user's stylepath, else return default
   global $BASEURL, $STYLEPATH, $STYLEURL;
 
   if (@file_exists($STYLEPATH.'/'.$css_name))
     return $STYLEURL.'/'.$css_name;
-  return $BASEURL.'/style/CyBerFuN/'.$css_name;
+  return $BASEURL.'/style/xbtit_default/'.$css_name;
 }
-
-/*Mod by losmi - visible mod
-Operation #3*/
-function updateVisible($hash, $visible)
-{
-    global $TABLE_PREFIX;
-    $query = "UPDATE {$TABLE_PREFIX}files 
-                   SET visible=".(int)$visible."
-                   WHERE info_hash ='$hash'";
-    do_sqlquery($query, true);
-   
-}
-/*End mod by losmi - visible mod
-End Operation #3*/
-
-
-/*Mod by losmi - visible mod*/
-function getLevelVisible($cur_level)
-{
-    global $TABLE_PREFIX;
-    $query = "SELECT id, id_level FROM {$TABLE_PREFIX}users_level";
-    $rez = do_sqlquery($query, true);
-    
-    while($row = mysql_fetch_assoc($rez))
-    {
-        if($row['id'] == $cur_level)
-        {
-            return $row['id_level'];
-        }
-    }
-    return 0;
-}
-/*End mod by losmi - visible mod*/
 
 function load_template($tpl_name) {
   // control if input template name exist in current user's stylepath, else return default
@@ -345,26 +246,26 @@ function load_language($mod_language_name) {
   return $THIS_BASEPATH.'/language/english/'.$mod_language_name;
 }
 
-function get_combo($select, $opts = array()) {
-  $name = (isset($opts['name']))?' name="'.$opts['name'].'"':'';
-  $complete = (isset($opts['complete']))?(bool)$opts['complete']:false;
-  $default = (isset($opts['default']))?$opts['default']:NULL;
-  $id = (isset($opts['id']))?$opts['id']:'id';
-  $value = (isset($opts['value']))?$opts['value']:'value';
-  $combo = '';
+function get_combo($select, $opts=array()) {
+  $name=(isset($opts['name']))?' name="'.$opts['name'].'"':'';
+  $complete=(isset($opts['complete']))?(bool)$opts['complete']:false;
+  $default=(isset($opts['default']))?$opts['default']:NULL;
+  $id=(isset($opts['id']))?$opts['id']:'id';
+  $value=(isset($opts['value']))?$opts['value']:'value';
+  $combo='';
 
   if ($complete)
-    $combo .= '<select'.$name.'>';
+    $combo.='<select'.$name.'>';
 
   foreach ($select as $option) {
-    $combo .= "\n".'<option ';
-    if ( (!is_null($default)) && ($option[$id] == $default) )
-      $combo .= 'selected="selected" ';
-    $combo .= 'value="'.$option[$id].'">'.unesc($option[$value]).'</option>';
+    $combo.="\n".'<option ';
+    if ( (!is_null($default)) && ($option[$id]==$default) )
+      $combo.='selected="selected" ';
+    $combo.='value="'.$option[$id].'">'.unesc($option[$value]).'</option>';
   }
 
   if ($complete)
-    $combo .= '</select>';
+    $combo.='</select>';
 
   return $combo;
 }
@@ -373,31 +274,31 @@ function get_microtime() {
   return strtok(microtime(), ' ') + strtok('');
 }
 
-function cut_string($ori_string, $cut_after) {
-  $rchars = array('_', '.', '-');
-  $ori_string = str_replace($rchars, ' ', $ori_string);
-  if (strlen($ori_string) > $cut_after && $cut_after > 0)
-    return substr($ori_string, 0, $cut_after).'...';
+function cut_string($ori_string,$cut_after) {
+  $rchars=array('_','.','-');
+  $ori_string=str_replace($rchars,' ',$ori_string);
+  if (strlen($ori_string)>$cut_after && $cut_after>0)
+    return substr($ori_string,0,$cut_after).'...';
   return $ori_string;
 }
 
-function print_debug($level = 3, $key = ' - ') {
+function print_debug($level=3, $key=' - ') {
     global $time_start, $gzip, $num_queries, $cached_querys;
-    $time_end = get_microtime();
+    $time_end=get_microtime();
     switch ($level) {
         case '4':
             if (function_exists('memory_get_usage')) {
-                $memory = '[ Memory: '.makesize(memory_get_usage());
+                $memory='[ Memory: '.makesize(memory_get_usage());
                 if (function_exists('memory_get_peak_usage'))
-                    $memory .= '|'.makesize(memory_get_peak_usage());
-                $return[] = $memory.' ]';
+                    $memory.='|'.makesize(memory_get_peak_usage());
+                $return[]=$memory.' ]';
             }
         case '3':
-            $return[] = '[ GZIP: '.$gzip.' ]';
+            $return[]='[ GZIP: '.$gzip.' ]';
         case '2':
-            $return[] = '[ Script Execution: '.number_format(($time_end - $time_start), 4).' sec. ]';
+            $return[]='[ Script Execution: '.number_format(($time_end-$time_start),4).' sec. ]';
         case '1':
-            $return[] = '[ Queries: '.$num_queries.'|'.$cached_querys.' ]';
+            $return[]='[ Queries: '.$num_queries.'|'.$cached_querys.' ]';
             break;
         default:
             return '';
@@ -406,24 +307,19 @@ function print_debug($level = 3, $key = ' - ') {
 }
 
 function print_version() {
-$CURRENTPATH = dirname(__FILE__);
+  global $CyBerFuN_xBTiT_version, $tracker_version;
 
-include($CURRENTPATH.'/cyberfun_footer.php');
-  global $tracker_version;
-  return '';
-  return $cyberfun_footer;
+  return '[&nbsp;&nbsp;<u>CyBerFuN xBTiT ' . $CyBerFuN_xBTiT_version . ' By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;] based on [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">Btiteam</a>&nbsp;]';
 }
 
 function print_designer() {
-  global $STYLEPATH, $tracker_version, $CyBerFuN_xBTiT_version, $google_tracking_code;
+  global $STYLEPATH;
 
   if (file_exists($STYLEPATH.'/style_copyright.php')) {
      include($STYLEPATH.'/style_copyright.php');
-     $CyBerFuN_xBTiT_version = '' . $CyBerFuN_xBTiT_version . '';
-     $design_copyright = '' . $design_copyright . '';
+     $design_copyright='[&nbsp;&nbsp;<u>Design By</u>: '.$design_copyright.'&nbsp;&nbsp;]&nbsp;';
   } else
-     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 570 )';
-     $design_copyright = "[&nbsp;&nbsp;<u>CyBerFuN xBTiT " . $CyBerFuN_xBTiT_version . " By cybernet</u>: <a href=\"http://xList.ro/\" target=\"_blank\">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit " . $tracker_version . " By <a href=\"http://www.btiteam.org/\" target=\"_blank\">BTiTeam.org</a></u>&nbsp;]<br />";
+     $design_copyright='';
   return $design_copyright;
 }
 function print_top()
@@ -438,38 +334,38 @@ function print_top()
 function check_online($session_id, $location) {
   global $TABLE_PREFIX, $CURUSER;
 
-  $location = sqlesc($location);
-  $ip = getip();
-  $uid = max(1,(int)$CURUSER['uid']);
-  $suffix = sqlesc($CURUSER['suffixcolor']);
-  $prefix = sqlesc($CURUSER['prefixcolor']);
-  $uname = sqlesc($CURUSER['username']);
-  $ugroup = sqlesc($CURUSER['level']);
-  $warn = sqlesc($CURUSER['warn']);
-  if ($uid == 1)
-    $where = "WHERE session_id='$session_id'";
+  $location=sqlesc($location);
+  $ip=getip();
+  $uid=max(1,(int)$CURUSER['uid']);
+  $suffix=sqlesc($CURUSER['suffixcolor']);
+  $prefix=sqlesc($CURUSER['prefixcolor']);
+  $uname=sqlesc($CURUSER['username']);
+  $ugroup=sqlesc($CURUSER['level']);
+  $warn=sqlesc($CURUSER['warn']);
+  if ($uid==1)
+    $where="WHERE session_id='$session_id'";
   else
-    $where = "WHERE user_id='$uid' OR session_id='$session_id'";
+    $where="WHERE user_id='$uid' OR session_id='$session_id'";
 
   @quickQuery("UPDATE {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, location=$location, user_id=$uid, warn=$warn, lastaction=UNIX_TIMESTAMP() $where");
   // record don't already exist, then insert it
-  if (mysql_affected_rows() == 0) { 
+  if (mysql_affected_rows()==0) { 
     @quickQuery("UPDATE {$TABLE_PREFIX}users SET lastconnect=NOW() WHERE id=$uid AND id>1");
     @quickQuery("INSERT INTO {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, user_id=$uid, user_ip='$ip', location=$location, warn=$warn, lastaction=UNIX_TIMESTAMP()");
   }
 
-  $timeout = time() - 900; // 15 minutes
+  $timeout=time()-900; // 15 minutes
 //  @quickQuery("UPDATE {$TABLE_PREFIX}users SET lastconnect=NOW() WHERE id IN (SELECT user_id FROM {$TABLE_PREFIX}online ol WHERE ol.lastaction<$timeout AND ol.user_id>1)");
-    @quickQuery("UPDATE {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}online ol ON ol.user_id = u.id SET u.lastconnect=NOW(), u.cip=ol.user_ip, u.lip=INET_ATON(ol.user_ip) WHERE ol.lastaction<$timeout AND ol.user_id>1");
+  @quickQuery("UPDATE {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}online ol ON ol.user_id = u.id SET u.lastconnect=NOW(), u.cip=ol.user_ip, u.lip=INET_ATON(ol.user_ip) WHERE ol.lastaction<$timeout AND ol.user_id>1");
   @quickQuery("DELETE FROM {$TABLE_PREFIX}online WHERE lastaction<$timeout");
 }
 
 //Disallow special characters in username
 
-function straipos($haystack, $array, $offset = 0) {
+function straipos($haystack,$array,$offset=0) {
   $occ = array();
-  for ($i = 0, $len = count($array); $i < $len; $i++) {
-    $pos = strpos($haystack, $array[$i], $offset);
+  for ($i=0,$len=count($array);$i<$len;$i++) {
+    $pos = strpos($haystack,$array[$i],$offset);
     if (is_bool($pos))
           continue;
     $occ[$pos] = $i;
@@ -478,15 +374,15 @@ function straipos($haystack, $array, $offset = 0) {
       return false;
   ksort($occ);
   reset($occ);
-  list($key, $value) = each($occ);
-  return array($key, $value);
+  list($key,$value) = each($occ);
+  return array($key,$value);
 }
 
 // Even if you're missing PHP 4.3.0, the MHASH extension might be of use.
 // Someone was kind enought to email this code snippit in.
-if (function_exists('mhash') && (!function_exists('sha1')) && defined('MHASH_SHA1')) {
+if (function_exists('mhash')&&(!function_exists('sha1'))&&defined('MHASH_SHA1')) {
   function sha1($str) {
-    return bin2hex(mhash(MHASH_SHA1, $str));
+    return bin2hex(mhash(MHASH_SHA1,$str));
   }
 }
 
@@ -516,8 +412,6 @@ function hash_pad($hash) {
   return str_pad($hash, 20);
 }
 
-
-      
 function warn($arr, $big = false)
 {
   if ($big)
@@ -531,12 +425,10 @@ function warn($arr, $big = false)
      $style = "style=\"margin-left: 2pt\"";
   }
 
-  $pics = $arr["warn"] == "yes" ? "<img src=\"images/$warnpic\" alt=\"WARNED USER !\" border=\"0\" $style />" : "";
+  $pics = $arr["warn"]=="yes" ? "<img src=\"images/$warnpic\" alt=\"WARNED USER !\" border=\"0\" $style />" : "";
 
   return $pics;
 }
-
-      
 
 function userlogin() {
   global $CURUSER, $TABLE_PREFIX, $err_msg_install, $btit_settings;
@@ -550,62 +442,67 @@ function userlogin() {
 ?>
 <html><body><h1>403 Forbidden</h1>Unauthorized IP address.</body></html>
 <?php
-die();
-}
+    die();
+  }
 
-if ($btit_settings['xbtt_use'])
+
+  if ($btit_settings['xbtt_use'])
   {
-    $udownloaded = "u.downloaded+IFNULL(x.downloaded,0)";
-    $uuploaded = "u.uploaded+IFNULL(x.uploaded,0)";
-    $utables = "{$TABLE_PREFIX}users u LEFT JOIN xbt_users x ON x.uid=u.id";
+    $udownloaded="u.downloaded+IFNULL(x.downloaded,0)";
+    $uuploaded="u.uploaded+IFNULL(x.uploaded,0)";
+    $utables="{$TABLE_PREFIX}users u LEFT JOIN xbt_users x ON x.uid=u.id";
   }
   else
   {
-    $udownloaded = "u.downloaded";
-    $uuploaded = "u.uploaded";
-    $utables = "{$TABLE_PREFIX}users u";
+    $udownloaded="u.downloaded";
+    $uuploaded="u.uploaded";
+    $utables="{$TABLE_PREFIX}users u";
   }
-// guest
+  // guest
+  $id = (!isset($_COOKIE['uid']))?1:max(1, (int)$_COOKIE['uid']);
 
-$id = (!isset($_COOKIE['uid'])) ? 1 : max(1, (int)$_COOKIE['uid']);
-
-    $res = do_sqlquery("SELECT u.warn, u.lip, u.cip, seedbonus, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language, u.style, u.time_offset, ul.* FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = $id LIMIT 1;", true, $btit_settings['cache_duration']);
-	$row = $res[0];
+  $res = get_result("SELECT u.warn, u.seedbonus, u.lip, u.cip, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = $id LIMIT 1;", true, $btit_settings['cache_duration']);
+  $row = $res[0];
   if (!$row) {
-    $id = 1;
-    $res = do_sqlquery("SELECT u.warn, u.lip, u.cip, seedbonus, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language, u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;", true, $btit_settings['cache_duration']);
+    $id=1;
+    $res = get_result("SELECT u.warn, u.seedbonus, u.lip, u.cip, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;", true, $btit_settings['cache_duration']);
     $row = $res[0];
   }
   if (!isset($_COOKIE['pass'])) $_COOKIE['pass'] = '';
-  if (($_COOKIE['pass'] != md5($row['random'].$row['password'].$row['random'])) && $id != 1) {
-    $id = 1;
-    $res = do_sqlquery("SELECT u.warn, u.lip, u.cip, seedbonus, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language, u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;", true, $btit_settings['cache_duration']);
+  if (($_COOKIE['pass']!=md5($row['random'].$row['password'].$row['random'])) && $id!=1) {
+    $id=1;
+    $res = get_result("SELECT u.warn, u.seedbonus, u.lip, u.cip, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.* FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id = 1 LIMIT 1;", true, $btit_settings['cache_duration']);
     $row = $res[0];
   }
 
+  /* this part is now updated by check_online function
+  if ($id>1)
+    quickQuery("UPDATE {$TABLE_PREFIX}users SET lip=".$nip.", cip='".AddSlashes($ip)."' WHERE id = $id") or sqlerr(__FILE__, __LINE__);
+  */
+
   // CHECK FOR INSTALLATION FOLDER WITHOUT INSTALL.ME
-  if ($row['id_level'] == 8 && (file_exists('install.php') || file_exists('upgrade.php'))) // only owner level
-    $err_msg_install = '<div align="center" style="color:red; font-size:12pt; font-weight: bold;">SECURITY WARNING: Delete install.php & upgrade.php!</div>';
+  if ($row['id_level']==8 && (file_exists('install.php') || file_exists('upgrade.php'))) // only owner level
+    $err_msg_install='<div align="center" style="color:red; font-size:12pt; font-weight: bold;">SECURITY WARNING: Delete install.php & upgrade.php!</div>';
   else
-    $err_msg_install = '';
+    $err_msg_install='';
 
   $GLOBALS['CURUSER'] = $row;
   foreach ($row as $key => $value)
     {
-      if ($key != 'password')
-         $_SESSION['user'][$key] = $value;
+      if ($key!='password')
+         $_SESSION['user'][$key]= $value;
 
-	}
+  }
   unset($row);
 }
 
-function dbconn($do_clean = false) {
+function dbconn($do_clean=false) {
   global $dbhost, $dbuser, $dbpass, $database, $language;
 
   if ($GLOBALS['persist'])
-    $conres = mysql_pconnect($dbhost, $dbuser, $dbpass);
+    $conres=mysql_pconnect($dbhost, $dbuser, $dbpass);
   else
-    $conres = mysql_connect($dbhost, $dbuser, $dbpass);
+    $conres=mysql_connect($dbhost, $dbuser, $dbpass);
 
   if (!$conres) {
     switch (mysql_errno()) {
@@ -619,7 +516,7 @@ function dbconn($do_clean = false) {
     }
   }
 
-if($GLOBALS["charset"] == "UTF-8")
+  if($GLOBALS["charset"]=="UTF-8")
       do_sqlquery("SET NAMES utf8");
 
   mysql_select_db($database) or die($language['ERR_CANT_OPEN_DB'].' '.$database.' - '.mysql_error());
@@ -635,14 +532,14 @@ function cleandata() {
 
   global $clean_interval;
 
-  if ($clean_interval == 0)
+  if ($clean_interval==0)
     return;
 
   $now = time();
-  $res = get_result("SELECT last_time as lt FROM {$TABLE_PREFIX}tasks WHERE task='sanity'", true, $btit_settings['cache_duration']);
+  $res = get_result("SELECT last_time as lt FROM {$TABLE_PREFIX}tasks WHERE task='sanity'",true,$btit_settings['cache_duration']);
   $row = $res[0];
   if (!$row) {
-    do_sqlquery("INSERT INTO {$TABLE_PREFIX}tasks (task, last_time) VALUES ('sanity', $now)");
+    do_sqlquery("INSERT INTO {$TABLE_PREFIX}tasks (task, last_time) VALUES ('sanity',$now)");
     return;
   }
   $ts = $row['lt'];
@@ -657,20 +554,20 @@ function cleandata() {
 }
 
 function updatedata() {
-  global $CURRENTPATH, $TABLE_PREFIX, $btit_settings;
+  global $CURRENTPATH, $TABLE_PREFIX,$btit_settings;
 
   require_once $CURRENTPATH.'/getscrape.php';
   global $update_interval;
 
-  if ($update_interval == 0)
+  if ($update_interval==0)
     return;
 
   $now = time();
 
-  $res = get_result("SELECT last_time as lt FROM {$TABLE_PREFIX}tasks WHERE task='update'", true, $btit_settings['cache_duration']);
+  $res = get_result("SELECT last_time as lt FROM {$TABLE_PREFIX}tasks WHERE task='update'",true,$btit_settings['cache_duration']);
   $row = $res[0];
   if (!$row) {
-    do_sqlquery("INSERT INTO {$TABLE_PREFIX}tasks (task, last_time) VALUES ('update', $now)");
+    do_sqlquery("INSERT INTO {$TABLE_PREFIX}tasks (task, last_time) VALUES ('update',$now)");
     return;
   }
   $ts = $row['lt'];
@@ -681,28 +578,28 @@ function updatedata() {
   if (!mysql_affected_rows())
     return;
 
-  $res = get_result("SELECT announce_url FROM {$TABLE_PREFIX}files WHERE external='yes' ORDER BY lastupdate ASC LIMIT 1", true, $btit_settings['cache_duration']);
-  if (!$res || count($res) == 0)
+  $res = get_result("SELECT announce_url FROM {$TABLE_PREFIX}files WHERE external='yes' ORDER BY lastupdate ASC LIMIT 1",true,$btit_settings['cache_duration']);
+  if (!$res || count($res)==0)
     return;
 
   // get the url to scrape, take 5 torrent at a time (try to getting multiscrape)
   $row = $res[0];
-  $resurl = get_result("SELECT info_hash FROM {$TABLE_PREFIX}files WHERE external='yes' AND announce_url='".$row['announce_url']."' ORDER BY lastupdate ASC LIMIT 5", true, $btit_settings['cache_duration']);
-  if (!$resurl || count($resurl) == 0)
+  $resurl=get_result("SELECT info_hash FROM {$TABLE_PREFIX}files WHERE external='yes' AND announce_url='".$row['announce_url']."' ORDER BY lastupdate ASC LIMIT 5",true,$btit_settings['cache_duration']);
+  if (!$resurl || count($resurl)==0)
     return
 
-  $combinedinfohash = array();
+  $combinedinfohash=array();
   foreach ($resurl as $id=> $rhash)
-    $combinedinfohash[] = $rhash['info_hash'];
+    $combinedinfohash[]=$rhash['info_hash'];
 
   //scrape($row["announce_url"],$row["info_hash"]);
-  scrape($row[0], implode("','", $combinedinfohash));
+  scrape($row[0],implode("','",$combinedinfohash));
 }
 
 function pager($rpp, $count, $href, $opts = array()) {
   global $language;
 
-  $pages = ($rpp == 0) ? 1:ceil($count / $rpp);
+  $pages=($rpp==0)?1:ceil($count / $rpp);
 
   if (!isset($opts['lastpagedefault']))
     $pagedefault = 1;
@@ -715,13 +612,13 @@ function pager($rpp, $count, $href, $opts = array()) {
   $pagename='pages';
 
   if (isset($opts['pagename'])) {
-    $pagename = $opts['pagename'];
+    $pagename=$opts['pagename'];
     if (isset($_GET[$opts['pagename']]))
-      $page = max(1, intval($_GET[$opts['pagename']]));
+      $page = max(1 ,intval($_GET[$opts['pagename']]));
     else
       $page = $pagedefault;
   } elseif (isset($_GET['pages'])) {
-    $page = max(1, intval(0 + $_GET['pages']));
+    $page = max(1,intval(0 + $_GET['pages']));
     if ($page < 0)
       $page = $pagedefault;
   } else
@@ -729,16 +626,16 @@ function pager($rpp, $count, $href, $opts = array()) {
 
   $pager = '';
 
-  if ($pages > 1) {
-    $pager .= "\n".'<form name="change_page'.$pagename.'" method="post" action="index.php">'."\n".'<select class="drop_pager" name="pages" onchange="location=document.change_page'.$pagename.'.pages.options[document.change_page'.$pagename.'.pages.selectedIndex].value" size="1">';
-    for ($i = 1; $i <= $pages; $i++) 
-        $pager .= "\n<option ".($i == $page ? 'selected="selected"':'')."value=\"$href$pagename=$i\">$i</option>";
+  if ($pages>1) {
+    $pager.="\n".'<form name="change_page'.$pagename.'" method="post" action="index.php">'."\n".'<select class="drop_pager" name="pages" onchange="location=document.change_page'.$pagename.'.pages.options[document.change_page'.$pagename.'.pages.selectedIndex].value" size="1">';
+    for ($i = 1; $i<=$pages;$i++) 
+        $pager.="\n<option ".($i==$page?'selected="selected"':'')."value=\"$href$pagename=$i\">$i</option>";
     $pager.="\n</select>";
   }
 
   $mp = $pages;// - 1;
-  $begin = ($page > 3 ? ($page < $pages - 2 ? $page - 2:$pages - 2):1);
-  $end = ($pages > $begin + 2 ? ($begin + 2 < $pages ? $begin + 2:$pages):$pages);
+  $begin=($page > 3?($page<$pages-2?$page-2:$pages-2):1);
+  $end=($pages>$begin+2?($begin+2<$pages?$begin+2:$pages):$pages);
   if ($page > 1) {
     $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=1\">&nbsp;&laquo;</a></span>";
     $pager .= "\n<span class=\"pager\"><a href=\"{$href}$pagename=".($page-1)."\">&lt;&nbsp;</a></span>";
@@ -753,60 +650,60 @@ function pager($rpp, $count, $href, $opts = array()) {
     }
 
     if ($page < $mp && $mp >= 1) {
-      $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=".($page + 1)."\">&nbsp;&gt;</a></span>";
+      $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=".($page+1)."\">&nbsp;&gt;</a></span>";
       $pager .= "\n&nbsp;<span class=\"pager\"><a href=\"{$href}$pagename=$pages\">&nbsp;&raquo;</a></span>";
     }
 
     $pagertop = "$pager\n</form>";
-    $pagerbottom = str_replace("change_page","change_page1", $pagertop)."\n";
+    $pagerbottom = str_replace("change_page","change_page1",$pagertop)."\n";
   } else {
     $pagertop = "$pager\n</form>";
-    $pagerbottom = str_replace("change_page","change_page1", $pagertop)."\n";
+    $pagerbottom = str_replace("change_page","change_page1",$pagertop)."\n";
   }
 
-  $start = ($page - 1) * $rpp;
-  if ($pages < 2) {
+  $start = ($page-1) * $rpp;
+  if ($pages<2) {
     // only 1 page??? don't need pager ;)
-    $pagertop = '';
-    $pagerbottom = '';
+    $pagertop='';
+    $pagerbottom='';
   }
 
-  return array($pagertop, $pagerbottom, "LIMIT $start, $rpp");
+  return array($pagertop, $pagerbottom, "LIMIT $start,$rpp");
 }
 
 // give back categories recorset
 function genrelist() {
-  global $TABLE_PREFIX, $CACHE_DURATION;
+  global $TABLE_PREFIX,$CACHE_DURATION;
 
   return get_result('SELECT * FROM '.$TABLE_PREFIX.'categories ORDER BY sort_index, id', true, $CACHE_DURATION);
 }
 
 // this returns all the categories with subs into a select
-function categories($val = '') {
-  global $TABLE_PREFIX, $CACHE_DURATION;
+function categories($val='') {
+  global $TABLE_PREFIX,$CACHE_DURATION;
 
-  $return = "\n".'<select name="category"><option value="0">----</option>';
+  $return="\n".'<select name="category"><option value="0">----</option>';
 
-  $c_q = get_result("SELECT c.id, c.name, sc.id as sid, sc.name as sname FROM {$TABLE_PREFIX}categories c LEFT JOIN {$TABLE_PREFIX}categories sc on c.id=sc.sub where c.sub='0' ORDER BY c.sort_index, sc.sort_index, c.id, sc.id", true, $CACHE_DURATION);
-  $b_sub = 0;
+  $c_q=get_result("SELECT c.id, c.name, sc.id as sid, sc.name as sname FROM {$TABLE_PREFIX}categories c LEFT JOIN {$TABLE_PREFIX}categories sc on c.id=sc.sub where c.sub='0' ORDER BY c.sort_index, sc.sort_index, c.id, sc.id",true,$CACHE_DURATION);
+  $b_sub=0;
   foreach ($c_q as $c) {
-    $cid = $c['id'];
-    $name = unesc($c['name']);
+    $cid=$c['id'];
+    $name=unesc($c['name']);
 
-    if ($b_sub != $cid && $b_sub != 0)
-      $return .= "\n</optgroup>";
+    if ($b_sub!=$cid && $b_sub!=0)
+      $return.="\n</optgroup>";
 
     // lets see if it has sub-categories.
     if (empty($c['sid'])) {
-      $b_sub = 0;
-      $return .= "\n<option".(($cid == $val) ? ' selected="selected"':'').' value="'.$cid.'">'.$name.'</option>';
+      $b_sub=0;
+      $return.= "\n<option".(($cid==$val)?' selected="selected"':'').' value="'.$cid.'">'.$name.'</option>';
     } else {
-      if ($b_sub != $cid) {
-        $return .= "\n<optgroup label='$name'>";
-        $b_sub = $cid;
+      if ($b_sub!=$cid) {
+        $return.="\n<optgroup label='$name'>";
+        $b_sub=$cid;
       }
       $sub = $c['sid'];
-      $return .= "\n<option".(($sub == $val) ? ' selected="selected"':'').' value="'.$sub.'">'.unesc($c['sname']).'</option>';
+      $return.= "\n<option".(($sub==$val)?' selected="selected"':'').' value="'.$sub.'">'.unesc($c['sname']).'</option>';
     }
   }
 
@@ -814,11 +711,11 @@ function categories($val = '') {
 }
 
 // this returns all the subcategories
-function sub_categories($val = '') {
-  global $TABLE_PREFIX, $CACHE_DURATION;
+function sub_categories($val='') {
+  global $TABLE_PREFIX;
 
-  $return = "\n<select name='sub_category'><option value='0'>---</option>";
-  $c_q = get_result("SELECT id, name FROM {$TABLE_PREFIX}categories WHERE sub='0' ORDER BY sort_index, id", true, $CACHE_DURATION);
+  $return="\n<select name='sub_category'><option value='0'>---</option>";
+  $c_q = get_result("SELECT id, name FROM {$TABLE_PREFIX}categories WHERE sub='0' ORDER BY sort_index, id",true,$CACHE_DURATION);
   foreach($c_q as $c) {
     $cid = $c['id'];
     $name = unesc($c['name']);
@@ -831,9 +728,9 @@ function sub_categories($val = '') {
 
 // this returns the category of a sub-category
 function sub_cat($sub) {
-  global $TABLE_PREFIX, $CACHE_DURATION;
+  global $TABLE_PREFIX,$CACHE_DURATION;
 
-  $c_q = get_result('SELECT name FROM '.$TABLE_PREFIX.'categories WHERE id='.$sub.' LIMIT 1;', true, $CACHE_DURATION);
+  $c_q = get_result('SELECT name FROM '.$TABLE_PREFIX.'categories WHERE id='.$sub.' LIMIT 1;',true,$CACHE_DURATION);
   return unesc($c_q[0]['name']);
 }
 
@@ -843,30 +740,13 @@ function style_list() {
   return get_result('SELECT * FROM '.$TABLE_PREFIX.'style ORDER BY id;', true, $CACHE_DURATION);
 }
 
-function cat_list()
-         {
-
-         global $TABLE_PREFIX;
-
-         $ret = array();
-         $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}categories ORDER BY sort_index");
-
-         while ($row = mysql_fetch_assoc($res))
-             $ret[] = $row;
-
-         unset($row);
-         mysql_free_result($res);
-
-         return $ret;
-}
-
 function language_list() {
   global $TABLE_PREFIX, $CACHE_DURATION;
 
   return get_result('SELECT * FROM '.$TABLE_PREFIX.'language ORDER BY language;', true, $CACHE_DURATION);
 }
 
-function flag_list($with_unknown = false) {
+function flag_list($with_unknown=false) {
   global $TABLE_PREFIX, $CACHE_DURATION;
 
   return get_result('SELECT * FROM '.$TABLE_PREFIX.'countries '.(!$with_unknown?'WHERE id<>100':'').' ORDER BY name;', true, $CACHE_DURATION);
@@ -894,7 +774,7 @@ return $SITENAME;
 }
 function print_trackerurl()
 {
-  global $BASEURL;	
+  global $BASEURL;  
 
 return $BASEURL;
 }
@@ -902,13 +782,13 @@ return $BASEURL;
 function print_username()
 {
    global $CURUSER;
-  $username = ($CURUSER['username']); 
+  $username=($CURUSER['username']); 
   return $username;
 }
 # End
 # Begin standard foot tags!
- 
-function stdfoot($normalpage = true, $update = true, $adminpage = false, $torrentspage = false, $forumpage = false) {
+
+function stdfoot($normalpage=true, $update=true, $adminpage=false, $torrentspage=false, $forumpage=false) {
   global $STYLEPATH, $tpl, $no_columns;
 
   $tpl->set('to_top',print_top());
@@ -924,7 +804,7 @@ function stdfoot($normalpage = true, $update = true, $adminpage = false, $torren
     echo $tpl->fetch(load_template('main.tpl'));
   elseif ($adminpage)
     echo $tpl->fetch(load_template('main.left_column.tpl'));
-  elseif ($torrentspage || $forumpage || $no_columns == 1)
+  elseif ($torrentspage || $forumpage || $no_columns==1)
     echo $tpl->fetch(load_template('main.no_columns.tpl'));
   else
     echo $tpl->fetch(load_template('main.no_header_1_column.tpl')); 
@@ -937,89 +817,123 @@ function stdfoot($normalpage = true, $update = true, $adminpage = false, $torren
 function linkcolor($num) {
   if (!$num)
     return '#FF0000';
+  if ($num == 1)
     return '#FFFF00';
+  return '#FFFF00';
 }
 
-function format_comment($text, $strip_html = true, $smilies = true ) {
+function format_comment($text, $strip_html = true) {
   global $smilies, $privatesmilies, $BASEURL;
 
   if ($strip_html)
     $text = htmlspecialchars($text);
   $text = unesc($text);
-  $f = @fopen('badwords.txt','r');
-  if ($f && filesize ('badwords.txt') != 0) {
-    $bw = fread($f,filesize('badwords.txt'));
-    $badwords = explode("\n", $bw);
-    for ($i = 0, $total = count($badwords); $i < $total;++$i)
-      $badwords[$i] = trim($badwords[$i]);
-    $text = str_replace($badwords, '*censored*', $text);
+  $f=@fopen('badwords.txt','r');
+  if ($f && filesize ('badwords.txt')!=0) {
+    $bw=fread($f,filesize('badwords.txt'));
+    $badwords=explode("\n",$bw);
+    for ($i=0,$total=count($badwords);$i<$total;++$i)
+      $badwords[$i]=trim($badwords[$i]);
+    $text=str_replace($badwords,'*censored*',$text);
   }
   @fclose($f);
 
-  $text = bbcode($text);
+  $text=bbcode($text);
 
-  if($smilies) {
-    $smilies = array_merge($smilies, $privatesmilies);
-    reset($smilies);
-    while (list($code, $url) = each($smilies))
-      $text = str_replace($code, '<img border="0" src="'.$BASEURL.'/images/smilies/'.$url.'" alt="'.$url.'" />', $text);
-  }
+  // [*]
+  $text = preg_replace('/\[\*\]/', '<li>', $text);
+
+  // Maintain spacing
+  $text = str_replace('  ', ' &nbsp;', $text);
+
+  $smilies=array_merge($smilies, $privatesmilies);
+  reset($smilies);
+  while (list($code, $url) = each($smilies))
+    $text = str_replace($code, '<img border="0" src="'.$BASEURL.'/images/smilies/'.$url.'" alt="'.$url.'" />', $text);
 
   return $text;
 }
 
-function image_or_link($image, $pers_style = '',$link = '') {
+function image_or_link($image,$pers_style='',$link='') {
   global $STYLEURL, $STYLEPATH;
 
-  if ($image == '')
+  if ($image=='')
     return $link;
   if (!file_exists($image))
       return $link;
   // replace realpath with url
-  return '<img src="'.str_replace($STYLEPATH, $STYLEURL, $image).'" border="0" '.$pers_style.' alt="'.$link.'"/>';
+  return '<img src="'.str_replace($STYLEPATH,$STYLEURL,$image).'" border="0" '.$pers_style.' alt="'.$link.'"/>';
 }
 
-function success_msg($heading = 'Success!', $string, $close = false) {
-  global $language, $STYLEPATH, $tpl, $page, $STYLEURL;
+// TimeD ranks
 
-  $suc_tpl = new bTemplate();
-  $suc_tpl->set('success_title', $heading);
-  $suc_tpl->set('success_message', $string);
-  $suc_tpl->set('success_image', $STYLEURL.'/images/success.gif');
-  $tpl->set('main_content', set_block($heading,'center', $suc_tpl->fetch(load_template('success.tpl'))));
+function get_combodt($select, $opts=array()) {
+  $name=(isset($opts['name']))?' name="'.$opts['name'].'"':'';
+  $complete=(isset($opts['complete']))?(bool)$opts['complete']:false;
+  $default=(isset($opts['default']))?$opts['default']:NULL;
+  $id=(isset($opts['id']))?$opts['id']:'id';
+  $value=(isset($opts['value']))?$opts['value']:'value';
+  $combo='';
+
+  if ($complete)
+    $combo.='<select'.$name.'>';
+
+  foreach ($select as $option) {
+    $combo.="\n".'<option ';
+    if ( (!is_null($default)) && ($option[$id]==$default) )
+      $combo.='selected="selected" ';
+    $combo.='value="'.$option[$id].'">'.unesc($option[$value]).'</option>';
+  }
+
+  if ($complete)
+    $combo.='</select>';
+
+  return $combo;
 }
 
-function err_msg($heading = 'Error!', $string, $close = false) {
-  global $language, $STYLEPATH, $tpl, $page, $STYLEURL;
+// TimeD ranks - end
+
+function success_msg($heading='Success!',$string,$close=false) {
+  global $language,$STYLEPATH, $tpl, $page, $STYLEURL;
+
+  $suc_tpl=new bTemplate();
+  $suc_tpl->set('success_title',$heading);
+  $suc_tpl->set('success_message',$string);
+  $suc_tpl->set('success_image',$STYLEURL.'/images/success.gif');
+  $tpl->set('main_content',set_block($heading,'center',$suc_tpl->fetch(load_template('success.tpl'))));
+}
+
+function err_msg($heading='Error!',$string,$close=false) {
+  global $language,$STYLEPATH, $tpl, $page,$STYLEURL;
 
   // just in case not found the language
   if (!$language['BACK'])
-    $language['BACK'] = 'Back';
+    $language['BACK']='Back';
 
-  $err_tpl = new bTemplate();
-  $err_tpl->set('error_title', $heading);
-  $err_tpl->set('error_message', $string);
-  $err_tpl->set('error_image', $STYLEURL.'/images/error.gif');
-  $err_tpl->set('language', $language);
+  $err_tpl=new bTemplate();
+  $err_tpl->set('error_title',$heading);
+  $err_tpl->set('error_message',$string);
+  $err_tpl->set('error_image',$STYLEURL.'/images/error.gif');
+  $err_tpl->set('language',$language);
   if ($close)
     $err_tpl->set('error_footer','<a href="javascript: window.close();">'.$language['CLOSE'].'</a>');
   else
     $err_tpl->set('error_footer','<a href="javascript: history.go(-1);">'.$language['BACK'].'</a>');
 
-  $tpl->set('main_content', set_block($heading, 'center', $err_tpl->fetch(load_template('error.tpl'))));
+  $tpl->set('main_content',set_block($heading,'center',$err_tpl->fetch(load_template('error.tpl'))));
 }
 
-function information_msg($heading = 'Error!', $string, $close = false) {
-  global $language, $STYLEPATH, $tpl, $page, $STYLEURL;
+function information_msg($heading='Error!',$string,$close=false) {
+  global $language,$STYLEPATH, $tpl, $page,$STYLEURL;
   // just in case not found the language
   if (!$language['BACK'])
-    $language['BACK'] = 'Back';
+    $language['BACK']='Back';
 
-  $err_tpl = new bTemplate();
-  $err_tpl->set('information_title', $heading);
-  $err_tpl->set('information_message', $string);
-  $err_tpl->set('information_image', $STYLEURL.'/images/error.gif');
-  $err_tpl->set('language', $language);
+  $err_tpl=new bTemplate();
+  $err_tpl->set('information_title',$heading);
+  $err_tpl->set('information_message',$string);
+  $err_tpl->set('information_image',$STYLEURL.'/images/error.gif');
+  $err_tpl->set('language',$language);
 
   if ($close)
     $err_tpl->set('information_footer','<a href="javascript: window.close();">'.$language['CLOSE'].'</a>');
@@ -1027,9 +941,9 @@ function information_msg($heading = 'Error!', $string, $close = false) {
     $err_tpl->set('information_footer','<a href="javascript: history.go(-1);">'.$language['BACK'].'</a>');
 
 
-  $tpl->set('main_content', set_block($heading, 'center', $err_tpl->fetch(load_template('information.tpl'))));
+  $tpl->set('main_content',set_block($heading,'center',$err_tpl->fetch(load_template('information.tpl'))));
 
-  stdfoot(true, false);
+  stdfoot(true,false);
   die();
 }
 
@@ -1042,36 +956,35 @@ function get_content($file) {
 
   ob_start();
   include($file);
-  $content = ob_get_contents();
+  $content=ob_get_contents();
   ob_end_clean();
 
   return $content;
 }
 
-function set_block($block_title, $alignement, $block_content, $width100 = true) {
+function set_block($block_title,$alignement,$block_content,$width100=true) {
   global $STYLEPATH, $TABLE_PREFIX, $language;
 
-  $blocktpl = new bTemplate();
-  $blocktpl->set('block_width', ($width100 ? 'width="100%"':''));
-  $blocktpl->set('block_title', $block_title);
-  $blocktpl->set('block_align', $alignement);
-  $blocktpl->set('block_content', $block_content);
+  $blocktpl=new bTemplate();
+  $blocktpl->set('block_width',($width100?'width="100%"':''));
+  $blocktpl->set('block_title',$block_title);
+  $blocktpl->set('block_align',$alignement);
+  $blocktpl->set('block_content',$block_content);
   return $blocktpl->fetch(load_template('block.tpl'));
 }
 
-function get_block($block_title, $alignement, $block, $use_cache = true, $width100 = true) {
+function get_block($block_title,$alignement,$block,$use_cache=true,$width100=true) {
   global $STYLEPATH, $TABLE_PREFIX, $language, $CACHE_DURATION, $CURUSER;
 
-  $blocktpl = new bTemplate();
+  $blocktpl=new bTemplate();
   $blocktpl->set('block_width',($width100?'width="100%"':''));
   $blocktpl->set('block_title',$block_title);
   $blocktpl->set('block_align',$alignement);
 
-  $cache_file = realpath(dirname(__FILE__).'/..').'/cache/'.md5($block.$CURUSER['id_level']).'.txt';
-  $use_cache = ($use_cache) ? $CACHE_DURATION > 0 : false;
+  $cache_file=realpath(dirname(__FILE__).'/..').'/cache/'.md5($block.$CURUSER['id_level']).'.txt';
+  $use_cache=($use_cache)?$CACHE_DURATION>0:false;
     
   if ($use_cache) {
-
     // read cache
     if (file_exists($cache_file) && (time()-$CACHE_DURATION) < filemtime($cache_file)) {
       $blocktpl->set('block_content', file_get_contents($cache_file));
@@ -1081,36 +994,26 @@ function get_block($block_title, $alignement, $block, $use_cache = true, $width1
 
   ob_start();
   include(realpath(dirname(__FILE__).'/..').'/blocks/'.$block.'_block.php');
-  $block_content = ob_get_contents();
+  $block_content=ob_get_contents();
   ob_end_clean();
 
   if ($use_cache) {
     // write cache file
-    $fp = fopen($cache_file, 'w');
-    fputs($fp, $block_content);
+    $fp=fopen($cache_file,'w');
+    fputs($fp,$block_content);
     fclose($fp);
   }
 
-  $blocktpl->set('block_content', $block_content);
+  $blocktpl->set('block_content',$block_content);
   return $blocktpl->fetch(load_template('block.tpl'));
 }
 
-function block_begin($title = '-', $colspan = 1, $calign = 'justify') {
+function block_begin($title='-',$colspan=1,$calign='justify') {
 }
 
-function block_end($colspan = 1) {
+function block_end($colspan=1) {
 }
-
-function makesize($bytes) {
-  if (abs($bytes) < 1024000)
-    return number_format($bytes / 1024, 2).' KB';
-  if (abs($bytes) < 1048576000)
-    return number_format($bytes / 1048576, 2).' MB';
-  if (abs($bytes) < 1073741824000)
-    return number_format($bytes / 1073741824, 2).' GB';
-  return number_format($bytes / 1099511627776, 2).' TB';
-}
-
+// image upload v1.2
 function makesize1($bytes) {
   if (abs($bytes) < 1000 * 1024)
     return number_format($bytes / 1024, 2) . "";
@@ -1119,6 +1022,16 @@ function makesize1($bytes) {
   if (abs($bytes) < 1000 * 1073741824)
     return number_format($bytes / 1073741824, 2) . "";
   return number_format($bytes / 1099511627776, 2) . "";
+}
+// end - image upload v1.2
+function makesize($bytes) {
+  if (abs($bytes) < 1024000)
+    return number_format($bytes / 1024, 2).' KB';
+  if (abs($bytes) < 1048576000)
+    return number_format($bytes / 1048576, 2).' MB';
+  if (abs($bytes) < 1073741824000)
+    return number_format($bytes / 1073741824, 2).' GB';
+  return number_format($bytes / 1099511627776, 2).' TB';
 }
 
 function redirect($redirecturl) {
@@ -1137,24 +1050,24 @@ function redirect($redirecturl) {
     die();
 }
 
-function textbbcode($form, $name, $content = '') {
-  $tpl_bbcode = new bTemplate();
-  $tpl_bbcode->set('form_name', $form);
-  $tpl_bbcode->set('object_name', $name);
-  $tpl_bbcode->set('content', $content);
-  $tbbcode = '<table width="100%" cellpadding="1" cellspacing="1">';
+function textbbcode($form,$name,$content='') {
+  $tpl_bbcode=new bTemplate();
+  $tpl_bbcode->set('form_name',$form);
+  $tpl_bbcode->set('object_name',$name);
+  $tpl_bbcode->set('content',$content);
+  $tbbcode='<table width="100%" cellpadding="1" cellspacing="1">';
 
   global $smilies, $STYLEPATH, $language;
-  $count = 0;
+  $count=0;
   reset($smilies);
-  $tbbcode .= '<tr>';
-  while ((list($code, $url) = each($smilies)) && $count < 16) {
-    $tbbcode .= "\n<td><a href=\"javascript: SmileIT('".str_replace("'","\'",$code)."',document.forms.$form.$name);\"><img border=\"0\" src=\"images/smilies/$url\" alt=\"$url\" /></a></td>";
+  $tbbcode.='<tr>';
+  while ((list($code, $url) = each($smilies)) && $count<16) {
+    $tbbcode.="\n<td><a href=\"javascript: SmileIT('".str_replace("'","\'",$code)."',document.forms.$form.$name);\"><img border=\"0\" src=\"images/smilies/$url\" alt=\"$url\" /></a></td>";
     $count++;
   }
-  $tbbcode .= "\n</tr>\n</table>";
-  $tpl_bbcode->set('smilies_table', $tbbcode);
-  $tpl_bbcode->set('language', $language);
+  $tbbcode.="\n</tr>\n</table>";
+  $tpl_bbcode->set('smilies_table',$tbbcode);
+  $tpl_bbcode->set('language',$language);
   return $tpl_bbcode->fetch(load_template('txtbbcode.tpl'));
 }
 
@@ -1165,16 +1078,16 @@ function is_valid_id($id) {
 
 function get_date_time($timestamp = 0) {
   if ($timestamp)
-    return date('d/m/Y H:i:s', $timestamp - $offset);
+    return date('d/m/Y H:i:s', $timestamp-$offset);
 
   global $CURRENTPATH;
   include $CURRENTPATH.'/offset.php';
   return gmdate('d/m/Y H:i:s');
 }
 
-function stderr($heading, $text, $close = false) {
-  err_msg($heading, $text, $close);
-  stdfoot(true, false);
+function stderr($heading, $text,$close=false) {
+  err_msg($heading,$text,$close);
+  stdfoot(true,false);
   die();
 }
 
@@ -1194,13 +1107,13 @@ function get_elapsed_time($ts) {
   $weeks = floor($days / 7);
   $days -= $weeks * 7;
   if ($weeks > 0)
-    return $weeks.' week'.(($weeks == 1)?'':'s');
+    return $weeks.' week'.(($weeks==1)?'':'s');
   if ($days > 0)
-    return $days.' day'.(($days == 1)?'':'s');
+    return $days.' day'.(($days==1)?'':'s');
   if ($hours > 0)
-    return $hours.' hour'.(($hours == 1)?'':'s');
+    return $hours.' hour'.(($hours==1)?'':'s');
   if ($mins > 0)
-    return $mins.' min'.(($mins == 1)?'':'s');
+    return $mins.' min'.(($mins==1)?'':'s');
   return '< 1 min';
 }
 
@@ -1212,8 +1125,8 @@ function gmtime() {
   return strtotime(get_date_time());
 }
 
-function sqlerr($file = '', $line = '') {
-    $file = (($file != ''&& $line != '')? '<p>in '.$file.', line '.$line.'</p>' : '');
+function sqlerr($file='',$line='') {
+    $file=(($file!=''&&$line!='')? '<p>in '.$file.', line '.$line.'</p>' : '');
 ?>
   <table border="0" bgcolor="" align=left cellspacing=0 cellpadding=10 style="background: blue">
     <tr>
@@ -1234,7 +1147,7 @@ function peercolor($num) {
 }
 
 // v.1.3
-function write_log($text, $reason = 'add') {
+function write_log($text,$reason='add') {
   global $CURUSER, $LOG_ACTIVE, $TABLE_PREFIX;
 
   if ($LOG_ACTIVE)
@@ -1242,51 +1155,51 @@ function write_log($text, $reason = 'add') {
 }
 
 function DateFormat($seconds) {
-  while ($seconds > 31536000) {
+  while ($seconds>31536000) {
     $years++;
     $seconds -= 31536000;
     }
 
-  while ($seconds > 2419200) {
+  while ($seconds>2419200) {
     $months++;
     $seconds -= 2419200;
     }
 
-  while ($seconds > 604800) {
+  while ($seconds>604800) {
     $weeks++;
     $seconds -= 604800;
     }
 
-  while ($seconds > 86400) {
+  while ($seconds>86400) {
     $days++; 
     $seconds -= 86400;
     }
 
-  while ($seconds > 3600) {
+  while ($seconds>3600) {
     $hours++; 
     $seconds -= 3600;
     }
 
-  while ($seconds > 60) {
+  while ($seconds>60) {
     $minutes++; 
     $seconds -= 60;
     }
 
-  $years = ($years == 0) ? '':($years.' '.(($years == 1)?YEAR:YEARS).', ');
-    $months = ($months == 0) ? '':($months.' '.(($months == 1)?MONTH:MONTHS).', ');
-    $weeks = ($weeks == 0) ? '':($weeks.' '.(($weeks == 1)?WEEK:WEEKS).', ');
-    $days = ($days == 0) ? '':($days.' '.(($days == 1)?DAY:DAYS).', ');
-    $hours = ($hours == 0) ? '':($hours.' '.(($hours == 1)?HOUR:HOURS).', ');
-    $minutes = ($minutes == 0) ? '':($minutes.' '.(($minutes == 1)?MINUTE:MINUTES).' '.WORD_AND.' ');
-    $seconds = ($seconds.' '.(($seconds == 1)?SECOND:SECONDS));
+  $years=($years==0)?'':($years.' '.(($years==1)?YEAR:YEARS).', ');
+    $months=($months==0)?'':($months.' '.(($months==1)?MONTH:MONTHS).', ');
+    $weeks=($weeks==0)?'':($weeks.' '.(($weeks==1)?WEEK:WEEKS).', ');
+    $days=($days==0)?'':($days.' '.(($days==1)?DAY:DAYS).', ');
+    $hours=($hours==0)?'':($hours.' '.(($hours==1)?HOUR:HOURS).', ');
+    $minutes=($minutes==0)?'':($minutes.' '.(($minutes==1)?MINUTE:MINUTES).' '.WORD_AND.' ');
+    $seconds=($seconds.' '.(($seconds==1)?SECOND:SECONDS));
     return $years.$months.$weeks.$days.$hours.$minutes.$seconds;
 }
 
 function smf_passgen($username, $pwd) {
   $passhash = sha1(strtolower($username) . $pwd);
-  $salt = substr(md5(rand()), 0, 4);
+  $salt=substr(md5(rand()), 0, 4);
 
-  return array($passhash, $salt);
+  return array($passhash,$salt);
 }
 
 function set_smf_cookie($id, $passhash, $salt) {
@@ -1303,10 +1216,5 @@ if ( !function_exists('htmlspecialchars_decode') ) {
   }
 }
 
-if (!function_exists("stripos")) {
-  function stripos($str,$needle) {
-   return strpos(strtolower($str),strtolower($needle));
-  }
-}
 // EOF
 ?>
