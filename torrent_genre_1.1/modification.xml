@@ -21,7 +21,7 @@ if (strlen($filename) == 0 && isset($array["info"]["name"]))
       <action>"add"</action>
       <where>"after"</where>
       <data><![CDATA[if (isset($array["gen"]))
-   $gen = mysql_escape_string(htmlspecialchars($array["gen"]));
+   $gen = mysql_real_escape_string(htmlspecialchars($array["gen"]));
 else
     $gen = "";]]></data>
     </operation>
@@ -181,7 +181,7 @@ else
 	  <where>"after"</where>
 	  <data><![CDATA[<tr>
    <td class="header" ><tag:language.GENRE /></td>
-   <td class="lista" align="left"><input type="text" name="gen" size="50" maxlength="200" /></td>
+   <input type="text" name="gen" value="<tag:torrent.gen />" size="50" maxlength="200" /></td>
    </tr>]]></data>
    </operation>
    </file>
@@ -196,7 +196,3 @@ else
    </operation>
    </file>
 </hack>
-
-
-
-
