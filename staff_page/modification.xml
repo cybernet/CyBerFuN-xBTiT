@@ -1,0 +1,105 @@
+<hack>
+  <title>Staff Page</title>
+  <author>Petr1fied (Loosely based on hacks by vibes &amp; marmon)(Modified for xbtit_v2.2.0_r642 by KC)</author>
+  <version>1.1</version>
+  <file>
+    <name>"$DEFAULT_ROOT/index.php"</name>
+    <operation>
+      <search><![CDATA[        $tpl->set("main_content",set_block($language["LAST_NEWS"],"center",$viewnewstpl->fetch(load_template("viewnews.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->News");
+        break;]]></search>
+      <action>"add"</action>
+      <data><![CDATA[    case 'staff':
+        require("$THIS_BASEPATH/staff.php");
+        $tpl->set("main_content",set_block($SITENAME . " " . $language["STAFF"],"center",$stafftpl->fetch(load_template("staff.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->Staff");
+        break;]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/blocks/mainmenu_block.php"</name>
+    <operation>
+      <search><![CDATA[if ($CURUSER["view_users"]=="yes")
+   print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=users\">".$language["MNU_MEMBERS"]."</a></td>\n");]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[if ($CURUSER["view_users"]=="yes")
+{
+   print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=users\">".$language["MNU_MEMBERS"]."</a></td>\n");
+   print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=staff\">".$language["STAFF"]."</a></td>\n");
+}]]></data>
+    </operation>
+  </file>
+    <file>
+    <name>"$DEFAULT_ROOT/blocks/dropdownmenu_block.php"</name>
+    <operation>
+      <search><![CDATA[print("<li><a href='index.php?page=users'>".$language["MNU_MEMBERS"]."</a><b></b></li>\n");]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[
+    print("<li><a href=\"index.php?page=staff\">".$language["STAFF"]."</a></li>\n");]]></data>      
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_ROOT/blocks/menu_block.php"</name>
+    <operation>
+      <search><![CDATA[   if ($CURUSER["view_users"]=="yes")
+      print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=users\">".$language["MNU_MEMBERS"]."</a></td></tr>\n");]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[   if ($CURUSER["view_users"]=="yes")
+   {
+      print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=users\">".$language["MNU_MEMBERS"]."</a></td></tr>\n");
+      print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=staff\">".$language["STAFF"]."</a></td></tr>\n");
+   }]]></data>
+    </operation>
+  </file>
+  <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_main.php"</name>
+    <operation>
+      <search><![CDATA[$language['MODULE_LOAD_ERROR']='The module required seems to be wrong!';]]></search>
+      <action>"add"</action>
+      <data><![CDATA[$language["STAFF"]="Staff";]]></data>
+      <where>"after"</where>
+    </operation>
+  </file>
+  <file>
+    <name>"$CURRENT_FOLDER/toCopy/offline.gif"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/images"</where>
+      <data>"offline.gif"</data>
+    </operation>
+  </file>
+  <file>
+    <name>"$CURRENT_FOLDER/toCopy/online.gif"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT/images"</where>
+      <data>"online.gif"</data>
+    </operation>
+  </file>
+  <file>
+    <name>"$CURRENT_FOLDER/toCopy/staff.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_ROOT"</where>
+      <data>"staff.php"</data>
+    </operation>
+  </file>
+  <file>
+    <name>"$CURRENT_FOLDER/toCopy/lang_staff.php"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_LANGUAGE_PATH"</where>
+      <data>"lang_staff.php"</data>
+    </operation>
+  </file>
+  <file>
+    <name>"$CURRENT_FOLDER/toCopy/staff.tpl"</name>
+    <operation>
+      <action>"copy"</action>
+      <where>"$DEFAULT_STYLE_PATH"</where>
+      <data>"staff.tpl"</data>
+    </operation>
+  </file>
+</hack>
