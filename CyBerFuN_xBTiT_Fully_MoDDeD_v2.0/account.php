@@ -435,7 +435,7 @@ if(!preg_match($regex,$email))
 // valid email check end
 
 // duplicate username
-$res=do_sqlquery("SELECT username FROM {$TABLE_PREFIX}users WHERE username='$utente'",true);
+$res=do_sqlquery("SELECT username FROM {$TABLE_PREFIX}users WHERE username='$utente'", true);
 if (mysql_num_rows($res)>0)
    {
    return -4;
@@ -503,7 +503,7 @@ else
      }
   }
 
-$bannedchar=array("\\", "/", ":", "*", "?", "\"", "@", "$", "'", "`", ",", ";", ".", "<", ">", "!", "£", "%", "^", "&", "(", ")", "+", "=", "#", "~");
+$bannedchar=array("\\", "/", ":", "*", "?", "\"", "@", "$", "'", "`", ",", ";", ".", "<", ">", "!", "Â£", "%", "^", "&", "(", ")", "+", "=", "#", "~");
 if (straipos(mysql_real_escape_string($utente), $bannedchar)==true)
    {
    return -8;
@@ -538,7 +538,7 @@ if ($INVITATIONSON == "true")
 
 // Continue to create smf members if they disable smf mode
 // $test=do_sqlquery("SELECT COUNT(*) FROM {$db_prefix}members");
-$test=do_sqlquery("SHOW TABLES LIKE '{$db_prefix}members'",true);
+$test=do_sqlquery("SHOW TABLES LIKE '{$db_prefix}members'", true);
 
 if ($FORUMLINK=="smf" || mysql_num_rows($test))
 {

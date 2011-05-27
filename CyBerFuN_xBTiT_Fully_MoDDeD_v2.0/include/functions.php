@@ -74,6 +74,7 @@ if(get_magic_quotes_gpc()){
 $CURRENTPATH = dirname(__FILE__);
 
 include $CURRENTPATH.'/xbtit_version.php';
+include($CURRENTPATH.'/CyBerFuN_xBTiT_version.php');
 require_once $CURRENTPATH.'/config.php';
 require_once $CURRENTPATH.'/common.php';
 require_once $CURRENTPATH.'/smilies.php';
@@ -306,10 +307,9 @@ function print_debug($level=3, $key=' - ') {
 }
 
 function print_version() {
-include($CURRENTPATH.'/CyBerFuN_xBTiT_version.php');
-  global $tracker_version;
+  global $CyBerFuN_xBTiT_version, $tracker_version;
 
-  return '[&nbsp;&nbsp;<u>CyBerFuN xBTiT ' . $CyBerFuN_xBTiT_version . ' By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">Btiteam</a>&nbsp;]';
+  return '[&nbsp;&nbsp;<u>CyBerFuN xBTiT ' . $CyBerFuN_xBTiT_version . ' By cybernet</u>: <a href="http://xList.ro/" target="_blank">xList Tracker</a>&nbsp;] based on [&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">Btiteam</a>&nbsp;]';
 }
 
 function print_designer() {
