@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 27, 2011 at 01:41 PM
+-- Generation Time: May 29, 2011 at 10:29 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.9
 
@@ -141,24 +141,24 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}categories` (
   KEY `image` (`image`),
   KEY `sort_index` (`sort_index`),
   KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}categories`
 --
 
 INSERT INTO `{$db_prefix}categories` (`id`, `name`, `sub`, `sort_index`, `image`) VALUES
-(7, 'Apps Win', 0, 1010, 'windows.png'),
-(6, 'Books', 0, 110, 'books.png'),
-(5, 'Anime', 0, 90, 'anime_new.png'),
-(4, 'Other', 0, 1000, 'utilities2.png'),
-(3, 'Games', 0, 40, 'games.png'),
-(2, 'Music', 0, 20, 'music.png'),
-(1, 'Movies', 0, 10, 'mov1es.png'),
-(8, 'Apps Linux', 0, 1020, 'linux.png'),
-(9, 'Apps Mac', 0, 1030, 'mac.png'),
-(11, 'DVD-R', 1, 0, 'movies.png'),
-(12, 'Adult', 0, 6969, 'adult.png');
+(NULL, 'Apps Win', 0, 1010, 'windows.png'),
+(NULL, 'Books', 0, 110, 'books.png'),
+(NULL, 'Anime', 0, 90, 'anime_new.png'),
+(NULL, 'Other', 0, 1000, 'utilities2.png'),
+(NULL, 'Games', 0, 40, 'games.png'),
+(NULL, 'Music', 0, 20, 'music.png'),
+(NULL, 'Movies', 0, 10, 'mov1es.png'),
+(NULL, 'Apps Linux', 0, 1020, 'linux.png'),
+(NULL, 'Apps Mac', 0, 1030, 'mac.png'),
+(NULL, 'DVD-R', 1, 0, 'movies.png'),
+(NULL, 'Adult', 0, 6969, 'adult.png');
 
 -- --------------------------------------------------------
 
@@ -587,7 +587,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
 --
 
 INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`, `active`, `date`, `gold_description`, `silver_description`, `classic_description`) VALUES
-(NULL, 3, 'gold.gif', 'silver.gif', '1', '0000-00-00', 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
+(NULL, 3, 'gold.gif', 'silver.gif', '1', NOW(), 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
 
 
 -- --------------------------------------------------------
@@ -892,7 +892,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}poller` (
 --
 
 INSERT INTO `{$db_prefix}poller` (`ID`, `startDate`, `endDate`, `pollerTitle`, `starterID`, `active`) VALUES
-(NULL, 1294215436, 0, 'How would you rate this script?', 2, 'yes');
+(NULL, UNIX_TIMESTAMP(), 0, 'How would you rate this script?', 2, 'yes');
 
 -- --------------------------------------------------------
 
@@ -907,18 +907,18 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}poller_option` (
   `pollerOrder` int(11) DEFAULT NULL,
   `defaultChecked` char(1) DEFAULT '0',
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}poller_option`
 --
 
 INSERT INTO `{$db_prefix}poller_option` (`ID`, `pollerID`, `optionText`, `pollerOrder`, `defaultChecked`) VALUES
-(1, 1, 'Excellent', 1, '1'),
-(2, 1, 'Very good', 2, '0'),
-(3, 1, 'Good', 3, '0'),
-(4, 1, 'Fair', 3, '0'),
-(5, 1, 'Poor', 4, '0');
+(NULL, 1, 'Excellent', 1, '1'),
+(NULL, 1, 'Very good', 2, '0'),
+(NULL, 1, 'Good', 3, '0'),
+(NULL, 1, 'Fair', 3, '0'),
+(NULL, 1, 'Poor', 4, '0');
 
 -- --------------------------------------------------------
 
@@ -1186,7 +1186,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}sticky` (
 --
 
 INSERT INTO `{$db_prefix}sticky` (`id`, `color`, `level`) VALUES
-(1, '#bce1ac;', 3);
+(NULL, '#bce1ac;', 3);
 
 -- --------------------------------------------------------
 
@@ -1201,19 +1201,19 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}style` (
   PRIMARY KEY (`id`),
   KEY `style` (`style`),
   KEY `style_url` (`style_url`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}style`
 --
 
 INSERT INTO `{$db_prefix}style` (`id`, `style`, `style_url`) VALUES
-(1, 'xBtit Default', 'style/xbtit_default'),
-(2, 'Mint', 'style/mintgreen'),
-(3, 'Dark Lair', 'style/darklair'),
-(4, 'Yellow Jacket', 'style/thehive'),
-(5, 'Frosted', 'style/frosted'),
-(6, 'Holiday Spirit', 'style/holiday-spirit');
+(NULL, 'xBtit Default', 'style/xbtit_default'),
+(NULL, 'Mint', 'style/mintgreen'),
+(NULL, 'Dark Lair', 'style/darklair'),
+(NULL, 'Yellow Jacket', 'style/thehive'),
+(NULL, 'Frosted', 'style/frosted'),
+(NULL, 'Holiday Spirit', 'style/holiday-spirit');
 
 -- --------------------------------------------------------
 
@@ -1387,7 +1387,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
 --
 
 INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `custom_title`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`, `seedbonus`, `rank_switch`, `old_rank`, `timed_rank`) VALUES
-(1, 'Guest', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0, 0, NOW(), NULL, 'no', '', '0000-00-00 00:00:00', 0, '', '0.000000', 'no', '3', '0000-00-00 00:00:00');
+(NULL, 'Guest', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0, 0, NOW(), NULL, 'no', '', '0000-00-00 00:00:00', 0, '', '0.000000', 'no', '3', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1421,19 +1421,19 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users_level` (
   `WT` int(11) NOT NULL DEFAULT '0',
   UNIQUE KEY `base` (`id`),
   KEY `id_level` (`id_level`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}users_level`
 --
 
 INSERT INTO `{$db_prefix}users_level` (`id`, `id_level`, `level`, `view_torrents`, `edit_torrents`, `delete_torrents`, `view_users`, `edit_users`, `delete_users`, `view_news`, `edit_news`, `delete_news`, `can_upload`, `can_download`, `view_forum`, `edit_forum`, `delete_forum`, `predef_level`, `can_be_deleted`, `admin_access`, `prefixcolor`, `suffixcolor`, `WT`) VALUES
-(1, 1, 'guest', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'guest', 'no', 'no', '', '', 0),
-(2, 2, 'validating', 'yes', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'validating', 'no', 'no', '', '', 0),
-(3, 3, 'Members', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'no', 'yes', 'yes', 'no', 'no', 'member', 'no', 'no', '<span style=''color:#000000''>', '</span>', 0),
-(4, 4, 'Uploader', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'uploader', 'no', 'no', '', '', 0),
-(5, 5, 'V.I.P.', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'vip', 'no', 'no', '', '', 0),
-(6, 6, 'Moderator', 'yes', 'yes', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'no', 'yes', 'yes', 'yes', 'yes', 'no', 'moderator', 'no', 'no', '<span style=''color: #428D67''>', '</span>', 0),
-(7, 7, 'Administrator', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'admin', 'no', 'yes', '<span style=''color:#FF8000''>', '</span>', 0),
-(8, 8, 'Owner', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'owner', 'no', 'yes', '<span style=''color:#EE4000''>', '</span>', 0);
+(NULL, 1, 'guest', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'guest', 'no', 'no', '', '', 0),
+(NULL, 2, 'validating', 'yes', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'validating', 'no', 'no', '', '', 0),
+(NULL, 3, 'Members', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'no', 'yes', 'yes', 'no', 'no', 'member', 'no', 'no', '<span style=''color:#000000''>', '</span>', 0),
+(NULL, 4, 'Uploader', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'uploader', 'no', 'no', '', '', 0),
+(NULL, 5, 'V.I.P.', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'vip', 'no', 'no', '', '', 0),
+(NULL, 6, 'Moderator', 'yes', 'yes', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'no', 'yes', 'yes', 'yes', 'yes', 'no', 'moderator', 'no', 'no', '<span style=''color: #428D67''>', '</span>', 0),
+(NULL, 7, 'Administrator', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'admin', 'no', 'yes', '<span style=''color:#FF8000''>', '</span>', 0),
+(NULL, 8, 'Owner', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'owner', 'no', 'yes', '<span style=''color:#EE4000''>', '</span>', 0);
 
