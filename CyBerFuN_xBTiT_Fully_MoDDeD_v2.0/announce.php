@@ -37,7 +37,7 @@
 // http://xDnS.ro/
 // Modified By cybernet2u
 
-// CyBerFuN xBTiT Fully MoDDeD v1.2
+// CyBerFuN xBTiT Fully MoDDeD v2.0
 
 
 // https://cyberfun-xbtit.svn.sourceforge.net/svnroot/cyberfun-xbtit
@@ -206,7 +206,7 @@ $nip = ip2long($ip);
 $res = mysql_query("SELECT * FROM {$TABLE_PREFIX}bannedip WHERE $nip >= first AND $nip <= last") or error_log(__FILE__." - ".__LINE__);
 if (mysql_num_rows($res) > 0)
  {
-   show_error("You are not authorized to use this tracker (".$SITENAME.") -- Your IP address (".$ip.") is BANNED.");
+   show_error("You are not authorized to use (".$SITENAME.") -- Your IP address (".$ip.") is BANNED.");
    die();
 }
 // end banned IP
@@ -230,14 +230,14 @@ $pid = AddSlashes(StripSlashes($pid));
 
 // if PID empty string or not send by client
 if ($pid == "" || !$pid)
-   show_error("Please redownload the torrent. PID system is active and pid was not found in the torrent");
+   show_error("Please redownload the torrent. PiD system is active and pid was not found in the torrent");
 }
 
 // PID turned on
 if ($PRIVATE_ANNOUNCE) {
   $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE pid='".$pid."' LIMIT 1");
   if (!$respid || mysql_num_rows($respid) != 1)
-     show_error("Invalid PID (private announce): $pid. Please redownload torrent from $BASEURL.");
+     show_error("Invalid PiD (private announce): $pid. Please redownload torrent from $BASEURL.");
   else
       {
       $rowpid = mysql_fetch_assoc($respid);
@@ -287,7 +287,7 @@ if ($PRIVATE_ANNOUNCE) {
         else
             $ratio = 0.0;
 
-        $added=mysql_fetch_assoc($res_tor);
+        $added = mysql_fetch_assoc($res_tor);
         $vz = $added["data"];
         $timer = floor((time() - $vz) / 3600);
         if($ratio < 1.0 && $rowpid['id'] != $added["uploader"]){
