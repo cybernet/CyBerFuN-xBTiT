@@ -143,16 +143,16 @@ function createUsersLevelCombo($selected=0)
 
 function createGoldCategories($selected='')
 {
-        global $TABLE_PREFIX;
+        global $TABLE_PREFIX, $btit_settings;
       $gold_categories = array(
-                0=>'Classic (0% free leach)',
-                1=>'Silver (50% free leach)',
-                2=>'Gold (100% free leach)'
+                0=>'Classic ( 0% free leech )',
+                1=>'Silver ( 50% free leech )',
+                2=>'Gold ( 100% free leech )'
       );
       $g_desc = '';
       $s_desc = '';
       $c_desc = '';
-        $res=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+      $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true, $btit_settings['cache_duration']);
             foreach ($res as $key=>$value)
             {
                 $g_desc = $value["gold_description"];
@@ -177,17 +177,17 @@ function createGoldCategories($selected='')
             }
       }
       ajde(this.value)\">";
-      foreach ($gold_categories as $key=>$value)
+      foreach ($gold_categories as $key => $value)
       {
-        $s='';
-        if($key==$selected)
+        $s = '';
+        if($key == $selected)
         {
-            $s='selected';
+            $s = 'selected';
         }
-        $gold_select_box .="<option value='".$key."' ".$s.">".$value."</option>";
+        $gold_select_box .= "<option value='".$key."' ".$s.">".$value."</option>";
         
       }
-      $gold_select_box .='</select><div id="description"></div>';
+      $gold_select_box .= '</select><div id="description"></div>';
       return $gold_select_box;
 }
 //end gold
