@@ -1,0 +1,189 @@
+<hack>
+  <title>Ignore List</title>
+  <author>kvetinka (Modified by King Cobra)</author>
+  <version>1.1</version> 
+<file>
+<name>"$DEFAULT_ROOT/user/usercp.pmbox.php"</name>
+<operation>
+<search><![CDATA[             /*
+             if($FORUMLINK=="smf")
+             {
+                 do_sqlquery("INSERT INTO {$db_prefix}personal_messages (ID_MEMBER_FROM, fromName, msgtime, subject, body) VALUES (".$CURUSER["smf_fid"].", '".$CURUSER["username"]."', UNIX_TIMESTAMP(), $subject, $msg)",true);
+                 $pm_id=mysql_insert_id();
+                 do_sqlquery("INSERT INTO {$db_prefix}pm_recipients (ID_PM, ID_MEMBER) VALUES ($pm_id, $rec)");
+                 do_sqlquery("UPDATE {$db_prefix}members SET instantMessages=instantMessages+1, unreadMessages=unreadMessages+1 WHERE ID_MEMBER=$rec");
+             }
+             else
+                 do_sqlquery("INSERT INTO {$TABLE_PREFIX}messages (sender, receiver, added, subject, msg) VALUES ($send,$rec,UNIX_TIMESTAMP(),$subject,$msg)") or die(mysql_error());
+             */
+
+             // replaced by send_pm function]]></search>
+<action>"add"</action>
+<where>"after"</where>
+<data><![CDATA[$hmm=mysql_query("SELECT * FROM {$TABLE_PREFIX}ignore WHERE ignore_id = '$uid' AND user_id = '$rec' ");
+if (mysql_num_rows($hmm)){
+redirect("index.php?page=usercp&uid=".$uid."&do=ign");
+}
+else]]></data>
+</operation>
+</file>  
+        <file>
+<name>"$DEFAULT_ROOT/user/usercp.menu.php"</name>
+<operation>
+<search><![CDATA[);
+?>]]></search>
+<action>"add"</action>
+<where>"before"</where>
+<data><![CDATA[
+3=>array(
+        "title"=>$language["IGN_OTHER"],
+        "menu"=>array(1=>array(
+                "url"=>"index.php?page=usercp&amp;uid=".$uid."&amp;do=ignore&amp;uid=".$uid."" ,
+                "description"=>$language["IGNORE1"]), 
+                )),]]></data>
+</operation>
+</file>
+<file>
+<name>"$DEFAULT_STYLE_PATH/userdetails.tpl"</name>
+<operation>
+<search><![CDATA[</if:userdetail_has_avatar>
+
+  </tr>]]></search>
+<action>"add"</action>
+<where>"after"</where>
+<data><![CDATA[  <tr>
+
+    <td class="header"><tag:language.LIST_IGNORE /></td>
+
+    <td class="lista" ><tag:ign /></td>
+
+  </tr>]]></data>
+</operation>
+</file>
+<file>
+<name>"$DEFAULT_ROOT/userdetails.php"</name>
+  <operation>
+      <search><![CDATA[if ($id>1) {
+   $res=get_result("SELECT]]></search>
+        <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[ ul.id_level, ]]></data>
+    </operation>
+<operation>
+<search><![CDATA[$userdetailtpl= new bTemplate();]]></search>
+<action>"add"</action>
+<where>"after"</where>
+<data><![CDATA[$hmm=mysql_query("SELECT * FROM {$TABLE_PREFIX}ignore WHERE ignore_id = ".$id." AND user_id = ".$CURUSER['uid']);
+
+if (mysql_num_rows($hmm)){
+if ($row["id_level"]<6)
+$userdetailtpl-> set("ign","<font color=orange>User is already ignored</font>");  
+} 
+else
+if ($row["id_level"]<6)
+$userdetailtpl-> set("ign","<a href=index.php?page=usercp&uid=".$CURUSER["uid"]."&do=ignore&action=add&ignore_id=".$id."><font color=orange>Ignore user</font></a>");       
+if ($row["id_level"]>5)
+$userdetailtpl-> set("ign","<font color=orange>Staff can not Ignore</font>");
+]]></data>
+</operation>
+</file>
+<file>
+<name>"$DEFAULT_STYLE_PATH/users.tpl"</name>
+<operation>
+<search><![CDATA[<td class="header" align="center"><tag:users_delete /></td>]]></search>
+<action>"add"</action>
+<where>"after"</where>
+<data><![CDATA[<td class="header" align="center"><tag:language.LIST_IGNORE /></td>]]></data>
+</operation>
+<operation>
+<search><![CDATA[<td class="lista" align="center" style="text-align: center;"><tag:users[].delete /></td>]]></search>
+<action>"add"</action>
+<where>"after"</where>
+<data><![CDATA[<td class="lista" align="center" style="text-align: center;"><tag:users[].ignore /></td>]]></data>
+</operation>
+</file>
+
+<file>
+<name>"$DEFAULT_ROOT/users.php"</name>
+  <operation>
+      <search><![CDATA[if ($CURUSER["delete_users"]=="yes")
+  $userstpl->set("users_delete", $language["DELETE"]);
+          
+$query="select]]></search>
+<action>"add"</action>
+<where>"after"</where>
+      <data><![CDATA[ ul.id_level, ]]></data>
+    </operation>
+<operation>
+<search><![CDATA[$users[$i]["flag"] = $row_user["flag"] == 0 ? "<img src='images/flag/unknown.gif' alt='".$language["UNKNOWN"]."' title='".$language["UNKNOWN"]."' />" : "<img src='images/flag/" . $row_user['flagpic'] . "' alt='" . $row_user['name'] . "' title='" . $row_user['name'] . "' />";]]></search>
+<action>"add"</action>
+<where>"after"</where>
+<data><![CDATA[$hmm=mysql_query("SELECT * FROM {$TABLE_PREFIX}ignore WHERE ignore_id = ".$row_user['id']." AND user_id = ".$CURUSER['uid']);
+if (mysql_num_rows($hmm)){
+if ($row_user["id_level"]<6)
+$users[$i]["ignore"] ="<font color=red>Ignored</font>";
+} 
+else
+if ($row_user["id_level"]<6)
+  $users[$i]["ignore"] ="<a href=index.php?page=usercp&uid=".$CURUSER["uid"]."&do=ignore&action=add&ignore_id=".$row_user["id"]."><font color=orange>Ignore him!</font></a>";   ]]></data>
+</operation>
+</file>
+       <file>
+    <name>"$DEFAULT_ROOT/user/usercp.index.php"</name>
+    <operation>
+      <search><![CDATA[case 'pm':
+    include("$USER_PATH/usercp.pmbox.php");
+    $tpl->set("main_content",set_block($language["MNU_UCP_PM"],"center",$usercptpl->fetch(load_template("usercp.pmbox.tpl"))));
+    break;]]></search>
+      <action>"add"</action>
+      <where>"after"</where>
+      <data><![CDATA[    
+    case 'ignore':
+    include("$USER_PATH/usercp.ignore.php");
+    $tpl->set("main_content",set_block($language["IGNORE1"],"center",$usercptpl->fetch(load_template("usercp.ignore.tpl"))));
+    break;
+    case 'ign':
+    include("$USER_PATH/usercp.ignchyba.php");
+    $tpl->set("main_content",set_block($language["IGNORE2"],"center",$usercptpl->fetch(load_template("usercp.ignchyba.tpl"))));
+    break;]]></data>
+    </operation>
+       </file>
+  <file>
+    <name>"$DEFAULT_LANGUAGE_PATH/lang_main.php"</name>
+    <operation>
+     <search><![CDATA[?>]]></search>
+      <action>"add"</action>
+      <data><![CDATA[
+$language['IGN_OTHER']='Other';
+$language['LIST_IGNORE']='Ignore';
+$language['IGNORE1']='Ignore users';
+$language['IGNORE2']='Unable to send';
+$language['IGNORE_USERS']='Ignore user';
+$language['SINCE_IGNORE']='Since when ignore';
+$language['DELETE_IGNORE']='Cancel ignore';
+]]></data>
+      <where>"before"</where>
+    </operation>
+  </file>
+     
+  <file>
+    <name>"database"</name>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[CREATE TABLE IF NOT EXISTS `xbtit_ignore` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `user_id` int(10) unsigned NOT NULL default '0',
+  `ignore_id` int(10) unsigned NOT NULL default '0',
+  `ignore_name` varchar(250) NOT NULL default '',
+  `added` datetime NOT NULL default '0000-00-00 00:00:00',
+  PRIMARY KEY  (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=189 ;]]></data>
+    </operation>
+    <operation>
+      <action>"sql"</action>
+      <data><![CDATA[INSERT INTO `xbtit_ignore` (`id`, `user_id`, `ignore_id`, `ignore_name`, `added`) VALUES]]></data>
+    </operation>
+  </file>
+
+</hack>
