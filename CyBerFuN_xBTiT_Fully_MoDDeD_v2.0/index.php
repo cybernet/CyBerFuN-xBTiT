@@ -65,7 +65,7 @@ $time_start = get_microtime();
 //require_once ("$THIS_BASEPATH/include/config.php");
 
 clearstatcache();
-
+session_name("xbtit");
 session_start();
 
 dbconn(true);

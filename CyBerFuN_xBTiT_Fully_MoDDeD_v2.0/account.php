@@ -36,31 +36,31 @@ if (!defined("IN_BTIT"))
 
 require_once(load_language("lang_account.php"));
 
-if (!isset($_POST["language"])) $_POST["language"] = max(1,$btit_settings["default_language"]);
-$idlang=intval($_POST["language"]);
+if (!isset($_POST["language"])) $_POST["language"] = max(1, $btit_settings["default_language"]);
+$idlang = intval($_POST["language"]);
 
 
-if (isset($_GET["uid"])) $id=intval($_GET["uid"]);
- else $id="";
-if (isset($_GET["returnto"])) $link=urldecode($_GET["returnto"]);
- else $link="";
-if (isset($_GET["act"])) $act=$_GET["act"];
- else $act="signup";
-if (isset($_GET["language"])) $idlangue=intval($_GET["language"]);
- else $idlangue=max(1,$btit_settings["default_language"]);
-if (isset($_GET["style"])) $idstyle=intval($_GET["style"]);
- else $idstyle=max(1,$btit_settings["default_style"]);
-if (isset($_GET["flag"])) $idflag=intval($_GET["flag"]);
- else $idflag="";
+if (isset($_GET["uid"])) $id = intval($_GET["uid"]);
+ else $id = "";
+if (isset($_GET["returnto"])) $link = urldecode($_GET["returnto"]);
+ else $link = "";
+if (isset($_GET["act"])) $act = $_GET["act"];
+ else $act = "signup";
+if (isset($_GET["language"])) $idlangue = intval($_GET["language"]);
+ else $idlangue = max(1, $btit_settings["default_language"]);
+if (isset($_GET["style"])) $idstyle = intval($_GET["style"]);
+ else $idstyle = max(1, $btit_settings["default_style"]);
+if (isset($_GET["flag"])) $idflag = intval($_GET["flag"]);
+ else $idflag = "";
 
 if (isset($_POST["uid"]) && isset($_POST["act"]))
   {
-if (isset($_POST["uid"])) $id=intval($_POST["uid"]);
- else $id="";
-if (isset($_POST["returnto"])) $link=urldecode($_POST["returnto"]);
- else $link="";
-if (isset($_POST["act"])) $act=$_POST["act"];
- else $act="";
+if (isset($_POST["uid"])) $id = intval($_POST["uid"]);
+ else $id = "";
+if (isset($_POST["returnto"])) $link = urldecode($_POST["returnto"]);
+ else $link = "";
+if (isset($_POST["act"])) $act = $_POST["act"];
+ else $act = "";
   }
 
 // start Invitation System by dodge
@@ -91,8 +91,8 @@ if ($act=="signup" && isset($CURUSER["uid"]) && $CURUSER["uid"]!=1) {
 }
 
 
-$nusers=get_result("SELECT count(*) as tu FROM {$TABLE_PREFIX}users WHERE id>1",true,$btit_settings['cache_duration']);
-$numusers=$nusers[0]['tu'];
+$nusers = get_result("SELECT count(*) as tu FROM {$TABLE_PREFIX}users WHERE id>1", true, $btit_settings['cache_duration']);
+$numusers = $nusers[0]['tu'];
 
 if ($act=="signup" && $MAX_USERS!=0 && $numusers>=$MAX_USERS && !$INVITATIONSON)
    {
@@ -103,26 +103,27 @@ if ($act=="confirm") {
 
       global $FORUMLINK, $db_prefix;
 
-      $random=intval($_GET["confirm"]);
-      $random2=rand(10000, 60000);
-      $res=do_sqlquery("UPDATE {$TABLE_PREFIX}users SET id_level=3".(($FORUMLINK=="smf") ? ", random=$random2" : "")." WHERE id_level=2 AND random=$random",true);
+      $random = intval($_GET["confirm"]);
+      $random2 = rand(10000, 60000);
+      $res = do_sqlquery("UPDATE {$TABLE_PREFIX}users SET id_level=3".(($FORUMLINK=="smf") ? ", random=$random2" : "")." WHERE id_level=2 AND random=$random", true);
       if (!$res)
          die("ERROR: " . mysql_error() . "\n");
       else {
-          if($FORUMLINK=="smf")
+          if($FORUMLINK == "smf")
           {
-              $get=get_result("SELECT smf_fid FROM {$TABLE_PREFIX}users WHERE id_level=3 AND random=$random2",true,$btit_settings['cache_duration']);
-              do_sqlquery("UPDATE {$db_prefix}members SET ID_GROUP=13 WHERE ID_MEMBER=".$get[0]["smf_fid"],true);
+              $get = get_result("SELECT smf_fid FROM {$TABLE_PREFIX}users WHERE id_level=3 AND random=$random2", true, $btit_settings['cache_duration']);
+              do_sqlquery("UPDATE {$db_prefix}members SET ID_GROUP=13 WHERE ID_MEMBER=".$get[0]["smf_fid"], true);
           }
-          success_msg($language["ACCOUNT_CREATED"],$language["ACCOUNT_CONGRATULATIONS"]);
+          success_msg($language["ACCOUNT_CREATED"], $language["ACCOUNT_CONGRATULATIONS"]);
           stdfoot();
           exit;
           }
 }
 
 if ($_POST["conferma"]) {
-    if ($act=="signup" || $act == "invite") {
-       $ret=aggiungiutente();
+    if ($act == "signup" || $act == "invite") {
+        $ret = aggiungiutente();
+	$pass_min_req = explode(",", $btit_settings["secsui_pass_min_req"]);
        if ($ret==0)
           {
 		  if ($INVITATIONSON == "true")
@@ -175,21 +176,42 @@ if ($_POST["conferma"]) {
        elseif ($ret==-8)
          stderr($language["ERROR"],$language["ERR_SPECIAL_CHAR"]);
        elseif ($ret==-9)
-         stderr($language["ERROR"],$language["ERR_PASS_LENGTH"]);
+         stderr($language["ERROR"],$language["ERR_PASS_LENGTH_1"]." <span style=\"color:blue;font-weight:bold;\">".$pass_min_req[0]."</span> ".$language["ERR_PASS_LENGTH_2"]);
+       elseif ($ret==-998) 
+       { 
+           $newpassword = pass_the_salt(30); 
+	       stderr($language["ERROR"],$language["ERR_PASS_TOO_WEAK_1"].":<br /><br />".(($pass_min_req[1]>0)?"<li><span style='color:blue;font-weight:bold;'>".$pass_min_req[1]."</span> ".(($pass_min_req[1]==1)?$language["ERR_PASS_TOO_WEAK_2"]:$language["ERR_PASS_TOO_WEAK_2A"])."</li>":"").(($pass_min_req[2]>0)?"<li><span style='color:blue;font-weight:bold;'>".$pass_min_req[2]."</span> ".(($pass_min_req[2]==1)?$language["ERR_PASS_TOO_WEAK_3"]:$language["ERR_PASS_TOO_WEAK_3A"])."</li>":"").(($pass_min_req[3]>0)?"<li><span style='color:blue;font-weight:bold;'>".$pass_min_req[3]."</span> ".(($pass_min_req[3]==1)?$language["ERR_PASS_TOO_WEAK_4"]:$language["ERR_PASS_TOO_WEAK_4A"])."</li>":"").(($pass_min_req[4]>0)?"<li><span style='color:blue;font-weight:bold;'>".$pass_min_req[4]."</span> ".(($pass_min_req[4]==1)?$language["ERR_PASS_TOO_WEAK_5"]:$language["ERR_PASS_TOO_WEAK_5A"])."</li>":"")."<br />".$language["ERR_PASS_TOO_WEAK_6"].":<br /><br /><span style='color:blue;font-weight:bold;'>".$newpassword."</span><br />"); 
+       } 
        else
-        stderr($language["ERROR"],$language["ERR_USER_ALREADY_EXISTS"]);
+        stderr($language["ERROR"], $language["ERR_USER_ALREADY_EXISTS"]);
        }
 }
 else {
-    $tpl_account=new bTemplate();
+    $tpl_account = new bTemplate();
     tabella($act);
 }
 
 
 
-function tabella($action,$dati=array()) {
+function tabella($action, $dati = array()) {
 
    global $idflag, $link, $idlangue, $idstyle, $SITENAME, $INVITATIONSON, $code, $inviter, $CURUSER, $USE_IMAGECODE, $TABLE_PREFIX, $language, $tpl_account, $THIS_BASEPATH;
+
+   $pass_min_req=explode(",", $btit_settings["secsui_pass_min_req"]); 
+   $tpl_account->set("pass_min_char",$pass_min_req[0]); 
+   $tpl_account->set("pass_min_lct",$pass_min_req[1]); 
+   $tpl_account->set("pass_min_uct",$pass_min_req[2]); 
+   $tpl_account->set("pass_min_num",$pass_min_req[3]); 
+   $tpl_account->set("pass_min_sym",$pass_min_req[4]); 
+   $tpl_account->set("pass_char_plural", (($pass_min_req[0]==1)?false:true),true); 
+   $tpl_account->set("pass_lct_plural", (($pass_min_req[1]==1)?false:true),true); 
+   $tpl_account->set("pass_uct_plural", (($pass_min_req[2]==1)?false:true),true); 
+   $tpl_account->set("pass_num_plural", (($pass_min_req[3]==1)?false:true),true); 
+   $tpl_account->set("pass_sym_plural", (($pass_min_req[4]==1)?false:true),true); 
+   $tpl_account->set("pass_lct_set", (($pass_min_req[1]>0)?true:false),true); 
+   $tpl_account->set("pass_uct_set", (($pass_min_req[2]>0)?true:false),true); 
+   $tpl_account->set("pass_num_set", (($pass_min_req[3]>0)?true:false),true); 
+   $tpl_account->set("pass_sym_set", (($pass_min_req[4]>0)?true:false),true); 
 
 
    if ($action == "signup" || $action == "invite")
@@ -364,7 +386,7 @@ elseif ($action!="mod")
 
 function aggiungiutente() {
 
-global $SITENAME, $SITEEMAIL, $INVITATIONSON, $VALID_INV, $BASEURL, $VALIDATION, $USERLANG, $USE_IMAGECODE, $TABLE_PREFIX, $XBTT_USE, $language, $THIS_BASEPATH, $FORUMLINK, $db_prefix;
+global $SITENAME, $SITEEMAIL, $INVITATIONSON, $VALID_INV, $BASEURL, $VALIDATION, $USERLANG, $USE_IMAGECODE, $TABLE_PREFIX, $XBTT_USE, $language, $THIS_BASEPATH, $FORUMLINK, $db_prefix, $btit_settings;
 
 $utente=mysql_real_escape_string($_POST["user"]);
 $pwd=mysql_real_escape_string($_POST["pwd"]);
@@ -412,7 +434,7 @@ if ($utente=="" || $pwd=="" || $email=="") {
    exit;
 }
 
-$res=do_sqlquery("SELECT email FROM {$TABLE_PREFIX}users WHERE email='$email'",true);
+$res = do_sqlquery("SELECT email FROM {$TABLE_PREFIX}users WHERE email='$email'", true);
 if (mysql_num_rows($res)>0)
    {
    return -2;
@@ -420,13 +442,8 @@ if (mysql_num_rows($res)>0)
 }
 
 // valid email check - by vibes
-/*
-$regex = "^[_+a-z0-9-]+(\.[_+a-z0-9-]+)*"
-                ."@[a-z0-9-]+(\.[a-z0-9-]{1,})*"
-                ."\.([a-z]{2,}){1}$";
-*/
 
-$regex='/\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/i';
+$regex = '/\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/i';
 if(!preg_match($regex,$email))
    {
    return -3;
@@ -435,8 +452,8 @@ if(!preg_match($regex,$email))
 // valid email check end
 
 // duplicate username
-$res=do_sqlquery("SELECT username FROM {$TABLE_PREFIX}users WHERE username='$utente'", true);
-if (mysql_num_rows($res)>0)
+$res = do_sqlquery("SELECT username FROM {$TABLE_PREFIX}users WHERE username='$utente'", true);
+if (mysql_num_rows($res) > 0)
    {
    return -4;
    exit;
@@ -510,16 +527,50 @@ if (straipos(mysql_real_escape_string($utente), $bannedchar)==true)
    exit;
 }
 
-if(strlen(mysql_real_escape_string($pwd))<4)
-   {
-   return -9;
-   exit;
+$pass_to_test=$_POST["pwd"];
+$pass_min_req=explode(",", $btit_settings["secsui_pass_min_req"]);
+
+if(strlen($pass_to_test)<$pass_min_req[0])
+{
+    return -9;
+    exit;
 }
 
-$pid=md5(uniqid(rand(),true));
-do_sqlquery("INSERT INTO {$TABLE_PREFIX}users (username, password, random, id_level, email, style, language, flag, joined, lastconnect, pid, time_offset) VALUES ('$utente', '" . md5($pwd) . "', $random, $idlevel, '$email', $idstyle, $idlangue, $idflag, NOW(), NOW(),'$pid', '".$timezone."')",true);
+$lct_count=0;
+$uct_count=0;
+$num_count=0;
+$sym_count=0;
+$pass_end=(int)(strlen($pass_to_test)-1);
+$pass_position=0;
+$pattern1='#[a-z]#';
+$pattern2='#[A-Z]#';
+$pattern3='#[0-9]#';
+$pattern4='/[¬!"£$%^&*()`{}\[\]:@~;\'#<>?,.\/\\-=_+\|]/';
 
-$newuid=mysql_insert_id();
+for($pass_position=0;$pass_position<=$pass_end;$pass_position++)
+{
+    if(preg_match($pattern1,substr($pass_to_test,$pass_position,1),$matches))
+      $lct_count++;
+    elseif(preg_match($pattern2,substr($pass_to_test,$pass_position,1),$matches))
+      $uct_count++;
+    elseif(preg_match($pattern3,substr($pass_to_test,$pass_position,1),$matches))
+      $num_count++;
+    elseif(preg_match($pattern4,substr($pass_to_test,$pass_position,1),$matches))
+      $sym_count++;
+}
+if($lct_count<$pass_min_req[1] || $uct_count<$pass_min_req[2] || $num_count<$pass_min_req[3] || $sym_count<$pass_min_req[4])
+{
+    return -998;
+    exit;
+}
+
+$multipass = hash_generate(array("salt" => ""), $_POST["pwd"], $_POST["user"]);
+$i = $btit_settings["secsui_pass_type"];
+
+$pid = md5(uniqid(rand(), true));
+do_sqlquery("INSERT INTO `{$TABLE_PREFIX}users` (`username`, `password`, `salt`, `pass_type`, `dupe_hash`, `random`, `id_level`, `email`, `style`, `language`, `flag`, `joined`, `lastconnect`, `pid`, `time_offset`) VALUES ('".$utente."', '".mysql_real_escape_string($multipass[$i]["rehash"])."', '".mysql_real_escape_string($multipass[$i]["salt"])."', '".$i."', '".mysql_real_escape_string($multipass[$i]["dupehash"])."', ".$random.", ".$idlevel.", '".$email."', ".$idstyle.", ".$idlangue.", ".$idflag.", NOW(), NOW(),'".$pid."', '".$timezone."')", true);
+
+$newuid = mysql_insert_id();
 
 // begin invitation system by dodge
 if ($INVITATIONSON == "true")
@@ -538,15 +589,15 @@ if ($INVITATIONSON == "true")
 
 // Continue to create smf members if they disable smf mode
 // $test=do_sqlquery("SELECT COUNT(*) FROM {$db_prefix}members");
-$test=do_sqlquery("SHOW TABLES LIKE '{$db_prefix}members'", true);
+$test = do_sqlquery("SHOW TABLES LIKE '{$db_prefix}members'", true);
 
-if ($FORUMLINK=="smf" || mysql_num_rows($test))
+if ($FORUMLINK == "smf" || mysql_num_rows($test))
 {
-    $smfpass=smf_passgen($utente, $pwd);
-    $flevel=$idlevel+10;
+    $smfpass = smf_passgen($utente, $pwd);
+    $flevel = $idlevel + 10;
 
-    do_sqlquery("INSERT INTO {$db_prefix}members (memberName, dateRegistered, ID_GROUP, realName, passwd, emailAddress, memberIP, memberIP2, is_activated, passwordSalt) VALUES ('$utente', UNIX_TIMESTAMP(), $flevel, '$utente', '$smfpass[0]', '$email', '".getip()."', '".getip()."', 1, '$smfpass[1]')",true);
-    $fid=mysql_insert_id();
+    do_sqlquery("INSERT INTO {$db_prefix}members (memberName, dateRegistered, ID_GROUP, realName, passwd, emailAddress, memberIP, memberIP2, is_activated, passwordSalt) VALUES ('$utente', UNIX_TIMESTAMP(), $flevel, '$utente', '$smfpass[0]', '$email', '".getip()."', '".getip()."', 1, '$smfpass[1]')", true);
+    $fid = mysql_insert_id();
     do_sqlquery("UPDATE `{$db_prefix}settings` SET `value` = $fid WHERE `variable` = 'latestMember'",true);
     do_sqlquery("UPDATE `{$db_prefix}settings` SET `value` = '$utente' WHERE `variable` = 'latestRealName'",true);
     do_sqlquery("UPDATE `{$db_prefix}settings` SET `value` = UNIX_TIMESTAMP() WHERE `variable` = 'memberlist_updated'",true);

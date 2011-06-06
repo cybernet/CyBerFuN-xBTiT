@@ -40,7 +40,7 @@ dbconn();
 // Invalid Login System - end
 function login() {
  
-   global $TABLE_PREFIX, $language, $logintpl;
+   global $TABLE_PREFIX, $language, $logintpl, $btit_settings;
 // Invalid Login System Hack
 if ($btit_settings["inv_login"]=="true")
  {
@@ -112,15 +112,17 @@ $logintpl->set("last",$last);
 $logintpl=new bTemplate();
 
 
-if (!$CURUSER || $CURUSER["uid"]==1) {
-
+if (!$CURUSER || $CURUSER["uid"]==1)
+{
 
 if (isset($_POST["uid"]) && $_POST["uid"])
-  $user=$_POST["uid"];
-else $user='';
+  $user = $_POST["uid"];
+else 
+	$user="";
 if (isset($_POST["pwd"]) && $_POST["pwd"])
   $pwd=$_POST["pwd"];
-else $pwd='';
+else 
+	$pwd="";
 // Invalid Login System
 $ip = $_SERVER["REMOTE_ADDR"];
 $attempts = $btit_settings["att_login"];
@@ -129,17 +131,17 @@ if (isset($_POST["uid"]) && isset($_POST["pwd"]))
   {
     if ($FORUMLINK=="smf")
         $smf_pass = sha1(strtolower($user) . $pwd);
-        $res = do_sqlquery("SELECT u.id, u.random, u.password".(($FORUMLINK=="smf") ? ", u.smf_fid, s.passwd, s.passwordSalt" : "")." FROM {$TABLE_PREFIX}users u ".(($FORUMLINK=="smf") ? "LEFT JOIN {$db_prefix}members s ON u.smf_fid=s.ID_MEMBER" : "" )." WHERE u.username ='".AddSlashes($user)."'",true);
-        $row = mysql_fetch_array($res);
+        $res = do_sqlquery("SELECT `u`.`salt`, `u`.`pass_type`, `u`.`username`, `u`.`id`, `u`.`random`, `u`.`password`".(($FORUMLINK=="smf") ? ", `u`.`smf_fid`, `s`.`passwd`, `s`.`passwordSalt`":"")." FROM `{$TABLE_PREFIX}users` `u` ".(($FORUMLINK=="smf") ? "LEFT JOIN `{$db_prefix}members` `s` ON `u`.`smf_fid`=`s`.`ID_MEMBER`":"")." WHERE `u`.`username` ='".AddSlashes($user)."'", true);
+        $row = mysql_fetch_assoc($res);
 // Invalid Login System Hack
     $resource = mysql_query("SELECT * FROM {$TABLE_PREFIX}invalid_logins WHERE ip='".sprintf("%u", ip2long($ip))."'") or die(mysql_error());
     $results = mysql_fetch_array($resource);
 //Invalid Login System Hack Stop
 
-    if (!$row)
+        if (!$row)
         {
-          $logintpl->set("FALSE_USER",true,true);
-          $logintpl->set("FALSE_PASSWORD",false,true);
+            $logintpl->set("FALSE_USER",true,true);
+            $logintpl->set("FALSE_PASSWORD",false,true);
 // Invalid Login System Hack
 		if (!$results)
 			mysql_query("INSERT INTO {$TABLE_PREFIX}invalid_logins SET ip='".sprintf("%u", ip2long($ip))."', userid='".$row['id']."', username='".AddSlashes($user)."', failed=failed+1, remaining=$attempts-1") or die(mysql_error());
@@ -158,13 +160,52 @@ if (isset($_POST["uid"]) && isset($_POST["pwd"]))
 			mysql_query("DELETE FROM {$TABLE_PREFIX}invalid_logins WHERE ip='".sprintf("%u", ip2long($ip))."' LIMIT 1") or sqlerr();
 			}
 // Invalid Login System Hack Stop
-          $logintpl->set("login_username_incorrect",$language["ERR_USERNAME_INCORRECT"]);
-          login();
+            $logintpl->set("login_username_incorrect",$language["ERR_USERNAME_INCORRECT"]);
+            login();
         }
-    elseif (md5($row["random"].$row["password"].$row["random"]) != md5($row["random"].md5($pwd).$row["random"]))
+        else
         {
-          $logintpl->set("FALSE_USER",false,true);
-          $logintpl->set("FALSE_PASSWORD",true,true);
+            $passtype=hash_generate($row, $pwd, $user);
+            if($row["password"]==$passtype[$row["pass_type"]]["hash"])
+            {
+                // We have a correct password entry
+                
+                // If stored password type is not the same as the current set type
+                if($row["pass_type"]!=$btit_settings["secsui_pass_type"])
+                {
+                    // We need to update the password
+                    do_sqlquery("UPDATE `{$TABLE_PREFIX}users` SET `password`='".mysql_real_escape_string($passtype[$btit_settings["secsui_pass_type"]]["rehash"])."', `salt`='".mysql_real_escape_string($passtype[$btit_settings["secsui_pass_type"]]["salt"])."', `pass_type`='".mysql_real_escape_string($btit_settings["secsui_pass_type"])."', `dupe_hash`='".mysql_real_escape_string($passtype[$btit_settings["secsui_pass_type"]]["dupehash"])."' WHERE `id`=".$row["id"],true);
+                    // And update the values we got from the database earlier
+                    $row["pass_type"]=$btit_settings["secsui_pass_type"];
+                    $row["password"]=$passtype[$btit_settings["secsui_pass_type"]]["rehash"];
+                    $row["salt"]=$passtype[$btit_settings["secsui_pass_type"]]["salt"];
+                }
+                // If we've reached this point we can set the cookies
+                
+                // call the logoutcookie function for good measure, just in case we have some old cookies that need destroying.
+                logoutcookie();
+                // Then login
+                logincookie($row, $user);
+                if ($FORUMLINK=="smf" && $smf_pass==$row["passwd"])
+                    set_smf_cookie($row["smf_fid"], $row["passwd"], $row["passwordSalt"]);
+                elseif ($FORUMLINK=="smf" && $row["password"]==$row["passwd"])
+                {
+                    $salt=substr(md5(rand()), 0, 4);
+                    @mysql_query("UPDATE {$db_prefix}members SET passwd='$smf_pass', passwordSalt='$salt' WHERE ID_MEMBER=".$row["smf_fid"]);
+                    set_smf_cookie($row["smf_fid"], $smf_pass, $salt);
+                }
+                if (isset($_GET["returnto"]))
+                    $url=urldecode($_GET["returnto"]);
+                else
+                    $url="index.php";
+                redirect($url);
+                die();
+            }
+            else
+            {
+                // We have a bad password entry
+                $logintpl->set("FALSE_USER",false,true);
+                $logintpl->set("FALSE_PASSWORD",true,true);
 // Invalid Login System Hack Start
 		if (!$results)
 			mysql_query("INSERT INTO {$TABLE_PREFIX}invalid_logins SET ip='".sprintf("%u", ip2long($ip))."', userid='".$row['id']."', username='".AddSlashes($user)."', failed=failed+1, remaining=$attempts-1") or die(mysql_error());
@@ -183,53 +224,28 @@ if (isset($_POST["uid"]) && isset($_POST["pwd"]))
 			mysql_query("DELETE FROM {$TABLE_PREFIX}invalid_logins WHERE ip='".sprintf("%u", ip2long($ip))."' LIMIT 1") or sqlerr();
 			}
 // Invalid Login System Hack Stop
-          $logintpl->set("login_password_incorrect",$language["ERR_PASSWORD_INCORRECT"]);
-          login();
+                $logintpl->set("login_password_incorrect",$language["ERR_PASSWORD_INCORRECT"]);
+                login();
+            }
         }
+    }
     else
-      {
-       
-        logincookie($row["id"],md5($row["random"].$row["password"].$row["random"]));
-        if ($FORUMLINK=="smf" && $smf_pass==$row["passwd"])
-            set_smf_cookie($row["smf_fid"], $row["passwd"], $row["passwordSalt"]);
-        elseif ($FORUMLINK=="smf" && $row["password"]==$row["passwd"])
-        {
-            $salt=substr(md5(rand()), 0, 4);
-            @mysql_query("UPDATE {$db_prefix}members SET passwd='$smf_pass', passwordSalt='$salt' WHERE ID_MEMBER=".$row["smf_fid"]);
-            set_smf_cookie($row["smf_fid"], $smf_pass, $salt);
-        }
-        if (isset($_GET["returnto"]))
-           $url=urldecode($_GET["returnto"]);
-        else
-            $url="index.php";
+    {
+        $logintpl->set("FALSE_USER",false,true);
+        $logintpl->set("FALSE_PASSWORD",false,true);
+        login();
+    }
+}
+else
+{
+    if (isset($_GET["returnto"]))
+        $url=urldecode($_GET["returnto"]);
+    else
+        $url="index.php";
 // Invalid Login System Hack
 			mysql_query("DELETE FROM {$TABLE_PREFIX}invalid_logins WHERE ip='".sprintf("%u", ip2long($ip))."' LIMIT 1") or sqlerr();
 //Invalid Login System Hack Stop
-        redirect($url);
-        die();
-      }
-  }
-
-else
-  {
-    $logintpl->set("FALSE_USER",false,true);
-    $logintpl->set("FALSE_PASSWORD",false,true);
-    login();
-  }
-
-
-
-
-
-
-}
-else {
-
-  if (isset($_GET["returnto"]))
-     $url=urldecode($_GET["returnto"]);
-  else
-      $url="index.php";
-  redirect($url);
-  die();
+    redirect($url);
+    die();
 }
 ?>

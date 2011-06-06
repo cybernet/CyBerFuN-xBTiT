@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 29, 2011 at 10:29 AM
+-- Generation Time: Jun 06, 2011 at 09:39 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.9
 
@@ -710,7 +710,8 @@ INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES
 (16, 'Portuguese-BR', 'language/portuguese-BR'),
 (17, 'Portuguese-PT', 'language/portuguese-PT'),
 (18, 'Swedish', 'language/swedish'),
-(19, 'Arabic', 'language/arabic');
+(19, 'Arabic', 'language/arabic'),
+(20, 'Danish','language/danish');
 
 -- --------------------------------------------------------
 
@@ -1166,7 +1167,20 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('bonus', '1'),
 ('price_vip', '750'),
 ('price_ct', '200'),
-('price_name', '500');
+('price_name', '500'),
+('secsui_quarantine_dir', ''),
+('secsui_quarantine_search_terms', '<?php,base64_decode,base64_encode,eval,phpinfo,fopen,fread,fwrite,file_get_contents'),
+('secsui_cookie_name', ''),
+('secsui_quarantine_pm', '2'),
+('secsui_pass_type', '1'),
+('secsui_ss', ''),
+('secsui_cookie_type', '1'),
+('secsui_cookie_exp1', '1'),
+('secsui_cookie_exp2', '3'),
+('secsui_cookie_path', ''),
+('secsui_cookie_domain', ''),
+('secsui_cookie_items', '1-0,2-0,3-0,4-0,5-0,6-0,7-0,8-0[+]0'),
+('secsui_pass_min_req', '4,0,0,0,0');
 
 -- --------------------------------------------------------
 
@@ -1339,6 +1353,9 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(40) NOT NULL DEFAULT '',
   `password` varchar(40) NOT NULL DEFAULT '',
+  `salt` varchar(20) NOT NULL DEFAULT '',
+  `pass_type` enum('1','2','3','4','5','6','7') NOT NULL DEFAULT '1',
+  `dupe_hash` varchar(20) NOT NULL DEFAULT '',
   `id_level` int(10) NOT NULL DEFAULT '1',
   `random` int(10) DEFAULT '0',
   `email` varchar(50) NOT NULL DEFAULT '',
@@ -1386,8 +1403,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
 -- Dumping data for table `{$db_prefix}users`
 --
 
-INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `custom_title`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`, `seedbonus`, `rank_switch`, `old_rank`, `timed_rank`) VALUES
-(NULL, 'Guest', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0, 0, NOW(), NULL, 'no', '', '0000-00-00 00:00:00', 0, '', '0.000000', 'no', '3', '0000-00-00 00:00:00');
+INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `salt`, `pass_type`, `dupe_hash`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `custom_title`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`, `seedbonus`, `rank_switch`, `old_rank`, `timed_rank`) VALUES
+(NULL, 'Guestj', '', '', '1', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0, 0, NOW(), NULL, 'no', '', '0000-00-00 00:00:00', 0, '', '0.000000', 'no', '3', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 

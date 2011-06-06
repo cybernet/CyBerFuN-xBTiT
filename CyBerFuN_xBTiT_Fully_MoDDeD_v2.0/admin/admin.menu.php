@@ -66,8 +66,7 @@ else
                           1=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=banip&amp;action=read" ,
                     "description"=>$language["ACP_BAN_IP"]),
-
-                          2=>array(
+			  2=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=language&amp;action=read" ,
                     "description"=>$language["ACP_LANGUAGES"]),
                           3=>array(
@@ -75,7 +74,10 @@ else
                     "description"=>$language["ACP_STYLES"]),
                           4=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=seedbonus" ,
-                    "description"=>$language["ACP_SEEDBONUS"])
+                    "description"=>$language["ACP_SEEDBONUS"]),
+                          5=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=security_suite" ,
+                    "description"=>$language["ACP_SECSUI_SET"])
                                  )),
     1=>array(
             "title"=>$language["ACP_FRONTEND"],
