@@ -1256,8 +1256,8 @@ function get_block($block_title, $alignement, $block, $use_cache = true, $width1
   if ($use_cache) {
     // read cache
     if (file_exists($cache_file) && (time() - $CACHE_DURATION) < filemtime($cache_file)) {
-      $blocktpl -> set('block_content', file_get_contents($cache_file));
-      return $blocktpl- > fetch(load_template('block.tpl'));
+      $blocktpl->set('block_content', file_get_contents($cache_file));
+      return $blocktpl->fetch(load_template('block.tpl'));
         }
   }
 
