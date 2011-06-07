@@ -245,7 +245,7 @@ if (!isset($array["announce"]))
                                 "image/jpeg",
                                 "image/pjpeg",
                                 "image/gif",
-                                "image/x-png");
+                                "image/png");
         switch($_FILES["userfile"]["type"]) {
             case 'image/bmp':
             $file_name = $hash.".bmp";
@@ -259,7 +259,7 @@ if (!isset($array["announce"]))
             case 'image/gif':
             $file_name = $hash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
             $file_name = $hash.".png";
             break;
         }
@@ -276,7 +276,7 @@ if (!isset($array["announce"]))
             case 'image/gif':
             $file_name_s1 = "s1".$hash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
             $file_name_s1 = "s1".$hash.".png";
             break;
         }
@@ -293,7 +293,7 @@ if (!isset($array["announce"]))
             case 'image/gif':
             $file_name_s2 = "s2".$hash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
             $file_name_s2 = "s2".$hash.".png";
             break;
         }
@@ -310,7 +310,7 @@ if (!isset($array["announce"]))
             case 'image/gif':
             $file_name_s3 = "s3".$hash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
             $file_name_s3 = "s3".$hash.".png";
             break;
         }

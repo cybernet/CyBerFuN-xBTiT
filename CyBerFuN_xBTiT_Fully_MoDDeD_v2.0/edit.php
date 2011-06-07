@@ -83,7 +83,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
                                 "image/jpeg",
                                 "image/pjpeg",
                                 "image/gif",
-                                "image/x-png");
+                                "image/png");
         switch($_FILES["userfile"]["type"]) {
             case 'image/bmp':
             $file_name = $torhash.".bmp";
@@ -97,7 +97,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
             case 'image/gif':
             $file_name = $torhash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
             $file_name = $torhash.".png";
             break;
         }
@@ -114,7 +114,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
             case 'image/gif':
             $file_name_s1 = "s1".$torhash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
             $file_name_s1 = "s1".$torhash.".png";
             break;
         }
@@ -131,7 +131,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
             case 'image/gif':
             $file_name_s2 = "s2".$torhash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
             $file_name_s2 = "s2".$torhash.".png";
             break;
         }
@@ -148,7 +148,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
             case 'image/gif':
             $file_name_s3 = "s3".$torhash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
             $file_name_s3 = "s3".$torhash.".png";
             break;
         }
@@ -186,7 +186,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
                 {
                     if (@move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile))
                     {
-                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET image='".$file_name."' WHERE info_hash='" . $torhash . "'",true);
+                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET image='".$file_name."' WHERE info_hash='" . $torhash . "'", true);
                         $image_drop = "" . $_POST["userfileold"]. "";
 
                         if (!empty($image_drop))
@@ -225,7 +225,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
                 {
                     if (@move_uploaded_file($_FILES['screen1']['tmp_name'], $uploadfile1))
                     {
-                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen1='".$file_name_s1."' WHERE info_hash='" . $torhash . "'",true);
+                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen1='".$file_name_s1."' WHERE info_hash='" . $torhash . "'", true);
                         $image_drop = "" . $_POST["userfileold1"]. "";
 
                         if (!empty($image_drop))
@@ -264,7 +264,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
                 {
                     if (@move_uploaded_file($_FILES['screen2']['tmp_name'], $uploadfile2))
                     {
-                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen2='".$file_name_s2."' WHERE info_hash='" . $torhash . "'",true);
+                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen2='".$file_name_s2."' WHERE info_hash='" . $torhash . "'", true);
                         $image_drop = "" . $_POST["userfileold2"]. "";
 
                         if (!empty($image_drop))
@@ -303,7 +303,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
                 {
                     if (@move_uploaded_file($_FILES['screen3']['tmp_name'], $uploadfile3))
                     {
-                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen3='".$file_name_s3."' WHERE info_hash='" . $torhash . "'",true);
+                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen3='".$file_name_s3."' WHERE info_hash='" . $torhash . "'", true);
                         $image_drop = "" . $_POST["userfileold3"]. "";
 
                         if (!empty($image_drop))
@@ -341,29 +341,29 @@ if (isset($_GET["info_hash"])) {
 
    if ($XBTT_USE)
       {
-       $tseeds="f.seeds+ifnull(x.seeders,0) as seeds";
-       $tleechs="f.leechers+ifnull(x.leechers,0) as leechers";
-       $tcompletes="f.finished+ifnull(x.completed,0) as finished";
-       $ttables="{$TABLE_PREFIX}files f LEFT JOIN xbt_files x ON x.info_hash=f.bin_hash";
+       $tseeds = "f.seeds+ifnull(x.seeders,0) as seeds";
+       $tleechs = "f.leechers+ifnull(x.leechers,0) as leechers";
+       $tcompletes = "f.finished+ifnull(x.completed,0) as finished";
+       $ttables = "{$TABLE_PREFIX}files f LEFT JOIN xbt_files x ON x.info_hash=f.bin_hash";
       }
    else
        {
-       $tseeds="f.seeds as seeds";
-       $tleechs="f.leechers as leechers";
-       $tcompletes="f.finished as finished";
-       $ttables="{$TABLE_PREFIX}files f";
+       $tseeds = "f.seeds as seeds";
+       $tleechs = "f.leechers as leechers";
+       $tcompletes = "f.finished as finished";
+       $ttables = "{$TABLE_PREFIX}files f";
        }
 
-  $query ="SELECT f.gold, f.sticky, f.image, f.screen1, f.screen2, f.screen3, f.gen, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
+  $query  = "SELECT f.gold, f.sticky, f.image, f.screen1, f.screen2, f.screen3, f.gen, f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
   $res = do_sqlquery($query, true);
   $results = mysql_fetch_assoc($res);
 
   if (!$results || mysql_num_rows($res) == 0)
-     err_msg($language["ERROR"],$language["TORRENT_EDIT_ERROR"]);
+     err_msg($language["ERROR"], $language["TORRENT_EDIT_ERROR"]);
 
   else {
 
-    if (!$CURUSER || $CURUSER["uid"] < 2 || ($CURUSER["edit_torrents"]=="no" && $CURUSER["uid"]!=$results["uploader"]))
+    if (!$CURUSER || $CURUSER["uid"] < 2 || ($CURUSER["edit_torrents"] == "no" && $CURUSER["uid"] != $results["uploader"]))
        {
            stderr($language["ERROR"],$language["CANT_EDIT_TORR"]);
        }
@@ -391,7 +391,7 @@ $row = $res[0];
     $torrent=array();
 	/*Start gold mod by losmi*/
     $gold_level = '';
-    $resg = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+    $resg = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true);
     foreach ($resg as $key=>$value)
         $gold_level = $value["level"];
 
@@ -406,13 +406,13 @@ $row = $res[0];
     /*End gold mod by losmi*/
 	/*Start sticky by losmi*/
               $query = "SELECT * FROM {$TABLE_PREFIX}sticky";
-              $rez = do_sqlquery($query,true);
+              $rez = do_sqlquery($query, true);
               $rez = mysql_fetch_assoc($rez);
               $rez_level = $rez['level'];
               $current_level = getLevel($CURUSER['id_level']);
               $level_ok = false;
               
-              if ($CURUSER["uid"]>1 && $current_level>=$rez_level)
+              if ($CURUSER["uid"] > 1 && $current_level >= $rez_level)
                  {
                   $torrenttpl->set("LEVEL_OK",true,FALSE);
                  }
@@ -432,19 +432,19 @@ $row = $res[0];
                 $torrent["sticky"] = "<input type='checkbox' name='sticky'>" ;
             }
             /*End sticky by losmi*/
-    $torrent["link"]="index.php?page=edit&info_hash=".$results["info_hash"]."&returnto=".urlencode($link);
-    $torrent["filename"]=$results["filename"];
-    $torrent["gen"]=$results["gen"];
-    $torrent["info_hash"]=$results["info_hash"];
-    $torrent["description"]=textbbcode("edit","comment",unesc($results["comment"]));
-    $torrent["size"]=makesize($results["size"]);
+    $torrent["link"] = "index.php?page=edit&info_hash=".$results["info_hash"]."&returnto=".urlencode($link);
+    $torrent["filename"] = $results["filename"];
+    $torrent["gen"] = $results["gen"];
+    $torrent["info_hash"] = $results["info_hash"];
+    $torrent["description"] = textbbcode("edit","comment",unesc($results["comment"]));
+    $torrent["size"] = makesize($results["size"]);
 
     include(dirname(__FILE__)."/include/offset.php");
 
-    $torrent["date"]=date("d/m/Y",$results["data"]-$offset);
-    $torrent["complete"]=$results["finished"]." ".$language["X_TIMES"];
-    $torrent["peers"]=$language["SEEDERS"] .": " .$results["seeds"].",".$language["LEECHERS"] .": ". $results["leechers"]."=". ($results["leechers"]+$results["seeds"]). " ". $language["PEERS"];
-    $torrent["cat_combo"]= categories($results["cat_name"]); //$s;
+    $torrent["date"] = date("d/m/Y",$results["data"]-$offset);
+    $torrent["complete"] = $results["finished"]." ".$language["X_TIMES"];
+    $torrent["peers"] = $language["SEEDERS"] .": " .$results["seeds"].",".$language["LEECHERS"] .": ". $results["leechers"]."=". ($results["leechers"]+$results["seeds"]). " ". $language["PEERS"];
+    $torrent["cat_combo"] = categories($results["cat_name"]); // $s;
 
     $torrenttpl->set("torrent",$torrent);
 
