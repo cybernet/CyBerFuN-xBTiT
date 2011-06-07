@@ -50,13 +50,14 @@ $name = $n; # name from the form
 $text = $c; # comment from the form
 $uid = (int)$u;  # userid from the form
 
+
 session_name("xbtit");
 session_start();
 
-    include("../include/settings.php");
-    include("../include/common.php");
+include("../include/settings.php");
+include("../include/common.php");
 
-    mysql_select_db($database, mysql_connect($dbhost, $dbuser, $dbpass));
+mysql_select_db($database, mysql_connect($dbhost,$dbuser,$dbpass));
 
 $secsui_res=mysql_query("SELECT * FROM `{$TABLE_PREFIX}settings` WHERE `key` LIKE('secsui_%')");
 while($secsui_arr=mysql_fetch_assoc($secsui_res))
@@ -91,14 +92,13 @@ else
 }
 if($cookie_id!=$uid)
 {
-
     // select first owner (default id_level=8) from users table
     $ra=mysql_fetch_assoc(mysql_query("SELECT `id` FROM `{$TABLE_PREFIX}users` WHERE `id_level`=8 ORDER BY `id` LIMIT 1"));
     $admin_pm_id=$ra['id'];
 
-
     $res=mysql_query("SELECT `username`, `password`, `random`, `salt` FROM `{$TABLE_PREFIX}users` WHERE `id`=".$cookie_id);
     $row=mysql_fetch_assoc($res);
+
     if($secsui["secsui_cookie_type"]==1)
     {
         $user_hash=md5($row["random"].$row["password"].$row["random"]);
@@ -207,8 +207,9 @@ if($cookie_id!=$uid)
         $name=$row["username"];
         $uid=$cookie_id;
     }
-    $text="[color=red][b]I am a hacker who deserves to be banned![/b][/color] :axe:";
+    $text="[color=red][b]I am a hacker who deserves to be banned![/b][/color] :axe:";  
 }
+
 
 # some weird conversion of the data inputed
 $name = str_replace("\'","'",$name);
@@ -242,14 +243,15 @@ if ($name != '' && $text != '' && $uid !='') {
 }
 
 # adds new data to the database
-function addData($name, $text, $uid) {
+function addData($name,$text,$uid) {
   include("../include/settings.php");   # getting table prefix
   include("../include/config.php");
   $now = time();
     $sql = "INSERT INTO {$TABLE_PREFIX}chat (time,name,text,uid) VALUES ('".$now."','".$name."','".$text."','".$uid."')";
     $conn = getDBConnection();
-    if ($GLOBALS['charset']=="UTF-8" && function_exists('mysql_set_charset'))
-        mysql_set_charset('utf8', $conn);
+    if($GLOBALS['charset']=="UTF-8" && function_exists('mysql_set_charset'))
+        mysql_set_charset('utf8',$conn);
+
     $results = mysql_query($sql, $conn);
     if (!$results || empty($results)) {
         # echo 'There was an error creating the entry';
