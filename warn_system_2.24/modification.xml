@@ -422,8 +422,8 @@ $userdetailtpl-> set("id", $id);
 			<action>"add"</action>
 			<data><![CDATA[
 
-//warn autÃ³matikus levÃ©telezÅ‘
-$query = do_sqlquery("SELECT * FROM `{$TABLE_PREFIX}users` WHERE warn='yes'");
+// warn system
+$query = do_sqlquery("SELECT id, warnadded  FROM `{$TABLE_PREFIX}users` WHERE  `id` >1 AND  `warn` =  'yes'");
 $conf = mysql_fetch_array($query);
 $expire_dat = $conf['warnadded'];
 $expire2 = strtotime ($expire_dat);
@@ -435,7 +435,8 @@ $msg = sqlesc("You are not longer Warned , please be carefull to not make the sa
 send_pm(0,$conf[id],$subj,$msg); 
 mysql_query("UPDATE {$TABLE_PREFIX}users SET warn='no' WHERE id='$conf[id]'") or sqlerr();
 }
-//warn autÃ³matikus levÃ©telezÅ‘
+mysql_free_result($conf);
+// warn system - end
 
 
 
