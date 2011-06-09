@@ -1,7 +1,7 @@
-﻿<hack>
-  <title>Warning System (r597+)</title>
+<hack>
+  <title>Warning System</title>
   <author>linux198, translated DT optimized by khez</author>
-  <version>2.24 (r597+)</version>
+  <version>2.24 (r669)</version>
 
   <!-- database -->
   <file>
@@ -87,30 +87,31 @@ function warn($arr, $big = false)
       ]]></data>
     </operation>
     <operation>
-      <search><![CDATA[$id = (!isset($_COOKIE['uid']))?1:max(1, (int)$_COOKIE['uid']);
+      <search><![CDATA[  if (!$row) {
+    $id=1;
+    $res = get_result("SELECT]]></search>
+      <action>"replace"</action>
+      <data><![CDATA[  if (!$row) {
+    $id=1;
+    $res = get_result("SELECT u.warn,]]></data>
+    </operation>
+    <operation>
+      <search><![CDATA[  $id = (!isset($_COOKIE['uid']))?1:max(1, (int)$_COOKIE['uid']);
 
   $res = get_result("SELECT]]></search>
       <action>"replace"</action>
-      <data><![CDATA[$id = (!isset($_COOKIE['uid']))?1:max(1, (int)$_COOKIE['uid']);
+      <data><![CDATA[  $id = (!isset($_COOKIE['uid']))?1:max(1, (int)$_COOKIE['uid']);
 
   $res = get_result("SELECT u.warn,]]></data>
     </operation>
     <operation>
-      <search><![CDATA[if (!$row) {
+      <search><![CDATA[  if (!isset($_COOKIE['pass'])) $_COOKIE['pass'] = '';
+  if (($_COOKIE['pass']!=md5($row['random'].$row['password'].$row['random'])) && $id!=1) {
     $id=1;
     $res = get_result("SELECT]]></search>
       <action>"replace"</action>
-      <data><![CDATA[if (!$row) {
-    $id=1;
-    $res = get_result("SELECT u.warn,]]></data>
-    </operation>
-
-    <operation>
-      <search><![CDATA[if (($_COOKIE['pass']!=md5($row['random'].$row['password'].$row['random'])) && $id!=1) {
-    $id=1;
-    $res = get_result("SELECT]]></search>
-      <action>"replace"</action>
-      <data><![CDATA[if (($_COOKIE['pass']!=md5($row['random'].$row['password'].$row['random'])) && $id!=1) {
+      <data><![CDATA[  if (!isset($_COOKIE['pass'])) $_COOKIE['pass'] = '';
+  if (($_COOKIE['pass']!=md5($row['random'].$row['password'].$row['random'])) && $id!=1) {
     $id=1;
     $res = get_result("SELECT u.warn,]]></data>
     </operation>
@@ -233,9 +234,9 @@ $name = $name . warn($row);
     <file>
     <name>"$DEFAULT_ROOT/userdetails.php"</name>
     <operation>
-      <search><![CDATA[$res=get_result("SELECT ]]></search>
+      <search><![CDATA[   $res=get_result("SELECT ]]></search>
       <action>"replace"</action>
-      <data><![CDATA[$res=get_result("SELECT u.warn, u.warnreason,u.warns, u.warnadded, u.warnaddedby, ]]></data>
+      <data><![CDATA[   $res=get_result("SELECT u.warn, u.warnreason,u.warns, u.warnadded, u.warnaddedby, ]]></data>
     </operation>
     <operation>
       <search><![CDATA[$userdetailtpl-> set("userdetail_username", unesc($row["username"]));]]></search>
@@ -421,7 +422,7 @@ $userdetailtpl-> set("id", $id);
 			<action>"add"</action>
 			<data><![CDATA[
 
-//warn autómatikus levételező
+//warn autÃ³matikus levÃ©telezÅ‘
 $query = do_sqlquery("SELECT * FROM `{$TABLE_PREFIX}users` WHERE warn='yes'");
 $conf = mysql_fetch_array($query);
 $expire_dat = $conf['warnadded'];
@@ -431,10 +432,10 @@ if ($nown >= $expire2 )
 {
 $subj = sqlesc("Your Warning time is expired !!");
 $msg = sqlesc("You are not longer Warned , please be carefull to not make the same mistake again !!");
-mysql_query("INSERT INTO {$TABLE_PREFIX}messages (sender, receiver, added, msg, subject) VALUES(0,'$conf[id]',UNIX_TIMESTAMP(),$msg,$subj)") or sqlerr(__FILE__, __LINE__);  
+send_pm(0,$conf[id],$subj,$msg); 
 mysql_query("UPDATE {$TABLE_PREFIX}users SET warn='no' WHERE id='$conf[id]'") or sqlerr();
 }
-//warn autómatikus levételező
+//warn autÃ³matikus levÃ©telezÅ‘
 
 
 
