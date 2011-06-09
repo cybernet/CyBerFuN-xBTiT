@@ -1,4 +1,4 @@
---- request hack
+-- request hack
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}addedrequests` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -37,7 +37,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_number', '5');
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_maxon', 'true');
 INSERT INTO `{$db_prefix}blocks` VALUES (NULL, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8);
 
---- sticky hack
+-- sticky hack
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}sticky` (
   `id` int(11) NOT NULL,
@@ -47,12 +47,12 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}sticky` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `{$db_prefix}sticky` (`id`, `color`, `level`) VALUES
-(NULL, '#bce1ac;', 3);
+(1, '#bce1ac;', 3);
 
 ALTER TABLE `{$db_prefix}files` ADD `sticky` ENUM( '0', '1' ) NOT NULL DEFAULT '0';
 ALTER TABLE `{$db_prefix}files` ADD INDEX ( `sticky` );
 
---- image upload hack
+-- image upload hack
 
 ALTER TABLE `{$db_prefix}files` ADD `image` VARCHAR( 255 ) NOT NULL DEFAULT '',
       ADD `screen1` VARCHAR( 255 ) NOT NULL DEFAULT '',
@@ -69,7 +69,7 @@ INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('uploaddir', 'cyb
 INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('file_limit', '2048');
 INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('screenon', 'true');
 
---- torrent thanks ajax hack
+-- torrent thanks ajax hack
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}files_thanks` (
   `infohash` char(40) NOT NULL DEFAULT '0',
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files_thanks` (
   KEY `infohash` (`infohash`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
---- Invitations hack
+-- Invitations hack
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}invitations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -103,7 +103,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('invitation_reqvalid', 'false'),
 ('invitation_expires', '7');
 
---- gold / silver torrents hack
+-- gold / silver torrents hack
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -119,12 +119,12 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`, `active`, `date`, `gold_description`, `silver_description`, `classic_description`) VALUES
-(NULL, 3, 'gold.gif', 'silver.gif', '1', '0000-00-00', 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
+(1, 3, 'gold.gif', 'silver.gif', '1', '0000-00-00', 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
 
 ALTER TABLE `{$db_prefix}files` ADD `gold` ENUM( '0', '1', '2' ) NOT NULL DEFAULT '0';
 ALTER TABLE `{$db_prefix}files` ADD INDEX ( `gold` );
 
---- Invalid Login System hack
+-- Invalid Login System hack
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}invalid_logins` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -139,18 +139,18 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}invalid_logins` (
 INSERT INTO `{$db_prefix}settings` SET `key`='inv_login', `value`='false';
 INSERT INTO `{$db_prefix}settings` SET `key`='att_login', `value`='5';
 
---- Blocks
+-- Blocks
 
 INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `status`, `title`, `cache`, `minclassview`, `maxclassview`) VALUES
 (NULL, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8),
 (NULL, 'header', 't', 1, 1, 'BLOCK_CYBERNET_HEADER', 'no', 1, 8),
 (NULL, 'login', 'c', 0, 1, 'BLOCK_LOGIN', 'no', 1, 1);
 
---- Custom Title
+-- Custom Title
 
 ALTER TABLE `{$db_prefix}users` ADD `custom_title` VARCHAR( 100 ) NULL;
 
---- Warn System
+-- Warn System
 
 ALTER TABLE `{$db_prefix}online` ADD `warn` enum('yes','no') NOT NULL default 'no';
 ALTER TABLE `{$db_prefix}users` ADD `warn` enum('yes','no') NOT NULL default 'no';
@@ -161,7 +161,7 @@ ALTER TABLE `{$db_prefix}users` ADD `warnaddedby` varchar(255) NOT NULL;
 ALTER TABLE `{$db_prefix}online` ADD INDEX ( `warn` );
 ALTER TABLE `{$db_prefix}users` ADD INDEX ( `warn` );
 
---- SeedBonus System
+-- SeedBonus System
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}bonus` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
@@ -186,16 +186,17 @@ INSERT INTO `{$db_prefix}settings` SET `key`='price_ct', `value`='200';
 INSERT INTO `{$db_prefix}settings` SET `key`='price_name', `value`='500';
 ALTER TABLE `{$db_prefix}users` ADD `seedbonus` DECIMAL( 12,6 ) NOT NULL DEFAULT '0';
 
---- Torrent Genre v1.1
+-- Torrent Genre v1.1
 
 ALTER TABLE `{$db_prefix}files` ADD `gen` VARCHAR( 32 ) NOT NULL;
 
---- TimeD ranks
+-- TimeD ranks
 
 ALTER TABLE `{$db_prefix}users` ADD `rank_switch` ENUM( 'yes', 'no' ) NOT NULL DEFAULT 'no';
 ALTER TABLE `{$db_prefix}users` ADD `old_rank` varchar(12) NOT NULL DEFAULT '3';
 ALTER TABLE `{$db_prefix}users` ADD `timed_rank` datetime NOT NULL default '0000-00-00 00:00:00';
 
---- Language
-
+-- Language
+ALTER TABLE `{$db_prefix}language` ADD INDEX (`language_url`);
+ALTER TABLE `{$db_prefix}language` ADD UNIQUE (`language_url`);
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Danish', 'language/danish');
