@@ -1,20 +1,3 @@
-INSERT INTO `{$db_prefix}language` (
-`id` ,
-`language` ,
-`language_url`
-)
-VALUES (
-NULL ,  'Swedish',  'language/swedish'
-);
-INSERT INTO `{$db_prefix}language` (
-`id` ,
-`language` ,
-`language_url`
-)
-VALUES (
-NULL ,  'Arabic',  'language/arabic'
-);
-
 ALTER TABLE `{$db_prefix}files` ADD INDEX ( `image` );
 ALTER TABLE `{$db_prefix}files` ADD INDEX ( `screen1` );
 ALTER TABLE `{$db_prefix}files` ADD INDEX ( `screen2` );
@@ -52,3 +35,8 @@ ALTER TABLE `{$db_prefix}users`
 ADD `salt` VARCHAR(20) NOT NULL DEFAULT '' AFTER `password`,
 ADD `pass_type` ENUM('1','2','3','4','5','6','7') NOT NULL DEFAULT '1' AFTER `salt`,
 ADD `dupe_hash` VARCHAR(20) NOT NULL DEFAULT '' AFTER `pass_type`;
+ALTER TABLE `{$db_prefix}language` ADD INDEX (`language_url`);
+ALTER TABLE `{$db_prefix}language` ADD UNIQUE (`language_url`);
+INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Danish', 'language/danish') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
+INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Swedish', 'language/swedish') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
+INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Arabic', 'language/arabic') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
