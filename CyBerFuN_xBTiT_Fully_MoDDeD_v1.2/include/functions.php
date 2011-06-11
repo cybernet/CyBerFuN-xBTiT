@@ -422,7 +422,7 @@ function print_designer() {
      $CyBerFuN_xBTiT_version = '' . $CyBerFuN_xBTiT_version . '';
      $design_copyright = '' . $design_copyright . '';
   } else
-     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 570 )';
+     $CyBerFuN_xBTiT_version = 'v1.2 ( rev 784 )';
      $design_copyright = "[&nbsp;&nbsp;<u>CyBerFuN xBTiT " . $CyBerFuN_xBTiT_version . " By cybernet</u>: <a href=\"http://xList.ro/\" target=\"_blank\">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit " . $tracker_version . " By <a href=\"http://www.btiteam.org/\" target=\"_blank\">BTiTeam.org</a></u>&nbsp;]<br />";
   return $design_copyright;
 }
@@ -982,6 +982,9 @@ function image_or_link($image, $pers_style = '',$link = '') {
 function success_msg($heading = 'Success!', $string, $close = false) {
   global $language, $STYLEPATH, $tpl, $page, $STYLEURL;
 
+if(!isset($tpl) || empty($tpl))
+	die($heading."<br />".$string);
+
   $suc_tpl = new bTemplate();
   $suc_tpl->set('success_title', $heading);
   $suc_tpl->set('success_message', $string);
@@ -991,6 +994,9 @@ function success_msg($heading = 'Success!', $string, $close = false) {
 
 function err_msg($heading = 'Error!', $string, $close = false) {
   global $language, $STYLEPATH, $tpl, $page, $STYLEURL;
+
+if(!isset($tpl) || empty($tpl))
+	die($heading."<br />".$string);
 
   // just in case not found the language
   if (!$language['BACK'])
@@ -1011,6 +1017,10 @@ function err_msg($heading = 'Error!', $string, $close = false) {
 
 function information_msg($heading = 'Error!', $string, $close = false) {
   global $language, $STYLEPATH, $tpl, $page, $STYLEURL;
+
+if(!isset($tpl) || empty($tpl))
+	die($heading."<br />".$string);
+
   // just in case not found the language
   if (!$language['BACK'])
     $language['BACK'] = 'Back';
@@ -1101,14 +1111,24 @@ function block_begin($title = '-', $colspan = 1, $calign = 'justify') {
 function block_end($colspan = 1) {
 }
 
-function makesize($bytes) {
-  if (abs($bytes) < 1024000)
-    return number_format($bytes / 1024, 2).' KB';
-  if (abs($bytes) < 1048576000)
-    return number_format($bytes / 1048576, 2).' MB';
-  if (abs($bytes) < 1073741824000)
-    return number_format($bytes / 1073741824, 2).' GB';
-  return number_format($bytes / 1099511627776, 2).' TB';
+function makesize($bytes)
+{
+    if (abs($bytes) < 1048576)
+        return number_format($bytes / 1024, 2).' KB'; // (Kilobytes)
+    if (abs($bytes) < 1073741824)
+        return number_format($bytes / 1048576, 2).' MB'; // (Megabytes)
+    if (abs($bytes) < 1099511627776)
+        return number_format($bytes / 1073741824, 2).' GB'; // (Gigabytes)
+    if (abs($bytes) < 1125899906842624)
+        return number_format($bytes / 1099511627776, 2).' TB'; // (Terabytes)
+    if (abs($bytes) < 1152921504606846976)
+        return number_format($bytes / 1125899906842624, 2).' PB'; // (Petabytes)
+    if (abs($bytes) < 1180591620717411303424)
+        return number_format($bytes / 1152921504606846976, 2).' EB'; // (Exabytes)
+    if (abs($bytes) < 1208925819614629174706176)
+        return number_format($bytes / 1180591620717411303424, 2).' ZB'; // (Zettabytes)
+    else
+        return number_format($bytes / 1208925819614629174706176, 2).' YB'; // (Yottabytes)
 }
 
 function makesize1($bytes) {
