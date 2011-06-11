@@ -1,4 +1,3 @@
-<!-- This is a test script and it is still very WIP, use at your own risk! -->
 <?php
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
@@ -46,17 +45,24 @@ echo "
 ";
 
 require_once($BASEDIR."/include/settings.php");
+require_once($BASEDIR."/include/common.php");
 require_once($BASEDIR."/language/english/lang_smf_import.php");
 
 // Lets open a connection to the database
 mysql_select_db($database, mysql_connect($dbhost,$dbuser,$dbpass));
 
-(isset($_COOKIE["uid"])?$id=intval($_COOKIE["uid"]):$id=1);
-(isset($_COOKIE["pass"])?$pass=$_COOKIE["pass"]:$pass="");
+$cookie=test_my_cookie();
 
-$res=mysql_query("SELECT u.random, u.password, ul.admin_access FROM {$TABLE_PREFIX}users u LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE u.id=$id");
-$row=mysql_fetch_assoc($res);
-if(md5($row["random"] . $row["password"] . $row["random"])!=$pass || $row["admin_access"]=="no")
+if($cookie["is_valid"]===true)
+{
+    $res=mysql_query("SELECT `ul`.`admin_access` FROM `{$TABLE_PREFIX}users` `u` LEFT JOIN `{$TABLE_PREFIX}users_level` `ul` ON `u`.`id_level`=`ul`.`id` WHERE `u`.`id`=".$cookie["id"]);
+    if(@mysql_num_rows($res)==1)
+        $row=mysql_fetch_assoc($res);
+}
+if(!isset($row["admin_access"]))
+    $row["admin_access"]="no";
+
+if($cookie["is_valid"]===false || $row["admin_access"]=="no")
     die($lang[38]);
 
 $lock=mysql_fetch_assoc(mysql_query("SELECT random FROM {$TABLE_PREFIX}users WHERE id=1"));

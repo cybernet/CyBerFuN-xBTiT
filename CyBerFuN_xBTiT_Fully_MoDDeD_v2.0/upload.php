@@ -57,6 +57,8 @@ if (isset($_FILES["torrent"]))
    {
       $fd = fopen($_FILES["torrent"]["tmp_name"], "rb") or stderr($language["ERROR"],$language["FILE_UPLOAD_ERROR_1"]);
       is_uploaded_file($_FILES["torrent"]["tmp_name"]) or stderr($language["ERROR"],$language["FILE_UPLOAD_ERROR_2"]);
+	if((isset($_FILES["torrent"]["tmp_name"]) && !empty($_FILES["torrent"]["tmp_name"])) && (isset($_FILES["torrent"]["name"]) && !empty($_FILES["torrent"]["name"])))
+{
       $check_torr = check_upload($_FILES["torrent"]["tmp_name"], $_FILES["torrent"]["name"]);         
 
       switch($check_torr)
@@ -83,7 +85,7 @@ if (isset($_FILES["torrent"]))
       }
       if($check_torr_err!="")
           stderr($language["ERROR"], $check_torr_err);
-
+}
       $length=filesize($_FILES["torrent"]["tmp_name"]);
       if ($length)
         $alltorrent = fread($fd, $length);
