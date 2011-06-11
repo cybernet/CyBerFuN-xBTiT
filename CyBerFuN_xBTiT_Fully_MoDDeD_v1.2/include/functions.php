@@ -417,15 +417,12 @@ include($CURRENTPATH.'/cyberfun_footer.php');
 function print_designer() {
   global $STYLEPATH, $tracker_version, $CyBerFuN_xBTiT_version, $google_tracking_code;
 
-  if (file_exists($STYLEPATH.'/style_copyright.php')) {
-     include($STYLEPATH.'/style_copyright.php');
-     $CyBerFuN_xBTiT_version = '' . $CyBerFuN_xBTiT_version . '';
-     $design_copyright = '' . $design_copyright . '';
-  } else
      $CyBerFuN_xBTiT_version = 'v1.2 ( rev 784 )';
      $design_copyright = "[&nbsp;&nbsp;<u>CyBerFuN xBTiT " . $CyBerFuN_xBTiT_version . " By cybernet</u>: <a href=\"http://xList.ro/\" target=\"_blank\">xList Tracker</a>&nbsp;]<br /> [&nbsp;&nbsp;<u>xbtit " . $tracker_version . " By <a href=\"http://www.btiteam.org/\" target=\"_blank\">BTiTeam.org</a></u>&nbsp;]<br />";
   return $design_copyright;
+
 }
+
 function print_top()
 {
   global $TABLE_PREFIX;
@@ -588,17 +585,7 @@ $id = (!isset($_COOKIE['uid'])) ? 1 : max(1, (int)$_COOKIE['uid']);
     $err_msg_install = '<div align="center" style="color:red; font-size:12pt; font-weight: bold;">SECURITY WARNING: Delete install.php & upgrade.php!</div>';
   else
     $err_msg_install = '';
-
-  $GLOBALS['CURUSER'] = $row;
-  foreach ($row as $key => $value)
-    {
-      if ($key != 'password')
-         $_SESSION['user'][$key] = $value;
-
-	}
-  unset($row);
 }
-
 function dbconn($do_clean = false) {
   global $dbhost, $dbuser, $dbpass, $database, $language;
 
@@ -689,7 +676,7 @@ function updatedata() {
   $row = $res[0];
   $resurl = get_result("SELECT info_hash FROM {$TABLE_PREFIX}files WHERE external='yes' AND announce_url='".$row['announce_url']."' ORDER BY lastupdate ASC LIMIT 5", true, $btit_settings['cache_duration']);
   if (!$resurl || count($resurl) == 0)
-    return
+    return;
 
   $combinedinfohash = array();
   foreach ($resurl as $id=> $rhash)
@@ -915,7 +902,7 @@ function stdfoot($normalpage = true, $update = true, $adminpage = false, $torren
   $tpl->set('tracker_url',print_trackerurl());
   $tpl->set('site_name',print_sitename());
   $tpl->set('user_name',print_username());
-  $tpl->set('main_footer',bottom_menu()."<br />\n");
+//  $tpl->set('main_footer',bottom_menu()."<br />\n");
   $tpl->set('xbtit_version',print_version());
   $tpl->set('style_copyright',print_designer());
   $tpl->set('xbtit_debug',print_debug());
@@ -1329,4 +1316,5 @@ if (!function_exists("stripos")) {
   }
 }
 // EOF
+
 ?>
