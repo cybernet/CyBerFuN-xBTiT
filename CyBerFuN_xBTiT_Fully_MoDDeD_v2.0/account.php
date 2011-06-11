@@ -195,7 +195,7 @@ else {
 
 function tabella($action, $dati = array()) {
 
-   global $idflag, $link, $idlangue, $idstyle, $SITENAME, $INVITATIONSON, $code, $inviter, $CURUSER, $USE_IMAGECODE, $TABLE_PREFIX, $language, $tpl_account, $THIS_BASEPATH;
+   global $idflag, $link, $idlangue, $idstyle, $SITENAME, $INVITATIONSON, $code, $inviter, $CURUSER, $USE_IMAGECODE, $TABLE_PREFIX, $language, $tpl_account, $THIS_BASEPATH, $btit_settings;
 
    $pass_min_req=explode(",", $btit_settings["secsui_pass_min_req"]); 
    $tpl_account->set("pass_min_char",$pass_min_req[0]); 
