@@ -200,3 +200,4 @@ ALTER TABLE `{$db_prefix}users` ADD `timed_rank` datetime NOT NULL default '0000
 ALTER TABLE `{$db_prefix}language` ADD INDEX (`language_url`);
 ALTER TABLE `{$db_prefix}language` ADD UNIQUE (`language_url`);
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Danish', 'language/danish') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
+INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Chinese-Simplified', 'language/chinese') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;

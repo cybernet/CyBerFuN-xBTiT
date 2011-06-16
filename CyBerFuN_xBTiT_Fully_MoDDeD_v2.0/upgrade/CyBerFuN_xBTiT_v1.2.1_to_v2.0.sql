@@ -40,3 +40,4 @@ ALTER TABLE `{$db_prefix}language` ADD UNIQUE (`language_url`);
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Danish', 'language/danish') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Swedish', 'language/swedish') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Arabic', 'language/arabic') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
+INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Chinese-Simplified', 'language/chinese') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;

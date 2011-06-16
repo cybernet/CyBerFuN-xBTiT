@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 06, 2011 at 09:39 PM
+-- Generation Time: Jun 16, 2011 at 03:23 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.9
 
@@ -711,7 +711,8 @@ INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES
 (17, 'Portuguese-PT', 'language/portuguese-PT'),
 (18, 'Swedish', 'language/swedish'),
 (19, 'Arabic', 'language/arabic'),
-(20, 'Danish','language/danish');
+(20, 'Danish', 'language/danish'),
+(21, 'Chinese-Simplified', 'language/chinese');
 
 -- --------------------------------------------------------
 
