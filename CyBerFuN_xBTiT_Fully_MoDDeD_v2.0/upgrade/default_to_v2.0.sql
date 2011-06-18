@@ -201,3 +201,4 @@ ALTER TABLE `{$db_prefix}language` ADD INDEX (`language_url`);
 ALTER TABLE `{$db_prefix}language` ADD UNIQUE (`language_url`);
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Danish', 'language/danish') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Chinese-Simplified', 'language/chinese') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
+INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Bengali', 'language/bangla') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;

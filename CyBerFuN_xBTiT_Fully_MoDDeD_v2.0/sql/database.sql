@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 16, 2011 at 03:23 AM
+-- Generation Time: Jun 18, 2011 at 03:46 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.9
 
@@ -682,10 +682,10 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}invitations` (
 CREATE TABLE IF NOT EXISTS `{$db_prefix}language` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `language` varchar(20) NOT NULL DEFAULT '',
-  `language_url` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `language_url` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `language_url` (`language_url`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
 
 --
 -- Dumping data for table `{$db_prefix}language`
@@ -712,7 +712,8 @@ INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES
 (18, 'Swedish', 'language/swedish'),
 (19, 'Arabic', 'language/arabic'),
 (20, 'Danish', 'language/danish'),
-(21, 'Chinese-Simplified', 'language/chinese');
+(21, 'Chinese-Simplified', 'language/chinese'),
+(22, 'Bengali', 'language/bangla');
 
 -- --------------------------------------------------------
 

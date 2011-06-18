@@ -41,3 +41,4 @@ INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NU
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Swedish', 'language/swedish') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Arabic', 'language/arabic') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Chinese-Simplified', 'language/chinese') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
+INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Bengali', 'language/bangla') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
