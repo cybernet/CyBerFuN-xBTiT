@@ -1,4 +1,4 @@
--- request hack
+-- Request hack
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}addedrequests` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -37,7 +37,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_number', '5');
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_maxon', 'true');
 INSERT INTO `{$db_prefix}blocks` VALUES (NULL, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8);
 
--- sticky hack
+-- Sticky hack
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}sticky` (
   `id` int(11) NOT NULL,
@@ -52,7 +52,7 @@ INSERT INTO `{$db_prefix}sticky` (`id`, `color`, `level`) VALUES
 ALTER TABLE `{$db_prefix}files` ADD `sticky` ENUM( '0', '1' ) NOT NULL DEFAULT '0';
 ALTER TABLE `{$db_prefix}files` ADD INDEX ( `sticky` );
 
--- image upload hack
+-- iMage upload hack
 
 ALTER TABLE `{$db_prefix}files` ADD `image` VARCHAR( 255 ) NOT NULL DEFAULT '',
       ADD `screen1` VARCHAR( 255 ) NOT NULL DEFAULT '',
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files_thanks` (
   KEY `infohash` (`infohash`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- Invitations hack
+-- iNvitations hack
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}invitations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -119,12 +119,14 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`, `active`, `date`, `gold_description`, `silver_description`, `classic_description`) VALUES
-(1, 3, 'gold.gif', 'silver.gif', '1', '0000-00-00', 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
+(NULL, 3, 'gold.gif', 'silver.gif', '1', CURDATE(), 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
 
 ALTER TABLE `{$db_prefix}files` ADD `gold` ENUM( '0', '1', '2' ) NOT NULL DEFAULT '0';
 ALTER TABLE `{$db_prefix}files` ADD INDEX ( `gold` );
 
--- Invalid Login System hack
+-- iNvalid Login System hack
+
+-- Disabled by default
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}invalid_logins` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -197,6 +199,7 @@ ALTER TABLE `{$db_prefix}users` ADD `old_rank` varchar(12) NOT NULL DEFAULT '3';
 ALTER TABLE `{$db_prefix}users` ADD `timed_rank` datetime NOT NULL default '0000-00-00 00:00:00';
 
 -- Language
+
 ALTER TABLE `{$db_prefix}language` ADD INDEX (`language_url`);
 ALTER TABLE `{$db_prefix}language` ADD UNIQUE (`language_url`);
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Danish', 'language/danish') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
