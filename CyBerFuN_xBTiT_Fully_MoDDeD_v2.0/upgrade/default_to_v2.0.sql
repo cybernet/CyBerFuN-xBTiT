@@ -23,19 +23,19 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}requests` (
   KEY `userid` (`userid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_prune', '30');
-INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_page', '10');
-INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_post', '1');
-INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_sb', '10');
-INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_mb', '10000');
-INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_rwon', 'true');
-INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_sbmb', 'true');
-INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_shout', 'true');
-INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_max', '100');
-INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_onoff', 'true');
-INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_number', '5');
-INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_maxon', 'true');
-INSERT INTO `{$db_prefix}blocks` VALUES (NULL, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8);
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_prune', '30') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_page', '10') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_post', '1') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_sb', '10') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_mb', '10000') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_rwon', 'true') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_sbmb', 'true') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_shout', 'true') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_max', '100') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_onoff', 'true') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_number', '5') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_maxon', 'true') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}blocks` VALUES (NULL, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8) ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
 
 -- Sticky hack
 
@@ -64,10 +64,10 @@ ALTER TABLE  `{$db_prefix}files` ADD INDEX (  `screen2` );
 ALTER TABLE  `{$db_prefix}files` ADD INDEX (  `screen3` );
 ALTER TABLE  `{$db_prefix}settings` ADD INDEX (  `value` );
 
-INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('imageon', 'true');
-INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('uploaddir', 'cyberfun_img/');
-INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('file_limit', '2048');
-INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('screenon', 'true');
+INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('imageon', 'true') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('uploaddir', 'cyberfun_img/') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('file_limit', '2048') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('screenon', 'true') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
 
 -- torrent thanks ajax hack
 
@@ -101,7 +101,7 @@ WHERE `key` LIKE 'invitation_%';
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES 
 ('invitation_only', 'true'), 
 ('invitation_reqvalid', 'false'),
-('invitation_expires', '7');
+('invitation_expires', '7') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
 
 -- gold / silver torrents hack
 
@@ -138,8 +138,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}invalid_logins` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-INSERT INTO `{$db_prefix}settings` SET `key`='inv_login', `value`='false';
-INSERT INTO `{$db_prefix}settings` SET `key`='att_login', `value`='5';
+INSERT INTO `{$db_prefix}settings` SET `key`='inv_login', `value`='false' ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` SET `key`='att_login', `value`='5' ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
 
 -- Blocks
 
@@ -182,11 +182,11 @@ INSERT INTO `{$db_prefix}bonus` (`id`, `name`, `points`, `traffic`, `gb`) VALUES
 INSERT INTO `{$db_prefix}modules` (`id`, `name`, `activated`, `type`, `changed`, `created`) VALUES
 (NULL, 'seedbonus', 'yes', 'misc', NOW(), NOW());
 
-INSERT INTO `{$db_prefix}settings` SET `key`='bonus', `value`='1';
-INSERT INTO `{$db_prefix}settings` SET `key`='price_vip', `value`='750';
-INSERT INTO `{$db_prefix}settings` SET `key`='price_ct', `value`='200';
-INSERT INTO `{$db_prefix}settings` SET `key`='price_name', `value`='500';
-ALTER TABLE `{$db_prefix}users` ADD `seedbonus` DECIMAL( 12,6 ) NOT NULL DEFAULT '0';
+INSERT INTO `{$db_prefix}settings` SET `key`='bonus', `value`='1' ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` SET `key`='price_vip', `value`='750' ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` SET `key`='price_ct', `value`='200' ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` SET `key`='price_name', `value`='500' ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+ALTER TABLE `{$db_prefix}users` ADD `seedbonus` DECIMAL( 12,6 ) NOT NULL DEFAULT '0' ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
 
 -- Torrent Genre v1.1
 

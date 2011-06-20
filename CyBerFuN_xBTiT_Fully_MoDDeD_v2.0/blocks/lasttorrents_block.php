@@ -31,13 +31,13 @@
 ////////////////////////////////////////////////////////////////////////////////////
 
 global $CURUSER,$btit_settings;
-if (!$CURUSER || $CURUSER["view_torrents"]=="no")
+if (!$CURUSER || $CURUSER["view_torrents"] == "no")
    {
     // do nothing
    }
 else
     {
-  global $BASEURL, $STYLEPATH, $dblist, $XBTT_USE,$btit_settings;
+  global $BASEURL, $STYLEPATH, $dblist, $XBTT_USE, $btit_settings;
 
   block_begin(LAST_TORRENTS);
 
@@ -76,15 +76,15 @@ if (max(0, $CURUSER["WT"]) > 0)
           if ( strlen($data["hash"]) > 0 )
           {
       echo "\n\t<td align=\"center\" class=\"lista\" width=\"20\" style=\"text-align: center;\">";
-      echo "<a href=\"download.php?id=".$data["hash"]."&amp;f=" . rawurlencode($data["filename"]) . ".torrent\"><img src='images/torrent.gif' border='0' alt='".$language["DOWNLOAD_TORRENT"]."' title='".$language["DOWNLOAD_TORRENT"]."' /></a>";
+      echo "<a class=\"lasttor\" href=\"download.php?id=".$data["hash"]."&amp;f=" . rawurlencode($data["filename"]) . ".torrent\"><img src='images/torrent.gif' border='0' alt='".$language["DOWNLOAD_TORRENT"]."' title='".$language["DOWNLOAD_TORRENT"]."' /></a>";
       echo "</td>";
 
        $data["filename"] = unesc($data["filename"]);
-       $filename = cut_string($data["filename"],intval($btit_settings["cut_name"]));
+       $filename = cut_string($data["filename"], intval($btit_settings["cut_name"]));
 	   // gold mod
      $silver_picture = '';
      $gold_picture = '';
-     $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+     $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true, $btit_settings['cache_duration']);
             foreach ($res as $key=>$value)
             {
                 $silver_picture = $value["silver_picture"];
@@ -102,9 +102,9 @@ if (max(0, $CURUSER["WT"]) > 0)
         // end gold mod
 
        if ($GLOBALS["usepopup"])
-          echo "\n\t<td width=\"55%\" class=\"lista\" style=\"padding-left:10px;\"><a href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=" . $data['hash'] . "');\" title=\"" . $language["VIEW_DETAILS"] . ": " . $data["filename"] . "\">" . $filename . "</a>".$gold.($data["external"] == "no"?"":" (<span style=\"color:red\">EXT</span>)")."</td>";
+          echo "\n\t<td width=\"55%\" class=\"lista\" style=\"padding-left:10px;\"><a class=\"lasttor\" href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=" . $data['hash'] . "');\" title=\"" . $language["VIEW_DETAILS"] . ": " . $data["filename"] . "\">" . $filename . "</a>".$gold.($data["external"] == "no"?"":" (<span style=\"color:red\">EXT</span>)")."</td>";
        else
-          echo "\n\t<td width=\"55%\" class=\"lista\" style=\"padding-left:10px;\"><a href=\"index.php?page=torrent-details&amp;id=" . $data['hash'] . "\" title=\"" . $language["VIEW_DETAILS"]. ": " . $data["filename"] . "\">" . $filename . "</a>".$gold.($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."</td>";
+          echo "\n\t<td width=\"55%\" class=\"lista\" style=\"padding-left:10px;\"><a class=\"lasttor\" href=\"index.php?page=torrent-details&amp;id=" . $data['hash'] . "\" title=\"" . $language["VIEW_DETAILS"]. ": " . $data["filename"] . "\">" . $filename . "</a>".$gold.($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."</td>";
        echo "\n\t<td align=\"center\" class=\"lista\" width=\"45\" style=\"text-align: center;\"><a href=\"index.php?page=torrents&amp;category=$data[catid]\">" . image_or_link( ($data["image"] == "" ? "" : "$STYLEPATH/images/categories/" . $data["image"]), "", $data["cname"]) . "</a></td>";
 
     //waitingtime
@@ -114,16 +114,16 @@ if (max(0, $CURUSER["WT"]) > 0)
           $wait = 0;
           //$resuser=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"]);
           //$rowuser=mysql_fetch_array($resuser);
-          if (max(0,$CURUSER['downloaded'])>0) $ratio=number_format($CURUSER['uploaded']/$CURUSER['downloaded'],2);
+          if (max(0, $CURUSER['downloaded']) > 0) $ratio = number_format($CURUSER['uploaded'] / $CURUSER['downloaded'], 2);
           else $ratio=0.0;
           //$res2 =do_sqlquery("SELECT * FROM {$TABLE_PREFIX}files WHERE info_hash='".$data["hash"]."'");
           //$added=mysql_fetch_array($res2);
           $vz = $data['added']; //sql_timestamp_to_unix_timestamp($data["data"]);
           $timer = floor((time() - $vz) / 3600);
-          if($ratio<1.0 && $CURUSER['uid']!=$data["uploader"]){
-              $wait=$CURUSER["WT"];
+          if($ratio < 1.0 && $CURUSER['uid'] != $data["uploader"]){
+              $wait = $CURUSER["WT"];
           }
-          $wait -=$timer;
+          $wait -= $timer;
           if ($wait<=0)$wait=0;
 
           echo "\n\t<td align=\"center\" width=\"20\" class=\"lista\" style=\"text-align: center;\">".$wait." h</td>";
@@ -137,20 +137,20 @@ if (max(0, $CURUSER["WT"]) > 0)
             {
               if ($GLOBALS["usepopup"])
                 {
-                echo "\n\t<td align=\"center\" class=\"".linkcolor($data["seeds"])."\" style=\"text-align: center;\"><a href=\"javascript:poppeer('index.php?page=peers&amp;id=".$data["hash"]."');\" title=\"".$language["PEERS_DETAILS"]."\">" . $data["seeds"] . "</a></td>\n";
-                echo "\n\t<td align=\"center\" class=\"".linkcolor($data["leechers"])."\" style=\"text-align: center;\"><a href=\"javascript:poppeer('index.php?page=peers&amp;id=".$data["hash"]."');\" title=\"".$language["PEERS_DETAILS"]."\">" .$data["leechers"] . "</a></td>\n";
-                if ($data["finished"]>0)
-                   echo "\n\t<td align=\"center\" class=\"lista\" style=\"text-align: center;\"><a href=\"javascript:poppeer('index.php?page=torrent_history&amp;id=".$data["hash"]."');\" title=\"History - ".$data["filename"]."\">" . $data["finished"] . "</a></td>";
+                echo "\n\t<td align=\"center\" class=\"".linkcolor($data["seeds"])."\" style=\"text-align: center;\"><a class=\"lasttor\" href=\"javascript:poppeer('index.php?page=peers&amp;id=".$data["hash"]."');\" title=\"".$language["PEERS_DETAILS"]."\">" . $data["seeds"] . "</a></td>\n";
+                echo "\n\t<td align=\"center\" class=\"".linkcolor($data["leechers"])."\" style=\"text-align: center;\"><a class=\"lasttor\" href=\"javascript:poppeer('index.php?page=peers&amp;id=".$data["hash"]."');\" title=\"".$language["PEERS_DETAILS"]."\">" .$data["leechers"] . "</a></td>\n";
+                if ($data["finished"] > 0)
+                   echo "\n\t<td align=\"center\" class=\"lista\" style=\"text-align: center;\"><a class=\"lasttor\" href=\"javascript:poppeer('index.php?page=torrent_history&amp;id=".$data["hash"]."');\" title=\"History - ".$data["filename"]."\">" . $data["finished"] . "</a></td>";
                 else
                     echo "\n\t<td align=\"center\" class=\"lista\" style=\"text-align: center;\">---</td>";
 
                 }
               else
                 {
-                echo "\n\t<td align=\"center\" class=\"".linkcolor($data["seeds"])."\" style=\"text-align: center;\"><a href=\"index.php?page=peers&amp;id=".$data["hash"]."\" title=\"".$language["PEERS_DETAILS"]."\">" . $data["seeds"] . "</a></td>\n";
-                echo "\n\t<td align=\"center\" class=\"".linkcolor($data["leechers"])."\" style=\"text-align: center;\"><a href=\"index.php?page=peers&amp;id=".$data["hash"]."\" title=\"".$language["PEERS_DETAILS"]."\">" .$data["leechers"] . "</a></td>\n";
-                if ($data["finished"]>0)
-                   echo "\n\t<td align=\"center\" class=\"lista\" style=\"text-align: center;\"><a href=\"index.php?page=torrent_history&amp;id=".$data["hash"]."\" title=\"History - ".$data["filename"]."\">" . $data["finished"] . "</a></td>";
+                echo "\n\t<td align=\"center\" class=\"".linkcolor($data["seeds"])."\" style=\"text-align: center;\"><a class=\"lasttor\" href=\"index.php?page=peers&amp;id=".$data["hash"]."\" title=\"".$language["PEERS_DETAILS"]."\">" . $data["seeds"] . "</a></td>\n";
+                echo "\n\t<td align=\"center\" class=\"".linkcolor($data["leechers"])."\" style=\"text-align: center;\"><a class=\"lasttor\" href=\"index.php?page=peers&amp;id=".$data["hash"]."\" title=\"".$language["PEERS_DETAILS"]."\">" .$data["leechers"] . "</a></td>\n";
+                if ($data["finished"] > 0)
+                   echo "\n\t<td align=\"center\" class=\"lista\" style=\"text-align: center;\"><a class=\"lasttor\" href=\"index.php?page=torrent_history&amp;id=".$data["hash"]."\" title=\"History - ".$data["filename"]."\">" . $data["finished"] . "</a></td>";
                 else
                     echo "\n\t<td align=\"center\" class=\"lista\">---</td>";
 
@@ -161,7 +161,7 @@ if (max(0, $CURUSER["WT"]) > 0)
                // linkcolor
                echo "\n\t<td align=\"center\" width=\"30\" class=\"".linkcolor($data["seeds"])."\" style=\"text-align: center;\">" . $data["seeds"] . "</td>";
                echo "\n\t<td align=\"center\" width=\"30\" class=\"".linkcolor($data["leechers"])."\" style=\"text-align: center;\">" .$data["leechers"] . "</td>";
-               if ($data["finished"]>0)
+               if ($data["finished"] > 0)
                   echo "\n\t<td align=\"center\" width=\"40\" class=\"lista\" style=\"text-align: center;\">" . $data["finished"] . "</td>";
                else
                    echo "\n\t<td align=\"center\" class=\"lista\" style=\"text-align: center;\">---</td>";
