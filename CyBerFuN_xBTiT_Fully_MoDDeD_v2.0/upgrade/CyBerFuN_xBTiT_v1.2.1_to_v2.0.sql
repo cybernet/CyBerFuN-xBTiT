@@ -14,7 +14,6 @@ ALTER TABLE `{$db_prefix}files` ADD `gen` VARCHAR( 32 ) NOT NULL;
 ALTER TABLE `{$db_prefix}users` ADD `rank_switch` ENUM( 'yes', 'no' ) NOT NULL DEFAULT 'no';
 ALTER TABLE `{$db_prefix}users` ADD `old_rank` varchar(12) NOT NULL DEFAULT '3';
 ALTER TABLE `{$db_prefix}users` ADD `timed_rank` datetime NOT NULL default '0000-00-00 00:00:00';
-INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Danish', 'language/danish');
 
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('secsui_quarantine_dir', ''), 
@@ -29,7 +28,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('secsui_cookie_path', ''), 
 ('secsui_cookie_domain', ''), 
 ('secsui_cookie_items', '1-0,2-0,3-0,4-0,5-0,6-0,7-0,8-0[+]0'),
-('secsui_pass_min_req', '4,0,0,0,0');
+('secsui_pass_min_req', '4,0,0,0,0') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
 
 ALTER TABLE `{$db_prefix}users`
 ADD `salt` VARCHAR(20) NOT NULL DEFAULT '' AFTER `password`,
@@ -42,3 +41,4 @@ INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NU
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Arabic', 'language/arabic') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Chinese-Simplified', 'language/chinese') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Bengali', 'language/bangla') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
+ALTER TABLE `{$db_prefix}blocks` ADD UNIQUE (`content`);

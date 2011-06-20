@@ -35,7 +35,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_max', '100') ON
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_onoff', 'true') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_number', '5') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES ('req_maxon', 'true') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
-INSERT INTO `{$db_prefix}blocks` VALUES (NULL, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8) ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `status`, `title`, `cache`, `minclassview`, `maxclassview`) VALUES (NULL, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8) ON DUPLICATE KEY UPDATE `blockid`=`blockid`, `content`=`content`, `position`=`position`, `sortid`=`sortid`, `status`=`status`, `title`=`title`, `cache`=`cache`, `minclassview`=`minclassview`, `maxclassview`=`maxclassview`;
 
 -- Sticky hack
 
@@ -138,8 +138,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}invalid_logins` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-INSERT INTO `{$db_prefix}settings` SET `key`='inv_login', `value`='false' ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
-INSERT INTO `{$db_prefix}settings` SET `key`='att_login', `value`='5' ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key` ,`value`) VALUES ('inv_login',  'false') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key` ,`value`) VALUES ('att_login',  '5') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
 
 -- Blocks
 
@@ -182,11 +182,11 @@ INSERT INTO `{$db_prefix}bonus` (`id`, `name`, `points`, `traffic`, `gb`) VALUES
 INSERT INTO `{$db_prefix}modules` (`id`, `name`, `activated`, `type`, `changed`, `created`) VALUES
 (NULL, 'seedbonus', 'yes', 'misc', NOW(), NOW());
 
-INSERT INTO `{$db_prefix}settings` SET `key`='bonus', `value`='1' ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
-INSERT INTO `{$db_prefix}settings` SET `key`='price_vip', `value`='750' ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
-INSERT INTO `{$db_prefix}settings` SET `key`='price_ct', `value`='200' ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
-INSERT INTO `{$db_prefix}settings` SET `key`='price_name', `value`='500' ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
-ALTER TABLE `{$db_prefix}users` ADD `seedbonus` DECIMAL( 12,6 ) NOT NULL DEFAULT '0' ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key` ,`value`) VALUES ('bonus',  '1') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key` ,`value`) VALUES ('price_vip',  '750') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key` ,`value`) VALUES ('price_ct',  '200') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+INSERT INTO `{$db_prefix}settings` (`key` ,`value`) VALUES ('price_name',  '500') ON DUPLICATE KEY UPDATE `key`=`key`, `value`=`value`;
+ALTER TABLE `{$db_prefix}users` ADD `seedbonus` DECIMAL( 12,6 ) NOT NULL DEFAULT '0';
 
 -- Torrent Genre v1.1
 
@@ -205,3 +205,7 @@ ALTER TABLE `{$db_prefix}language` ADD UNIQUE (`language_url`);
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Danish', 'language/danish') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Chinese-Simplified', 'language/chinese') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Bengali', 'language/bangla') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
+
+-- i
+
+ALTER TABLE `{$db_prefix}blocks` ADD UNIQUE (`content`);
