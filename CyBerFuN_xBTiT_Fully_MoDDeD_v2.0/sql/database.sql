@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.10
+-- version 3.4.2
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 18, 2011 at 03:46 AM
+-- Generation Time: Jun 20, 2011 at 08:41 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.9
 
@@ -78,28 +78,28 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}blocks` (
 --
 
 INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `status`, `title`, `cache`, `minclassview`, `maxclassview`) VALUES
-(1, 'menu', 'r', 5, 1, 'BLOCK_MENU', 'no', 3, 8),
-(2, 'clock', 'r', 2, 1, 'BLOCK_CLOCK', 'no', 3, 8),
-(3, 'forum', 'l', 2, 1, 'BLOCK_FORUM', 'no', 3, 8),
-(4, 'lastmember', 'l', 1, 1, 'BLOCK_LASTMEMBER', 'no', 3, 8),
-(6, 'trackerinfo', 'l', 6, 1, 'BLOCK_INFO', 'no', 3, 8),
-(7, 'user', 'r', 4, 1, 'BLOCK_USER', 'no', 3, 8),
-(8, 'online', 'b', 0, 1, 'BLOCK_ONLINE', 'no', 3, 8),
-(10, 'toptorrents', 'c', 5, 1, 'BLOCK_TOPTORRENTS', 'no', 3, 8),
-(11, 'lasttorrents', 'c', 4, 1, 'BLOCK_LASTTORRENTS', 'no', 3, 8),
-(12, 'news', 'c', 1, 1, 'BLOCK_NEWS', 'no', 1, 8),
-(13, 'mainmenu', 'e', 1, 1, 'BLOCK_MENU', 'no', 1, 8),
-(14, 'maintrackertoolbar', 't', 2, 1, 'BLOCK_MAINTRACKERTOOLBAR', 'no', 1, 8),
-(15, 'mainusertoolbar', 't', 2, 1, 'BLOCK_MAINUSERTOOLBAR', 'no', 3, 8),
-(16, 'serverload', 'c', 8, 0, 'BLOCK_SERVERLOAD', 'no', 8, 8),
-(17, 'poller', 'l', 3, 1, 'BLOCK_POLL', 'no', 3, 8),
-(18, 'seedwanted', 'c', 3, 1, 'BLOCK_SEEDWANTED', 'no', 3, 8),
-(19, 'paypal', 'r', 1, 1, 'BLOCK_PAYPAL', 'no', 3, 8),
-(20, 'ajax_shoutbox', 'c', 2, 1, 'BLOCK_SHOUTBOX', 'no', 3, 8),
-(21, 'dropdownmenu', 'd', 1, 0, 'BLOCK_DDMENU', 'no', 1, 8),
-(22, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8),
-(23, 'header', 't', 1, 1, 'BLOCK_CYBERNET_HEADER', 'no', 1, 8),
-(24, 'login', 'c', 0, 1, 'BLOCK_LOGIN', 'no', 1, 1);
+(NULL, 'menu', 'r', 5, 1, 'BLOCK_MENU', 'no', 3, 8),
+(NULL, 'clock', 'r', 2, 1, 'BLOCK_CLOCK', 'no', 3, 8),
+(NULL, 'forum', 'l', 2, 1, 'BLOCK_FORUM', 'no', 3, 8),
+(NULL, 'lastmember', 'l', 1, 1, 'BLOCK_LASTMEMBER', 'no', 3, 8),
+(NULL, 'trackerinfo', 'l', 6, 1, 'BLOCK_INFO', 'no', 3, 8),
+(NULL, 'user', 'r', 4, 1, 'BLOCK_USER', 'no', 3, 8),
+(NULL, 'online', 'b', 0, 1, 'BLOCK_ONLINE', 'no', 3, 8),
+(NULL, 'toptorrents', 'c', 5, 1, 'BLOCK_TOPTORRENTS', 'no', 3, 8),
+(NULL, 'lasttorrents', 'c', 4, 1, 'BLOCK_LASTTORRENTS', 'no', 3, 8),
+(NULL, 'news', 'c', 1, 1, 'BLOCK_NEWS', 'no', 1, 8),
+(NULL, 'mainmenu', 'e', 1, 1, 'BLOCK_MENU', 'no', 1, 8),
+(NULL, 'maintrackertoolbar', 't', 2, 1, 'BLOCK_MAINTRACKERTOOLBAR', 'no', 1, 8),
+(NULL, 'mainusertoolbar', 't', 2, 1, 'BLOCK_MAINUSERTOOLBAR', 'no', 3, 8),
+(NULL, 'serverload', 'c', 8, 0, 'BLOCK_SERVERLOAD', 'no', 8, 8),
+(NULL, 'poller', 'l', 3, 1, 'BLOCK_POLL', 'no', 3, 8),
+(NULL, 'seedwanted', 'c', 3, 1, 'BLOCK_SEEDWANTED', 'no', 3, 8),
+(NULL, 'paypal', 'r', 1, 1, 'BLOCK_PAYPAL', 'no', 3, 8),
+(NULL, 'ajax_shoutbox', 'c', 2, 1, 'BLOCK_SHOUTBOX', 'no', 3, 8),
+(NULL, 'dropdownmenu', 'd', 1, 0, 'BLOCK_DDMENU', 'no', 1, 8),
+(NULL, 'request', 'c', 6, 1, 'BLOCK_REQUEST', 'no', 3, 8),
+(NULL, 'header', 't', 1, 1, 'BLOCK_CYBERNET_HEADER', 'no', 1, 8),
+(NULL, 'login', 'c', 0, 1, 'BLOCK_LOGIN', 'no', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -685,35 +685,35 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}language` (
   `language_url` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `language_url` (`language_url`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}language`
 --
 
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES
-(1, 'English', 'language/english'),
-(2, 'Romanian', 'language/romanian'),
-(3, 'Polish', 'language/polish'),
-(4, 'Srpsko-Hrvatski', 'language/serbocroatian'),
-(5, 'Dutch', 'language/dutch'),
-(6, 'Italiano', 'language/italian'),
-(7, 'Russian', 'language/russian'),
-(8, 'German', 'language/german'),
-(9, 'Hungarian', 'language/hungarian'),
-(10, 'Français', 'language/french'),
-(11, 'Finnish', 'language/finnish'),
-(12, 'Vietnamese', 'language/vietnamese'),
-(13, 'Greek', 'language/greek'),
-(14, 'Bulgarian', 'language/bulgarian'),
-(15, 'Spanish', 'language/spanish'),
-(16, 'Portuguese-BR', 'language/portuguese-BR'),
-(17, 'Portuguese-PT', 'language/portuguese-PT'),
-(18, 'Swedish', 'language/swedish'),
-(19, 'Arabic', 'language/arabic'),
-(20, 'Danish', 'language/danish'),
-(21, 'Chinese-Simplified', 'language/chinese'),
-(22, 'Bengali', 'language/bangla');
+(NULL, 'English', 'language/english'),
+(NULL, 'Romanian', 'language/romanian'),
+(NULL, 'Polish', 'language/polish'),
+(NULL, 'Srpsko-Hrvatski', 'language/serbocroatian'),
+(NULL, 'Dutch', 'language/dutch'),
+(NULL, 'Italiano', 'language/italian'),
+(NULL, 'Russian', 'language/russian'),
+(NULL, 'German', 'language/german'),
+(NULL, 'Hungarian', 'language/hungarian'),
+(NULL, 'Français', 'language/french'),
+(NULL, 'Finnish', 'language/finnish'),
+(NULL, 'Vietnamese', 'language/vietnamese'),
+(NULL, 'Greek', 'language/greek'),
+(NULL, 'Bulgarian', 'language/bulgarian'),
+(NULL, 'Spanish', 'language/spanish'),
+(NULL, 'Portuguese-BR', 'language/portuguese-BR'),
+(NULL, 'Portuguese-PT', 'language/portuguese-PT'),
+(NULL, 'Swedish', 'language/swedish'),
+(NULL, 'Arabic', 'language/arabic'),
+(NULL, 'Danish', 'language/danish'),
+(NULL, 'Chinese-Simplified', 'language/chinese'),
+(NULL, 'Bengali', 'language/bangla');
 
 -- --------------------------------------------------------
 
@@ -1202,7 +1202,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}sticky` (
 --
 
 INSERT INTO `{$db_prefix}sticky` (`id`, `color`, `level`) VALUES
-(NULL, '#bce1ac;', 3);
+(1, '#bce1ac;', 3);
 
 -- --------------------------------------------------------
 
