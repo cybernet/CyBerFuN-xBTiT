@@ -209,3 +209,4 @@ INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NU
 -- i
 
 ALTER TABLE `{$db_prefix}blocks` ADD UNIQUE (`content`);
+UPDATE `{$db_prefix}settings` SET  `value` =  '<?php,base64_decode,base64_encode,eval(,phpinfo,fopen,fread,fwrite,file_get_contents' WHERE  `{$db_prefix}settings`.`key` = 'secsui_quarantine_search_terms';

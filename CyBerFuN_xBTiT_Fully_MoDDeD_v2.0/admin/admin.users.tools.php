@@ -48,7 +48,7 @@ if ($uid==$CURUSER['uid'] || $uid==1) {
 if ($XBTT_USE)
     $curu=get_result('SELECT u.username, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, (u.downloaded+x.downloaded) as downloaded, (u.uploaded+x.uploaded) as uploaded FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level LEFT JOIN xbt_users x ON x.uid=u.id WHERE u.id='.$uid.' LIMIT 1',true);
 else
-    $curu=get_result('SELECT u.username, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, u.downloaded, u.uploaded FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level WHERE u.id='.$uid.' LIMIT 1',true);
+    $curu=get_result('SELECT u.username, u.custom_title, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, u.downloaded, u.uploaded FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level WHERE u.id='.$uid.' LIMIT 1',true);
 
 # test for bad id
 if (!isset($curu[0]))
@@ -64,13 +64,13 @@ if ($CURUSER['id_level'] < $curu['base_level']){
 }
 $note='';
 # find smf_id
-if ($FORUMLINK=='smf') {
+ if (substr($FORUMLINK,0,3)=='smf') {
     if (!isset($curu['smf_id']) || $curu['smf_id']==0) {
         # go full mysql search on it's ass
-        $smf_user=get_result('SELECT `ID_MEMBER` FROM `'.$db_prefix.'members` WHERE `memberName`='.sqlesc($curu['username']).' LIMIT 1;');
+        $smf_user=get_result("SELECT ".(($FORUMLINK=="smf")?"`ID_MEMBER`":"`id_member`")." FROM `{$db_prefix}members` WHERE `member".(($FORUMLINK=="smf")?"N":"_n")."ame`=".sqlesc($curu['username'])." LIMIT 1");
         if (isset($smf_user[0])) {
-            $smf_fid=$smf_user[0]['ID_MEMBER'];
-            quickQuery('UPDATE `'.$TABLE_PREFIX.'users` SET `smf_fid`='.$smf_fid.' WHERE `id`='.$uid.' LIMIT 1;');
+            $smf_fid=(($FORUMLINK=="smf")?$smf_user[0]['ID_MEMBER']:$smf_user[0]['id_member']);
+            quickQuery("UPDATE `{$TABLE_PREFIX}users` SET `smf_fid`=".$smf_fid." WHERE `id`=".$uid." LIMIT 1");
         } else {
             $smf_fid=false;
             $note=' User not found in SMF.';
@@ -94,8 +94,8 @@ switch ($action) {
     case 'delete':
         if (isset($_GET['sure']) && $_GET['sure']==1) {
             quickQuery('DELETE FROM '.$TABLE_PREFIX.'users WHERE id='.$uid.' LIMIT 1;',true);
-            if ($FORUMLINK=='smf')
-                quickQuery('DELETE FROM '.$db_prefix.'members WHERE ID_MEMBER='.$smf_fid.' LIMIT 1;');
+             if (substr($FORUMLINK,0,3)=='smf')
+                quickQuery("DELETE FROM `{$db_prefix}members` WHERE ".(($FORUMLINK=="smf")?"`ID_MEMBER`":"`id_member`")."=".$smf_fid." LIMIT 1");
             if ($XBTT_USE)
                 quickQuery('DELETE FROM xbt_users WHERE uid='.$uid.' LIMIT 1;');
 
@@ -222,7 +222,12 @@ switch ($action) {
             $chpass=(isset($_POST['chpass']) && $pass!='');
             # new level of the user
 	    $custom_title=unesc($_POST["custom_title"]);
-            $rlev = do_sqlquery('SELECT id_level as base_level, level as name FROM '.$TABLE_PREFIX.'users_level WHERE id='.$level.' LIMIT 1;');
+// version prodided by petr1fied, Sun Jun 19 15:25:33 2011 UTC
+//http://btit-tracker.svn.sourceforge.net/viewvc/btit-tracker/BtitT2/branches/beta/admin/admin.users.tools.php?r1=685&r2=684&pathrev=685
+     //       $rlev = do_sqlquery("SELECT `id_level` `base_level`, `level` `name`".((substr($FORUMLINK,0,3)=='smf')?", `smf_group_mirror`":"")." FROM {$TABLE_PREFIX}users_level WHERE id=".$level." LIMIT 1");
+// eNd
+// bug fix already
+		$rlev = do_sqlquery("SELECT `id_level` as `base_level`, `level` as `name` ".((substr($FORUMLINK,0,3)=='smf')?", `smf_group_mirror`":"")." FROM {$TABLE_PREFIX}users_level WHERE id=".$level." LIMIT 1");
             $reslev = mysql_fetch_assoc($rlev);
             if ( ($CURUSER['id_level'] < $reslev['base_level']))
                 $level = 0;
@@ -236,12 +241,23 @@ switch ($action) {
             if ($idflag>0 && $idflag != $curu['flag'])
                 $set[]='flag='.$idflag;
             if ($level>0 && $level != $curu['id_level']) {
-                if ($FORUMLINK=='smf') {
+                if (substr($FORUMLINK,0,3)=='smf')
                     # find the coresponding level in smf
-                    $smf_group = get_result('SELECT ID_GROUP FROM '.$db_prefix.'membergroups WHERE groupName="'.$reslev['name'].'" LIMIT 1;', true, $CACHE_DURATION);
+                    if($reslev["smf_group_mirror"]==0)
+$smf_group=get_result("SELECT ".(($FORUMLINK=="smf")?"`ID_GROUP`":"`id_group`")." FROM `{$db_prefix}membergroups` WHERE `group".(($FORUMLINK=="smf")?"N":"_n")."ame`='".$reslev["name"]."' LIMIT 1", true, $CACHE_DURATION);
                     # if there is one update it
-                    if (isset($smf_group[0]))
-                        $smfset[]='ID_GROUP='.$smf_group[0]['ID_GROUP'];
+                    # if there is one update it
+                    if (isset($smf_group[0]) || $reslev["smf_group_mirror"]>0)
+                    {
+                        if($reslev["smf_group_mirror"]>0)
+                        {
+                            if($FORUMLINK=="smf")
+                                $smf_group[0]['ID_GROUP']=$reslev["smf_group_mirror"];
+                            else
+                                $smf_group[0]['id_group']=$reslev["smf_group_mirror"];
+                        }
+                        $smfset[]=(($FORUMLINK=="smf")?'ID_GROUP='.$smf_group[0]['ID_GROUP']:'id_group='.$smf_group[0]['id_group']);
+                    }
                     else $note.=' Group not found in SMF.';
                 }
                 $set[]='id_level='.$level;
@@ -258,18 +274,18 @@ switch ($action) {
 		$new_username=$username;
                 $sql_name=sqlesc($curu['username']);
                 $username=sqlesc($username);
-                $dupe=get_result('SELECT id FROM '.$TABLE_PREFIX.'users WHERE username='.$username.' LIMIT 1;');
+                $dupe=get_result("SELECT `id` FROM `{$TABLE_PREFIX}users` WHERE `username`=".$username." LIMIT 1", true, $CACHE_DURATION);
                 if (!isset($dupe[0])) {
                     $set[]='username='.$username;
                     $newname=' ( now: '.$username;
-                    if ($FORUMLINK=='smf')
+                    if (substr($FORUMLINK,0,3)=='smf')
                     {
-                        $dupe=get_result('SELECT ID_MEMBER FROM '.$db_prefix.'members WHERE memberName='.$username.' LIMIT 1;');
+                        $dupe=get_result("SELECT ".(($FORUMLINK=="smf")?"`ID_MEMBER`":"`id_member`")." FROM `{$db_prefix}members` WHERE `member".(($FORUMLINK=="smf")?"N":"_n")."ame`=".$username." LIMIT 1", true, $CACHE_DURATION);
                         if (!isset($dupe[0])) {
                             $smfset[]='memberName='.$username;
                         } else
                             $newname.=', dupe name in smf memberName';
-                        $dupe=get_result('SELECT ID_MEMBER FROM '.$db_prefix.'members WHERE realName='.$username.' LIMIT 1;');
+                        $dupe=get_result("SELECT ".(($FORUMLINK=="smf")?"`ID_MEMBER`":"`id_member`")." FROM {$db_prefix}members WHERE `real".(($FORUMLINK=="smf")?"N":"_n")."ame`=".$username." LIMIT 1", true, $CACHE_DURATION);
                         if (!isset($dupe[0])) {
                             $smfset[]='realName='.$username;
                         } else
@@ -331,7 +347,7 @@ switch ($action) {
                 if($lct_count<$pass_min_req[1] || $uct_count<$pass_min_req[2] || $num_count<$pass_min_req[3] || $sym_count<$pass_min_req[4])
                     stderr($language["ERROR"],$language["ERR_PASS_TOO_WEAK_1A"].":<br /><br />".(($pass_min_req[1]>0)?"<li><span style='color:blue;font-weight:bold;'>".$pass_min_req[1]."</span> ".(($pass_min_req[1]==1)?$language["ERR_PASS_TOO_WEAK_2"]:$language["ERR_PASS_TOO_WEAK_2A"])."</li>":"").(($pass_min_req[2]>0)?"<li><span style='color:blue;font-weight:bold;'>".$pass_min_req[2]."</span> ".(($pass_min_req[2]==1)?$language["ERR_PASS_TOO_WEAK_3"]:$language["ERR_PASS_TOO_WEAK_3A"])."</li>":"").(($pass_min_req[3]>0)?"<li><span style='color:blue;font-weight:bold;'>".$pass_min_req[3]."</span> ".(($pass_min_req[3]==1)?$language["ERR_PASS_TOO_WEAK_4"]:$language["ERR_PASS_TOO_WEAK_4A"])."</li>":"").(($pass_min_req[4]>0)?"<li><span style='color:blue;font-weight:bold;'>".$pass_min_req[4]."</span> ".(($pass_min_req[4]==1)?$language["ERR_PASS_TOO_WEAK_5"]:$language["ERR_PASS_TOO_WEAK_5A"])."</li>":"")."<br />".$language["ERR_PASS_TOO_WEAK_6"].":<br /><br /><span style='color:blue;font-weight:bold;'>".$newpassword."</span><br />");
 
-                $un=(($new_username!=$curu["username"])?$new_username:$curu["username"]);
+                $un=((!empty($new_username) && $new_username!=$curu["username"])?$new_username:$curu["username"]);
                 $multipass=hash_generate(array("salt" => ""), $pass, $un);
                 $j=$btit_settings["secsui_pass_type"];
                 $set[]="`password`=".sqlesc($multipass[$j]["rehash"]);
@@ -339,8 +355,8 @@ switch ($action) {
                 $set[]="`pass_type`=".sqlesc($j);
                 $set[]="`dupe_hash`=".sqlesc($multipass[$j]["dupehash"]);
                 $passhash=smf_passgen($username, $pass);
-                $smfset[]='passwd='.sqlesc($passhash[0]);
-                $smfset[]='passwordSalt='.sqlesc($passhash[1]);
+                $smfset[]='`passwd`='.sqlesc($passhash[0]);
+                $smfset[]='`password'.(($FORUMLINK=="smf")?"S":"_s").'alt`='.sqlesc($passhash[1]);
             }
 
             $updateset=(isset($set))?implode(',',$set):'';
@@ -349,8 +365,8 @@ switch ($action) {
             if ($updateset!='') {
                 if ($XBTT_USE && $updatesetxbt!='')
                     quickQuery('UPDATE xbt_users SET '.$updatesetxbt.' WHERE uid='.$uid.' LIMIT 1;');
-                if (($FORUMLINK=='smf') && ($updatesetsmf!='') && (!is_bool($smf_fid)))
-                    quickQuery('UPDATE '.$db_prefix.'members SET '.$updatesetsmf.' WHERE ID_MEMBER='.$smf_fid.' LIMIT 1;');
+                if ((substr($FORUMLINK,0,3)=='smf') && ($updatesetsmf!='') && (!is_bool($smf_fid)))
+                    quickQuery("UPDATE `{$db_prefix}members` SET ".$updatesetsmf." WHERE ".(($FORUMLINK=="smf")?"`ID_MEMBER`":"`id_member`")."=".$smf_fid." LIMIT 1");
                 quickQuery('UPDATE '.$TABLE_PREFIX.'users SET '.$updateset.' WHERE id='.$uid.' LIMIT 1;');
 
                 success_msg($language['SUCCESS'], $language['INF_CHANGED'].$note.'<br /><a href="index.php?page=admin&amp;user='.$CURUSER['uid'].'&amp;code='.$CURUSER['random'].'">'.$language['MNU_ADMINCP'].'</a>');

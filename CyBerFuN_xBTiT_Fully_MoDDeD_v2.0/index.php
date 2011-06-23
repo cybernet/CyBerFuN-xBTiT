@@ -49,6 +49,16 @@ include("$THIS_BASEPATH/btemplate/bTemplate.php");
 
 require("$THIS_BASEPATH/include/functions.php");
 
+// If they've updated to SMF 2.0 and their tracker settings still thinks they're using SMF 1.x.x force an update
+if($FORUMLINK=="smf")
+{
+    $check_ver=get_result("SELECT `value` FROM `{$db_prefix}settings` WHERE `variable`='smfVersion'", true, 60);
+    if(((int)substr($check_ver[0]["value"],0,1))==2)
+        do_sqlquery("UPDATE `{$TABLE_PREFIX}settings` SET `value`='smf2' WHERE `key`='forum'",true);
+    foreach (glob($THIS_BASEPATH."/cache/*.txt") as $filename)
+        unlink($filename);
+}
+
 $sp = $_SERVER['SERVER_PORT']; $ss = $_SERVER['HTTPS']; if ( $sp =='443' || $ss == 'on' || $ss == '1') $p = 's';
 $domain = 'http'.$p.'://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 $domain = str_replace('/index.php', '', $domain);
@@ -111,9 +121,9 @@ $no_columns=(isset($_GET["nocolumns"]) && intval($_GET["nocolumns"])==1?true:fal
 if (empty($_SESSION['CURUSER']['language_path']))
 {
   if ($idlang==0)
-     $reslang=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}language WHERE id=".$CURUSER["language"]." LIMIT 1",TRUE,$btit_settings["cache_duration"]);
+     $reslang=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}language WHERE id=".$CURUSER["language"]." LIMIT 1", TRUE, $btit_settings["cache_duration"]);
   else
-     $reslang=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}language WHERE id=$idlang"." LIMIT 1",TRUE,$btit_settings["cache_duration"]);
+     $reslang=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}language WHERE id=$idlang"." LIMIT 1", TRUE, $btit_settings["cache_duration"]);
 
   if (!$reslang)
      {
@@ -240,13 +250,7 @@ switch ($pageID) {
         ob_end_clean();
         $tpl->set("main_content",set_block($language["SHOUTBOX"]." ".$language["HISTORY"],"left",$out));
         break;
-/*
-    case 'allshout':
-        require("$THIS_BASEPATH/allshout.php");
-        $tpl->set("main_content",set_block($language["SHOUTBOX"]." ".$language["HISTORY"],"center",$tpl_shout->fetch(load_template("shoutbox_history.tpl")),($GLOBALS["usepopup"]?false:true)));
-        $tpl->set("main_title","Index->All Shout");
-        break;
-*/
+
     case 'comment':
         require("$THIS_BASEPATH/comment.php");
         $tpl->set("main_content",set_block($language["COMMENTS"],"center",$tpl_comment->fetch(load_template("comment.tpl")),false));
@@ -418,6 +422,7 @@ switch ($pageID) {
         // the main_content for current template is setting within users/index.php
         $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->My Panel");
         break;
+
 
     case 'upload':
         require("$THIS_BASEPATH/upload.php");

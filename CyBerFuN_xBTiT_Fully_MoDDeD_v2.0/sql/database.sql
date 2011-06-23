@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.2
+-- version 3.3.10
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 20, 2011 at 08:41 PM
+-- Generation Time: Jun 23, 2011 at 07:58 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.9
 
@@ -703,6 +703,7 @@ INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES
 (NULL, 'Hungarian', 'language/hungarian'),
 (NULL, 'Français', 'language/french'),
 (NULL, 'Finnish', 'language/finnish'),
+
 (NULL, 'Vietnamese', 'language/vietnamese'),
 (NULL, 'Greek', 'language/greek'),
 (NULL, 'Bulgarian', 'language/bulgarian'),
@@ -1171,7 +1172,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('price_ct', '200'),
 ('price_name', '500'),
 ('secsui_quarantine_dir', ''),
-('secsui_quarantine_search_terms', '<?php,base64_decode,base64_encode,eval,phpinfo,fopen,fread,fwrite,file_get_contents'),
+('secsui_quarantine_search_terms', '<?php,base64_decode,base64_encode,eval(,phpinfo,fopen,fread,fwrite,file_get_contents'),
 ('secsui_cookie_name', ''),
 ('secsui_quarantine_pm', '2'),
 ('secsui_pass_type', '1'),
@@ -1182,7 +1183,8 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('secsui_cookie_path', ''),
 ('secsui_cookie_domain', ''),
 ('secsui_cookie_items', '1-0,2-0,3-0,4-0,5-0,6-0,7-0,8-0[+]0'),
-('secsui_pass_min_req', '4,0,0,0,0');
+('secsui_pass_min_req', '4,0,0,0,0'),
+('ipb_autoposter', '0');
 
 -- --------------------------------------------------------
 
@@ -1391,6 +1393,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
   `rank_switch` enum('yes','no') NOT NULL DEFAULT 'no',
   `old_rank` varchar(12) NOT NULL DEFAULT '3',
   `timed_rank` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `ipb_fid` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `id_level` (`id_level`),
@@ -1398,7 +1401,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
   KEY `cip` (`cip`),
   KEY `smf_fid` (`smf_fid`),
   KEY `invitations` (`invitations`),
-  KEY `warn` (`warn`)
+  KEY `warn` (`warn`),
+  KEY `ipb_fid` (`ipb_fid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
@@ -1406,7 +1410,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
 --
 
 INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `salt`, `pass_type`, `dupe_hash`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `custom_title`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`, `seedbonus`, `rank_switch`, `old_rank`, `timed_rank`) VALUES
-(NULL, 'Guestj', '', '', '1', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0, 0, NOW(), NULL, 'no', '', '0000-00-00 00:00:00', 0, '', '0.000000', 'no', '3', '0000-00-00 00:00:00');
+(NULL, 'Guestj', '', '', '1', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0, 0, NOW(), NULL, 'no', '', '0000-00-00 00:00:00', 0, '', '0.000000', 'no', '3', '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -1438,21 +1442,25 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users_level` (
   `prefixcolor` varchar(200) NOT NULL DEFAULT '',
   `suffixcolor` varchar(200) NOT NULL DEFAULT '',
   `WT` int(11) NOT NULL DEFAULT '0',
+  `smf_group_mirror` int(11) NOT NULL DEFAULT '0',
+  `ipb_group_mirror` int(11) NOT NULL DEFAULT '0',
   UNIQUE KEY `base` (`id`),
-  KEY `id_level` (`id_level`)
+  KEY `id_level` (`id_level`),
+  KEY `smf_group_mirror` (`smf_group_mirror`),
+  KEY `ipb_group_mirror` (`ipb_group_mirror`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}users_level`
 --
 
-INSERT INTO `{$db_prefix}users_level` (`id`, `id_level`, `level`, `view_torrents`, `edit_torrents`, `delete_torrents`, `view_users`, `edit_users`, `delete_users`, `view_news`, `edit_news`, `delete_news`, `can_upload`, `can_download`, `view_forum`, `edit_forum`, `delete_forum`, `predef_level`, `can_be_deleted`, `admin_access`, `prefixcolor`, `suffixcolor`, `WT`) VALUES
-(NULL, 1, 'guest', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'guest', 'no', 'no', '', '', 0),
-(NULL, 2, 'validating', 'yes', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'validating', 'no', 'no', '', '', 0),
-(NULL, 3, 'Members', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'no', 'yes', 'yes', 'no', 'no', 'member', 'no', 'no', '<span style=''color:#000000''>', '</span>', 0),
-(NULL, 4, 'Uploader', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'uploader', 'no', 'no', '', '', 0),
-(NULL, 5, 'V.I.P.', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'vip', 'no', 'no', '', '', 0),
-(NULL, 6, 'Moderator', 'yes', 'yes', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'no', 'yes', 'yes', 'yes', 'yes', 'no', 'moderator', 'no', 'no', '<span style=''color: #428D67''>', '</span>', 0),
-(NULL, 7, 'Administrator', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'admin', 'no', 'yes', '<span style=''color:#FF8000''>', '</span>', 0),
-(NULL, 8, 'Owner', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'owner', 'no', 'yes', '<span style=''color:#EE4000''>', '</span>', 0);
+INSERT INTO `{$db_prefix}users_level` (`id`, `id_level`, `level`, `view_torrents`, `edit_torrents`, `delete_torrents`, `view_users`, `edit_users`, `delete_users`, `view_news`, `edit_news`, `delete_news`, `can_upload`, `can_download`, `view_forum`, `edit_forum`, `delete_forum`, `predef_level`, `can_be_deleted`, `admin_access`, `prefixcolor`, `suffixcolor`, `WT`, `smf_group_mirror`, `ipb_group_mirror`) VALUES
+(1, 1, 'guest', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'guest', 'no', 'no', '', '', 0, 0, 0),
+(2, 2, 'validating', 'yes', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'validating', 'no', 'no', '', '', 0, 0, 0),
+(3, 3, 'Members', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'no', 'yes', 'yes', 'no', 'no', 'member', 'no', 'no', '<span style=''color:#000000''>', '</span>', 0, 0, 0),
+(4, 4, 'Uploader', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'uploader', 'no', 'no', '', '', 0, 0, 0),
+(5, 5, 'V.I.P.', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'vip', 'no', 'no', '', '', 0, 0, 0),
+(6, 6, 'Moderator', 'yes', 'yes', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'no', 'yes', 'yes', 'yes', 'yes', 'no', 'moderator', 'no', 'no', '<span style=''color: #428D67''>', '</span>', 0, 0, 0),
+(7, 7, 'Administrator', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'admin', 'no', 'yes', '<span style=''color:#FF8000''>', '</span>', 0, 0, 0),
+(8, 8, 'Owner', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'owner', 'no', 'yes', '<span style=''color:#EE4000''>', '</span>', 0, 0, 0);
 

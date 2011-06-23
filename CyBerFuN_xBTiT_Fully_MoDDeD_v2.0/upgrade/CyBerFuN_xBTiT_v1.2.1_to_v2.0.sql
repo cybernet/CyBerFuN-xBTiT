@@ -42,3 +42,17 @@ INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NU
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Chinese-Simplified', 'language/chinese') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
 INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES (NULL, 'Bengali', 'language/bangla') ON DUPLICATE KEY UPDATE language=language, language_url=language_url;
 ALTER TABLE `{$db_prefix}blocks` ADD UNIQUE (`content`);
+UPDATE `{$db_prefix}settings` SET  `value` =  '<?php,base64_decode,base64_encode,eval(,phpinfo,fopen,fread,fwrite,file_get_contents' WHERE  `{$db_prefix}settings`.`key` = 'secsui_quarantine_search_terms';
+
+INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
+('ipb_autoposter', '0');
+
+ALTER TABLE `{$db_prefix}users`
+ADD `ipb_fid` int(10) NOT NULL default '0',
+ADD INDEX (`ipb_fid`);
+
+ALTER TABLE `{$db_prefix}users_level`
+ADD `smf_group_mirror` int(11) NOT NULL default '0',
+ADD `ipb_group_mirror` int(11) NOT NULL default '0',
+ADD INDEX (`smf_group_mirror`),
+ADD INDEX (`ipb_group_mirror`);

@@ -38,7 +38,7 @@ require_once(load_language("lang_login.php"));
 // Invalid Login System
 dbconn();
 // Invalid Login System - end
-function login() {
+function xbtit_login()
  
    global $TABLE_PREFIX, $language, $logintpl, $btit_settings;
 // Invalid Login System Hack
@@ -129,9 +129,9 @@ $attempts = $btit_settings["att_login"];
 // Invalid Login System Hack Stop
 if (isset($_POST["uid"]) && isset($_POST["pwd"]))
   {
-    if ($FORUMLINK=="smf")
+    if (substr($FORUMLINK,0,3)=="smf")
         $smf_pass = sha1(strtolower($user) . $pwd);
-        $res = do_sqlquery("SELECT `u`.`salt`, `u`.`pass_type`, `u`.`username`, `u`.`id`, `u`.`random`, `u`.`password`".(($FORUMLINK=="smf") ? ", `u`.`smf_fid`, `s`.`passwd`, `s`.`passwordSalt`":"")." FROM `{$TABLE_PREFIX}users` `u` ".(($FORUMLINK=="smf") ? "LEFT JOIN `{$db_prefix}members` `s` ON `u`.`smf_fid`=`s`.`ID_MEMBER`":"")." WHERE `u`.`username` ='".AddSlashes($user)."'", true);
+        $res = do_sqlquery("SELECT `u`.`salt`, `u`.`pass_type`, `u`.`username`, `u`.`id`, `u`.`random`, `u`.`password`".((substr($FORUMLINK,0,3)=="smf") ? ", `u`.`smf_fid`, `s`.`passwd`":"")." FROM `{$TABLE_PREFIX}users` `u` ".((substr($FORUMLINK,0,3)=="smf") ? "LEFT JOIN `{$db_prefix}members` `s` ON `u`.`smf_fid`=`s`.".(($FORUMLINK=="smf")?"`ID_MEMBER`":"`id_member`")."":"")." WHERE `u`.`username` ='".AddSlashes($user)."'", true);
         $row = mysql_fetch_assoc($res);
 // Invalid Login System Hack
     $resource = mysql_query("SELECT * FROM {$TABLE_PREFIX}invalid_logins WHERE ip='".sprintf("%u", ip2long($ip))."'") or die(mysql_error());
@@ -161,7 +161,7 @@ if (isset($_POST["uid"]) && isset($_POST["pwd"]))
 			}
 // Invalid Login System Hack Stop
             $logintpl->set("login_username_incorrect",$language["ERR_USERNAME_INCORRECT"]);
-            login();
+           xbtit_login();
         }
         else
         {
@@ -186,13 +186,23 @@ if (isset($_POST["uid"]) && isset($_POST["pwd"]))
                 logoutcookie();
                 // Then login
                 logincookie($row, $user);
-                if ($FORUMLINK=="smf" && $smf_pass==$row["passwd"])
-                    set_smf_cookie($row["smf_fid"], $row["passwd"], $row["passwordSalt"]);
-                elseif ($FORUMLINK=="smf" && $row["password"]==$row["passwd"])
+                 if (substr($FORUMLINK,0,3)=="smf" && $smf_pass==$row["passwd"])
+                {
+                    $new_smf_salt=substr(md5(rand()), 0, 4);
+                    do_sqlquery("UPDATE `{$db_prefix}members` SET ".(($FORUMLINK=="smf")?"`passwordSalt`":"`password_salt`")."='".$new_smf_salt."' WHERE ".(($FORUMLINK=="smf")?"`ID_MEMBER`":"`id_member`")."=".$row["smf_fid"],true);
+                    set_smf_cookie($row["smf_fid"], $row["passwd"], $new_smf_salt);
+                }
+                elseif (substr($FORUMLINK,0,3)=="smf" && $row["pass_type"]==1 && $row["password"]==$row["passwd"])
                 {
                     $salt=substr(md5(rand()), 0, 4);
-                    @mysql_query("UPDATE {$db_prefix}members SET passwd='$smf_pass', passwordSalt='$salt' WHERE ID_MEMBER=".$row["smf_fid"]);
+                    @mysql_query("UPDATE `{$db_prefix}members` SET `passwd`='$smf_pass', ".(($FORUMLINK=="smf")?"`passwordSalt`='$salt' WHERE `ID_MEMBER`":"`password_salt`='$salt' WHERE `id_member`")."=".$row["smf_fid"]);
                     set_smf_cookie($row["smf_fid"], $smf_pass, $salt);
+                }
+                elseif (substr($FORUMLINK,0,3)=="smf" && $row["passwd"]=="ffffffffffffffffffffffffffffffffffffffff")
+                {
+                    $fix_pass=smf_passgen($user, $pwd);
+                    @mysql_query("UPDATE `{$db_prefix}members` SET `passwd`='".$fix_pass[0]."', ".(($FORUMLINK=="smf")?"`passwordSalt`='".$fix_pass[1]."' WHERE `ID_MEMBER`":"`password_salt`='".$fix_pass[1]."' WHERE `id_member`")."=".$row["smf_fid"]);
+                    set_smf_cookie($row["smf_fid"], $fix_pass[0], $fix_pass[1]);
                 }
                 if (isset($_GET["returnto"]))
                     $url=urldecode($_GET["returnto"]);
@@ -225,7 +235,7 @@ if (isset($_POST["uid"]) && isset($_POST["pwd"]))
 			}
 // Invalid Login System Hack Stop
                 $logintpl->set("login_password_incorrect",$language["ERR_PASSWORD_INCORRECT"]);
-                login();
+                xbtit_login();
             }
         }
     }
@@ -233,7 +243,7 @@ if (isset($_POST["uid"]) && isset($_POST["pwd"]))
     {
         $logintpl->set("FALSE_USER",false,true);
         $logintpl->set("FALSE_PASSWORD",false,true);
-        login();
+        xbtit_login();
     }
 }
 else
@@ -243,7 +253,7 @@ else
     else
         $url="index.php";
 // Invalid Login System Hack
-			mysql_query("DELETE FROM {$TABLE_PREFIX}invalid_logins WHERE ip='".sprintf("%u", ip2long($ip))."' LIMIT 1") or sqlerr();
+	mysql_query("DELETE FROM {$TABLE_PREFIX}invalid_logins WHERE ip='".sprintf("%u", ip2long($ip))."' LIMIT 1") or sqlerr();
 //Invalid Login System Hack Stop
     redirect($url);
     die();
