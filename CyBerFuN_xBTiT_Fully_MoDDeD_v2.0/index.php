@@ -83,7 +83,7 @@ dbconn(true);
 if (empty($_SESSION['CURUSER']['style_url']))
 {
   // get user's style
-  $resheet=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}style where id=".$CURUSER["style"]." LIMIT 1", TRUE, $btit_settings["cache_duration"]);
+  $resheet = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}style where id=".$CURUSER["style"]." LIMIT 1", TRUE, $btit_settings["cache_duration"]);
   if (!$resheet)
      {
 
@@ -107,6 +107,7 @@ else
   $STYLEPATH=$_SESSION['CURUSER']['style_path'];
 
 }
+
 
 $style_css=load_css("main.css");
 
