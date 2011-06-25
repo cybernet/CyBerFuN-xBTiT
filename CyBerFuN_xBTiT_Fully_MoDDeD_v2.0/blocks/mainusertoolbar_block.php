@@ -56,10 +56,8 @@ print("<td style=\"text-align:center;\" align=\"center\"><a class=\"mainuser\" h
 if($INVITATIONSON)
 {
     require(load_language("lang_usercp.php"));
-// need $
-    $resinvs = do_sqlquery("SELECT invitations FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"]);
-    $arrinvs = mysql_fetch_row($resinvs);
-    $invs = $arrinvs[0];
+    $resinvs = get_result("SELECT invitations FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"], true, $btit_settings['cache_duration']);
+    $invs = $resinvs[0];
     print("<td style=\"text-align:center;\" align=\"center\"><a class=\"mainuser\" href=\"index.php?page=usercp&do=invite&action=read&uid=".$CURUSER["uid"]."\">".$language["INVITATIONS"]." ".($invs>0?"(".$invs.")":"")."</a></td>\n");
 }
 
@@ -68,7 +66,7 @@ if(substr($FORUMLINK, 0, 3)=="smf")
 elseif($FORUMLINK=="ipb")
     $resmail = get_result("SELECT `msg_count_new` `ur` FROM `{$ipb_prefix}members` WHERE `member_id`=".$CURUSER["ipb_fid"], true, $btit_settings['cache_duration']);
 else
-    $resmail = get_result("SELECT COUNT(*) `ur` FROM `{$TABLE_PREFIX}messages` WHERE `readed`='no' AND `receiver`=".$CURUSER["uid"],true,$btit_settings['cache_duration']);
+    $resmail = get_result("SELECT COUNT(*) `ur` FROM `{$TABLE_PREFIX}messages` WHERE `readed`='no' AND `receiver`=".$CURUSER["uid"], true, $btit_settings['cache_duration']);
 if ($resmail && count($resmail) > 0)
    {
     $mail = $resmail[0];

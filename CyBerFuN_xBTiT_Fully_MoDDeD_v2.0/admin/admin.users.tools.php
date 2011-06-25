@@ -44,7 +44,7 @@ if ($uid==$CURUSER['uid'] || $uid==1) {
     stderr($language['ERROR'],$language['USER_NOT_EDIT']);
 }
 
-# get uid info //u.custom_title,
+# get uid info
 if ($XBTT_USE)
    if ($XBTT_USE)
     $curu=get_result('SELECT u.username, u.custom_title, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, (u.downloaded+x.downloaded) as downloaded, (u.uploaded+x.uploaded) as uploaded, u.smf_fid, u.ipb_fid FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level LEFT JOIN xbt_users x ON x.uid=u.id WHERE u.id='.$uid.' LIMIT 1',true);

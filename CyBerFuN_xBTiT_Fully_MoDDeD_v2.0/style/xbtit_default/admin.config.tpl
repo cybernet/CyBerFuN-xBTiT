@@ -166,7 +166,6 @@
       <br /><br /><table align="left"><tr><td class="header" align="center"><tag:language.IPB_AUTO_ID /></td></tr><tr><td class="lista" style="text-align:center;"><input type="text" name="ipb_autoposter" value="<tag:config.ipb_autoposter />" size="5" /></td></tr></table>
       </if:ipb_in_use>
     <tr>
-    <tr>
       <td class="header" align="center" colspan="4"><tag:language.BLOCKS_SETTING /></td>
     </tr>
     <tr>
