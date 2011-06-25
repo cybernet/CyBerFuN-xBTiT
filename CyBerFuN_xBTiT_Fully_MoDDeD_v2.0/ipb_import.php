@@ -318,7 +318,7 @@ elseif($act=="member_import" && $confirm=="yes")
         @mysql_query("TRUNCATE TABLE `{$ipb_prefix}pfields_content`");
         @mysql_query("TRUNCATE TABLE `{$ipb_prefix}profile_portal`");
     }
-    if($count>0)
+    if($count > 0)
     {
         while ($account=mysql_fetch_assoc($list))
         {
@@ -327,10 +327,10 @@ elseif($act=="member_import" && $confirm=="yes")
             $l_username=strtolower($username);
             $seo_username=IPSText::makeSeoTitle($account["username"]);
             $email=$account["email"];
-            if($account["pass_type"]==1)
-                $passhash=ipb_md5_passgen($account["password"]);
-            else
-                $passhash=array("ffffffffffffffffffffffffffffffffffffffff", "fffff");
+          if($account["pass_type"]==1)
+            $passhash=ipb_md5_passgen($account["password"]);
+          else
+            $passhash=array("ffffffffffffffffffffffffffffffff", "fffff");
             $hash=$passhash[0];
             $salt=$passhash[1];
             $joined=$account["joined"];
