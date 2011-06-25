@@ -30,7 +30,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-global $CURUSER, $FORUMLINK, $INVITATIONSON, $db_prefix, $XBTT_USE, $btit_settings, $language;
+global $CURUSER, $FORUMLINK, $INVITATIONSON, $db_prefix, $XBTT_USE, $btit_settings, $language, $ipb_prefix;
 
   if (isset($CURUSER) && $CURUSER && $CURUSER["uid"] > 1)
   {
@@ -56,6 +56,7 @@ print("<td style=\"text-align:center;\" align=\"center\"><a class=\"mainuser\" h
 if($INVITATIONSON)
 {
     require(load_language("lang_usercp.php"));
+// need $
     $resinvs = do_sqlquery("SELECT invitations FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"]);
     $arrinvs = mysql_fetch_row($resinvs);
     $invs = $arrinvs[0];
@@ -63,13 +64,15 @@ if($INVITATIONSON)
 }
 
 if(substr($FORUMLINK, 0, 3)=="smf")
-    $resmail=get_result("SELECT `unread".(($FORUMLINK=="smf")?"M":"_m")."essages` `ur` FROM `{$db_prefix}members` WHERE ".(($FORUMLINK=="smf")?"`ID_MEMBER`":"`id_member`")."=".$CURUSER["smf_fid"],true,$btit_settings['cache_duration']);
+    $resmail = get_result("SELECT `unread".(($FORUMLINK=="smf")?"M":"_m")."essages` `ur` FROM `{$db_prefix}members` WHERE ".(($FORUMLINK=="smf")?"`ID_MEMBER`":"`id_member`")."=".$CURUSER["smf_fid"], true, $btit_settings['cache_duration']);
+elseif($FORUMLINK=="ipb")
+    $resmail = get_result("SELECT `msg_count_new` `ur` FROM `{$ipb_prefix}members` WHERE `member_id`=".$CURUSER["ipb_fid"], true, $btit_settings['cache_duration']);
 else
-    $resmail=get_result("SELECT COUNT(*) `ur` FROM `{$TABLE_PREFIX}messages` WHERE `readed`='no' AND `receiver`=".$CURUSER["uid"],true,$btit_settings['cache_duration']);
-if ($resmail && count($resmail)>0)
+    $resmail = get_result("SELECT COUNT(*) `ur` FROM `{$TABLE_PREFIX}messages` WHERE `readed`='no' AND `receiver`=".$CURUSER["uid"],true,$btit_settings['cache_duration']);
+if ($resmail && count($resmail) > 0)
    {
-    $mail=$resmail[0];
-    if ($mail['ur']>0)
+    $mail = $resmail[0];
+    if ($mail['ur'] > 0)
        print("<td style=\"text-align:center;\" align=\"center\"><a class=\"mainuser\" href=\"index.php?page=usercp&amp;uid=".$CURUSER["uid"]."&amp;do=pm&amp;action=list\">".$language["MAILBOX"]."</a> (<font color=\"#FF0000\"><b>".$mail['ur']."</b></font>)</td>\n");
     else
         print("<td style=\"text-align:center;\" align=\"center\"><a class=\"mainuser\" href=\"index.php?page=usercp&amp;uid=".$CURUSER["uid"]."&amp;do=pm&amp;action=list\">".$language["MAILBOX"]."</a></td>\n");

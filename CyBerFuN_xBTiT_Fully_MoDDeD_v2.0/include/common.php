@@ -39,9 +39,13 @@ if (!function_exists('bcsub')) {
 }
 
 function send_pm($sender,$recepient,$subject,$msg) {
-    global $FORUMLINK, $TABLE_PREFIX, $db_prefix, $CACHE_DURATION;
+    global $FORUMLINK, $TABLE_PREFIX, $db_prefix, $CACHE_DURATION, $ipb_prefix;
 
-    if (substr($FORUMLINK,0,3)=='smf') {
+    if($FORUMLINK=="ipb")
+    {
+        ipb_send_pm($sender,$recepient,$subject,$msg);
+    }
+    elseif (substr($FORUMLINK,0,3)=='smf') {
         # smf forum
         # get smf_fid of recepient
         $recepient=get_result('SELECT smf_fid FROM '.$TABLE_PREFIX.'users WHERE id='.$recepient.' LIMIT 1;', true, $CACHE_DURATION);
@@ -67,11 +71,10 @@ function send_pm($sender,$recepient,$subject,$msg) {
         # insert recepient for message
         quickQuery("INSERT INTO `{$db_prefix}pm_recipients` (".(($FORUMLINK=="smf")?"`ID_PM`, `ID_MEMBER`":"`id_pm`, `id_member`").") VALUES (".$pm_id.", ".$recepient.")");
         # notify recepient
-        if (substr($FORUMLINK,0,3)=='smf') {
-quickQuery("UPDATE `{$db_prefix}members` SET `instantMessages`=`instantMessages`+1, `unreadMessages`=`unreadMessages`+1 WHERE `ID_MEMBER`=".$recepient." LIMIT 1");
-else
-quickQuery("UPDATE `{$db_prefix}members` SET `instant_messages`=`instant_messages`+1, `unread_messages`=`unread_messages`+1 WHERE `id_member`=".$recepient." LIMIT 1");
-}
+        if($FORUMLINK=="smf")
+            quickQuery("UPDATE `{$db_prefix}members` SET `instantMessages`=`instantMessages`+1, `unreadMessages`=`unreadMessages`+1 WHERE `ID_MEMBER`=".$recepient." LIMIT 1");
+        else
+            quickQuery("UPDATE `{$db_prefix}members` SET `instant_messages`=`instant_messages`+1, `unread_messages`=`unread_messages`+1 WHERE `id_member`=".$recepient." LIMIT 1");
         return true;
     } else {
         # internal PM system

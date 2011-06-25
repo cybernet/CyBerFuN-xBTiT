@@ -90,6 +90,7 @@ switch ($action)
         $btit_settings["validation"]=$_POST["validation"];
         $btit_settings["imagecode"]=isset($_POST["imagecode"])?"true":"false";
         $btit_settings["forum"]=$_POST["f_link"];
+	$btit_settings["ipb_autoposter"]=((isset($_POST["ipb_autoposter"]) && !empty($_POST["ipb_autoposter"]))?(int)0+$_POST["ipb_autoposter"]:0);
 // request hack part 1
         $btit_settings["req_prune"]=$_POST["req_prune"];
         $btit_settings["req_page"]=$_POST["req_page"];
@@ -287,6 +288,7 @@ switch ($action)
         $btit_settings["req_onoffyes"]=($btit_settings["req_onoff"]?"checked=\"checked\"":"");
         $btit_settings["req_onoffno"]=(!$btit_settings["req_onoff"]?"checked=\"checked\"":"");
         $btit_settings["req_maxonyes"]=($btit_settings["req_maxon"]?"checked=\"checked\"":"");
+
         $btit_settings["req_maxonno"]=(!$btit_settings["req_maxon"]?"checked=\"checked\"":"");
 
 // request hack part 2 end
@@ -380,6 +382,7 @@ switch ($action)
 
         $admintpl->set("config",$btit_settings);
         $admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=config&amp;action=write");
+	$admintpl->set("ipb_in_use", (($btit_settings["forum"]=="ipb")?true:false), true);
         break;
 }
 ?>

@@ -66,7 +66,28 @@ if ($action=="prune")
          if (implode("", $smf_fid)!="")
             do_sqlquery("DELETE FROM `{$db_prefix}members` WHERE ".($GLOBALS["FORUMLINK"]=="smf")?"`ID_MEMBER`":"`id_member`")." IN ('".implode(",", $smf_fid)."')",true);
      }
-     
+     elseif($GLOBALS["FORUMLINK"]=="ipb")
+    {
+        $ipb_fid=array();
+        $ipb_counter=0;
+        foreach($_POST["ipb_fid"] AS $v)
+        {
+            $ipb_counter++;
+            $ipb_fid[]=intval($v);
+        }
+        if (implode("", $ipb_fid)!="")
+        {
+            do_sqlquery("DELETE FROM `{$ipb_prefix}members` WHERE `member_id` IN ('".implode(",", $ipb_fid)."')", true);
+            $ipb_res = get_result("SELECT `cs_value` FROM `{$ipb_prefix}cache_store` WHERE `cs_key`='stats'", true, $btit_settings["cache_duration"]);
+            if(count($ipb_res) > 0)
+            {
+                $ipb_stats=unserialize($ipb_res[0]["cs_value"]);
+                $ipb_stats["mem_count"]-=$ipb_counter;
+                $updated_ipb_stats=serialize($ipb_stats);
+                do_sqlquery("UPDATE `{$ipb_prefix}cache_store` SET `cs_value`='".mysql_real_escape_string($updated_ipb_stats)."' WHERE `cs_key`='stats'", true);
+            }
+        }
+    }
      $block_title=$language["PRUNE_USERS_PRUNED"];
      $admintpl->set("pruned_done",true,true);
      $admintpl->set("prune_done_msg","n.".count($del_id)." users pruned!<br />\n<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."\">".$language["BACK"]."</a>");
@@ -82,12 +103,12 @@ elseif ($action=="view")
           redirect("index.php?page=admin&user=".$CURUSER["uid"]."&code=".$CURUSER["random"]."&do=pruneu");
           exit;
           }
-      $timeout=(60*60*24)*$days;
+      $timeout = (60*60*24) * $days;
 
-      $res=get_result("SELECT `u`.`id`, `u`.`username`, UNIX_TIMESTAMP(`u`.`joined`) `joined`, UNIX_TIMESTAMP(`u`.`lastconnect`) `lastconnect`, `ul`.`level`".((substr($GLOBALS["FORUMLINK"],0,3)=="smf") ? ", `u`.`smf_fid`" : "")." FROM `{$TABLE_PREFIX}users` `u` INNER JOIN `{$TABLE_PREFIX}users_level` `ul` ON `ul`.`id`=`u`.`id_level` WHERE (`u`.`id`>1 AND `ul`.`id_level`<3 AND UNIX_TIMESTAMP(`u`.`joined`)<(UNIX_TIMESTAMP()-$timeout)) OR (`u`.`id`>1 AND `ul`.`id_level`<7 AND UNIX_TIMESTAMP(`u`.`lastconnect`)<(UNIX_TIMESTAMP()-$timeout)) ORDER BY `ul`.`id_level` DESC, `u`.`lastconnect`",true);
+      $res = get_result("SELECT `u`.`id`, `u`.`username`, UNIX_TIMESTAMP(`u`.`joined`) `joined`, UNIX_TIMESTAMP(`u`.`lastconnect`) `lastconnect`, `ul`.`level`".((substr($GLOBALS["FORUMLINK"],0,3)=="smf")?", `u`.`smf_fid`":(($GLOBALS["FORUMLINK"]=="smf")?", `u`.`ipb_fid`":""))." FROM `{$TABLE_PREFIX}users` `u` INNER JOIN `{$TABLE_PREFIX}users_level` `ul` ON `ul`.`id`=`u`.`id_level` WHERE (`u`.`id`>1 AND `ul`.`id_level`<3 AND UNIX_TIMESTAMP(`u`.`joined`)<(UNIX_TIMESTAMP()-$timeout)) OR (`u`.`id`>1 AND `ul`.`id_level`<7 AND UNIX_TIMESTAMP(`u`.`lastconnect`)<(UNIX_TIMESTAMP()-$timeout)) ORDER BY `ul`.`id_level` DESC, `u`.`lastconnect`", true);
 
 
-      $block_title=$language["PRUNE_USERS"];
+      $block_title = $language["PRUNE_USERS"];
 
        include("$THIS_BASEPATH/include/offset.php");
 
@@ -101,9 +122,20 @@ elseif ($action=="view")
              $ru[$i]["level"]=unesc($rusers["level"]);
              $ru[$i]["id"]=$rusers["id"];
             if(substr($GLOBALS["FORUMLINK"],0,3)=="smf")
+             {
                  $ru[$i]["smf_fid"]=$rusers["smf_fid"];
-             else
+                 $ru[$i]["ipb_fid"]="";
+             }
+             elseif($GLOBALS["FORUMLINK"]=="ipb")
+             {
+                 $ru[$i]["ipb_fid"]=$rusers["ipb_fid"];
                  $ru[$i]["smf_fid"]="";
+             }
+             else
+             {
+                 $ru[$i]["smf_fid"]="";
+                 $ru[$i]["ipb_fid"]="";
+             }
              $i++;
            }
       unset($res);

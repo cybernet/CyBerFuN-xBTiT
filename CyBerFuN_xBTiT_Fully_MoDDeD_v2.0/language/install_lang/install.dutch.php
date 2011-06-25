@@ -110,7 +110,7 @@ $install_lang["finished"]               = "Afronding van Installatie";
 $install_lang["finished_step"]          = "Afronden";
 $install_lang["succes_install1"]        = "De installatie is gelukt!";
 $install_lang["succes_install2a"]       = "<p>U heeft met succes ".$GLOBALS["btit-tracker"]." ".$GLOBALS["current_btit_version"]." ge&iuml;nstalleerd op uw tracker.</p><p>De installatie is met succes vergrendelt tegen hergebruik maar wij adviseren u om <b>install.php</b> te verwijderen voor de zekerheid.</p>";
-$install_lang["succes_install2b"]        = "<p>U heeft met succes ".$GLOBALS["btit-tracker"]." ".$GLOBALS["current_btit_version"]." geïnstalleerd op uw tracker.</p><p>Wij adviseren u de installatie te vergrendelen. Dit kunt u doen door <b>install.unlock</b> te veranderen naar <b>install.lock</b> of dit <b>install.php</b> bestand te verwijderen.</p>";
+$install_lang["succes_install2b"]        = "<p>U heeft met succes ".$GLOBALS["btit-tracker"]." ".$GLOBALS["current_btit_version"]." geÃ¯nstalleerd op uw tracker.</p><p>Wij adviseren u de installatie te vergrendelen. Dit kunt u doen door <b>install.unlock</b> te veranderen naar <b>install.lock</b> of dit <b>install.php</b> bestand te verwijderen.</p>";
 $install_lang["succes_install3"]        = "<p>Wij van BTITeam wensen u veel plezier bij het gebruik van dit product en hopen u nog eens te zien op ons <a href=\"http://www.btiteam.org/smf/index.php\" target=\"_blank\">forum</a>.</p>";
 $install_lang["go_to_tracker"]          = "Ga naar uw tracker";
 $install_lang["forum_type"]             = "Forum Type";
@@ -133,4 +133,16 @@ $install_lang["succes_upgrade3"]        = "<p>Wij van BTITeam hopen dat u veel p
 $install_lang['error_mysql_database']   = 'De installer kon geen verbinding krijgen met de &quot;<i>%s</i>&quot; database. Met enkele hosts, moet u een database aanmaken in uw administratie paneel voordat xBtit het kan gebruiken. Ook het toevoegen van prefixes - zoals uw gebruikersnaam - aan uw database.';
 $install_lang['error_message_click']    = 'Klik hier';
 $install_lang['error_message_try_again']= 'om het opnieuw te proberen';
+
+$install_lang["forum_ipb"]              = "Invision Power Board";
+$install_lang["ipb_download_a"]         = "<b>If using Invision Power Board:</b><br /><br/ >Please download the latest version of Invision Power Board from your <a target='_new' href='http://www.invisionpower.com/customer/'>Client Area</a> at Invision Power Services, extract the files somewhere on your computer and then upload the contents of the \"upload\" folder to the \"ipb\" folder.<br /><br />Once uploaded please make sure the \"cache\", \"hooks\", \"public\" and \"uploads\" folders are CHMOD'd to 777 recursively, rename \"conf_global.dist.php\" to \"conf_global.php\" and CHMOD that to 777 as well.<br /><br />Once done please <a target='_new' href='ipb/admin/install/index.php'>click here</a> to install it.*<br /><b>(Please use the same database credentials you used for this installation procedure and be sure to enter a database prefix, we suggest using <span style='color:blue;'>ipb_</span> as your prefix).<br /><br /><font color='#FF0000'>Once installed</font></b> please CHMOD the default cached English language file (<b>";
+$install_lang["ipb_download_b"]         = "</b>) to 777 and click <b>Next</b> to continue with the xbtitFM installation.<br /><br /><b>* Both links will open into a new window/tab to prevent losing your place on the xbtitFM installation.</b></p>";
+$install_lang["ipb_err_1"]              = "Can't find Invision Power Board in the \"ipb\" folder, please install it before proceeding.<br /><br />Click <a href=\"javascript: history.go(-1);\">here</a> to return to the previous page.";
+$install_lang["ipb_err_2"]              = "Can't find Invision Power Board in the database, please install it before proceeding.<br /><br />Click <a href=\"javascript: history.go(-1);\">here</a> to return to the previous page.";
+$install_lang["ipb_err_3a"]             = "Unable to write to the IPB English language file (<b>";
+$install_lang["ipb_err_3b"]             = "</b>) please CHMOD to 777 before proceeding.<br /><br />Click <a href=\"javascript: history.go(-1);\">here</a> to return to the previous page.";
+$install_lang["ipb_err_4a"]             = "IPB English language file (<b>";
+$install_lang["ipb_err_4b"]             = "</b>) doesn't exist, cannot proceed.<br /><br />Click <a href=\"javascript: history.go(-1);\">here</a> to return to the previous page.";
+$install_lang["ipb_err_5"]             = "Unable to write to the IPB Config file (<b>";
+$install_lang["ipb_err_6"]             = "Unable to write to the Tracker Config file (<b>";
 ?>
