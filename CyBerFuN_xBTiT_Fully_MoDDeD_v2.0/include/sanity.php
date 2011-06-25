@@ -44,7 +44,7 @@ function do_sanity() {
 	mysql_query("DELETE FROM {$TABLE_PREFIX}requests WHERE filledby > 0 AND id = $reqid");
 	mysql_query("DELETE FROM {$TABLE_PREFIX}addedrequests WHERE requestid = $reqid");
 	}
-mysql_free_result($reqrow);
+@mysql_free_result($reqrow);
 // DT request hack end
 // Invalid Login System Hack Start
 mysql_query("DELETE FROM {$TABLE_PREFIX}bannedip WHERE comment='max_number_of_invalid_logins_reached'");
@@ -106,7 +106,7 @@ mysql_free_result($arr);
                           $resuser = do_sqlquery("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")." ORDER BY lastconnect DESC LIMIT 1");
                           $curu = @mysql_fetch_row($resuser);
                           quickquery("UPDATE {$TABLE_PREFIX}history SET active='no' WHERE uid=$curu[0] AND infohash='$hash'");
-mysql_free_result($curu);
+@mysql_free_result($curu);
                      }
 
             }
@@ -126,7 +126,7 @@ mysql_free_result($curu);
              {
                  quickQuery("UPDATE {$TABLE_PREFIX}files SET dlbytes=0 WHERE info_hash=\"$hash\"");
              }
-mysql_free_result($row);
+@mysql_free_result($row);
          }
          // END TORRENT'S SANITY
 
@@ -168,8 +168,8 @@ $msg = sqlesc("Your timed rank is expired !\n\n Your rank did changed back to ".
    send_pm(0,$arrdt["id"],$subj,$msg);
    mysql_query("UPDATE {$TABLE_PREFIX}users SET rank_switch='no', id_level = old_rank WHERE id='$arrdt[id]'") or sqlerr();
    }
-mysql_free_result($arrdt);
-mysql_free_result($arr6);
+@mysql_free_result($arrdt);
+@mysql_free_result($arr6);
  }
 
 // TimeD ranks - end
@@ -198,6 +198,6 @@ send_pm(0,$conf[id],$subj,$msg);
 mysql_query("UPDATE {$TABLE_PREFIX}users SET warn='no' WHERE id='$conf[id]'") or sqlerr();
 }
 // warn system - end
-mysql_free_result($conf);
+@mysql_free_result($conf);
 }
 ?>

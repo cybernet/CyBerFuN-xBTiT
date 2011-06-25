@@ -188,7 +188,7 @@ $userdetailtpl -> set("userdetail_downloaded", (makesize($row["downloaded"])));
 $userdetailtpl -> set("userdetail_uploaded", (makesize($row["uploaded"])));
 $userdetailtpl -> set("userdetail_ratio", ($ratio));
 $userdetailtpl -> set("userdetail_bonus", (number_format($row["seedbonus"], 2)));
-$userdetailtpl-> set("userdetail_forum_internal", ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' || $GLOBALS["FORUMLINK"] == 'smf'), TRUE);
+$userdetailtpl-> set("userdetail_forum_internal", ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' || substr($GLOBALS["FORUMLINK"],0,3) == 'smf' || $GLOBALS["FORUMLINK"] == 'ipb'), TRUE);
 
 // Only show if forum is internal
 if ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' )
@@ -206,6 +206,15 @@ elseif (substr($GLOBALS["FORUMLINK"],0,3)=="smf")
    $forum=$forum[0];
    $memberdays = max(1, round( ( time() - (($GLOBALS["FORUMLINK"]=="smf")?$forum["dateRegistered"]:$forum["date_registered"]) ) / 86400 ));
    $posts_per_day = number_format(round($forum["posts"] / $memberdays,2),2);
+   $userdetailtpl-> set("userdetail_forum_posts", $forum["posts"] . " &nbsp; [" . sprintf($language["POSTS_PER_DAY"], $posts_per_day) . "]");
+   unset($forum);
+}
+elseif ($GLOBALS["FORUMLINK"]=="ipb")
+{
+   $forum = get_result("SELECT `joined`, `posts` FROM `{$ipb_prefix}members` WHERE `member_id`=".$row["ipb_fid"], true, $btit_settings['cache_duration']);
+   $forum = $forum[0];
+   $memberdays = max(1, round( ( time() - $forum["joined"] ) / 86400 ));
+   $posts_per_day = number_format(round($forum["posts"] / $memberdays, 2), 2);
    $userdetailtpl-> set("userdetail_forum_posts", $forum["posts"] . " &nbsp; [" . sprintf($language["POSTS_PER_DAY"], $posts_per_day) . "]");
    unset($forum);
 }
