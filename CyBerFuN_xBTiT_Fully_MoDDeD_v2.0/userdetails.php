@@ -101,9 +101,9 @@ else
 include("include/offset.php");
 
 // user's ratio
-if (intval($row["downloaded"])>0)
+if (intval($row["downloaded"]) > 0)
  {
-   $sr = $row["uploaded"]/$row["downloaded"];
+   $sr = $row["uploaded"] / $row["downloaded"];
    if ($sr >= 4)
      $s = "images/smilies/thumbsup.gif";
    else if ($sr >= 2)
@@ -116,37 +116,37 @@ if (intval($row["downloaded"])>0)
      $s = "images/smilies/sad.gif";
    else
      $s = "images/smilies/thumbsdown.gif";
-  $ratio=number_format($sr,2)."&nbsp;&nbsp;<img src=\"$s\" alt=\"\" />";
+  $ratio = number_format($sr, 2)."&nbsp;&nbsp;<img src=\"$s\" alt=\"\" />";
  }
 else
-   $ratio='&#8734;';
+   $ratio = '&#8734;';
 
 $utorrents = intval($CURUSER["torrentsperpage"]);
 
-$userdetailtpl= new bTemplate();
+$userdetailtpl = new bTemplate();
 //  timed Rank by DT start
-$res4 = mysql_query("SELECT level, prefixcolor, suffixcolor FROM {$TABLE_PREFIX}users_level WHERE id ='$row[old_rank]'");
+$res4 = mysql_query("SELECT level, prefixcolor, suffixcolor FROM {$TABLE_PREFIX}users_level WHERE id ='" . $row["old_rank"] . "'");
 $arr4 = mysql_fetch_assoc($res4);
 $oldrank = $arr4[prefixcolor].$arr4[level].$arr4[sufixcolor];
-$userdetailtpl-> set("old_rank",$oldrank);
-	$opts['name']='level';
-	$opts['complete']=true;
-	$opts['id']='id';
-	$opts['value']='level';
-	$opts['default']=$row['id_level'];
-$ranks=rank_list();
-$userdetailtpl->set('rank_combo',get_combodt($ranks, $opts));
-$userdetailtpl-> set("id", $id);
+$userdetailtpl -> set("old_rank",$oldrank);
+$opts['name'] = 'level';
+$opts['complete'] = true;
+$opts['id'] = 'id';
+$opts['value'] = 'level';
+$opts['default'] = $row['id_level'];
+$ranks = rank_list();
+$userdetailtpl ->set('rank_combo', get_combodt($ranks, $opts));
+$userdetailtpl -> set("id", $id);
 //  timed Rank by DT end
-$userdetailtpl-> set("language",$language);
-$userdetailtpl-> set("userdetail_username", unesc($row["username"]). warn($row, true));
+$userdetailtpl -> set("language",$language);
+$userdetailtpl -> set("userdetail_username", unesc($row["username"]). warn($row, true));
 //$userdetailtpl-> set("userdetail_no_guest", $CURUSER["uid"]>1, TRUE);
 if ($CURUSER["uid"]>1 && $id!=$CURUSER["uid"])
-    $userdetailtpl -> set("userdetail_send_pm", "&nbsp;&nbsp;&nbsp;<a href=\"index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=".$CURUSER["uid"]."&amp;what=new&amp;to=".urlencode(unesc($row["username"]))."\">".image_or_link("$STYLEPATH/images/pm.png","",$language["PM"])."</a>");
+$userdetailtpl -> set("userdetail_send_pm", "&nbsp;&nbsp;&nbsp;<a href=\"index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=".$CURUSER["uid"]."&amp;what=new&amp;to=".urlencode(unesc($row["username"]))."\">".image_or_link("$STYLEPATH/images/pm.png","",$language["PM"])."</a>");
 if ($CURUSER["edit_users"]=="yes" && $id!=$CURUSER["uid"])
-    $userdetailtpl -> set("userdetail_edit","&nbsp;&nbsp;&nbsp<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=users&amp;action=edit&amp;uid=$id&amp;returnto=index.php?page=userdetails&amp;id=$id\">".image_or_link("$STYLEPATH/images/edit.png","",$language["EDIT"])."</a>");
-if ($CURUSER["delete_users"]=="yes" && $id!=$CURUSER["uid"])
-    $userdetailtpl -> set("userdetail_delete", "&nbsp;&nbsp;&nbsp<a onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\" href=index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=users&amp;action=delete&amp;uid=$id&amp;smf_fid=".$row["smf_fid"]."&amp;returnto=".urlencode("index.php?page=users")."\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>");
+$userdetailtpl -> set("userdetail_edit","&nbsp;&nbsp;&nbsp<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=users&amp;action=edit&amp;uid=$id&amp;returnto=index.php?page=userdetails&amp;id=$id\">".image_or_link("$STYLEPATH/images/edit.png","",$language["EDIT"])."</a>");
+if ($CURUSER["delete_users"] == "yes" && $id != $CURUSER["uid"])
+$userdetailtpl -> set("userdetail_delete", "&nbsp;&nbsp;&nbsp<a onclick=\"return confirm('".AddSlashes($language["DELETE_CONFIRM"])."')\" href=index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=users&amp;action=delete&amp;uid=$id&amp;smf_fid=".$row["smf_fid"]."&amp;returnto=".urlencode("index.php?page=users")."\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>");
 $userdetailtpl -> set("userdetail_has_avatar", $row["avatar"] && $row["avatar"]!="", TRUE);
 
 $userdetailtpl -> set("userdetail_avatar","<img border=\"0\" onload=\"resize_avatar(this);\" src=\"".htmlspecialchars($row["avatar"])."\" alt=\"\" />");
@@ -161,23 +161,24 @@ $userdetailtpl -> set("userdetail_colspan", "2");
 }
 else
 {
-$userdetailtpl-> set("userdetail_level", ($row["level"]));
-$userdetailtpl-> set("userdetail_colspan", "0");
+$userdetailtpl -> set("userdetail_level", ($row["level"]));
+$userdetailtpl -> set("userdetail_colspan", "0");
 }
 // begin invitation system by dodge
-$userdetailtpl->set("userdetail_invs", ($row["invitations"]));
+$userdetailtpl -> set("userdetail_invs", ($row["invitations"]));
+// need $
 if ($row["invited_by"] > 0)
 {
     $res2 = do_sqlquery("SELECT id, username FROM {$TABLE_PREFIX}users WHERE id='" . $row["invited_by"] . "'", true);
     if ($res2)
     {
-        $userdetailtpl->set("was_invited", true, true);
+$userdetailtpl -> set("was_invited", true, true);
         $invite = mysql_fetch_row($res2);
-        $userdetailtpl->set("userdetail_invby", "<a href=index.php?page=userdetails&amp;id=" . $invite[0] . ">" . $invite[1] . "</a>");
+$userdetailtpl -> set("userdetail_invby", "<a href=index.php?page=userdetails&amp;id=" . $invite[0] . ">" . $invite[1] . "</a>");
     }
 }
 else
-    $userdetailtpl->set("was_invited", false, true);
+$userdetailtpl -> set("was_invited", false, true);
 // end invitation system
 $userdetailtpl -> set("userdetail_joined", ($row["joined"]==0 ? "N/A" : get_date_time($row["joined"])));
 $userdetailtpl -> set("custom_title", (!$row["custom_title"] ? "" : unesc($row["custom_title"])));
@@ -188,25 +189,25 @@ $userdetailtpl -> set("userdetail_downloaded", (makesize($row["downloaded"])));
 $userdetailtpl -> set("userdetail_uploaded", (makesize($row["uploaded"])));
 $userdetailtpl -> set("userdetail_ratio", ($ratio));
 $userdetailtpl -> set("userdetail_bonus", (number_format($row["seedbonus"], 2)));
-$userdetailtpl-> set("userdetail_forum_internal", ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' || substr($GLOBALS["FORUMLINK"],0,3) == 'smf' || $GLOBALS["FORUMLINK"] == 'ipb'), TRUE);
+$userdetailtpl -> set("userdetail_forum_internal", ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' || substr($GLOBALS["FORUMLINK"],0,3) == 'smf' || $GLOBALS["FORUMLINK"] == 'ipb'), TRUE);
 
 // Only show if forum is internal
 if ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' )
    {
-   $sql = get_result("SELECT count(*) as tp FROM {$TABLE_PREFIX}posts p INNER JOIN {$TABLE_PREFIX}users u ON p.userid = u.id WHERE u.id = " . $id,true,$btit_settings['cache_duration']);
+   $sql = get_result("SELECT count(*) as tp FROM {$TABLE_PREFIX}posts p INNER JOIN {$TABLE_PREFIX}users u ON p.userid = u.id WHERE u.id = " . $id, true, $btit_settings['cache_duration']);
    $posts = $sql[0]['tp'];
    unset($sql);
-   $memberdays = max(1, round( ( time() - $row['joined'] ) / 86400 ));
-   $posts_per_day = number_format(round($posts / $memberdays,2),2);
-   $userdetailtpl-> set("userdetail_forum_posts", $posts . " &nbsp; [" . sprintf($language["POSTS_PER_DAY"], $posts_per_day) . "]");
+$memberdays = max(1, round( ( time() - $row['joined'] ) / 86400 ));
+$posts_per_day = number_format(round($posts / $memberdays, 2), 2);
+$userdetailtpl-> set("userdetail_forum_posts", $posts . " &nbsp; [" . sprintf($language["POSTS_PER_DAY"], $posts_per_day) . "]");
 }
 elseif (substr($GLOBALS["FORUMLINK"],0,3)=="smf")
    {
-   $forum = get_result("SELECT `date".(($GLOBALS["FORUMLINK"]=="smf")?"R":"_r")."egistered`, `posts` FROM `{$db_prefix}members` WHERE ".(($GLOBALS["FORUMLINK"]=="smf")?"`ID_MEMBER`":"`id_member`")."=".$row["smf_fid"], true, $btit_settings['cache_duration']);
-   $forum=$forum[0];
-   $memberdays = max(1, round( ( time() - (($GLOBALS["FORUMLINK"]=="smf")?$forum["dateRegistered"]:$forum["date_registered"]) ) / 86400 ));
-   $posts_per_day = number_format(round($forum["posts"] / $memberdays,2),2);
-   $userdetailtpl-> set("userdetail_forum_posts", $forum["posts"] . " &nbsp; [" . sprintf($language["POSTS_PER_DAY"], $posts_per_day) . "]");
+$forum = get_result("SELECT `date".(($GLOBALS["FORUMLINK"]=="smf")?"R":"_r")."egistered`, `posts` FROM `{$db_prefix}members` WHERE ".(($GLOBALS["FORUMLINK"]=="smf")?"`ID_MEMBER`":"`id_member`")."=".$row["smf_fid"], true, $btit_settings['cache_duration']);
+$forum=$forum[0];
+$memberdays = max(1, round( ( time() - (($GLOBALS["FORUMLINK"]=="smf")?$forum["dateRegistered"]:$forum["date_registered"]) ) / 86400 ));
+$posts_per_day = number_format(round($forum["posts"] / $memberdays, 2), 2);
+$userdetailtpl-> set("userdetail_forum_posts", $forum["posts"] . " &nbsp; [" . sprintf($language["POSTS_PER_DAY"], $posts_per_day) . "]");
    unset($forum);
 }
 elseif ($GLOBALS["FORUMLINK"]=="ipb")
@@ -218,31 +219,31 @@ elseif ($GLOBALS["FORUMLINK"]=="ipb")
    $userdetailtpl-> set("userdetail_forum_posts", $forum["posts"] . " &nbsp; [" . sprintf($language["POSTS_PER_DAY"], $posts_per_day) . "]");
    unset($forum);
 }
-$userdetailtpl-> set("warn_access", (($row["warn"]=="yes")?TRUE:FALSE), TRUE);
-$userdetailtpl-> set("warnreason", (!$row["warnreason"] ? "" : unesc($row["warnreason"])));   
-$userdetailtpl-> set("warnadded", (!$row["warnadded"] ? "" : unesc($row["warnadded"])));
-$userdetailtpl-> set("warnaddedby", (!$row["warnaddedby"] ? "" : unesc($row["warnaddedby"])));
-$userdetailtpl-> set("warns", (!$row["warns"] ? "" : unesc($row["warns"])));   
-$userdetailtpl-> set("rewarn_access", (($row["warn"]=="yes")?TRUE:FALSE), TRUE);
-$userdetailtpl-> set("adminwarn_access", (($CURUSER["edit_torrents"]=="yes" || $CURUSER["edit_users"]=="yes")?TRUE:FALSE), TRUE);
-$userdetailtpl-> set("nowarn_access", (($CURUSER["edit_torrents"]=="yes" || $CURUSER["edit_users"]=="yes")?TRUE:FALSE), TRUE);
-$userdetailtpl-> set("warns_access", (($row["warn"]=="no")?TRUE:FALSE), TRUE);
-$userdetailtpl-> set("warn", ($row["warn"]="yes"?"checked=\"checked\"":""));
-$userdetailtpl-> set("warnreason", $row["warnreason"]);
-$userdetailtpl-> set("id", $id);
+$userdetailtpl -> set("warn_access", (($row["warn"]=="yes")?TRUE:FALSE), TRUE);
+$userdetailtpl -> set("warnreason", (!$row["warnreason"] ? "" : unesc($row["warnreason"])));   
+$userdetailtpl -> set("warnadded", (!$row["warnadded"] ? "" : unesc($row["warnadded"])));
+$userdetailtpl -> set("warnaddedby", (!$row["warnaddedby"] ? "" : unesc($row["warnaddedby"])));
+$userdetailtpl -> set("warns", (!$row["warns"] ? "" : unesc($row["warns"])));   
+$userdetailtpl -> set("rewarn_access", (($row["warn"]=="yes")?TRUE:FALSE), TRUE);
+$userdetailtpl -> set("adminwarn_access", (($CURUSER["edit_torrents"]=="yes" || $CURUSER["edit_users"]=="yes")?TRUE:FALSE), TRUE);
+$userdetailtpl -> set("nowarn_access", (($CURUSER["edit_torrents"]=="yes" || $CURUSER["edit_users"]=="yes")?TRUE:FALSE), TRUE);
+$userdetailtpl -> set("warns_access", (($row["warn"]=="no")?TRUE:FALSE), TRUE);
+$userdetailtpl -> set("warn", ($row["warn"]="yes"?"checked=\"checked\"":""));
+$userdetailtpl -> set("warnreason", $row["warnreason"]);
+$userdetailtpl -> set("id", $id);
 $resuploaded = get_result("SELECT count(*) as tf FROM {$TABLE_PREFIX}files f WHERE uploader=$id AND f.anonymous = \"false\" ORDER BY data DESC", true, $btit_settings['cache_duration']);
-$numtorrent=$resuploaded[0]['tf'];
+$numtorrent = $resuploaded[0]['tf'];
 unset($resuploaded);
-$userdetailtpl->set("pagertop","");
-if ($numtorrent>0)
+$userdetailtpl -> set("pagertop","");
+if ($numtorrent > 0)
    {
    list($pagertop, $pagerbottom, $limit) = pager(($utorrents==0?15:$utorrents), $numtorrent, $_SERVER["PHP_SELF"]."?page=userdetails&amp;id=$id&amp;pagename=uploaded&amp;",array("pagename" => "uploaded"));
-   $userdetailtpl->set("pagertop",$pagertop);
-   $resuploaded = get_result("SELECT f.info_hash, f.filename, UNIX_TIMESTAMP(f.data) as added, f.size, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished FROM $ttables WHERE uploader=$id AND anonymous = \"false\" ORDER BY data DESC $limit",true,$btit_settings['cache_duration']);
+   $userdetailtpl -> set("pagertop",$pagertop);
+   $resuploaded = get_result("SELECT f.info_hash, f.filename, UNIX_TIMESTAMP(f.data) as added, f.size, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished FROM $ttables WHERE uploader=$id AND anonymous = \"false\" ORDER BY data DESC $limit", true, $btit_settings['cache_duration']);
 }
 
 
-if ($resuploaded && $numtorrent>0)
+if ($resuploaded && $numtorrent > 0)
    {
    $userdetailtpl->set("RESULTS",true,true);
    $uptortpl=array();
@@ -291,13 +292,13 @@ else
    }
 
 if ($XBTT_USE)
-   $anq=get_result("SELECT count(*) as tp FROM xbt_files_users xfu WHERE active=1 AND uid=$id",true,$btit_settings['cache_duration']);
+   $anq=get_result("SELECT count(*) as tp FROM xbt_files_users xfu WHERE active=1 AND uid=$id", true, $btit_settings['cache_duration']);
 else
 {
   if ($PRIVATE_ANNOUNCE)
-      $anq=get_result("SELECT count(*) as tp FROM {$TABLE_PREFIX}peers p INNER JOIN {$TABLE_PREFIX}files f ON f.info_hash = p.infohash WHERE p.pid='".$row["pid"]."'",true,$btit_settings['cache_duration']);
+      $anq=get_result("SELECT count(*) as tp FROM {$TABLE_PREFIX}peers p INNER JOIN {$TABLE_PREFIX}files f ON f.info_hash = p.infohash WHERE p.pid='".$row["pid"]."'", true,$btit_settings['cache_duration']);
   else
-      $anq=get_result("SELECT count(*) as tp FROM {$TABLE_PREFIX}peers p INNER JOIN {$TABLE_PREFIX}files f ON f.info_hash = p.infohash WHERE p.ip='".($row["cip"])."'",true,$btit_settings['cache_duration']);
+      $anq=get_result("SELECT count(*) as tp FROM {$TABLE_PREFIX}peers p INNER JOIN {$TABLE_PREFIX}files f ON f.info_hash = p.infohash WHERE p.ip='".($row["cip"])."'", true,$btit_settings['cache_duration']);
   }
 
 
@@ -315,17 +316,17 @@ if ($anq[0]['tp']>0)
     if ($XBTT_USE)
             $anq=get_result("SELECT '127.0.0.1' as ip, f.info_hash as infohash, f.filename, f.size, IF(p.left=0,'seeder','leecher') as status, p.downloaded, p.uploaded, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished
                         FROM xbt_files_users p INNER JOIN xbt_files x ON p.fid=x.fid INNER JOIN {$TABLE_PREFIX}files f ON f.bin_hash = x.info_hash
-                        WHERE p.uid=$id AND p.active=1 ORDER BY status DESC $limit",true,$btit_settings['cache_duration']);
+                        WHERE p.uid=$id AND p.active=1 ORDER BY status DESC $limit", true, $btit_settings['cache_duration']);
     else
       {
         if ($PRIVATE_ANNOUNCE)
             $anq=get_result("SELECT p.ip, p.infohash, f.filename, f.size, p.status, p.downloaded, p.uploaded, f.seeds, f.leechers, f.finished
                         FROM {$TABLE_PREFIX}peers p INNER JOIN {$TABLE_PREFIX}files f ON f.info_hash = p.infohash
-                        WHERE p.pid='".$row["pid"]."' ORDER BY p.status DESC $limit",true,$btit_settings['cache_duration']);
+                        WHERE p.pid='".$row["pid"]."' ORDER BY p.status DESC $limit", true, $btit_settings['cache_duration']);
         else
             $anq=get_result("SELECT p.ip, p.infohash, f.filename, f.size, p.status, p.downloaded, p.uploaded, f.seeds, f.leechers, f.finished
                         FROM {$TABLE_PREFIX}peers p INNER JOIN {$TABLE_PREFIX}files f ON f.info_hash = p.infohash
-                        WHERE p.ip='".($row["cip"])."' ORDER BY p.status DESC $limit",true,$btit_settings['cache_duration']);
+                        WHERE p.ip='".($row["cip"])."' ORDER BY p.status DESC $limit", true, $btit_settings['cache_duration']);
      }
 //    print("<div align=\"center\">$pagertop</div>");
 
@@ -383,9 +384,9 @@ if ($anq[0]['tp']>0)
 unset($anq);
 
 if ($XBTT_USE)
-   $anq=get_result("SELECT count(h.fid) as th FROM xbt_files_users h INNER JOIN xbt_files f ON h.fid=f.fid WHERE h.uid=$id AND h.completed=1",true,$btit_settings['cache_duration']);
+   $anq = get_result("SELECT count(h.fid) as th FROM xbt_files_users h INNER JOIN xbt_files f ON h.fid=f.fid WHERE h.uid=$id AND h.completed=1", true, $btit_settings['cache_duration']);
 else
-    $anq=get_result("SELECT count(h.infohash) as th FROM {$TABLE_PREFIX}history h INNER JOIN {$TABLE_PREFIX}files f ON h.infohash=f.info_hash WHERE h.uid=$id AND h.date IS NOT NULL",true,$btit_settings['cache_duration']);
+    $anq = get_result("SELECT count(h.infohash) as th FROM {$TABLE_PREFIX}history h INNER JOIN {$TABLE_PREFIX}files f ON h.infohash=f.info_hash WHERE h.uid=$id AND h.date IS NOT NULL", true, $btit_settings['cache_duration']);
 
 $userdetailtpl->set("pagertophist","");
 
