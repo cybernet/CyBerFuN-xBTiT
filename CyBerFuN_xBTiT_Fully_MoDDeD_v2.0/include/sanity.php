@@ -69,7 +69,7 @@ if ($XBTT_USE) {
        $x = $arr['pid'];
        quickQuery("UPDATE {$TABLE_PREFIX}users SET seedbonus = seedbonus+".$GLOBALS["bonus"]."*".$clean_interval."/3600 WHERE pid = '$x'");
        }
-mysql_free_result($arr);
+@mysql_free_result($arr);
    } }
 // Bonus system - end
          // SANITY FOR TORRENTS
