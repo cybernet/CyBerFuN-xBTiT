@@ -38,7 +38,7 @@ require_once(load_language("lang_login.php"));
 // Invalid Login System
 dbconn();
 // Invalid Login System - end
-function xbtit_login()
+function xbtit_login() {
  
    global $TABLE_PREFIX, $language, $logintpl, $btit_settings;
 // Invalid Login System Hack
