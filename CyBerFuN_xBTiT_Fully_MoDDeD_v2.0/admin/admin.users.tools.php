@@ -39,14 +39,13 @@ $uid=isset($_GET['uid'])?(int)$_GET['uid']:0;
 # test uid
 if ($uid==$CURUSER['uid'] || $uid==1) {
     if ($action=='delete') # cannot delete guest/myself
-        stderr($language['ERROR'], $language['USER_NOT_DELETE']);
+        stderr($language['ERROR'],$language['USER_NOT_DELETE']);
     # cannot edit guest/myself
-    stderr($language['ERROR'], $language['USER_NOT_EDIT']);
+    stderr($language['ERROR'],$language['USER_NOT_EDIT']);
 }
 
 # get uid info
 if ($XBTT_USE)
-   if ($XBTT_USE)
     $curu=get_result('SELECT u.username, u.custom_title, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, (u.downloaded+x.downloaded) as downloaded, (u.uploaded+x.uploaded) as uploaded, u.smf_fid, u.ipb_fid FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level LEFT JOIN xbt_users x ON x.uid=u.id WHERE u.id='.$uid.' LIMIT 1',true);
 else
     $curu=get_result('SELECT u.username, u.custom_title, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, u.downloaded, u.uploaded, u.smf_fid, u.ipb_fid FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level WHERE u.id='.$uid.' LIMIT 1',true);
@@ -67,7 +66,7 @@ $note='';
 # find smf_id
 $smf_fid=false;
 $ipb_fid=false;
- if (substr($FORUMLINK,0,3)=='smf')
+if (substr($FORUMLINK,0,3)=='smf')
 {
     if (!isset($curu['smf_fid']) || $curu['smf_fid']==0)
     {
@@ -124,10 +123,10 @@ switch ($action) {
     case 'delete':
         if (isset($_GET['sure']) && $_GET['sure']==1) {
             quickQuery('DELETE FROM '.$TABLE_PREFIX.'users WHERE id='.$uid.' LIMIT 1;',true);
-             if (substr($FORUMLINK,0,3)=='smf')
+            if (substr($FORUMLINK,0,3)=='smf')
                 quickQuery("DELETE FROM `{$db_prefix}members` WHERE ".(($FORUMLINK=="smf")?"`ID_MEMBER`":"`id_member`")."=".$smf_fid." LIMIT 1");
-		elseif ($FORUMLINK=='ipb')
-		quickQuery("DELETE FROM `{$ipb_prefix}members` WHERE `member_id`=".$ipb_fid." LIMIT 1");
+            elseif ($FORUMLINK=='ipb')
+                quickQuery("DELETE FROM `{$ipb_prefix}members` WHERE `member_id`=".$ipb_fid." LIMIT 1");
             if ($XBTT_USE)
                 quickQuery('DELETE FROM xbt_users WHERE uid='.$uid.' LIMIT 1;');
 
@@ -174,13 +173,13 @@ switch ($action) {
         $profile['down']=makesize($curu['downloaded']);
         $profile['up']=makesize($curu['uploaded']);
         $profile['ratio']=($curu['downloaded']>0?$curu['uploaded']/$curu['downloaded']:'');
+	$profile['custom_title']=unesc($curu['custom_title']);
         # init options
         $opts['name']='level';
         $opts['complete']=true;
         $opts['id']='id';
         $opts['value']='level';
         $opts['default']=$curu['id_level'];
-	$profile['custom_title']=unesc($curu['custom_title']);
         # rank list
         $ranks=rank_list();
         $admintpl->set('rank_combo',get_combo($ranks, $opts));
@@ -262,15 +261,10 @@ switch ($action) {
             $chpass=(isset($_POST['chpass']) && $pass!='');
             # new level of the user
 	    $custom_title=unesc($_POST["custom_title"]);
-// version prodided by petr1fied, Sun Jun 19 15:25:33 2011 UTC
-//http://btit-tracker.svn.sourceforge.net/viewvc/btit-tracker/BtitT2/branches/beta/admin/admin.users.tools.php?r1=685&r2=684&pathrev=685
-     //       $rlev = do_sqlquery("SELECT `id_level` `base_level`, `level` `name`".((substr($FORUMLINK,0,3)=='smf')?", `smf_group_mirror`":"")." FROM {$TABLE_PREFIX}users_level WHERE id=".$level." LIMIT 1");
-// eNd
-// bug fix already
-		$rlev = do_sqlquery("SELECT `id_level` as `base_level`, `level` as `name` ".((substr($FORUMLINK,0,3)=='smf')?", `smf_group_mirror`":(($FORUMLINK=='ipb')?", `ipb_group_mirror`":""))." FROM {$TABLE_PREFIX}users_level WHERE id=".$level." LIMIT 1");
-            $reslev = mysql_fetch_assoc($rlev);
+            $rlev=do_sqlquery("SELECT `id_level` `base_level`, `level` `name`".((substr($FORUMLINK,0,3)=='smf')?", `smf_group_mirror`":(($FORUMLINK=='ipb')?", `ipb_group_mirror`":""))." FROM {$TABLE_PREFIX}users_level WHERE id=".$level." LIMIT 1");
+            $reslev=mysql_fetch_assoc($rlev);
             if ( ($CURUSER['id_level'] < $reslev['base_level']))
-                $level = 0;
+                $level=0;
             # check avatar image extension if someone have better idea ;)
             if ($avatar && $avatar!='' && !in_array(substr($avatar,strlen($avatar)-4),array('.gif','.jpg','.bmp','.png')))
                 stderr($language['ERROR'], $language['ERR_AVATAR_EXT']);
@@ -281,11 +275,10 @@ switch ($action) {
             if ($idflag>0 && $idflag != $curu['flag'])
                 $set[]='flag='.$idflag;
             if ($level>0 && $level != $curu['id_level']) {
-                if (substr($FORUMLINK,0,3)=='smf')
+                if (substr($FORUMLINK,0,3)=='smf') {
                     # find the coresponding level in smf
                     if($reslev["smf_group_mirror"]==0)
-$smf_group=get_result("SELECT ".(($FORUMLINK=="smf")?"`ID_GROUP`":"`id_group`")." FROM `{$db_prefix}membergroups` WHERE `group".(($FORUMLINK=="smf")?"N":"_n")."ame`='".$reslev["name"]."' LIMIT 1", true, $CACHE_DURATION);
-                    # if there is one update it
+                        $smf_group=get_result("SELECT ".(($FORUMLINK=="smf")?"`ID_GROUP`":"`id_group`")." FROM `{$db_prefix}membergroups` WHERE `group".(($FORUMLINK=="smf")?"N":"_n")."ame`='".$reslev["name"]."' LIMIT 1", true, $CACHE_DURATION);
                     # if there is one update it
                     if (isset($smf_group[0]) || $reslev["smf_group_mirror"]>0)
                     {
@@ -300,11 +293,11 @@ $smf_group=get_result("SELECT ".(($FORUMLINK=="smf")?"`ID_GROUP`":"`id_group`").
                     }
                     else $note.=' Group not found in SMF.';
                 }
-			elseif($FORUMLINK=="ipb")
+                elseif($FORUMLINK=="ipb")
                 {
                     # find the coresponding level in ipb
                     if($reslev["ipb_group_mirror"]==0)
-                    $ipb_group = get_result("SELECT `perm_id` FROM `{$ipb_prefix}forum_perms` WHERE `perm_name`='".$reslev["name"]."' LIMIT 1;", true, $CACHE_DURATION);
+                    $ipb_group=get_result("SELECT `perm_id` FROM `{$ipb_prefix}forum_perms` WHERE `perm_name`='".$reslev["name"]."' LIMIT 1;", true, $CACHE_DURATION);
                     # if there is one update it
                     if (isset($ipb_group[0]) || $reslev["ipb_group_mirror"]>0)
                     {
@@ -319,8 +312,8 @@ $smf_group=get_result("SELECT ".(($FORUMLINK=="smf")?"`ID_GROUP`":"`id_group`").
             }
             if ($time != $curu['time_offset'])
                 $set[]='time_offset='.$time;
-	    if ($custom_title != $curu['custom_title'])
-                $set[]='custom_title='.sqlesc(htmlspecialchars($custom_title));
+	 if ($custom_title != $curu['custom_title'])
+		$set[]='custom_title='.sqlesc(htmlspecialchars($custom_title));
             if ($email != $curu['email'])
             {
                 $set[]='email='.sqlesc($email);
@@ -333,11 +326,10 @@ $smf_group=get_result("SELECT ".(($FORUMLINK=="smf")?"`ID_GROUP`":"`id_group`").
                     IPSMember::save($ipb_fid, array("members" => array("email" => "$email")));
                 }
             }
-                $set[]='email='.sqlesc($email);
             if ($avatar != $curu['avatar'])
                 $set[]='avatar='.sqlesc(htmlspecialchars($avatar));
             if ($username != $curu['username']) {
-		$new_username=$username;
+                $new_username=$username;
                 $sql_name=sqlesc($curu['username']);
                 $username=sqlesc($username);
                 $dupe=get_result("SELECT `id` FROM `{$TABLE_PREFIX}users` WHERE `username`=".$username." LIMIT 1", true, $CACHE_DURATION);
@@ -356,7 +348,8 @@ $smf_group=get_result("SELECT ".(($FORUMLINK=="smf")?"`ID_GROUP`":"`id_group`").
                             $smfset[]='realName='.$username;
                         } else
                             $newname.=', dupe name in smf realName';
-                    }elseif($FORUMLINK=='ipb')
+                    }
+                    elseif($FORUMLINK=='ipb')
                     {
                         $new_username=trim($username,"'");
                         $new_l_username=strtolower($new_username);
@@ -402,7 +395,7 @@ $smf_group=get_result("SELECT ".(($FORUMLINK=="smf")?"`ID_GROUP`":"`id_group`").
                 $pattern1='#[a-z]#';
                 $pattern2='#[A-Z]#';
                 $pattern3='#[0-9]#';
-                $pattern4='/[¬!"£$%^&*()`{}\[\]:@~;\'#<>?,.\/\\-=_+\|]/';
+                $pattern4='/[�!"�$%^&*()`{}\[\]:@~;\'#<>?,.\/\\-=_+\|]/';
 
                 for($pass_position=0;$pass_position<=$pass_end;$pass_position++)
                 {
@@ -426,8 +419,9 @@ $smf_group=get_result("SELECT ".(($FORUMLINK=="smf")?"`ID_GROUP`":"`id_group`").
                 $set[]="`salt`=".sqlesc($multipass[$j]["salt"]);
                 $set[]="`pass_type`=".sqlesc($j);
                 $set[]="`dupe_hash`=".sqlesc($multipass[$j]["dupehash"]);
-                $passhash=smf_passgen($username, $pass);
+                $passhash=smf_passgen($un, $pass);
                 $smfset[]='`passwd`='.sqlesc($passhash[0]);
+                $smfset[]='`password'.(($FORUMLINK=="smf")?"S":"_s").'alt`='.sqlesc($passhash[1]);
                 if($FORUMLINK=="ipb")
                 {
                     $ipbhash=ipb_passgen($pass);

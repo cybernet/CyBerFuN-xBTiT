@@ -39,8 +39,8 @@ global $CURUSER, $FORUMLINK, $INVITATIONSON, $db_prefix, $XBTT_USE, $btit_settin
 <table cellpadding="0" cellspacing="0" width="100%">
 <tr>
 <?php
-$style=style_list();
-$langue=language_list();
+$style = style_list();
+$langue = language_list();
 
 print("<td style=\"text-align:center;\" align=\"center\">".$language["USER_LEVEL"].": ".$CURUSER["level"]."</td>\n");
 print("<td class=\"green\" align=\"center\">&uarr;&nbsp;".makesize($CURUSER['uploaded']));
@@ -58,7 +58,7 @@ if($INVITATIONSON)
     require(load_language("lang_usercp.php"));
     $resinvs = get_result("SELECT invitations FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER["uid"], true, $btit_settings['cache_duration']);
     $invs = $resinvs[0];
-    print("<td style=\"text-align:center;\" align=\"center\"><a class=\"mainuser\" href=\"index.php?page=usercp&do=invite&action=read&uid=".$CURUSER["uid"]."\">".$language["INVITATIONS"]." ".($invs>0?"(".$invs.")":"")."</a></td>\n");
+    print("<td style=\"text-align:center;\" align=\"center\"><a class=\"mainuser\" href=\"index.php?page=usercp&do=invite&action=read&uid=".$CURUSER["uid"]."\">".$language["INVITATIONS"]." ".($invs['invitations']>0?"(".$invs['invitations'].")":"")."</a></td>\n");
 }
 
 if(substr($FORUMLINK, 0, 3)=="smf")

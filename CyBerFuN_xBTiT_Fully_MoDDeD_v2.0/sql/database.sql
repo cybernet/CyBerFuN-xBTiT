@@ -1162,7 +1162,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('req_onoff', 'true'),
 ('req_number', '5'),
 ('req_maxon', 'true'),
-('invitation_only', 'true'),
+('invitation_only', 'false'),
 ('invitation_reqvalid', 'false'),
 ('invitation_expires', '7'),
 ('inv_login', 'false'),
@@ -1175,14 +1175,14 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('secsui_quarantine_search_terms', '<?php,base64_decode,base64_encode,eval(,phpinfo,fopen,fread,fwrite,file_get_contents'),
 ('secsui_cookie_name', ''),
 ('secsui_quarantine_pm', '2'),
-('secsui_pass_type', '1'),
+('secsui_pass_type', '6'),
 ('secsui_ss', ''),
-('secsui_cookie_type', '1'),
+('secsui_cookie_type', '3'),
 ('secsui_cookie_exp1', '1'),
 ('secsui_cookie_exp2', '3'),
 ('secsui_cookie_path', ''),
 ('secsui_cookie_domain', ''),
-('secsui_cookie_items', '1-0,2-0,3-0,4-0,5-0,6-0,7-0,8-0[+]0'),
+('secsui_cookie_items', '7-0,1-1,3-1,4-1,6-0,8-0[+]0,5-1,2-1'),
 ('secsui_pass_min_req', '4,0,0,0,0'),
 ('ipb_autoposter', '0');
 
@@ -1410,7 +1410,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
 --
 
 INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `salt`, `pass_type`, `dupe_hash`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`, `invitations`, `invited_by`, `invitedate`, `custom_title`, `warn`, `warnreason`, `warnadded`, `warns`, `warnaddedby`, `seedbonus`, `rank_switch`, `old_rank`, `timed_rank`, `ipb_fid`) VALUES
-(NULL, 'Guestj', '', '', '1', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0, 0, NOW(), NULL, 'no', '', '0000-00-00 00:00:00', 0, '', '0.000000', 'no', '3', '0000-00-00 00:00:00', 0);
+(NULL, 'Guest', '', '', '1', '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0, 0, NOW(), NULL, 'no', '', '0000-00-00 00:00:00', 0, '', '0.000000', 'no', '3', '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
