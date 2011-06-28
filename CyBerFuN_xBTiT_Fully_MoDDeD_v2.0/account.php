@@ -592,8 +592,8 @@ if ($INVITATIONSON == "true")
     $res = do_sqlquery("SELECT username FROM {$TABLE_PREFIX}users WHERE id = $inviter", true);
     $arr = mysql_fetch_assoc($res);
     $invusername = $arr["username"];
-    do_sqlquery("UPDATE {$TABLE_PREFIX}users SET invited_by='" . $inviter .
-        "' WHERE id='" . $newuid . "'", true);
+    do_sqlquery("UPDATE {$TABLE_PREFIX}users SET invited_by='" . $inviter . "', invitedate=NOW() WHERE id='" . $newuid . "'", true);
+//    do_sqlquery("UPDATE {$TABLE_PREFIX}users SET invitedate=NOW() WHERE id='" . $newuid . "'", true);
     do_sqlquery("UPDATE {$TABLE_PREFIX}invitations SET confirmed='true' WHERE hash='$code'", true);
     $msg = sqlesc($language["WELCOME MESSAGE"]);
 }
