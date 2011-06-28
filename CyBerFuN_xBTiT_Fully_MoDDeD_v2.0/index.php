@@ -54,7 +54,7 @@ if($FORUMLINK=="smf")
 {
     $check_ver=get_result("SELECT `value` FROM `{$db_prefix}settings` WHERE `variable`='smfVersion'", true, 60);
     if(((int)substr($check_ver[0]["value"],0,1))==2)
-        do_sqlquery("UPDATE `{$TABLE_PREFIX}settings` SET `value`='smf2' WHERE `key`='forum'",true);
+        do_sqlquery("UPDATE `{$TABLE_PREFIX}settings` SET `value`='smf2' WHERE `key`='forum'", true);
     foreach (glob($THIS_BASEPATH."/cache/*.txt") as $filename)
         unlink($filename);
 }
