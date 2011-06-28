@@ -63,7 +63,7 @@ switch ($action)
           $rcancanc=mysql_fetch_array($rcanc);
           if ($rcancanc["can_be_deleted"]=="yes")
              {
-             do_sqlquery("DELETE FROM {$TABLE_PREFIX}users_level WHERE id=$id",true);
+             do_sqlquery("DELETE FROM {$TABLE_PREFIX}users_level WHERE id=$id", true);
              success_msg($language["SUCCESS"],$language["GROUP_DELETED"]."<br />\n<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=groups\">".$language["ACP_USER_GROUP"]."</a>");
              stdfoot(false,false,true);
              die;
