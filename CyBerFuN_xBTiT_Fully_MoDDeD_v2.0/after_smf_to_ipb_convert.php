@@ -246,11 +246,11 @@ elseif($act=="init_setup"  && $confirm=="yes")
     @mysql_query("UPDATE `{$ipb_prefix}permission_index` SET `perm_view`=',8,', `perm_2`=',8,', `perm_3`=',8,', `perm_4`=',8,', `perm_5`=',8,', `perm_6`=',8,', `perm_7`='' WHERE `app`='forums' AND `perm_type`='forum' AND `perm_type_id`>2");
 
     // Disable forum registration
-    $res=mysql_query("SELECT `cs_value` FROM `{$ipb_prefix}cache_store` WHERE `cs_key`='settings'");
-    $row=mysql_fetch_assoc($res);
-    $array=unserialize($row["cs_value"]);
-    $array["no_reg"]=1;
-    $cs_value=serialize($array);
+    $res = mysql_query("SELECT `cs_value` FROM `{$ipb_prefix}cache_store` WHERE `cs_key`='settings'");
+    $row = mysql_fetch_assoc($res);
+    $array = unserialize($row["cs_value"]);
+    $array["no_reg"] = 1;
+    $cs_value = serialize($array);
     @mysql_query("UPDATE `{$ipb_prefix}cache_store` SET `cs_value`='".mysql_real_escape_string($cs_value)."' WHERE `cs_key`='settings'");
     @mysql_query("UPDATE {$ipb_prefix}core_sys_conf_settings` SET `conf_value`=1 WHERE `conf_key`='no_reg'");
 
@@ -261,14 +261,14 @@ elseif($act=="init_setup"  && $confirm=="yes")
     // finding the base path.
     $baseurl = 'http://' . $host . substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'));
 
-    $ipb_lang="ipb/cache/lang_cache/1/core_public_error.php";
-    $fd=fopen($ipb_lang, "r+");
-    $lang_data=fread($fd, filesize($ipb_lang));
+    $ipb_lang = "ipb/cache/lang_cache/1/core_public_error.php";
+    $fd = fopen($ipb_lang, "r+");
+    $lang_data = fread($fd, filesize($ipb_lang));
     ftruncate($fd,0);
     rewind($fd);
-    $lang_search="The administrator is currently not accepting new membership registrations.";
-    $lang_replace="Sorry, registration via IPB is disabled. Registration for this forum must be done via the Tracker <a target='_self' href='".$baseurl."/index.php?page=signup'>Here</a>.<br /><br />If you already have a tracker account please <a target='_self' href='index.php?app=core&module=global&section=login'>login here</a> with the same credentials.";
-    $lang_data=str_replace($lang_search, $lang_replace, $lang_data);
+    $lang_search = "The administrator is currently not accepting new membership registrations.";
+    $lang_replace = "Sorry, registration via IPB is disabled. Registration for this forum must be done via the Tracker <a target='_self' href='".$baseurl."/index.php?page=signup'>Here</a>.<br /><br />If you already have a tracker account please <a target='_self' href='index.php?app=core&module=global&section=login'>login here</a> with the same credentials.";
+    $lang_data = str_replace($lang_search, $lang_replace, $lang_data);
     fwrite($fd,$lang_data);
     fclose($fd);
 
@@ -308,7 +308,7 @@ elseif($act=="member_bridge" && $confirm=="yes")
     $list=mysql_query($query);
     $count=mysql_num_rows($list);
 
-    if($count>0)
+    if($count > 0)
     {
         while ($account=mysql_fetch_assoc($list))
         {

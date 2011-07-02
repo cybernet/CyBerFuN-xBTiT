@@ -174,7 +174,7 @@ if (isset($_POST["uid"]) && isset($_POST["pwd"]))
                 if($row["pass_type"]!=$btit_settings["secsui_pass_type"])
                 {
                     // We need to update the password
-                    do_sqlquery("UPDATE `{$TABLE_PREFIX}users` SET `password`='".mysql_real_escape_string($passtype[$btit_settings["secsui_pass_type"]]["rehash"])."', `salt`='".mysql_real_escape_string($passtype[$btit_settings["secsui_pass_type"]]["salt"])."', `pass_type`='".mysql_real_escape_string($btit_settings["secsui_pass_type"])."', `dupe_hash`='".mysql_real_escape_string($passtype[$btit_settings["secsui_pass_type"]]["dupehash"])."' WHERE `id`=".$row["id"],true);
+                    do_sqlquery("UPDATE `{$TABLE_PREFIX}users` SET `password`='".mysql_real_escape_string($passtype[$btit_settings["secsui_pass_type"]]["rehash"])."', `salt`='".mysql_real_escape_string($passtype[$btit_settings["secsui_pass_type"]]["salt"])."', `pass_type`='".mysql_real_escape_string($btit_settings["secsui_pass_type"])."', `dupe_hash`='".mysql_real_escape_string($passtype[$btit_settings["secsui_pass_type"]]["dupehash"])."' WHERE `id`=".$row["id"], true);
                     // And update the values we got from the database earlier
                     $row["pass_type"]=$btit_settings["secsui_pass_type"];
                     $row["password"]=$passtype[$btit_settings["secsui_pass_type"]]["rehash"];

@@ -163,8 +163,7 @@ switch ($action)
             $tobe_users = array();
             $i = 0;
             //All sent invitations
-            $results = get_result("SELECT * FROM `{$TABLE_PREFIX}invitations` WHERE `inviter`='" .
-                $id . "' ORDER BY id DESC", true);
+            $results = get_result("SELECT * FROM `{$TABLE_PREFIX}invitations` WHERE `inviter`='" . $id . "' ORDER BY id DESC", true);
 
             foreach ($results as $id => $data2)
             {
@@ -197,25 +196,21 @@ switch ($action)
         //        Let's display the list of users which
         //        have accepted an invitation and are registered...
         //        something like a buddy list ;)
-        $res = get_result("SELECT COUNT(*) as num_members FROM {$TABLE_PREFIX}users WHERE invited_by=" .
-            $id, true);
+        $res = get_result("SELECT COUNT(*) as num_members FROM {$TABLE_PREFIX}users WHERE invited_by=" . $id, true);
         $count = $res[0]["num_members"];
-        list($pagertop, $pagerbottom, $limit) = pager('15', $count, $scriptname .
-            "&amp;");
+        list($pagertop, $pagerbottom, $limit) = pager('15', $count, $scriptname . "&amp;");
 
         $usercptpl->set("inv_pagertop", $pagertop);
         $usercptpl->set("inv_pagerbottom", $pagerbottom);
 
-        $results = get_result("SELECT id, username, uploaded, downloaded, email, id_level FROM {$TABLE_PREFIX}users WHERE invited_by=" .
-            $id . " ORDER BY id DESC $limit", true);
+        $results = get_result("SELECT id, username, uploaded, downloaded, email, id_level FROM {$TABLE_PREFIX}users WHERE invited_by=" . $id . " ORDER BY id DESC $limit", true);
         $num = count($results);
 
         if ($num > 0)
         {
             $usercptpl->set("to_confirm", true, true);
             $usercptpl->set("number_confirmed", $count);
-            $usercptpl->set("frm1_target",
-                "index.php?page=usercp&do=invite&amp;action=confirm&amp;uid=$id");
+            $usercptpl->set("frm1_target", "index.php?page=usercp&do=invite&amp;action=confirm&amp;uid=$id");
 
             $numreg = (mysql_fetch_row(@do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}users WHERE invited_by=$id AND id_level=2", true)));
 
