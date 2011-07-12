@@ -981,7 +981,7 @@ function categories($val = '') {
 
 // this returns all the subcategories
 function sub_categories($val='') {
-  global $TABLE_PREFIX;
+  global $TABLE_PREFIX, $CACHE_DURATION;
 
   $return = "\n<select name='sub_category'><option value='0'>---</option>";
   $c_q = get_result("SELECT id, name FROM {$TABLE_PREFIX}categories WHERE sub='0' ORDER BY sort_index, id", true, $CACHE_DURATION);
