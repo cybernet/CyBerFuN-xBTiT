@@ -20,8 +20,8 @@
     }
 
     function resize_avatar(img) {
-        if(img.width>80) {
-            img.height=parseInt(img.height*80/img.width);
-            img.width=80;
+        if(img.width>150) {
+            img.height=parseInt(img.height*150/img.width);
+            img.width=150;
         }
     }

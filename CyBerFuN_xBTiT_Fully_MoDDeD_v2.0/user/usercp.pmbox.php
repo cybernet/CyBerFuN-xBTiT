@@ -230,8 +230,8 @@ header("Location: index.php?page=forum&action=pm");
           }
         elseif ($what=="new" && $action=="edit" || $do == "pm" && $action == "edit")
   {
-elseif($FORUMLINK=="ipb")
-header("Location: index.php?page=forum&action=newpm&to=".(isset($_GET['to'])?htmlentities($_GET['to']):'')."");//insert name to ipb form.
+if($FORUMLINK=="ipb")
+	header("Location: index.php?page=forum&action=newpm&to=".(isset($_GET['to'])?htmlentities($_GET['to']):'')."");//insert name to ipb form.
    $usercptpl->set("MSG_EDIT",true,true);
 
            // if new pm will give id=0 and empty array
@@ -244,7 +244,7 @@ header("Location: index.php?page=forum&action=newpm&to=".(isset($_GET['to'])?htm
            if (urldecode($_GET['to'])==$CURUSER["username"])
               stderr($language["ERROR"],$language["ERR_PM_GUEST"]);
 
-           $res=do_sqlquery("select m.*, IF(m.sender=0,'System',u.username) as sendername FROM {$TABLE_PREFIX}messages m LEFT JOIN {$TABLE_PREFIX}users u on u.id=m.sender WHERE receiver=$uid AND m.id=$id",true);
+           $res=do_sqlquery("select m.*, IF(m.sender=0,'System',u.username) as sendername FROM {$TABLE_PREFIX}messages m LEFT JOIN {$TABLE_PREFIX}users u on u.id=m.sender WHERE receiver=$uid AND m.id=$id", true);
 
            if (!$res)
              {                        
