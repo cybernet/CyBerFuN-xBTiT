@@ -101,6 +101,16 @@ print("</select></td>");
 </tr>
 </table>
 </form>
-    <?php
+<?php
+}
+else
+{
+    session_name("xbtit");
+    session_start();
+    $_SESSION = array();
+    setcookie("xbtit", "", time()-3600, "/");
+    session_destroy();
+
+    if (!isset($user)) $user = '';
 }
 ?>

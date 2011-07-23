@@ -169,11 +169,11 @@ if (isset($row["cat_name"]))
 else
     $row["cat_name"]=unesc($language["NONE"]);
 
-$vres = get_result("SELECT sum(rating) as totrate, count(*) as votes FROM {$TABLE_PREFIX}ratings WHERE infohash = '$id'",true, $btit_settings['cache_duration']);
+$vres = get_result("SELECT sum(rating) as totrate, count(*) as votes FROM {$TABLE_PREFIX}ratings WHERE infohash = '$id'", true, $btit_settings['cache_duration']);
 $vrow = $vres[0];
 if ($vrow && $vrow["votes"]>=1)
    {
-   $totrate=round($vrow["totrate"]/$vrow["votes"],1);
+   $totrate = round($vrow["totrate"] / $vrow["votes"], 1);
    if ($totrate==5)
       $totrate="<img src=\"$STYLEURL/images/5.gif\" title=\"$vrow[votes] ".$language["VOTES_RATING"].": $totrate/5.0)\" alt=\"\" />";
    elseif ($totrate>4.4 && $totrate<5)
@@ -323,7 +323,7 @@ else
    $torrenttpl->set("EXTERNAL",false,TRUE);
 
 // comments...
-$subres = get_result("SELECT u.custom_title, u.warn, u.id_level, c.id, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC",true,$btit_settings['cache_duration']);
+$subres = get_result("SELECT u.custom_title, u.warn, u.id_level, c.id, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC", true, $btit_settings['cache_duration']);
 if (!$subres || count($subres)==0) {
      if($CURUSER["uid"] > 1)
        $torrenttpl->set("INSERT_COMMENT",TRUE,TRUE);
@@ -352,9 +352,9 @@ $level = do_sqlquery("SELECT level FROM {$TABLE_PREFIX}users_level WHERE id_leve
         $title = "".$lvl['level']."";
        else
         $title = unesc($subrow["custom_title"]);
-        $comments[$count]["user"]="<a href=\"index.php?page=userdetails&amp;id=".$subrow["uid"]."\">" . unesc($subrow["user"]).warn($row);
+        $comments[$count]["user"]="<a href=\"index.php?page=userdetails&amp;id=".$subrow["uid"]."\">" . unesc($subrow["user"]) . warn($row);
 	$comments[$count]["user"].="</a> .::. ".$title;
-       $comments[$count]["date"]=date("d/m/Y H.i.s",$subrow["data"]-$offset);
+       $comments[$count]["date"] = date("d/m/Y H.i.s",$subrow["data"] - $offset);
        // only users able to delete torrents can delete comments...
        if ($CURUSER["delete_torrents"]=="yes")
          $comments[$count]["delete"]="<a onclick=\"return confirm('". str_replace("'","\'",$language["DELETE_CONFIRM"])."')\" href=\"index.php?page=comment&amp;id=$id&amp;cid=" . $subrow["id"] . "&amp;action=delete\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>";
